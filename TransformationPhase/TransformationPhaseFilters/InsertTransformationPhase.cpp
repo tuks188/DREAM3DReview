@@ -449,7 +449,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       iter++;
       Seed++;
       phase = transformationphases[j];
-      generate_transformation(phase, static_cast<int>(Seed), &trans, m_ShapeTypes[phase], m_OrthoOps);
+      generate_transformations(phase, static_cast<int>(Seed), &trans, m_ShapeTypes[phase], m_OrthoOps);
       currentsizedisterror = check_sizedisterror(&trans);
       change = (currentsizedisterror) - (oldsizedisterror);
       if(change > 0 || currentsizedisterror > (1.0 - (float(iter) * 0.001)) || curphasevol[j] < (0.75 * factor * curphasetotalvol))
@@ -534,7 +534,8 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
     notifyStatusMessage(ss.str());
 
     TransformationStatsData* pp = TransformationStatsData::SafePointerDownCast(statsDataArray[m_FieldPhases[i]].get());
-    transboundaryfraction = pp->getTransBoundaryFraction();
+    // transboundaryfraction = pp->getTransBoundaryFraction();
+	// precip uses boundary fraction, trans uses parent phase
     random = static_cast<float>(rg.genrand_res53());
     if(random <= transboundaryfraction)
     {
@@ -560,7 +561,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
     m_Centroids[3 * i] = xc;
     m_Centroids[3 * i + 1] = yc;
     m_Centroids[3 * i + 2] = zc;
-    insert_transitate(i);
+    insert_transformations(i);
     fillingerror = check_fillingerror(i, -1000, grainOwnersPtr);
     for (int iter = 0; iter < 10; iter++)
     {
@@ -591,12 +592,12 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       oldzc = m_Centroids[3 * i + 2];
       oldfillingerror = fillingerror;
       fillingerror = check_fillingerror(-1000, i, grainOwnersPtr);
-      move_transformation(i, xc, yc, zc);
+      move_transformations(i, xc, yc, zc);
       fillingerror = check_fillingerror(i, -1000, grainOwnersPtr);
       if(fillingerror > oldfillingerror)
       {
         fillingerror = check_fillingerror(-1000, i, grainOwnersPtr);
-        move_transformation(i, oldxc, oldyc, oldzc);
+        move_transformations(i, oldxc, oldyc, oldzc);
         fillingerror = check_fillingerror(i, -1000, grainOwnersPtr);
       }
     }
@@ -640,7 +641,8 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       {
         continue;
       }
-      transboundaryfraction = pp->getTransBoundaryFraction();
+      // transboundaryfraction = pp->getTransBoundaryFraction();
+	  // uses parent phases instead
       random = static_cast<float>(rg.genrand_res53());
       if(random <= transboundaryfraction)
       {
@@ -668,7 +670,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       oldzc = m_Centroids[3 * randomgrain + 2];
       oldfillingerror = fillingerror;
       fillingerror = check_fillingerror(-1000, static_cast<int>(randomgrain), grainOwnersPtr);
-      move_transformation(randomgrain, xc, yc, zc);
+      move_transformations(randomgrain, xc, yc, zc);
       fillingerror = check_fillingerror(static_cast<int>(randomgrain), -1000, grainOwnersPtr);
       currentneighborhooderror = check_neighborhooderror(-1000, randomgrain);
       //      change2 = (currentneighborhooderror * currentneighborhooderror) - (oldneighborhooderror * oldneighborhooderror);
@@ -680,7 +682,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       else if(fillingerror > oldfillingerror)
       {
         fillingerror = check_fillingerror(-1000, static_cast<int>(randomgrain), grainOwnersPtr);
-        move_transformation(randomgrain, oldxc, oldyc, oldzc);
+        move_transformations(randomgrain, oldxc, oldyc, oldzc);
         fillingerror = check_fillingerror(static_cast<int>(randomgrain), -1000, grainOwnersPtr);
       }
     }
@@ -702,7 +704,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       zc = static_cast<float>(oldzc + ((2.0f * (rg.genrand_res53() - 0.5f)) * (2.0f * m_PackingRes[2])));
       oldfillingerror = fillingerror;
       fillingerror = check_fillingerror(-1000, static_cast<int>(randomgrain), grainOwnersPtr);
-      move_transformation(randomgrain, xc, yc, zc);
+      move_transformations(randomgrain, xc, yc, zc);
       fillingerror = check_fillingerror(static_cast<int>(randomgrain), -1000, grainOwnersPtr);
       currentneighborhooderror = check_neighborhooderror(-1000, randomgrain);
       //      change2 = (currentneighborhooderror * currentneighborhooderror) - (oldneighborhooderror * oldneighborhooderror);
@@ -714,7 +716,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
       else if(fillingerror > oldfillingerror)
       {
         fillingerror = check_fillingerror(-1000, static_cast<int>(randomgrain), grainOwnersPtr);
-        move_transformation(randomgrain, oldxc, oldyc, oldzc);
+        move_transformations(randomgrain, oldxc, oldyc, oldzc);
         fillingerror = check_fillingerror(static_cast<int>(randomgrain), -1000, grainOwnersPtr);
       }
     }
@@ -725,7 +727,7 @@ void  InsertTransformationPhase::place_transformations(Int32ArrayType::Pointer g
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTransformationPhase::generate_transformation(int phase, int Seed, Trans* trans, unsigned int shapeclass, OrientationOps::Pointer OrthoOps)
+void InsertTransformationPhase::generate_transformations(int phase, int Seed, Trans* trans, unsigned int shapeclass, OrientationOps::Pointer OrthoOps)
 {
   DREAM3D_RANDOMNG_NEW_SEEDED(Seed)
 
@@ -820,7 +822,7 @@ void InsertTransformationPhase::transfer_attributes(int gnum, Trans* trans)
   m_Neighborhoods[gnum] = trans->m_Neighborhoods;
 }
 
-void InsertTransformationPhase::move_transformation(size_t gnum, float xc, float yc, float zc)
+void InsertTransformationPhase::move_transformations(size_t gnum, float xc, float yc, float zc)
 {
   int occolumn, ocrow, ocplane;
   int nccolumn, ncrow, ncplane;
@@ -1205,7 +1207,7 @@ float InsertTransformationPhase::check_fillingerror(int gadd, int gremove, Int32
   return fillingerror;
 }
 
-void InsertTransformationPhase::insert_transformation(size_t gnum)
+void InsertTransformationPhase::insert_transformations(size_t gnum)
 {
   DREAM3D_RANDOMNG_NEW()
       //   DataContainer* m = getVoxelDataContainer();

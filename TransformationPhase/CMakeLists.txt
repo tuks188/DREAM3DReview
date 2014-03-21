@@ -176,15 +176,15 @@ cmp_IDE_SOURCE_PROPERTIES( "TransformationPhase/" "${TransformationPhase_HDRS}" 
 # This section is for a Custom GUI for a Filter. We need to add the Header, Source and UI file here so that
 # they do not get auto generated during cmake and build time.
 set(${PLUGIN_NAME}_CustomWidgets_HDRS
-   ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}FiltersWidgets/QImportR3DStackWidget.h
+#   ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}FiltersWidgets/QImportR3DStackWidget.h
 )
 
 set(${PLUGIN_NAME}_CustomWidgets_SRCS
-   ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}FiltersWidgets/QImportR3DStackWidget.cpp
+#   ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}FiltersWidgets/QImportR3DStackWidget.cpp
 )
 
 QT4_WRAP_UI( ${PLUGIN_NAME}_Generated_UI_HDRS
-   ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}FiltersWidgets/QImportR3DStackWidget.ui
+#   ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}FiltersWidgets/QImportR3DStackWidget.ui
 )
 
 # --------------------------------------------------------------------

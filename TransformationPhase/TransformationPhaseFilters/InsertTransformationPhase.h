@@ -62,7 +62,7 @@ typedef struct {
     float m_Omega3s;
     int m_FieldPhases;
     int m_Neighborhoods;
-} Precip;
+} Trans;
 
 /**
  * @class InsertTransformationPhase InsertTransformationPhase.h DREAM3DLib/SyntheticBuilderFilters/InsertTransformationPhase.h
@@ -161,12 +161,12 @@ class DREAM3DLib_EXPORT InsertTransformationPhase : public AbstractFilter
 
     void compare_3Ddistributions(std::vector<std::vector<std::vector<float> > >, std::vector<std::vector<std::vector<float> > >, float &sqrerror);
 
-    std::vector<int> TransformationPhase;
-    std::vector<float> transformationsphasefractions;
+    std::vector<int> transformationphases;
+    std::vector<float> transformationphasefractions;
 
   private:
 
-    int firstPrecipitateField;
+    int firstTransformationField;
     unsigned long long int Seed;
     float sizex;
     float sizey;
