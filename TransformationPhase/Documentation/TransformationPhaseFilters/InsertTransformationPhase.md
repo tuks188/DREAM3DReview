@@ -5,7 +5,7 @@ Insert Transformation Phase {#inserttransformationphase}
 Transformation Phase Filters (Packing)
 
 ## Description ##
-If there are precipitate phases in the Statistics file, then this filter will place precipitate **Fields** with the sizes, shapes, physical orientations and locations corresponding to the goal statistics.  The user can specify if they want *periodic boundary conditions* and whether they would like to write out the goal attributes of the generated **Fields**. 
+If there are transformation phases in the Statistics file, then this filter will place transformation **Fields** with the sizes, shapes, physical orientations and locations corresponding to the goal statistics and parameters chosen in the filter.  The user can specify if they want *periodic boundary conditions* and whether they would like to write out the goal attributes of the generated **Fields**. 
 
 ## Parameters ##
 
@@ -39,11 +39,11 @@ Voxel
 
 ## Authors ##
 
-**Copyright:** 2012 Michael A. Groeber (AFRL),2012 Michael A. Jackson (BlueQuartz Software)
+**Copyright:** 2014 Joseph C. Tucker (UES), 2012 Michael A. Groeber (AFRL), 2012 Michael A. Jackson (BlueQuartz Software)
 
 **Contact Info:** dream3d@bluequartz.net
 
-**Version:** 1.0.0
+**Version:** 4.0.0
 
 **License:**  See the License.txt file that came with DREAM3D.
 

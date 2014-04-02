@@ -1,7 +1,7 @@
 #--
 #--  Copyright (c) 2011, Michael A. Jackson. BlueQuartz Software
 #--  Copyright (c) 2011, Michael Groeber, US Air Force Research Laboratory
-#--  Copyright (c) 2014 Dr. Joseph C. Tucker (UES, Inc.)
+#--  Copyright (c) 2014, Joseph C. Tucker (UES, Inc.)
 #--  All rights reserved.
 #--  BSD License: http://www.opensource.org/licenses/bsd-license.html
 #--
