@@ -96,6 +96,7 @@ class DREAM3DLib_EXPORT InsertTransformationPhase : public AbstractFilter
     DREAM3D_INSTANCE_STRING_PROPERTY(Omega3sArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(FieldPhasesArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(VolumesArrayName)
+	DREAM3D_INSTANCE_STRING_PROPERTY(FieldEulerAnglesArrayName)
     //------ Required Ensemble Data
     DREAM3D_INSTANCE_STRING_PROPERTY(PhaseTypesArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(ShapeTypesArrayName)
@@ -105,6 +106,9 @@ class DREAM3DLib_EXPORT InsertTransformationPhase : public AbstractFilter
     DREAM3D_INSTANCE_STRING_PROPERTY(CsvOutputFile)
     DREAM3D_INSTANCE_PROPERTY(bool, PeriodicBoundaries)
     DREAM3D_INSTANCE_PROPERTY(bool, WriteGoalAttributes)
+    DREAM3D_INSTANCE_PROPERTY(int, MaxTwinPG)
+    DREAM3D_INSTANCE_PROPERTY(int, NumTwins)
+    DREAM3D_INSTANCE_PROPERTY(int, MinGrainTwinDia)
 
     virtual const std::string getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
     virtual const std::string getSubGroupName() { return DREAM3D::FilterSubGroups::PackingFilters; }
@@ -140,6 +144,8 @@ class DREAM3DLib_EXPORT InsertTransformationPhase : public AbstractFilter
 
     void transfer_attributes(int gnum, Trans* trans);
     void insert_transformations(size_t grainNum);
+    void place_twins();
+    void insert_twins(size_t grainNum);
 
     void move_transformations(size_t grainNum, float xc, float yc, float zc);
 
@@ -191,6 +197,7 @@ class DREAM3DLib_EXPORT InsertTransformationPhase : public AbstractFilter
     float* m_Volumes;
     float* m_Omega3s;
     float* m_EquivalentDiameters;
+    float* m_FieldEulerAngles;
     bool* m_Active;
     int32_t* m_FieldPhases;
     int32_t* m_NumCells;

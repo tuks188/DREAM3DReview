@@ -82,7 +82,11 @@ InsertTransformationPhase::InsertTransformationPhase() :
   m_PhaseTypesArrayName(DREAM3D::EnsembleData::PhaseTypes),
   m_ShapeTypesArrayName(DREAM3D::EnsembleData::ShapeTypes),
   m_NumFieldsArrayName(DREAM3D::EnsembleData::NumFields),
+  m_FieldEulerAnglesArrayName(DREAM3D::FieldData::EulerAngles),
   m_CsvOutputFile(""),
+  m_MaxTwinPG(1), 
+  m_NumTwins(1),
+  m_MinGrainTwinDia(1),
   m_PeriodicBoundaries(false),
   m_WriteGoalAttributes(false),
   m_GrainIds(NULL),
@@ -99,7 +103,8 @@ InsertTransformationPhase::InsertTransformationPhase() :
   m_NumCells(NULL),
   m_PhaseTypes(NULL),
   m_ShapeTypes(NULL),
-  m_NumFields(NULL)
+  m_NumFields(NULL),
+  m_FieldEulerAngles(NULL)
 {
   m_EllipsoidOps = EllipsoidOps::New();
   m_ShapeOps[DREAM3D::ShapeType::EllipsoidShape] = m_EllipsoidOps.get();
@@ -152,9 +157,34 @@ void InsertTransformationPhase::setupFilterParameters()
     option->setHumanLabel("Goal Attribute CSV File");
     option->setPropertyName("CsvOutputFile");
     option->setWidgetType(FilterParameter::OutputFileWidget);
-  option->setFileExtension("*.csv");
-  option->setFileType("Comma Separated Data");
+    option->setFileExtension("*.csv");
+    option->setFileType("Comma Separated Data");
     option->setValueType("string");
+    parameters.push_back(option);
+  }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Maximum Twins Per Grain");
+    option->setPropertyName("MaxTwinPG");
+    option->setWidgetType(FilterParameter::IntWidget);
+    option->setValueType("int");
+    parameters.push_back(option);
+  }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Number Of Twins To Insert");
+    option->setPropertyName("NumTwins");
+    option->setWidgetType(FilterParameter::IntWidget);
+    option->setValueType("int");
+    parameters.push_back(option);
+  }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Minimum Grain Diameter To Insert Twin");
+    option->setPropertyName("MinGrainTwinDia");
+    option->setWidgetType(FilterParameter::IntWidget);
+    option->setValueType("int");
+    option->setUnits("Equivalent Diameters");
     parameters.push_back(option);
   }
   setFilterParameters(parameters);
@@ -165,6 +195,9 @@ void InsertTransformationPhase::readFilterParameters(AbstractFilterParametersRea
   reader->openFilterGroup(this, index);
   /* Code to read the values goes between these statements */
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE BEGIN*/
+  setMaxTwinPG( reader->readValue("MaxTwinPG", getMaxTwinPG()) );
+  setNumTwins( reader->readValue("NumTwins", getNumTwins()) );
+  setMinGrainTwinDia( reader->readValue("MinGrainTwinDia", getMinGrainTwinDia()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
 }
@@ -176,6 +209,9 @@ int InsertTransformationPhase::writeFilterParameters(AbstractFilterParametersWri
 {
   writer->openFilterGroup(this, index);
   writer->writeValue("PeriodicBoundaries", getPeriodicBoundaries() );
+  writer->writeValue("MaxTwinPG", getMaxTwinPG() );
+  writer->writeValue("NumTwins", getMaxTwinPG() );
+  writer->writeValue("MinGrainTwinDia", getMinGrainTwinDia() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
 }
@@ -190,10 +226,7 @@ void InsertTransformationPhase::dataCheck(bool preflight, size_t voxels, size_t 
   VoxelDataContainer* m = getVoxelDataContainer();
   // Cell Data
   GET_PREREQ_DATA(m, DREAM3D, CellData, GrainIds, ss, -300, int32_t, Int32ArrayType, voxels, 1)
-
   GET_PREREQ_DATA(m, DREAM3D, CellData, SurfaceVoxels, ss, -301, int8_t, Int8ArrayType, voxels, 1)
-
-
   GET_PREREQ_DATA(m, DREAM3D, CellData, CellPhases, ss, -302, int32_t, Int32ArrayType, voxels, 1)
 
   // Field Data
@@ -207,6 +240,7 @@ void InsertTransformationPhase::dataCheck(bool preflight, size_t voxels, size_t 
   CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, Active, ss, bool, BoolArrayType, false, fields, 1)
   CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, NumCells, ss, int32_t, Int32ArrayType, 0, fields, 1)
   CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, Neighborhoods, ss, int32_t, Int32ArrayType, 0, fields, 1)
+  CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, FieldEulerAngles, ss, float, FloatArrayType, 0, fields, 3)
 
   //Ensemble Data
   typedef DataArray<unsigned int> PhaseTypeArrayType;
@@ -247,7 +281,7 @@ void InsertTransformationPhase::execute()
   int err = 0;
   setErrorCondition(err);
   DREAM3D_RANDOMNG_NEW()
-      VoxelDataContainer* m = getVoxelDataContainer();
+  VoxelDataContainer* m = getVoxelDataContainer();
 
   if(NULL == m)
   {
@@ -280,8 +314,9 @@ void InsertTransformationPhase::execute()
 //  size_t grainOwnersIdx = 0;
 
 
-  place_transformations(grainOwnersPtr);
-
+  //place_transformations(grainOwnersPtr);
+  place_twins();
+  /*
   notifyStatusMessage("Packing Transformations - Assigning Voxels");
   assign_voxels();
 
@@ -332,7 +367,7 @@ void InsertTransformationPhase::execute()
   m->removeFieldData(m_CentroidsArrayName);
   m->removeFieldData(m_NumCellsArrayName);
   m->removeFieldData(m_NeighborhoodsArrayName);
-
+*/
   // If there is an error set this to something negative and also set a message
   notifyStatusMessage("InsertTransformationPhase Completed");
 }
@@ -1951,4 +1986,92 @@ void InsertTransformationPhase::write_goal_attributes()
     }
     outFile << std::endl;
   }
+}
+
+void InsertTransformationPhase::place_twins()
+{
+  notifyStatusMessage("Placing Transformations");
+  DREAM3D_RANDOMNG_NEW()
+
+  VoxelDataContainer* m = getVoxelDataContainer();
+
+  StatsDataArray& statsDataArray = *m_StatsDataArray;
+
+  size_t udims[3] =
+  { 0, 0, 0 };
+  m->getDimensions(udims);
+#if (CMP_SIZEOF_SIZE_T == 4)
+  typedef int32_t DimType;
+#else
+  typedef int64_t DimType;
+#endif
+  DimType dims[3] =
+  { static_cast<DimType>(udims[0]), static_cast<DimType>(udims[1]), static_cast<DimType>(udims[2]), };
+
+  sizex = dims[0] * m->getXRes();
+  sizey = dims[1] * m->getYRes();
+  sizez = dims[2] * m->getZRes();
+  totalvol = sizex * sizey * sizez;
+
+  int64_t totalPoints = m->getTotalPoints();
+  size_t currentnumgrains = m->getNumFieldTuples();
+  if(currentnumgrains == 0)
+  {
+    m->resizeFieldDataArrays(1);
+    dataCheck(false, totalPoints, 1, m->getNumEnsembleTuples());
+    currentnumgrains = 1;
+  }
+  firstTransformationField = currentnumgrains;
+
+  //  for each grain : select centroid, determine voxels in grain, monitor filling error and decide of the 10 placements which
+  // is the most beneficial, then the grain is added and its neighbors are determined
+
+  size_t numgrains = m->getNumFieldTuples();
+
+  columnlist.resize(numgrains);
+  rowlist.resize(numgrains);
+  planelist.resize(numgrains);
+  packqualities.resize(numgrains);
+  fillingerror = 1;
+
+  float random;
+  int random2, random3;
+  float xc, yc, zc;
+  float oldxc, oldyc, oldzc;
+
+  for (size_t i = firstTransformationField; i < numgrains; i++)
+  {
+    std::stringstream ss;
+    ss << "Packing Grains - Placing Grain #" << i;
+    notifyStatusMessage(ss.str());
+
+    TransformationStatsData* pp = TransformationStatsData::SafePointerDownCast(statsDataArray[m_FieldPhases[i]].get());
+    // transboundaryfraction = pp->getTransBoundaryFraction();
+	// precip uses boundary fraction, trans uses parent phase
+
+
+    random2 = int(rg.genrand_res53() * double(totalPoints - 1));
+    while (m_EquivalentDiameters[m_GrainIds[random2]] < m_MinGrainTwinDia || m_GrainIds[random2] >= firstTransformationField)
+    {
+      random2++;
+      if(random2 >= totalPoints) random2 = static_cast<int>(random2 - totalPoints);
+    }
+    xc = find_xcoord(random2);
+    yc = find_ycoord(random2);
+    zc = find_zcoord(random2);
+    m_Centroids[3 * i] = xc;
+    m_Centroids[3 * i + 1] = yc;
+    m_Centroids[3 * i + 2] = zc;
+    random3 = int(rg.genrand_res53() * double(m_MaxTwinPG - 1));
+	for (int iter = 0; iter < random3; iter++)
+    {
+      insert_twins(i);
+    }
+  }
+
+  notifyStatusMessage("Packing Grains - Initial Grain Placement Complete");
+}
+
+void insert_twins(size_t grainNum)
+{
 }
