@@ -69,7 +69,7 @@ typedef struct {
  * @class InsertTransformationPhase InsertTransformationPhase.h TransformationPhase/InsertTransformationPhase.h
  * @brief
  * @author Joseph C Tucker (UES) & Michael A Groeber (AFRL)
- * @date Mar 21, 2014
+ * @date May 2, 2014
  * @version 4.0
  */
 class DREAM3DLib_EXPORT InsertTransformationPhase : public AbstractFilter

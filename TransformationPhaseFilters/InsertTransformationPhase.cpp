@@ -1875,7 +1875,9 @@ Int32ArrayType::Pointer  InsertTransformationPhase::initialize_packinggrid()
   return grainOwnersPtr;
 }
 
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 float InsertTransformationPhase::find_xcoord(long long int index)
 {
   VoxelDataContainer* m = getVoxelDataContainer();
@@ -1988,9 +1990,12 @@ void InsertTransformationPhase::write_goal_attributes()
   }
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void InsertTransformationPhase::place_twins()
 {
-  notifyStatusMessage("Placing Transformations");
+  notifyStatusMessage("Placing Twins");
   DREAM3D_RANDOMNG_NEW()
 
   VoxelDataContainer* m = getVoxelDataContainer();
@@ -2038,24 +2043,35 @@ void InsertTransformationPhase::place_twins()
   int random2, random3;
   float xc, yc, zc;
   float oldxc, oldyc, oldzc;
+  Trans trans;
 
-  for (size_t i = firstTransformationField; i < numgrains; i++)
+//  for (size_t i = firstTransformationField; i < numgrains; i++)
+  for (size_t i = firstTransformationField; i < m_NumTwins; i++)
   {
-    std::stringstream ss;
-    ss << "Packing Grains - Placing Grain #" << i;
+    generate_transformations(3, static_cast<int>(Seed), &trans, m_ShapeTypes[3], m_OrthoOps);
+
+	std::stringstream ss;
+	ss << "Packing Transformations - Generating Twin #" << currentnumgrains;
+	notifyStatusMessage(ss.str());
+
+	m->resizeFieldDataArrays(currentnumgrains + 1);
+	dataCheck(false, totalPoints, currentnumgrains + 1, m->getNumEnsembleTuples());
+	m_Active[currentnumgrains] = true;
+	transfer_attributes(currentnumgrains, &trans);
+
+    ss << "Packing Twins - Placing Twin #" << i;
     notifyStatusMessage(ss.str());
 
     TransformationStatsData* pp = TransformationStatsData::SafePointerDownCast(statsDataArray[m_FieldPhases[i]].get());
     // transboundaryfraction = pp->getTransBoundaryFraction();
 	// precip uses boundary fraction, trans uses parent phase
 
-
     random2 = int(rg.genrand_res53() * double(totalPoints - 1));
-    while (m_EquivalentDiameters[m_GrainIds[random2]] < m_MinGrainTwinDia || m_GrainIds[random2] >= firstTransformationField)
-    {
+//    while (m_EquivalentDiameters[m_GrainIds[random2]] < m_MinGrainTwinDia || m_GrainIds[random2] >= firstTransformationField)
+//    {
       random2++;
       if(random2 >= totalPoints) random2 = static_cast<int>(random2 - totalPoints);
-    }
+//    }
     xc = find_xcoord(random2);
     yc = find_ycoord(random2);
     zc = find_zcoord(random2);
@@ -2063,15 +2079,16 @@ void InsertTransformationPhase::place_twins()
     m_Centroids[3 * i + 1] = yc;
     m_Centroids[3 * i + 2] = zc;
     random3 = int(rg.genrand_res53() * double(m_MaxTwinPG - 1));
-	for (int iter = 0; iter < random3; iter++)
-    {
-      insert_twins(i);
-    }
+//	for (int iter = 0; iter < random3; iter++)
+//    {
+//      insert_twins(i);
+//	  ++i;
+//    }
   }
 
   notifyStatusMessage("Packing Grains - Initial Grain Placement Complete");
 }
 
-void insert_twins(size_t grainNum)
-{
-}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
