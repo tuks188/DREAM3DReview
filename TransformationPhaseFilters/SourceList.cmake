@@ -1,6 +1,12 @@
-#--////////////////////////////////////////////////////////////////////////////
-#-- Your License or copyright can go here
-#--////////////////////////////////////////////////////////////////////////////
+#--
+#--  Copyright (c) 2011, Michael A. Jackson. BlueQuartz Software
+#--  Copyright (c) 2011, Michael Groeber, US Air Force Research Laboratory
+#--  Copyright (c) 2014, Joseph C. Tucker (UES, Inc.)
+#--  All rights reserved.
+#--  BSD License: http://www.opensource.org/licenses/bsd-license.html
+#--
+#-- This code was partly written under US Air Force Contract FA8650-07-D-5800 & FA8650-13-M-5048
+#--
 
 set(_filterGroupName TransformationPhaseFilters)
 set(${_filterGroupName}_FILTERS_HDRS "")
@@ -13,6 +19,7 @@ START_FILTER_GROUP(${TransformationPhase_BINARY_DIR} "${_filterGroupName}" "R3D 
 
 set(_PublicFilters
   InsertTransformationPhase
+  InsertTwins
   
 )
 
