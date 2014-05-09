@@ -178,7 +178,6 @@ void InsertTwins::execute()
   QuatF q1;
   QuatF q2;
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
-  QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
   float plateThickness = 0.0f;
   size_t numGrains = totalFields;
   float x, y, z, d, d2, D, D2;
@@ -188,6 +187,8 @@ void InsertTwins::execute()
 
   for (size_t curGrain = 1; curGrain < numGrains; ++curGrain)
   {
+    QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
+
 	// find where (111) points
 	QuaternionMathF::Copy(avgQuats[curGrain], q1);
     OrientationMath::QuattoMat(q1, g);
@@ -242,10 +243,10 @@ void InsertTwins::execute()
 	}
     m->resizeFieldDataArrays(totalFields + 1);
     dataCheck(false, totalPoints, totalFields + 1, m->getNumEnsembleTuples());
-	m_AvgQuats[4*curGrain+0] = q2.w;
-	m_AvgQuats[4*curGrain+1] = q2.x;
-	m_AvgQuats[4*curGrain+2] = q2.y;
-	m_AvgQuats[4*curGrain+3] = q2.z;
+//	m_AvgQuats[4*totalFields+0] = q2.w;
+//	m_AvgQuats[4*totalFields+1] = q2.x;
+//	m_AvgQuats[4*totalFields+2] = q2.y;
+//	m_AvgQuats[4*totalFields+3] = q2.z;
 	totalFields++;
   }
 
