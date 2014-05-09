@@ -243,10 +243,10 @@ void InsertTwins::execute()
 	}
     m->resizeFieldDataArrays(totalFields + 1);
     dataCheck(false, totalPoints, totalFields + 1, m->getNumEnsembleTuples());
-//	m_AvgQuats[4*totalFields+0] = q2.w;
-//	m_AvgQuats[4*totalFields+1] = q2.x;
-//	m_AvgQuats[4*totalFields+2] = q2.y;
-//	m_AvgQuats[4*totalFields+3] = q2.z;
+	m_AvgQuats[4*totalFields+0] = q2.x;
+	m_AvgQuats[4*totalFields+1] = q2.y;
+	m_AvgQuats[4*totalFields+2] = q2.z;
+	m_AvgQuats[4*totalFields+3] = q2.w;
 	totalFields++;
   }
 
