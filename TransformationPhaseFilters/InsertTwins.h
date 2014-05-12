@@ -56,7 +56,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author
- * @date May 7, 2014
+ * @date May 12, 2014
  * @version 1.0
  */
 class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
@@ -80,6 +80,8 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     //------ Required Ensemble Data
     DREAM3D_INSTANCE_STRING_PROPERTY(CrystalStructuresArrayName)
 
+    DREAM3D_INSTANCE_PROPERTY(float, TwinThickness)
+
     virtual const std::string getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
 	virtual const std::string getSubGroupName() {return DREAM3D::FilterSubGroups::PackingFilters;}
     virtual const std::string getHumanLabel() { return "Insert Twins"; }
@@ -99,6 +101,8 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     virtual void execute();
     virtual void preflight();
 
+	void insert_twins();
+	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q);
 
   protected:
     InsertTwins();

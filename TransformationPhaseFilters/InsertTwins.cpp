@@ -41,6 +41,7 @@
 #include "DREAM3DLib/Math/DREAM3DMath.h"
 #include "DREAM3DLib/OrientationOps/OrientationOps.h"
 #include "DREAM3DLib/Math/MatrixMath.h"
+#include "DREAM3DLib/Utilities/DREAM3DRandom.h"
 
 #define ERROR_TXT_OUT 1
 #define ERROR_TXT_OUT1 1
@@ -63,6 +64,7 @@ InsertTwins::InsertTwins() :
   m_CentroidsArrayName(DREAM3D::FieldData::Centroids),
   m_EquivalentDiametersArrayName(DREAM3D::FieldData::EquivalentDiameters),
   m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
+  m_TwinThickness(0.5f),
   m_GrainIds(NULL),
   m_AvgQuats(NULL),
   m_Active(NULL),
@@ -87,6 +89,18 @@ InsertTwins::~InsertTwins()
 // -----------------------------------------------------------------------------
 void InsertTwins::setupFilterParameters()
 {
+  std::vector<FilterParameter::Pointer> parameters;
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Twin Thickness");
+    option->setPropertyName("TwinThickness");
+    option->setWidgetType(FilterParameter::DoubleWidget);
+    option->setValueType("float");
+    option->setCastableValueType("double");
+    option->setUnits("Equivalent Diameters");
+    parameters.push_back(option);
+  }
+  setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
@@ -97,6 +111,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   reader->openFilterGroup(this, index);
   /* Code to read the values goes between these statements */
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE BEGIN*/
+  setTwinThickness( reader->readValue("TwinThickness", getTwinThickness()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
 }
@@ -107,6 +122,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
 int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
+  writer->writeValue("TwinThickness", getTwinThickness() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
 }
@@ -164,6 +180,19 @@ void InsertTwins::execute()
     return;
   }
 
+  insert_twins();
+
+  notifyStatusMessage("Completed");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InsertTwins::insert_twins()
+{
+  VoxelDataContainer* m = getVoxelDataContainer();
+  DREAM3D_RANDOMNG_NEW()
+
   size_t totalFields = m->getNumFieldTuples();
   int64_t totalPoints = m->getTotalPoints();
   int xPoints = static_cast<int>(m->getXPoints());
@@ -174,35 +203,43 @@ void InsertTwins::execute()
   float zRes = m->getZRes();
 
   float sample111[3] = {0.0f,0.0f,0.0f};
-  float crystal111[3] = {1.0f,1.0f,1.0f};
+  float crystal111[3] = {0.0f,0.0f,0.0f};
   QuatF q1;
   QuatF q2;
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
   float plateThickness = 0.0f;
   size_t numGrains = totalFields;
-  float x, y, z, d, d2, D, D2;
+  float x, y, z, d, d2, D, D2, random;
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
-
 
   for (size_t curGrain = 1; curGrain < numGrains; ++curGrain)
   {
     QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
 
-	// find where (111) points
+	// randomly pick from the {111} family of planes
+	for (int i = 0; i < 3; ++i)
+	{
+      random = static_cast<float>(rg.genrand_res53());
+	  crystal111[i] = 1.0f;
+	  if (random < 0.5f) crystal111[i] = -1.0f;
+	}
+
+	// find where {111} points
 	QuaternionMathF::Copy(avgQuats[curGrain], q1);
     OrientationMath::QuattoMat(q1, g);
 	MatrixMath::Transpose3x3(g, gT);
     MatrixMath::Multiply3x3with3x1(g, crystal111, sample111);
 
-	// define plate = 1/5 eq dia centered at centroid
-	plateThickness = m_EquivalentDiameters[curGrain] * 0.2f * 0.5f;
+	// define plate = user input fraction of eq dia centered at centroid
+	plateThickness = m_EquivalentDiameters[curGrain] * m_TwinThickness * 0.5f;
 
 	// set the origin of the plane
 	d = -sample111[0] * m_Centroids[3*curGrain+0] - sample111[1] * m_Centroids[3*curGrain+1] - sample111[2] * m_Centroids[3*curGrain+2];
 
 	d2 = -sample111[0] * (m_Centroids[3*curGrain+0] + plateThickness*2) - sample111[1] * (m_Centroids[3*curGrain+1] + plateThickness*2) - sample111[2] * (m_Centroids[3*curGrain+2] + plateThickness*2);
 
+	// generate twin orientation with a 60 degree rotation about the {111}
 	OrientationMath::AxisAngletoMat(sig3, 1, 1, 1, rotMat);
 	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
 	OrientationMath::MatToEuler(newMat, e[0], e[1], e[2]);
@@ -241,14 +278,22 @@ void InsertTwins::execute()
 		}
 	  }
 	}
-    m->resizeFieldDataArrays(totalFields + 1);
-    dataCheck(false, totalPoints, totalFields + 1, m->getNumEnsembleTuples());
-	m_AvgQuats[4*totalFields+0] = q2.x;
-	m_AvgQuats[4*totalFields+1] = q2.y;
-	m_AvgQuats[4*totalFields+2] = q2.z;
-	m_AvgQuats[4*totalFields+3] = q2.w;
-	totalFields++;
   }
+  totalFields = transfer_attributes(totalFields, totalPoints, q2);
+}
 
-  notifyStatusMessage("Completed");
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q)
+{
+  VoxelDataContainer* m = getVoxelDataContainer();
+  m->resizeFieldDataArrays(totalFields + 1);
+  dataCheck(false, totalPoints, totalFields + 1, m->getNumEnsembleTuples());
+  m_AvgQuats[4*totalFields+0] = q.x;
+  m_AvgQuats[4*totalFields+1] = q.y;
+  m_AvgQuats[4*totalFields+2] = q.z;
+  m_AvgQuats[4*totalFields+3] = q.w;
+  ++totalFields;
+  return totalFields;
 }
