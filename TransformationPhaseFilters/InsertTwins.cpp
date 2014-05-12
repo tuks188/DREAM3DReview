@@ -238,9 +238,12 @@ void InsertTwins::insert_twins()
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
   float plateThickness = 0.0f;
   size_t numGrains = totalFields;
-  float d, d2, D2, random;
+  float d, random;
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
+  std::vector<float> shifts;
+  shifts.resize(2);
+  float res_scalar = m->getXRes() * m->getYRes() * m->getZRes();
 
   for (size_t curGrain = 1; curGrain < numGrains; ++curGrain)
   {
@@ -260,24 +263,50 @@ void InsertTwins::insert_twins()
 	MatrixMath::Transpose3x3(g, gT);
     MatrixMath::Multiply3x3with3x1(g, crystal111, sample111);
 
-	// define plate = user input fraction of eq dia centered at centroid
-	plateThickness = m_EquivalentDiameters[curGrain] * m_TwinThickness * 0.5f;
-
-	// set the origin of the plane
-	d = -sample111[0] * m_Centroids[3*curGrain+0] - sample111[1] * m_Centroids[3*curGrain+1] - sample111[2] * m_Centroids[3*curGrain+2];
-
-//	d2 = -sample111[0] * (m_Centroids[3*curGrain+0] + plateThickness*2) - sample111[1] * (m_Centroids[3*curGrain+1] + plateThickness*2) - sample111[2] * (m_Centroids[3*curGrain+2] + plateThickness*2);
-
 	// generate twin orientation with a 60 degree rotation about the {111}
-	OrientationMath::AxisAngletoMat(sig3, 1, 1, 1, rotMat);
+	OrientationMath::AxisAngletoMat(sig3, crystal111[0], crystal111[1], crystal111[2], rotMat);
 	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
 	OrientationMath::MatToEuler(newMat, e[0], e[1], e[2]);
 	OrientationMath::EulertoQuat(q2, e[0], e[1], e[2]);
 
-	place_twin(curGrain, sample111, totalFields, plateThickness, d);
+	// define plate = user input fraction of eq dia centered at centroid
+	plateThickness = m_EquivalentDiameters[curGrain] * m_TwinThickness * 0.5f;
 
-    // filling in twin stats that already exist for parents
-	totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
+	shifts[0] = FLT_MAX;
+	shifts[1] = FLT_MAX;
+	int attempt = 0;
+	for (int i = 0; i < 2; ++i)
+	{
+	  // define the shift placement from center
+	  random = static_cast<float>(rg.genrand_res53());
+	  shifts[i] = random * m_EquivalentDiameters[curGrain] * 0.5f;
+	  random = static_cast<float>(rg.genrand_res53());
+	  if (random < 0.5f) shifts[i] = -shifts[i];
+
+	  // check if new twin will overlap an old twin
+	  int ii = i;
+	  for (int j = 0; j <= ii; ++j)
+	  {
+		if (fabs(shifts[i] - shifts[j]) <= (plateThickness * 2.0f + res_scalar) && ii != j) 
+		{
+		  ++attempt;
+		  --i;
+		}
+		else 
+		{
+		  // set the origin of the plane
+		  d = -sample111[0] * (m_Centroids[3*curGrain+0] + shifts[i]) 
+			- sample111[1] * (m_Centroids[3*curGrain+1] + shifts[i]) 
+			- sample111[2] * (m_Centroids[3*curGrain+2] + shifts[i]);
+
+		  place_twin(curGrain, sample111, totalFields, plateThickness, d);
+
+		  // filling in twin stats that already exist for parents
+		  totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
+		}
+	  }
+	  if (attempt == 10) break;
+	}
   }
 }
 
@@ -319,11 +348,9 @@ void InsertTwins::place_twin(size_t curGrain, float sample111[3], size_t totalFi
 		  // calculate the distance between the cell and the plane
 		  float denom = 1 / sqrtf(sample111[0] * sample111[0] + sample111[1] * sample111[1] + sample111[2] * sample111[2]);
 		  D = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d * denom;  
-//		  D2 = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d2 * denom;  
-		  int stop = 0;
 
 		  // if the cell-plane distance is less than the plate thickness then place a twin voxel
-		  if(fabs(D) < plateThickness)// || fabs(D2) < plateThickness)
+		  if(fabs(D) < plateThickness)
 		  {
 			m_GrainIds[zStride+yStride+k] = totalFields;
 		  }
