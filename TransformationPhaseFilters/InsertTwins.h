@@ -75,12 +75,16 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     DREAM3D_INSTANCE_STRING_PROPERTY(AvgQuatsArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(CentroidsArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(EquivalentDiametersArrayName)
+    DREAM3D_INSTANCE_STRING_PROPERTY(FieldEulerAnglesArrayName)
+    DREAM3D_INSTANCE_STRING_PROPERTY(FieldPhasesArrayName)
     //------ Created Field Data
     DREAM3D_INSTANCE_STRING_PROPERTY(ActiveArrayName)
+    DREAM3D_INSTANCE_STRING_PROPERTY(FieldParentIdsArrayName)
     //------ Required Ensemble Data
     DREAM3D_INSTANCE_STRING_PROPERTY(CrystalStructuresArrayName)
 
     DREAM3D_INSTANCE_PROPERTY(float, TwinThickness)
+    DREAM3D_INSTANCE_PROPERTY(bool, UniqueRenum)
 
     virtual const std::string getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
 	virtual const std::string getSubGroupName() {return DREAM3D::FilterSubGroups::PackingFilters;}
@@ -102,7 +106,10 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     virtual void preflight();
 
 	void insert_twins();
-	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q);
+	void place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d);
+	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q, float e[], size_t curGrain);
+	void unique_renumber();
+	void filter_calls();
 
   protected:
     InsertTwins();
@@ -113,6 +120,9 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     bool* m_Active;
     float* m_Centroids;
     float* m_EquivalentDiameters;
+	float* m_FieldEulerAngles;
+	int32_t* m_FieldPhases;
+	int32_t* m_FieldParentIds;
 
     unsigned int* m_CrystalStructures;
 

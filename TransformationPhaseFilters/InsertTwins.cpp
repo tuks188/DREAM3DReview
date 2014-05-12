@@ -36,6 +36,13 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "InsertTwins.h"
+#include "DREAM3DLib\GenericFilters\FindGrainCentroids.h"
+#include "DREAM3DLib\StatisticsFilters\FindNeighbors.h"
+#include "DREAM3DLib\GenericFilters\FindSurfaceGrains.h"
+#include "DREAM3DLib\StatisticsFilters\FindSizes.h"
+#include "DREAM3DLib\ReconstructionFilters\ScalarSegmentGrains.h"
+#include "DREAM3DLib\GenericFilters\RenameCellArray.h"
+#include "DREAM3DLib\GenericFilters\RenameFieldArray.h"
 
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/Math/DREAM3DMath.h"
@@ -63,13 +70,20 @@ InsertTwins::InsertTwins() :
   m_ActiveArrayName(DREAM3D::FieldData::Active),
   m_CentroidsArrayName(DREAM3D::FieldData::Centroids),
   m_EquivalentDiametersArrayName(DREAM3D::FieldData::EquivalentDiameters),
+  m_FieldEulerAnglesArrayName(DREAM3D::FieldData::EulerAngles),
+  m_FieldPhasesArrayName(DREAM3D::FieldData::Phases),
+  m_FieldParentIdsArrayName(DREAM3D::FieldData::ParentIds),
+  //m_NumParentsPer
   m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
   m_TwinThickness(0.5f),
+  m_UniqueRenum(false),
   m_GrainIds(NULL),
   m_AvgQuats(NULL),
   m_Active(NULL),
   m_Centroids(NULL),
   m_EquivalentDiameters(NULL),
+  m_FieldEulerAngles(NULL),
+  m_FieldPhases(NULL),
   m_CrystalStructures(NULL)
 {
   m_OrientationOps = OrientationOps::getOrientationOpsVector();
@@ -100,6 +114,15 @@ void InsertTwins::setupFilterParameters()
     option->setUnits("Equivalent Diameters");
     parameters.push_back(option);
   }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Uniquely Renumber Contiguous Regions");
+    option->setPropertyName("UniqueRenum");
+    option->setWidgetType(FilterParameter::BooleanWidget);
+    option->setValueType("bool");
+    option->setUnits("");
+    parameters.push_back(option);
+  }
   setFilterParameters(parameters);
 }
 
@@ -112,6 +135,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   /* Code to read the values goes between these statements */
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE BEGIN*/
   setTwinThickness( reader->readValue("TwinThickness", getTwinThickness()) );
+  setUniqueRenum( reader->readValue("UniqueRenum", getUniqueRenum()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
 }
@@ -123,6 +147,7 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
 {
   writer->openFilterGroup(this, index);
   writer->writeValue("TwinThickness", getTwinThickness() );
+  writer->writeValue("UniqueRenum", getUniqueRenum() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
 }
@@ -143,12 +168,15 @@ void InsertTwins::dataCheck(bool preflight, size_t voxels, size_t fields, size_t
   // Field Data
   GET_PREREQ_DATA(m, DREAM3D, FieldData, EquivalentDiameters, ss, -302, float, FloatArrayType, fields, 1)
   GET_PREREQ_DATA(m, DREAM3D, FieldData, Centroids, ss, -304, float, FloatArrayType, fields, 3)
-
-  // Ensemble Data
+  GET_PREREQ_DATA(m, DREAM3D, FieldData, FieldEulerAngles, ss, -305, float, FloatArrayType, fields, 3)
+  GET_PREREQ_DATA(m, DREAM3D, FieldData, FieldPhases, ss, -306, int32_t, Int32ArrayType, fields, 1)
+ 
   CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, Active, ss, bool, BoolArrayType, true, fields, 1)
+  CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, FieldParentIds, ss, int32_t, Int32ArrayType, 0, fields, 1)
 
+  // Ensemble Data  
   typedef DataArray<unsigned int> XTalStructArrayType;
-  GET_PREREQ_DATA(m, DREAM3D, EnsembleData, CrystalStructures, ss, -305, unsigned int, XTalStructArrayType, ensembles, 1)
+  GET_PREREQ_DATA(m, DREAM3D, EnsembleData, CrystalStructures, ss, -307, unsigned int, XTalStructArrayType, ensembles, 1)
 }
 
 // -----------------------------------------------------------------------------
@@ -180,7 +208,14 @@ void InsertTwins::execute()
     return;
   }
 
+  // start insert twins routine
   insert_twins();
+
+  // if true, uniquely renumber so that every contiguous region receives a grain ID
+  if (m_UniqueRenum == true) unique_renumber();
+
+  // recalculating the stats that existed before this filter was run
+  filter_calls();
 
   notifyStatusMessage("Completed");
 }
@@ -195,12 +230,6 @@ void InsertTwins::insert_twins()
 
   size_t totalFields = m->getNumFieldTuples();
   int64_t totalPoints = m->getTotalPoints();
-  int xPoints = static_cast<int>(m->getXPoints());
-  int yPoints = static_cast<int>(m->getYPoints());
-  int zPoints = static_cast<int>(m->getZPoints());
-  float xRes = m->getXRes();
-  float yRes = m->getYRes();
-  float zRes = m->getZRes();
 
   float sample111[3] = {0.0f,0.0f,0.0f};
   float crystal111[3] = {0.0f,0.0f,0.0f};
@@ -209,7 +238,7 @@ void InsertTwins::insert_twins()
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
   float plateThickness = 0.0f;
   size_t numGrains = totalFields;
-  float x, y, z, d, d2, D, D2, random;
+  float d, d2, D2, random;
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
 
@@ -237,7 +266,7 @@ void InsertTwins::insert_twins()
 	// set the origin of the plane
 	d = -sample111[0] * m_Centroids[3*curGrain+0] - sample111[1] * m_Centroids[3*curGrain+1] - sample111[2] * m_Centroids[3*curGrain+2];
 
-	d2 = -sample111[0] * (m_Centroids[3*curGrain+0] + plateThickness*2) - sample111[1] * (m_Centroids[3*curGrain+1] + plateThickness*2) - sample111[2] * (m_Centroids[3*curGrain+2] + plateThickness*2);
+//	d2 = -sample111[0] * (m_Centroids[3*curGrain+0] + plateThickness*2) - sample111[1] * (m_Centroids[3*curGrain+1] + plateThickness*2) - sample111[2] * (m_Centroids[3*curGrain+2] + plateThickness*2);
 
 	// generate twin orientation with a 60 degree rotation about the {111}
 	OrientationMath::AxisAngletoMat(sig3, 1, 1, 1, rotMat);
@@ -245,47 +274,69 @@ void InsertTwins::insert_twins()
 	OrientationMath::MatToEuler(newMat, e[0], e[1], e[2]);
 	OrientationMath::EulertoQuat(q2, e[0], e[1], e[2]);
 
-	// loop through all cells to find matching grain IDs
-	int zStride, yStride;
-	for(int i = 0; i < zPoints; i++)
-	{
-	  zStride = i * xPoints * yPoints;
-	  for (int j = 0 ; j < yPoints; j++)
-	  {
-		yStride = j * xPoints;
-		for(int k = 0; k < xPoints; k++)
-		{
-		  int gnum = m_GrainIds[zStride+yStride+k];
-		  x = float(k) * xRes;
-		  y = float(j) * yRes;
-		  z = float(i) * zRes;
+	place_twin(curGrain, sample111, totalFields, plateThickness, d);
 
-		  // if the grain IDs match...
-		  if (gnum == curGrain)
-		  {
-			// calculate the distance between the cell and the plane
-			float denom = 1 / sqrtf(sample111[0] * sample111[0] + sample111[1] * sample111[1] + sample111[2] * sample111[2]);
-			D = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d * denom;  
-			D2 = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d2 * denom;  
-			int stop = 0;
-
-			// if the cell-plane distance is less than the plate thickness then place a twin voxel
-			if(fabs(D) < plateThickness || fabs(D2) < plateThickness)
-			{
-			  m_GrainIds[zStride+yStride+k] = totalFields;
-			}
-		  }
-		}
-	  }
-	}
+    // filling in twin stats that already exist for parents
+	totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
   }
-  totalFields = transfer_attributes(totalFields, totalPoints, q2);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q)
+void InsertTwins::place_twin(size_t curGrain, float sample111[3], size_t totalFields, float plateThickness, float d)
+{
+  VoxelDataContainer* m = getVoxelDataContainer();
+  DREAM3D_RANDOMNG_NEW()
+
+  int xPoints = static_cast<int>(m->getXPoints());
+  int yPoints = static_cast<int>(m->getYPoints());
+  int zPoints = static_cast<int>(m->getZPoints());
+  float xRes = m->getXRes();
+  float yRes = m->getYRes();
+  float zRes = m->getZRes();
+
+  float x, y, z, D;
+
+  // loop through all cells to find matching grain IDs
+  int zStride, yStride;
+  for(int i = 0; i < zPoints; i++)
+  {
+	zStride = i * xPoints * yPoints;
+	for (int j = 0 ; j < yPoints; j++)
+	{
+	  yStride = j * xPoints;
+	  for(int k = 0; k < xPoints; k++)
+	  {
+		int gnum = m_GrainIds[zStride+yStride+k];
+		x = float(k) * xRes;
+		y = float(j) * yRes;
+		z = float(i) * zRes;
+
+		// if the grain IDs match...
+		if (gnum == curGrain)
+		{
+		  // calculate the distance between the cell and the plane
+		  float denom = 1 / sqrtf(sample111[0] * sample111[0] + sample111[1] * sample111[1] + sample111[2] * sample111[2]);
+		  D = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d * denom;  
+//		  D2 = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d2 * denom;  
+		  int stop = 0;
+
+		  // if the cell-plane distance is less than the plate thickness then place a twin voxel
+		  if(fabs(D) < plateThickness)// || fabs(D2) < plateThickness)
+		  {
+			m_GrainIds[zStride+yStride+k] = totalFields;
+		  }
+		}
+	  }
+	}
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q, float e[], size_t curGrain)
 {
   VoxelDataContainer* m = getVoxelDataContainer();
   m->resizeFieldDataArrays(totalFields + 1);
@@ -294,6 +345,112 @@ size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, 
   m_AvgQuats[4*totalFields+1] = q.y;
   m_AvgQuats[4*totalFields+2] = q.z;
   m_AvgQuats[4*totalFields+3] = q.w;
-  ++totalFields;
-  return totalFields;
+  m_Active[totalFields] = 1;
+  m_FieldEulerAngles[3*totalFields+0] = e[0];
+  m_FieldEulerAngles[3*totalFields+1] = e[1];
+  m_FieldEulerAngles[3*totalFields+2] = e[2];
+  m_FieldPhases[totalFields] = 2;
+  m_FieldParentIds[totalFields] = curGrain;
+
+  return ++totalFields;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InsertTwins::unique_renumber()
+{
+  VoxelDataContainer* m = getVoxelDataContainer();
+
+  int32_t* oldGrainIds = reinterpret_cast<int32_t*>(m_GrainIds);
+
+  RenameCellArray::Pointer rename_cell_array = RenameCellArray::New();
+  rename_cell_array->setObservers(this->getObservers());
+  rename_cell_array->setVoxelDataContainer(m);
+  rename_cell_array->setMessagePrefix(getMessagePrefix());
+  rename_cell_array->setSelectedCellArrayName(m_GrainIdsArrayName);
+  rename_cell_array->setNewCellArrayName("oldGrainIds");
+  rename_cell_array->preflight();
+  int err1 = rename_cell_array->getErrorCondition();
+  if (err1 < 0)
+  {
+    setErrorCondition(rename_cell_array->getErrorCondition());
+    addErrorMessages(rename_cell_array->getPipelineMessages());
+    return;
+  }
+  
+  ScalarSegmentGrains::Pointer scalar_segment_grains = ScalarSegmentGrains::New();
+  scalar_segment_grains->setObservers(this->getObservers());
+  scalar_segment_grains->setVoxelDataContainer(m);
+  scalar_segment_grains->setMessagePrefix(getMessagePrefix());
+  scalar_segment_grains->setScalarArrayName("oldGrainIds");
+  scalar_segment_grains->setScalarTolerance(0);
+  scalar_segment_grains->execute();
+  int err2 = scalar_segment_grains->getErrorCondition();
+  if (err2 < 0)
+  {
+    setErrorCondition(scalar_segment_grains->getErrorCondition());
+    addErrorMessages(scalar_segment_grains->getPipelineMessages());
+    return;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InsertTwins::filter_calls()
+{
+  VoxelDataContainer* m = getVoxelDataContainer();
+
+  FindGrainCentroids::Pointer find_grain_centroids = FindGrainCentroids::New();
+  find_grain_centroids->setObservers(this->getObservers());
+  find_grain_centroids->setVoxelDataContainer(m);
+  find_grain_centroids->setMessagePrefix(getMessagePrefix());
+  find_grain_centroids->execute();
+  int err1 = find_grain_centroids->getErrorCondition();
+  if (err1 < 0)
+  {
+    setErrorCondition(find_grain_centroids->getErrorCondition());
+    addErrorMessages(find_grain_centroids->getPipelineMessages());
+    return;
+  }
+
+  FindNeighbors::Pointer find_neighbors = FindNeighbors::New();
+  find_neighbors->setObservers(this->getObservers());
+  find_neighbors->setVoxelDataContainer(m);
+  find_neighbors->setMessagePrefix(getMessagePrefix());
+  find_neighbors->execute();
+  int err2 = find_neighbors->getErrorCondition();
+  if (err2 < 0)
+  {
+    setErrorCondition(find_neighbors->getErrorCondition());
+    addErrorMessages(find_neighbors->getPipelineMessages());
+    return;
+  }
+
+  FindSurfaceGrains::Pointer find_surface_grains = FindSurfaceGrains::New();
+  find_surface_grains->setObservers(this->getObservers());
+  find_surface_grains->setVoxelDataContainer(m);
+  find_surface_grains->setMessagePrefix(getMessagePrefix());
+  find_surface_grains->execute();
+  int err3 = find_surface_grains->getErrorCondition();
+  if (err3 < 0)
+  {
+    setErrorCondition(find_surface_grains->getErrorCondition());
+    addErrorMessages(find_surface_grains->getPipelineMessages());
+    return;
+  }
+
+  FindSizes::Pointer find_sizes = FindSizes::New();
+  find_sizes->setObservers(this->getObservers());
+  find_sizes->setVoxelDataContainer(m);
+  find_sizes->setMessagePrefix(getMessagePrefix());
+  find_sizes->execute();
+  int err4 = find_sizes->getErrorCondition();
+  if (err4 < 0)
+  {
+    setErrorCondition(find_sizes->getErrorCondition());
+    addErrorMessages(find_sizes->getPipelineMessages());
+    return;
+  }
 }
