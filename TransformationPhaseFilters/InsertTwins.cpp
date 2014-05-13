@@ -280,6 +280,7 @@ void InsertTwins::insert_twins()
   float e[3];
   std::vector<float> shifts;
   int numTwins;
+  bool createdTwin = false;
 
   float voxelDiagonal = sqrtf(m->getXRes()*m->getXRes() + m->getYRes()*m->getYRes() + m->getZRes()*m->getZRes());
 
@@ -347,14 +348,17 @@ void InsertTwins::insert_twins()
 			- sampleHabitPlane[1] * (m_Centroids[3*curGrain+1] + shifts[i]) 
 			- sampleHabitPlane[2] * (m_Centroids[3*curGrain+2] + shifts[i]);
 
-		  place_twin(curGrain, sampleHabitPlane, totalFields, plateThickness, d);
+		  createdTwin = place_twin(curGrain, sampleHabitPlane, totalFields, plateThickness, d);
 
 		  random = static_cast<float>(rg.genrand_res53());
 		  // change an isthmus twin to a peninsula twin
-		  if (random < m_PeninsulaFrac) peninsula_twin(curGrain, totalFields);
+		  if (createdTwin == true) 
+		  {
+			if (random < m_PeninsulaFrac) peninsula_twin(curGrain, totalFields);
 		  
-		  // filling in twin stats that already exist for parents
-		  totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
+			// filling in twin stats that already exist for parents
+			totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
+		  }
 		}
 	  }
 	  // try 10 times to insert 2+ twins, if it can't, the grain is probably too small
@@ -366,7 +370,7 @@ void InsertTwins::insert_twins()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t totalFields, float plateThickness, float d)
+bool InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t totalFields, float plateThickness, float d)
 {
   VoxelDataContainer* m = getVoxelDataContainer();
   DREAM3D_RANDOMNG_NEW()
@@ -377,7 +381,7 @@ void InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t 
   float xRes = m->getXRes();
   float yRes = m->getYRes();
   float zRes = m->getZRes();
-
+  bool flag = false;
   float x, y, z, D;
 
   // loop through all cells to find matching grain IDs
@@ -403,11 +407,17 @@ void InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t 
 		  D = sampleHabitPlane[0] * x * denom + sampleHabitPlane[1] * y * denom + sampleHabitPlane[2] * z * denom + d * denom;  
 
 		  // if the cell-plane distance is less than the plate thickness then place a twin voxel
-		  if(fabs(D) < plateThickness) m_GrainIds[zStride+yStride+k] = totalFields;
+		  if(fabs(D) < plateThickness) 
+		  {
+			m_GrainIds[zStride+yStride+k] = totalFields;
+			flag = true;
+		  }
 		}
 	  }
 	}
   }
+  if (flag == true) return true;
+  else return false;
 }
 
 // -----------------------------------------------------------------------------
@@ -455,6 +465,9 @@ void InsertTwins::peninsula_twin(size_t curGrain, size_t totalFields)
 
   // calculate the distance between cells
   twinLength = sqrtf((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
+
+  // if the twin is 1 voxel, set the length to 2 so it makes it through the below loop
+  if (twinLength == 0.0f) twinLength = 2.0f;
 
   // choose which end to start from
   random = static_cast<float>(rg.genrand_res53());

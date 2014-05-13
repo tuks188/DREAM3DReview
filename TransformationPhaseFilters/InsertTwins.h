@@ -56,7 +56,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author
- * @date May 12, 2014
+ * @date May 13, 2014
  * @version 1.0
  */
 class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
@@ -109,7 +109,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     virtual void preflight();
 
 	void insert_twins();
-	void place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d);
+	bool place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d);
     void peninsula_twin(size_t curGrain, size_t totalFields);
 	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q, float e[], size_t curGrain);
 	void unique_renumber();
