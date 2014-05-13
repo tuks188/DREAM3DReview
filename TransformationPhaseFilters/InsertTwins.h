@@ -109,7 +109,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     virtual void preflight();
 
 	void insert_twins();
-	bool place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d);
+	bool place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d, size_t numGrains);
     void peninsula_twin(size_t curGrain, size_t totalFields);
 	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q, float e[], size_t curGrain);
 	void unique_renumber();

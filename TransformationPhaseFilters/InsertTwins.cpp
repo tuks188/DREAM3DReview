@@ -348,7 +348,7 @@ void InsertTwins::insert_twins()
 			- sampleHabitPlane[1] * (m_Centroids[3*curGrain+1] + shifts[i]) 
 			- sampleHabitPlane[2] * (m_Centroids[3*curGrain+2] + shifts[i]);
 
-		  createdTwin = place_twin(curGrain, sampleHabitPlane, totalFields, plateThickness, d);
+		  createdTwin = place_twin(curGrain, sampleHabitPlane, totalFields, plateThickness, d, numGrains);
 
 		  random = static_cast<float>(rg.genrand_res53());
 		  // change an isthmus twin to a peninsula twin
@@ -370,7 +370,7 @@ void InsertTwins::insert_twins()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t totalFields, float plateThickness, float d)
+bool InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t totalFields, float plateThickness, float d, size_t numGrains)
 {
   VoxelDataContainer* m = getVoxelDataContainer();
   DREAM3D_RANDOMNG_NEW()
@@ -403,11 +403,24 @@ bool InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t 
 		if (gnum == curGrain)
 		{
 		  // calculate the distance between the cell and the plane
-		  float denom = 1 / sqrtf(sampleHabitPlane[0] * sampleHabitPlane[0] + sampleHabitPlane[1] * sampleHabitPlane[1] + sampleHabitPlane[2] * sampleHabitPlane[2]);
-		  D = sampleHabitPlane[0] * x * denom + sampleHabitPlane[1] * y * denom + sampleHabitPlane[2] * z * denom + d * denom;  
+		  float denom = 1 / sqrtf(sampleHabitPlane[0] * sampleHabitPlane[0] 
+		  + sampleHabitPlane[1] * sampleHabitPlane[1] 
+		  + sampleHabitPlane[2] * sampleHabitPlane[2]);
+
+		  D = sampleHabitPlane[0] * x * denom 
+			+ sampleHabitPlane[1] * y * denom 
+			+ sampleHabitPlane[2] * z * denom 
+			+ d * denom;  
 
 		  // if the cell-plane distance is less than the plate thickness then place a twin voxel
-		  if(fabs(D) < plateThickness) 
+		  // and that a neighboring cell is not a twin cell
+		  if (fabs(D) < plateThickness 
+			&& (k == 0 || m_GrainIds[zStride+yStride+k-1] < numGrains || m_GrainIds[zStride+yStride+k-1] == totalFields) 
+			&& (k == (m->getXPoints() - 1) || m_GrainIds[zStride+yStride+k+1] < numGrains || m_GrainIds[zStride+yStride+k+1] == totalFields)
+			&& (j == 0 || m_GrainIds[zStride+yStride+k-xPoints] < numGrains || m_GrainIds[zStride+yStride+k-xPoints] == totalFields)
+			&& (j == (m->getYPoints() - 1) || m_GrainIds[zStride+yStride+k+xPoints] < numGrains || m_GrainIds[zStride+yStride+k+xPoints] == totalFields)
+			&& (i == 0 || m_GrainIds[zStride+yStride+k-xPoints*yPoints] < numGrains || m_GrainIds[zStride+yStride+k-xPoints*yPoints] == totalFields)
+			&& (i == (m->getZPoints() - 1) || m_GrainIds[zStride+yStride+k+xPoints*yPoints] < numGrains || m_GrainIds[zStride+yStride+k+xPoints*yPoints] == totalFields))
 		  {
 			m_GrainIds[zStride+yStride+k] = totalFields;
 			flag = true;
