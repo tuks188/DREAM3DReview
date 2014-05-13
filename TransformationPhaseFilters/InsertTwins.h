@@ -84,6 +84,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     DREAM3D_INSTANCE_STRING_PROPERTY(CrystalStructuresArrayName)
 
     DREAM3D_INSTANCE_PROPERTY(float, TwinThickness)
+    DREAM3D_INSTANCE_PROPERTY(int, NumTwinsPerGrain)
     DREAM3D_INSTANCE_PROPERTY(bool, UniqueRenum)
 
     virtual const std::string getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }

@@ -76,6 +76,7 @@ InsertTwins::InsertTwins() :
   //m_NumParentsPer
   m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
   m_TwinThickness(0.5f),
+  m_NumTwinsPerGrain(2),
   m_UniqueRenum(false),
   m_GrainIds(NULL),
   m_AvgQuats(NULL),
@@ -116,6 +117,15 @@ void InsertTwins::setupFilterParameters()
   }
   {
     FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Average Number Of Twins Per Grain");
+    option->setPropertyName("NumTwinsPerGrain");
+	option->setWidgetType(FilterParameter::IntWidget);
+    option->setValueType("int");
+    option->setUnits("");
+    parameters.push_back(option);
+  }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
     option->setHumanLabel("Uniquely Renumber Contiguous Regions");
     option->setPropertyName("UniqueRenum");
     option->setWidgetType(FilterParameter::BooleanWidget);
@@ -135,6 +145,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   /* Code to read the values goes between these statements */
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE BEGIN*/
   setTwinThickness( reader->readValue("TwinThickness", getTwinThickness()) );
+  setNumTwinsPerGrain( reader->readValue("NumTwinsPerGrain", getNumTwinsPerGrain()) );
   setUniqueRenum( reader->readValue("UniqueRenum", getUniqueRenum()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
@@ -147,6 +158,7 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
 {
   writer->openFilterGroup(this, index);
   writer->writeValue("TwinThickness", getTwinThickness() );
+  writer->writeValue("NumTwinsPerGrain", getNumTwinsPerGrain() );
   writer->writeValue("UniqueRenum", getUniqueRenum() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
@@ -233,8 +245,7 @@ void InsertTwins::insert_twins()
 
   float sample111[3] = {0.0f,0.0f,0.0f};
   float crystal111[3] = {0.0f,0.0f,0.0f};
-  QuatF q1;
-  QuatF q2;
+  QuatF q1, q2;
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
   float plateThickness = 0.0f;
   size_t numGrains = totalFields;
@@ -242,8 +253,9 @@ void InsertTwins::insert_twins()
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
   std::vector<float> shifts;
-  shifts.resize(2);
-  float res_scalar = m->getXRes() * m->getYRes() * m->getZRes();
+  int numTwins;
+
+  float cubeDiagonal = sqrtf(m->getXRes()*m->getXRes() + m->getYRes()*m->getYRes() + m->getZRes()*m->getZRes());
 
   for (size_t curGrain = 1; curGrain < numGrains; ++curGrain)
   {
@@ -272,10 +284,11 @@ void InsertTwins::insert_twins()
 	// define plate = user input fraction of eq dia centered at centroid
 	plateThickness = m_EquivalentDiameters[curGrain] * m_TwinThickness * 0.5f;
 
-	shifts[0] = FLT_MAX;
-	shifts[1] = FLT_MAX;
+	// select number of twins to insert per grain from 2x user input to zero
+	numTwins = int(rg.genrand_res53() * double(2*m_NumTwinsPerGrain + 1));
+	shifts.resize(numTwins);
 	int attempt = 0;
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < numTwins; ++i)
 	{
 	  // define the shift placement from center
 	  random = static_cast<float>(rg.genrand_res53());
@@ -287,10 +300,16 @@ void InsertTwins::insert_twins()
 	  int ii = i;
 	  for (int j = 0; j <= ii; ++j)
 	  {
-		if (fabs(shifts[i] - shifts[j]) <= (plateThickness * 2.0f + res_scalar) && ii != j) 
+		// if adding more than one twin in a grain, check the current shift from
+		// center against the previous ones to make sure the new twin does not
+		// overlap.  NOTE that the twins can touch since we're using equiv dia,
+		// they can be high aspect ratio grains inserted in the low aspect direction
+		// which skews the calculation
+		if (fabs(shifts[i] - shifts[j]) <= (plateThickness*2.0f + cubeDiagonal*2.0f) && ii != j) 
 		{
 		  ++attempt;
 		  --i;
+		  break;
 		}
 		else 
 		{
@@ -305,6 +324,7 @@ void InsertTwins::insert_twins()
 		  totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
 		}
 	  }
+	  // try 10 times to insert 2+ twins, if it can't, the grain is probably too small
 	  if (attempt == 10) break;
 	}
   }
