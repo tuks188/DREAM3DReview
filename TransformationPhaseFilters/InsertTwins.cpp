@@ -77,6 +77,8 @@ InsertTwins::InsertTwins() :
   m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
   m_TwinThickness(0.5f),
   m_NumTwinsPerGrain(2),
+  m_CoherentFrac(1.0f),
+  m_PeninsulaFrac(0.0f),
   m_UniqueRenum(false),
   m_GrainIds(NULL),
   m_AvgQuats(NULL),
@@ -126,6 +128,26 @@ void InsertTwins::setupFilterParameters()
   }
   {
     FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Coherent Fraction");
+    option->setPropertyName("CoherentFrac");
+    option->setWidgetType(FilterParameter::DoubleWidget);
+    option->setValueType("float");
+    option->setCastableValueType("double");
+    option->setUnits("");
+    parameters.push_back(option);
+  }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("\"Peninsula\" Twin Fraction");
+    option->setPropertyName("PeninsulaFrac");
+    option->setWidgetType(FilterParameter::DoubleWidget);
+    option->setValueType("float");
+    option->setCastableValueType("double");
+    option->setUnits("");
+    parameters.push_back(option);
+  }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
     option->setHumanLabel("Uniquely Renumber Contiguous Regions");
     option->setPropertyName("UniqueRenum");
     option->setWidgetType(FilterParameter::BooleanWidget);
@@ -146,6 +168,8 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE BEGIN*/
   setTwinThickness( reader->readValue("TwinThickness", getTwinThickness()) );
   setNumTwinsPerGrain( reader->readValue("NumTwinsPerGrain", getNumTwinsPerGrain()) );
+  setCoherentFrac( reader->readValue("CoherentFrac", getCoherentFrac()) );
+  setPeninsulaFrac( reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
   setUniqueRenum( reader->readValue("UniqueRenum", getUniqueRenum()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
@@ -159,6 +183,8 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
   writer->openFilterGroup(this, index);
   writer->writeValue("TwinThickness", getTwinThickness() );
   writer->writeValue("NumTwinsPerGrain", getNumTwinsPerGrain() );
+  writer->writeValue("CoherentFrac", getCoherentFrac() );
+  writer->writeValue("PeninsulaFrac", getPeninsulaFrac() );
   writer->writeValue("UniqueRenum", getUniqueRenum() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
@@ -243,40 +269,43 @@ void InsertTwins::insert_twins()
   size_t totalFields = m->getNumFieldTuples();
   int64_t totalPoints = m->getTotalPoints();
 
-  float sample111[3] = {0.0f,0.0f,0.0f};
-  float crystal111[3] = {0.0f,0.0f,0.0f};
+  float sampleHabitPlane[3] = {0.0f,0.0f,0.0f};
+  float crystalHabitPlane[3] = {0.0f,0.0f,0.0f};
   QuatF q1, q2;
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
   float plateThickness = 0.0f;
   size_t numGrains = totalFields;
-  float d, random;
+  float d, random, random2;
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
   std::vector<float> shifts;
   int numTwins;
 
-  float cubeDiagonal = sqrtf(m->getXRes()*m->getXRes() + m->getYRes()*m->getYRes() + m->getZRes()*m->getZRes());
+  float voxelDiagonal = sqrtf(m->getXRes()*m->getXRes() + m->getYRes()*m->getYRes() + m->getZRes()*m->getZRes());
 
   for (size_t curGrain = 1; curGrain < numGrains; ++curGrain)
   {
     QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
 
-	// randomly pick from the {111} family of planes
+	// pick a habit plane
+	random2 = static_cast<float>(rg.genrand_res53());
 	for (int i = 0; i < 3; ++i)
 	{
-      random = static_cast<float>(rg.genrand_res53());
-	  crystal111[i] = 1.0f;
-	  if (random < 0.5f) crystal111[i] = -1.0f;
+	  crystalHabitPlane[i] = 1.0f;
+	  // decide whether to make it coherent or incoherent
+	  if (random2 > m_CoherentFrac) crystalHabitPlane[i] = int(rg.genrand_res53() * 20.0f);
+	  random = static_cast<float>(rg.genrand_res53());
+	  if (random < 0.5f) crystalHabitPlane[i] *= -1.0f;
 	}
 
-	// find where {111} points
+	// find where the habit plane points
 	QuaternionMathF::Copy(avgQuats[curGrain], q1);
     OrientationMath::QuattoMat(q1, g);
 	MatrixMath::Transpose3x3(g, gT);
-    MatrixMath::Multiply3x3with3x1(g, crystal111, sample111);
+    MatrixMath::Multiply3x3with3x1(g, crystalHabitPlane, sampleHabitPlane);
 
-	// generate twin orientation with a 60 degree rotation about the {111}
-	OrientationMath::AxisAngletoMat(sig3, crystal111[0], crystal111[1], crystal111[2], rotMat);
+	// generate twin orientation with a 60 degree rotation about the habit plane
+	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
 	OrientationMath::MatToEuler(newMat, e[0], e[1], e[2]);
 	OrientationMath::EulertoQuat(q2, e[0], e[1], e[2]);
@@ -305,7 +334,7 @@ void InsertTwins::insert_twins()
 		// overlap.  NOTE that the twins can touch since we're using equiv dia,
 		// they can be high aspect ratio grains inserted in the low aspect direction
 		// which skews the calculation
-		if (fabs(shifts[i] - shifts[j]) <= (plateThickness*2.0f + cubeDiagonal*2.0f) && ii != j) 
+		if (fabs(shifts[i] - shifts[j]) <= (plateThickness*2.0f + voxelDiagonal*2.0f) && ii != j) 
 		{
 		  ++attempt;
 		  --i;
@@ -314,12 +343,16 @@ void InsertTwins::insert_twins()
 		else 
 		{
 		  // set the origin of the plane
-		  d = -sample111[0] * (m_Centroids[3*curGrain+0] + shifts[i]) 
-			- sample111[1] * (m_Centroids[3*curGrain+1] + shifts[i]) 
-			- sample111[2] * (m_Centroids[3*curGrain+2] + shifts[i]);
+		  d = -sampleHabitPlane[0] * (m_Centroids[3*curGrain+0] + shifts[i]) 
+			- sampleHabitPlane[1] * (m_Centroids[3*curGrain+1] + shifts[i]) 
+			- sampleHabitPlane[2] * (m_Centroids[3*curGrain+2] + shifts[i]);
 
-		  place_twin(curGrain, sample111, totalFields, plateThickness, d);
+		  place_twin(curGrain, sampleHabitPlane, totalFields, plateThickness, d);
 
+		  random = static_cast<float>(rg.genrand_res53());
+		  // change an isthmus twin to a peninsula twin
+		  if (random < m_PeninsulaFrac) peninsula_twin(curGrain, totalFields);
+		  
 		  // filling in twin stats that already exist for parents
 		  totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
 		}
@@ -333,7 +366,7 @@ void InsertTwins::insert_twins()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::place_twin(size_t curGrain, float sample111[3], size_t totalFields, float plateThickness, float d)
+void InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t totalFields, float plateThickness, float d)
 {
   VoxelDataContainer* m = getVoxelDataContainer();
   DREAM3D_RANDOMNG_NEW()
@@ -366,14 +399,93 @@ void InsertTwins::place_twin(size_t curGrain, float sample111[3], size_t totalFi
 		if (gnum == curGrain)
 		{
 		  // calculate the distance between the cell and the plane
-		  float denom = 1 / sqrtf(sample111[0] * sample111[0] + sample111[1] * sample111[1] + sample111[2] * sample111[2]);
-		  D = sample111[0] * x * denom + sample111[1] * y * denom + sample111[2] * z * denom + d * denom;  
+		  float denom = 1 / sqrtf(sampleHabitPlane[0] * sampleHabitPlane[0] + sampleHabitPlane[1] * sampleHabitPlane[1] + sampleHabitPlane[2] * sampleHabitPlane[2]);
+		  D = sampleHabitPlane[0] * x * denom + sampleHabitPlane[1] * y * denom + sampleHabitPlane[2] * z * denom + d * denom;  
 
 		  // if the cell-plane distance is less than the plate thickness then place a twin voxel
-		  if(fabs(D) < plateThickness)
+		  if(fabs(D) < plateThickness) m_GrainIds[zStride+yStride+k] = totalFields;
+		}
+	  }
+	}
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InsertTwins::peninsula_twin(size_t curGrain, size_t totalFields)
+{
+  VoxelDataContainer* m = getVoxelDataContainer();
+  DREAM3D_RANDOMNG_NEW()
+  int xPoints = static_cast<int>(m->getXPoints());
+  int yPoints = static_cast<int>(m->getYPoints());
+  int zPoints = static_cast<int>(m->getZPoints());
+
+  int x1 = -1, x2 = -1, y1 = -1, y2 = -1, z1 = -1, z2 = -1;
+  float twinLength = 0.0f, random = 0.0f, fractionKept = 0.0f, currentDistance = 0.0f;
+  int zStride, yStride;
+
+  // loop through all cells to find matching grain IDs
+  for(int i = 0; i < zPoints; i++)
+  {
+	zStride = i * xPoints * yPoints;
+	for (int j = 0 ; j < yPoints; j++)
+	{
+	  yStride = j * xPoints;
+	  for(int k = 0; k < xPoints; k++)
+	  {
+		int gnum = m_GrainIds[zStride+yStride+k];
+
+		// if the grain IDs match...
+		if (gnum == totalFields)
+		{
+		  if (x1 == -1)
 		  {
-			m_GrainIds[zStride+yStride+k] = totalFields;
+			x1 = i;
+			y1 = j;
+			z1 = k;
 		  }
+		  x2 = i;
+		  y2 = j;
+		  z2 = k;
+		}
+	  }
+	}
+  }
+
+  // calculate the distance between cells
+  twinLength = sqrtf((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
+
+  // choose which end to start from
+  random = static_cast<float>(rg.genrand_res53());
+  if (random < 0.5f)
+  {
+	x2 = x1;
+	y2 = y1;
+	z2 = z1;
+  }
+
+  // choose how much of the twin to keep (has to be at least one voxel)
+  while (int(fractionKept * twinLength) < 1) fractionKept = static_cast<float>(rg.genrand_res53());
+
+  // loop through again to decide which twin Ids get flipped back
+  for(int i = 0; i < zPoints; i++)
+  {
+	zStride = i * xPoints * yPoints;
+	for (int j = 0 ; j < yPoints; j++)
+	{
+	  yStride = j * xPoints;
+	  for(int k = 0; k < xPoints; k++)
+	  {
+		int gnum = m_GrainIds[zStride+yStride+k];
+
+		// if the grain IDs match...
+		if (gnum == totalFields)
+		{
+			currentDistance = sqrtf((i-x1)*(i-x1) + (j-y1)*(j-y1) + (k-z1)*(k-z1));
+			
+			// if the distance is longer than the twin length, flip back to the parent ID 
+			if (currentDistance > twinLength * fractionKept) m_GrainIds[zStride+yStride+k] = curGrain;
 		}
 	  }
 	}

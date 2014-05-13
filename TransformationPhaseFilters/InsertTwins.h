@@ -85,6 +85,8 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
 
     DREAM3D_INSTANCE_PROPERTY(float, TwinThickness)
     DREAM3D_INSTANCE_PROPERTY(int, NumTwinsPerGrain)
+    DREAM3D_INSTANCE_PROPERTY(float, CoherentFrac)
+    DREAM3D_INSTANCE_PROPERTY(float, PeninsulaFrac)
     DREAM3D_INSTANCE_PROPERTY(bool, UniqueRenum)
 
     virtual const std::string getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
@@ -108,6 +110,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
 
 	void insert_twins();
 	void place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d);
+    void peninsula_twin(size_t curGrain, size_t totalFields);
 	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q, float e[], size_t curGrain);
 	void unique_renumber();
 	void filter_calls();
