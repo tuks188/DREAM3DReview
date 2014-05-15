@@ -1,25 +1,25 @@
-Insert Transformation Phase {#inserttransformationphase}
+Insert Twins {#inserttwins}
 ======
 
 ## Group (Subgroup) ##
 Transformation Phase Filters (Packing)
 
 ## Description ##
-If there are transformation phases in the Statistics file, then this filter will place transformation **Fields** with the sizes, shapes, physical orientations and locations corresponding to the goal statistics and parameters chosen in the filter.  The user can specify if they want *periodic boundary conditions* and whether they would like to write out the goal attributes of the generated **Fields**. 
+Takes an already formed voxelized structure and inserts twin morphologies with the correct orientation relationship (and habit plane if coherent).
 
 ## Parameters ##
 
 | Name | Type |
 |------|------|
-| Periodic Boundary | Boolean (On or Off) |
-| Write Goal Attributes | Boolean (On or Off) |
-| Goal Attributes CSV File | Output File |
-
+| Twin Thickness | Float (Fraction between zero and 1) |
+| Average Number Of Twins Per Grain | Integer |
+| Coherent Fraction | Float (Fraction between zero and 1) |
+| "Peninsula" Twin Fraction | Float (Fraction between zero and 1) |
+| Uniquely Renumber Contiguous Regions | Boolean (Yes or no) |
 
 ## Required DataContainers ##
 Voxel
 
-## Required Arrays ##
 ## Required Arrays ##
 
 | Type | Default Name | Description | Comment | Filters Known to Create Data |
