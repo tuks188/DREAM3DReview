@@ -56,7 +56,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author
- * @date May 13, 2014
+ * @date May 15, 2014
  * @version 1.0
  */
 class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
@@ -82,6 +82,10 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     DREAM3D_INSTANCE_STRING_PROPERTY(FieldParentIdsArrayName)
     //------ Required Ensemble Data
     DREAM3D_INSTANCE_STRING_PROPERTY(CrystalStructuresArrayName)
+    DREAM3D_INSTANCE_STRING_PROPERTY(PhaseTypesArrayName)
+    DREAM3D_INSTANCE_STRING_PROPERTY(ShapeTypesArrayName)
+    //------ Created Ensemble Data
+    DREAM3D_INSTANCE_STRING_PROPERTY(NumFieldsArrayName)
 
     DREAM3D_INSTANCE_PROPERTY(float, TwinThickness)
     DREAM3D_INSTANCE_PROPERTY(int, NumTwinsPerGrain)
@@ -129,6 +133,9 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
 	int32_t* m_FieldParentIds;
 
     unsigned int* m_CrystalStructures;
+    unsigned int* m_PhaseTypes;
+    unsigned int* m_ShapeTypes;
+    int32_t* m_NumFields;
 
     std::vector<OrientationOps::Pointer> m_OrientationOps;
 
