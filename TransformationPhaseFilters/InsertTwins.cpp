@@ -635,6 +635,7 @@ size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, 
   m_FieldEulerAngles[3*totalFields+2] = e[2];
   m_FieldPhases[totalFields] = m->getNumEnsembleTuples();
   m_FieldParentIds[totalFields] = curGrain;
+  m_NumGrainsPerParent[totalFields] = 0;
   //++m_NumFields[m->getNumEnsembleTuples()];
 
   return ++totalFields;
