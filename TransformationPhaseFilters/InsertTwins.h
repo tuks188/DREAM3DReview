@@ -56,7 +56,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author
- * @date May 15, 2014
+ * @date May 16, 2014
  * @version 1.0
  */
 class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
