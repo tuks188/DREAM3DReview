@@ -57,7 +57,6 @@
 
 const static float m_pi = static_cast<float>(M_PI);
 
-
 #define NEW_SHARED_ARRAY(var, m_msgType, size)\
   boost::shared_array<m_msgType> var##Array(new m_msgType[size]);\
   m_msgType* var = var##Array.get();
@@ -75,7 +74,7 @@ InsertTwins::InsertTwins() :
   m_FieldEulerAnglesArrayName(DREAM3D::FieldData::EulerAngles),
   m_FieldPhasesArrayName(DREAM3D::FieldData::Phases),
   m_FieldParentIdsArrayName(DREAM3D::FieldData::ParentIds),
-  //m_NumParentsPer
+  m_NumGrainsPerParentArrayName(DREAM3D::FieldData::NumGrainsPerParent),
   m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
   m_PhaseTypesArrayName(DREAM3D::EnsembleData::PhaseTypes),
   m_ShapeTypesArrayName(DREAM3D::EnsembleData::ShapeTypes),
@@ -92,6 +91,8 @@ InsertTwins::InsertTwins() :
   m_EquivalentDiameters(NULL),
   m_FieldEulerAngles(NULL),
   m_FieldPhases(NULL),
+  m_FieldParentIds(NULL),
+  m_NumGrainsPerParent(NULL),
   m_CrystalStructures(NULL),
   m_PhaseTypes(NULL),
   m_ShapeTypes(NULL),
@@ -219,6 +220,7 @@ void InsertTwins::dataCheck(bool preflight, size_t voxels, size_t fields, size_t
  
   CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, Active, ss, bool, BoolArrayType, true, fields, 1)
   CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, FieldParentIds, ss, int32_t, Int32ArrayType, 0, fields, 1)
+  CREATE_NON_PREREQ_DATA(m, DREAM3D, FieldData, NumGrainsPerParent, ss, int32_t, Int32ArrayType, 0, fields, 1)
 
   // Ensemble Data  
   typedef DataArray<unsigned int> XTalStructArrayType;
@@ -279,13 +281,15 @@ void InsertTwins::execute()
   // start insert twins routine
   insert_twins();
 
+  notifyStatusMessage("Placement Complete");
+
   // if true, uniquely renumber so that every contiguous region receives a grain ID
   if (m_UniqueRenum == true) unique_renumber();
 
   // recalculating the stats that existed before this filter was run
   filter_calls();
 
-  notifyStatusMessage("Completed");
+  notifyStatusMessage("Execute Complete");
 }
 
 // -----------------------------------------------------------------------------
@@ -299,12 +303,15 @@ void InsertTwins::insert_twins()
   size_t totalFields = m->getNumFieldTuples();
   int64_t totalPoints = m->getTotalPoints();
 
+  // find the minimum resolution
   float xRes = m->getXRes();
   float yRes = m->getYRes();
   float zRes = m->getZRes();
+  float minRes = xRes;
+  if (minRes > yRes) minRes = yRes;
+  if (minRes > zRes) minRes = zRes;
 
-  float sampleHabitPlane[3] = {0.0f,0.0f,0.0f};
-  float crystalHabitPlane[3] = {0.0f,0.0f,0.0f};
+  float sampleHabitPlane[3] = {0.0f,0.0f,0.0f}, crystalHabitPlane[3] = {0.0f,0.0f,0.0f};
   QuatF q1, q2;
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
   float plateThickness = 0.0f;
@@ -316,27 +323,26 @@ void InsertTwins::insert_twins()
   int numTwins;
   bool createdTwin = false;
 
-  float minRes = xRes;
-  if (minRes > yRes) minRes = yRes;
-  if (minRes > zRes) minRes = zRes;
-
-  float voxelDiagonal = sqrtf(m->getXRes()*m->getXRes() + m->getYRes()*m->getYRes() + m->getZRes()*m->getZRes());
+  float voxelDiagonal = sqrtf(xRes*xRes + yRes*yRes + zRes*zRes);
 
   for (size_t curGrain = 1; curGrain < numGrains; ++curGrain)
   {
     QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
 
+	// set the grain Id to the parent Id for if/when the fields get uniquely renumbered 
 	m_FieldParentIds[curGrain] = curGrain;
 
 	// pick a habit plane
-	random2 = static_cast<float>(rg.genrand_res53());
+	random = static_cast<float>(rg.genrand_res53());
 	for (int i = 0; i < 3; ++i)
 	{
 	  crystalHabitPlane[i] = 1.0f;
 	  // decide whether to make it coherent or incoherent
-	  if (random2 > m_CoherentFrac) crystalHabitPlane[i] = int(rg.genrand_res53() * 20.0f);
-	  random = static_cast<float>(rg.genrand_res53());
-	  if (random < 0.5f) crystalHabitPlane[i] *= -1.0f;
+
+	  // NOTE: incoherent habit planes e[-20,20] & are ints
+	  if (random > m_CoherentFrac) crystalHabitPlane[i] = int(rg.genrand_res53() * 20.0f);
+	  random2 = static_cast<float>(rg.genrand_res53());
+	  if (random2 < 0.5f) crystalHabitPlane[i] *= -1.0f;
 	}
 
 	// find where the habit plane points
@@ -352,20 +358,27 @@ void InsertTwins::insert_twins()
 	OrientationMath::EulertoQuat(q2, e[0], e[1], e[2]);
 
 	// define plate = user input fraction of eq dia centered at centroid
+	// NOTE: we multiply by 0.5 because the twin thickness will be established by
+	// a search from both sides
 	plateThickness = m_EquivalentDiameters[curGrain] * m_TwinThickness * 0.5f;
-	int stop = 0;
 	// if the plate thickness is less than the minimum dimension resolution, 
-	// then don't try to insert a twin because the grain is too small
+	// then don't try to insert a twin because the grain is too small and
+	// the twin thickness will be too small
 	if (plateThickness > minRes)
 	{
 	  // select number of twins to insert per grain from 2x user input to zero
 	  numTwins = int(rg.genrand_res53() * double(2*m_NumTwinsPerGrain + 1));
 	  shifts.resize(numTwins);
 	  int attempt = 0;
+
+	  // each loop represents an attempt to insert a single twin (all in the same grain)
 	  for (int i = 0; i < numTwins; ++i)
 	  {
-		// define the shift placement from center
+		// define the shift placement from centroid
 		random = static_cast<float>(rg.genrand_res53());
+		// shift defined as random (float) e[0,1] x grain's eq dia x 0.5
+		// NOTE: we multiply by 0.5 because it starts at the center and we don't
+		// want to run off the end of the grain
 		shifts[i] = random * m_EquivalentDiameters[curGrain] * 0.5f;
 		random = static_cast<float>(rg.genrand_res53());
 		if (random < 0.5f) shifts[i] = -shifts[i];
@@ -376,14 +389,17 @@ void InsertTwins::insert_twins()
 		{
 		  // if adding more than one twin in a grain, check the current shift from
 		  // center against the previous ones to make sure the new twin does not
-		  // overlap.  NOTE that the twins can touch since we're using equiv dia,
+		  // overlap  
+		  // NOTE: that the twins can touch since we're using equiv dia,
 		  // they can be high aspect ratio grains inserted in the low aspect direction
-		  // which skews the calculation
-		  float one = fabs(shifts[i] - shifts[j]);
-		  float two = plateThickness*2.0f + voxelDiagonal*2.0f;
-		  int stop = 0;
+		  // which skews the calculation (FIX)
+		  // tolerance is set to 3x the plate thickness + 2x the voxel diagonal -- this empirically
+		  // keeps the twins separated enough
 		  if (fabs(shifts[i] - shifts[j]) <= (plateThickness*3.0f + voxelDiagonal*2.0f) && ii != j) 
 		  {
+			// if the attempted placement of a second, third, fourth, ... twin is too close to a
+			// previously inserted twin in the current grain, then increment the attempts counter
+			// and try a different shift
 			++attempt;
 			--i;
 			break;
@@ -405,6 +421,7 @@ void InsertTwins::insert_twins()
 		  
 			  // filling in twin stats that already exist for parents
 			  totalFields = transfer_attributes(totalFields, totalPoints, q2, e, curGrain);
+			  ++m_NumGrainsPerParent[curGrain];
 			}
 		  }
 		}
@@ -493,7 +510,8 @@ bool InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t 
 				&& (i == (m->getZPoints() - 1) || m_GrainIds[zStride+yStride+k+xPoints*yPoints] != totalFields)
 				&& firstVoxel == false)
 			{
-			  // flip all the twin voxels back to the grain ID
+			  // if an "island" twin voxel is inserted flip all the twin voxels back to the grain ID
+			  // and this will go in the books as a failed twin insertion attempt
 			  for (int64_t m = 0; m < totalPoints; ++m) 
 			  {
 			    if (m == totalFields) m = curGrain;
@@ -540,16 +558,17 @@ void InsertTwins::peninsula_twin(size_t curGrain, size_t totalFields)
 	  for(int k = 0; k < xPoints; k++)
 	  {
 		int gnum = m_GrainIds[zStride+yStride+k];
-
 		// if the grain IDs match...
 		if (gnum == totalFields)
 		{
 		  if (x1 == -1)
 		  {
+			// establish one extremum of the twin
 			x1 = i;
 			y1 = j;
 			z1 = k;
 		  }
+		  // establish the other extremum of the twin
 		  x2 = i;
 		  y2 = j;
 		  z2 = k;
@@ -558,13 +577,13 @@ void InsertTwins::peninsula_twin(size_t curGrain, size_t totalFields)
 	}
   }
 
-  // calculate the distance between cells
+  // calculate the distance between the extrema
   twinLength = sqrtf((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
-
   // if the twin is 1 voxel, set the length to 2 so it makes it through the below loop
+  // but won't change anything
   if (twinLength == 0.0f) twinLength = 2.0f;
 
-  // choose which end to start from
+  // choose which extremum to start from
   random = static_cast<float>(rg.genrand_res53());
   if (random < 0.5f)
   {
@@ -576,7 +595,7 @@ void InsertTwins::peninsula_twin(size_t curGrain, size_t totalFields)
   // choose how much of the twin to keep (has to be at least one voxel)
   while (int(fractionKept * twinLength) < 1) fractionKept = static_cast<float>(rg.genrand_res53());
 
-  // loop through again to decide which twin Ids get flipped back
+  // loop through again to decide which twin Ids get flipped back to grain Ids
   for(int i = 0; i < zPoints; i++)
   {
 	zStride = i * xPoints * yPoints;
@@ -586,12 +605,10 @@ void InsertTwins::peninsula_twin(size_t curGrain, size_t totalFields)
 	  for(int k = 0; k < xPoints; k++)
 	  {
 		int gnum = m_GrainIds[zStride+yStride+k];
-
 		// if the grain IDs match...
 		if (gnum == totalFields)
 		{
-			currentDistance = sqrtf((i-x1)*(i-x1) + (j-y1)*(j-y1) + (k-z1)*(k-z1));
-			
+			currentDistance = sqrtf((i-x1)*(i-x1) + (j-y1)*(j-y1) + (k-z1)*(k-z1));			
 			// if the distance is longer than the twin length, flip back to the parent ID 
 			if (currentDistance > twinLength * fractionKept) m_GrainIds[zStride+yStride+k] = curGrain;
 		}

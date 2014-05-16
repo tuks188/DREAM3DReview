@@ -80,6 +80,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     //------ Created Field Data
     DREAM3D_INSTANCE_STRING_PROPERTY(ActiveArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(FieldParentIdsArrayName)
+	DREAM3D_INSTANCE_STRING_PROPERTY(NumGrainsPerParentArrayName)
     //------ Required Ensemble Data
     DREAM3D_INSTANCE_STRING_PROPERTY(CrystalStructuresArrayName)
     DREAM3D_INSTANCE_STRING_PROPERTY(PhaseTypesArrayName)
@@ -131,6 +132,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
 	float* m_FieldEulerAngles;
 	int32_t* m_FieldPhases;
 	int32_t* m_FieldParentIds;
+	int32_t* m_NumGrainsPerParent;
 
     unsigned int* m_CrystalStructures;
     unsigned int* m_PhaseTypes;
