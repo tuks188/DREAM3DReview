@@ -84,7 +84,6 @@ InsertTwins::InsertTwins() :
   m_NumTwinsPerGrain(2),
   m_CoherentFrac(1.0f),
   m_PeninsulaFrac(0.0f),
-  m_UniqueRenum(false),
   m_GrainIds(NULL),
   m_CellEulerAngles(NULL),
   m_AvgQuats(NULL),
@@ -157,15 +156,6 @@ void InsertTwins::setupFilterParameters()
     option->setUnits("");
     parameters.push_back(option);
   }
-  {
-    FilterParameter::Pointer option = FilterParameter::New();
-    option->setHumanLabel("Uniquely Renumber Contiguous Regions");
-    option->setPropertyName("UniqueRenum");
-    option->setWidgetType(FilterParameter::BooleanWidget);
-    option->setValueType("bool");
-    option->setUnits("");
-    parameters.push_back(option);
-  }
   setFilterParameters(parameters);
 }
 
@@ -181,7 +171,6 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   setNumTwinsPerGrain( reader->readValue("NumTwinsPerGrain", getNumTwinsPerGrain()) );
   setCoherentFrac( reader->readValue("CoherentFrac", getCoherentFrac()) );
   setPeninsulaFrac( reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
-  setUniqueRenum( reader->readValue("UniqueRenum", getUniqueRenum()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
 }
@@ -196,7 +185,6 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
   writer->writeValue("NumTwinsPerGrain", getNumTwinsPerGrain() );
   writer->writeValue("CoherentFrac", getCoherentFrac() );
   writer->writeValue("PeninsulaFrac", getPeninsulaFrac() );
-  writer->writeValue("UniqueRenum", getUniqueRenum() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
 }
@@ -295,9 +283,6 @@ void InsertTwins::execute()
   insert_twins();
 
   notifyStatusMessage("Placement Complete");
-
-  // if true, uniquely renumber so that every contiguous region receives a grain ID
-  if (m_UniqueRenum == true) unique_renumber();
 
   // finding ensemble level number of fields per phase
   for(size_t i = 1; i < m->getNumEnsembleTuples(); i++)
@@ -659,74 +644,6 @@ size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, 
   m_FieldParentIds[totalFields] = curGrain;
   m_NumGrainsPerParent[totalFields] = 0;
   return ++totalFields;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InsertTwins::unique_renumber()
-{
-  VoxelDataContainer* m = getVoxelDataContainer();
-
-  int32_t* oldGrainIds = reinterpret_cast<int32_t*>(m_GrainIds);
-
-  RenameCellArray::Pointer rename_cell_array = RenameCellArray::New();
-  rename_cell_array->setObservers(this->getObservers());
-  rename_cell_array->setVoxelDataContainer(m);
-  rename_cell_array->setMessagePrefix(getMessagePrefix());
-  rename_cell_array->setSelectedCellArrayName(m_GrainIdsArrayName);
-  rename_cell_array->setNewCellArrayName("oldGrainIds");
-  rename_cell_array->preflight();
-  int err1 = rename_cell_array->getErrorCondition();
-  if (err1 < 0)
-  {
-    setErrorCondition(rename_cell_array->getErrorCondition());
-    addErrorMessages(rename_cell_array->getPipelineMessages());
-    return;
-  }
-  
-  ScalarSegmentGrains::Pointer scalar_segment_grains = ScalarSegmentGrains::New();
-  scalar_segment_grains->setObservers(this->getObservers());
-  scalar_segment_grains->setVoxelDataContainer(m);
-  scalar_segment_grains->setMessagePrefix(getMessagePrefix());
-  scalar_segment_grains->setScalarArrayName("oldGrainIds");
-  scalar_segment_grains->setScalarTolerance(0);
-  scalar_segment_grains->execute();
-  int err2 = scalar_segment_grains->getErrorCondition();
-  if (err2 < 0)
-  {
-    setErrorCondition(scalar_segment_grains->getErrorCondition());
-    addErrorMessages(scalar_segment_grains->getPipelineMessages());
-    return;
-  }
-
-//  RemoveArrays::Pointer remove_arrays = RemoveArrays::New();
-//  remove_arrays->setObservers(this->getObservers());
-//  remove_arrays->setVoxelDataContainer(m);
-//  remove_arrays->setMessagePrefix(getMessagePrefix());
-//  remove_arrays->setSelectedVoxelCellArrays("oldGrainIds");
-//  remove_arrays->execute();
-//  int err3 = remove_arrays->getErrorCondition();
-//  if (err3 < 0)
-//  {
-//    setErrorCondition(remove_arrays->getErrorCondition());
-//    addErrorMessages(remove_arrays->getPipelineMessages());
-//    return;
-//  }
-
-  LinkFieldMapToCellArray::Pointer link_field_map_to_cell_array = LinkFieldMapToCellArray::New();
-  link_field_map_to_cell_array->setObservers(this->getObservers());
-  link_field_map_to_cell_array->setVoxelDataContainer(m);
-  link_field_map_to_cell_array->setMessagePrefix(getMessagePrefix());
-  link_field_map_to_cell_array->setSelectedCellDataArrayName(m_GrainIdsArrayName);
-  link_field_map_to_cell_array->execute();
-  int err4 = link_field_map_to_cell_array->getErrorCondition();
-  if (err4 < 0)
-  {
-    setErrorCondition(link_field_map_to_cell_array->getErrorCondition());
-    addErrorMessages(link_field_map_to_cell_array->getPipelineMessages());
-    return;
-  }
 }
 
 // -----------------------------------------------------------------------------
