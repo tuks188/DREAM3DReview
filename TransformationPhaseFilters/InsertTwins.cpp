@@ -67,6 +67,7 @@ const static float m_pi = static_cast<float>(M_PI);
 InsertTwins::InsertTwins() :
   AbstractFilter(),
   m_GrainIdsArrayName(DREAM3D::CellData::GrainIds),
+  m_CellEulerAnglesArrayName(DREAM3D::CellData::EulerAngles),
   m_AvgQuatsArrayName(DREAM3D::FieldData::AvgQuats),
   m_ActiveArrayName(DREAM3D::FieldData::Active),
   m_CentroidsArrayName(DREAM3D::FieldData::Centroids),
@@ -85,6 +86,7 @@ InsertTwins::InsertTwins() :
   m_PeninsulaFrac(0.0f),
   m_UniqueRenum(false),
   m_GrainIds(NULL),
+  m_CellEulerAngles(NULL),
   m_AvgQuats(NULL),
   m_Active(NULL),
   m_Centroids(NULL),
@@ -210,9 +212,10 @@ void InsertTwins::dataCheck(bool preflight, size_t voxels, size_t fields, size_t
 
   // Cell Data
   GET_PREREQ_DATA(m, DREAM3D, CellData, GrainIds, ss, -301, int32_t, Int32ArrayType, voxels, 1)
-  GET_PREREQ_DATA(m, DREAM3D, FieldData, AvgQuats, ss, -302, float, FloatArrayType, fields, 4)
+  GET_PREREQ_DATA(m, DREAM3D, CellData, CellEulerAngles, ss, -310, float, FloatArrayType, voxels, 3)
 
   // Field Data
+  GET_PREREQ_DATA(m, DREAM3D, FieldData, AvgQuats, ss, -302, float, FloatArrayType, fields, 4)
   GET_PREREQ_DATA(m, DREAM3D, FieldData, EquivalentDiameters, ss, -302, float, FloatArrayType, fields, 1)
   GET_PREREQ_DATA(m, DREAM3D, FieldData, Centroids, ss, -304, float, FloatArrayType, fields, 3)
   GET_PREREQ_DATA(m, DREAM3D, FieldData, FieldEulerAngles, ss, -305, float, FloatArrayType, fields, 3)
@@ -262,21 +265,34 @@ void InsertTwins::execute()
   }
 
   // setting ensemble level data
-//  typedef DataArray<unsigned int> XTalStructArrayType;
-//  typedef DataArray<unsigned int> PTypeArrayType;
-//  XTalStructArrayType::Pointer m_XTalStructData = XTalStructArrayType::CreateArray(3, DREAM3D::EnsembleData::CrystalStructures);
-//  PTypeArrayType::Pointer m_PhaseTypeData = PTypeArrayType::CreateArray(3, DREAM3D::EnsembleData::PhaseTypes);
+  typedef DataArray<unsigned int> XTalStructArrayType;
+  typedef DataArray<unsigned int> PTypeArrayType;
+  typedef DataArray<unsigned int> NumFieldsArrayType;
+  XTalStructArrayType::Pointer m_XTalStructData = XTalStructArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::CrystalStructures);
+  PTypeArrayType::Pointer m_PhaseTypeData = PTypeArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::PhaseTypes);
+  PTypeArrayType::Pointer m_ShapeTypeData = PTypeArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::ShapeTypes);
+  NumFieldsArrayType::Pointer m_NumFieldsData = NumFieldsArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::NumFields);
   //Initialize the arrays with the "Unknown" value
-//  m_XTalStructData->initializeWithValues(999);
-//  m_PhaseTypeData->initializeWithValues(999);
+  m_XTalStructData->initializeWithValues(999);
+  m_PhaseTypeData->initializeWithValues(999);
+  m_ShapeTypeData->initializeWithValues(999);
+  m_NumFieldsData->initializeWithZeros();
 
-//  m_XTalStructData->SetValue(0, 1);
-//  m_PhaseTypeData->SetValue(0, 0);  
-//  m_XTalStructData->SetValue(1, 1);
-//  m_PhaseTypeData->SetValue(1, 2);
+  for (size_t i = 0; i < m->getNumEnsembleTuples(); ++i)
+  {
+	m_XTalStructData->SetValue(i, m_CrystalStructures[i]);
+	m_PhaseTypeData->SetValue(i, m_PhaseTypes[i]);  
+	m_ShapeTypeData->SetValue(i, m_ShapeTypes[i]);  
+	m_NumFieldsData->SetValue(i, m_NumFields[i]);
+  }
 
-//  m->addEnsembleData(DREAM3D::EnsembleData::CrystalStructures, m_XTalStructData);
-//  m->addEnsembleData(DREAM3D::EnsembleData::PhaseTypes, m_PhaseTypeData);
+  m_XTalStructData->SetValue(m->getNumEnsembleTuples(), Ebsd::CrystalStructure::Cubic_High);
+  m_PhaseTypeData->SetValue(m->getNumEnsembleTuples(), DREAM3D::PhaseType::TransformationPhase);  
+  m_ShapeTypeData->SetValue(m->getNumEnsembleTuples(), DREAM3D::ShapeType::EllipsoidShape);  
+
+  m->addEnsembleData(DREAM3D::EnsembleData::CrystalStructures, m_XTalStructData);
+  m->addEnsembleData(DREAM3D::EnsembleData::PhaseTypes, m_PhaseTypeData);
+  m->addEnsembleData(DREAM3D::EnsembleData::ShapeTypes, m_ShapeTypeData);
 
   // start insert twins routine
   insert_twins();
@@ -285,6 +301,16 @@ void InsertTwins::execute()
 
   // if true, uniquely renumber so that every contiguous region receives a grain ID
   if (m_UniqueRenum == true) unique_renumber();
+
+  // finding ensemble level number of fields per phase
+  for(size_t i = 0; i < m->getNumFieldTuples(); ++i)
+  {
+    m_NumFields[m_FieldPhases[i]]++;
+  }
+  
+  m_NumFieldsData->SetValue(m->getNumEnsembleTuples(), m_NumFields[m->getNumEnsembleTuples()-1]);  
+
+  m->addEnsembleData(DREAM3D::EnsembleData::NumFields, m_NumFieldsData);
 
   // recalculating the stats that existed before this filter was run
   filter_calls();
@@ -633,11 +659,9 @@ size_t InsertTwins::transfer_attributes(size_t totalFields, size_t totalPoints, 
   m_FieldEulerAngles[3*totalFields+0] = e[0];
   m_FieldEulerAngles[3*totalFields+1] = e[1];
   m_FieldEulerAngles[3*totalFields+2] = e[2];
-  m_FieldPhases[totalFields] = m->getNumEnsembleTuples();
+  m_FieldPhases[totalFields] = m->getNumEnsembleTuples()-1;
   m_FieldParentIds[totalFields] = curGrain;
   m_NumGrainsPerParent[totalFields] = 0;
-  //++m_NumFields[m->getNumEnsembleTuples()];
-
   return ++totalFields;
 }
 
@@ -715,6 +739,14 @@ void InsertTwins::unique_renumber()
 void InsertTwins::filter_calls()
 {
   VoxelDataContainer* m = getVoxelDataContainer();
+
+  // mapping euler angles from field to cell
+  for (int64_t i = 0; i < m->getNumCellTuples(); ++i)
+  {
+	m_CellEulerAngles[3*i+0] = m_FieldEulerAngles[3*m_GrainIds[i]+0];
+	m_CellEulerAngles[3*i+1] = m_FieldEulerAngles[3*m_GrainIds[i]+1];
+	m_CellEulerAngles[3*i+2] = m_FieldEulerAngles[3*m_GrainIds[i]+2];
+  }
 
   FindGrainCentroids::Pointer find_grain_centroids = FindGrainCentroids::New();
   find_grain_centroids->setObservers(this->getObservers());

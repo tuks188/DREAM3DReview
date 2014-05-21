@@ -56,7 +56,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author
- * @date May 16, 2014
+ * @date May 20, 2014
  * @version 1.0
  */
 class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
@@ -70,6 +70,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
 
     //------ Required Cell Data
     DREAM3D_INSTANCE_STRING_PROPERTY(GrainIdsArrayName)
+    DREAM3D_INSTANCE_STRING_PROPERTY(CellEulerAnglesArrayName)
     //------ Created Cell Data
     //------ Required Field Data
     DREAM3D_INSTANCE_STRING_PROPERTY(AvgQuatsArrayName)
@@ -125,6 +126,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
 
   private:
     int32_t* m_GrainIds;
+    float* m_CellEulerAngles;
     float* m_AvgQuats;
     bool* m_Active;
     float* m_Centroids;
