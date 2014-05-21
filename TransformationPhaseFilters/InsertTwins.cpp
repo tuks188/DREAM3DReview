@@ -267,23 +267,20 @@ void InsertTwins::execute()
   // setting ensemble level data
   typedef DataArray<unsigned int> XTalStructArrayType;
   typedef DataArray<unsigned int> PTypeArrayType;
-  typedef DataArray<unsigned int> NumFieldsArrayType;
+  typedef DataArray<unsigned int> STypeArrayType;
   XTalStructArrayType::Pointer m_XTalStructData = XTalStructArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::CrystalStructures);
   PTypeArrayType::Pointer m_PhaseTypeData = PTypeArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::PhaseTypes);
-  PTypeArrayType::Pointer m_ShapeTypeData = PTypeArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::ShapeTypes);
-  NumFieldsArrayType::Pointer m_NumFieldsData = NumFieldsArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::NumFields);
+  STypeArrayType::Pointer m_ShapeTypeData = STypeArrayType::CreateArray(m->getNumEnsembleTuples()+1, DREAM3D::EnsembleData::ShapeTypes);
   //Initialize the arrays with the "Unknown" value
   m_XTalStructData->initializeWithValues(999);
   m_PhaseTypeData->initializeWithValues(999);
   m_ShapeTypeData->initializeWithValues(999);
-  m_NumFieldsData->initializeWithZeros();
 
   for (size_t i = 0; i < m->getNumEnsembleTuples(); ++i)
   {
 	m_XTalStructData->SetValue(i, m_CrystalStructures[i]);
 	m_PhaseTypeData->SetValue(i, m_PhaseTypes[i]);  
 	m_ShapeTypeData->SetValue(i, m_ShapeTypes[i]);  
-	m_NumFieldsData->SetValue(i, m_NumFields[i]);
   }
 
   m_XTalStructData->SetValue(m->getNumEnsembleTuples(), Ebsd::CrystalStructure::Cubic_High);
@@ -303,16 +300,15 @@ void InsertTwins::execute()
   if (m_UniqueRenum == true) unique_renumber();
 
   // finding ensemble level number of fields per phase
-  for(size_t i = 0; i < m->getNumFieldTuples(); ++i)
+  for(size_t i = 1; i < m->getNumEnsembleTuples(); i++)
+  {
+    m_NumFields[i] = 0;
+  }
+  for(size_t i = 1; i < m->getNumFieldTuples(); i++)
   {
     m_NumFields[m_FieldPhases[i]]++;
   }
-  
-  m_NumFieldsData->SetValue(m->getNumEnsembleTuples(), m_NumFields[m->getNumEnsembleTuples()-1]);  
 
-  m->addEnsembleData(DREAM3D::EnsembleData::NumFields, m_NumFieldsData);
-
-  // recalculating the stats that existed before this filter was run
   filter_calls();
 
   notifyStatusMessage("Execute Complete");
