@@ -41,7 +41,7 @@
 #include <vector>
 #include <QtCore/QString>
 
-#include <boost/shared_array.hpp>
+//#include <boost/shared_array.hpp>
 
 #include "DREAM3DLib/DREAM3DLib.h"
 #include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"
@@ -72,15 +72,18 @@ class InsertTwins : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(float, TwinThickness)
     Q_PROPERTY(float TwinThickness READ getTwinThickness WRITE setTwinThickness)
-    DREAM3D_FILTER_PARAMETER(int, NumTwinsPerGrain)
-    Q_PROPERTY(int NumTwinsPerGrain READ getNumTwinsPerGrain WRITE setNumTwinsPerGrain)
+    DREAM3D_FILTER_PARAMETER(int, NumTwinsPerFeature)
+    Q_PROPERTY(int NumTwinsPerFeature READ getNumTwinsPerFeature WRITE setNumTwinsPerFeature)
     DREAM3D_FILTER_PARAMETER(float, CoherentFrac)
     Q_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
     DREAM3D_FILTER_PARAMETER(float, PeninsulaFrac)
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, NewCellFeatureAttributeMatrixName)
-    Q_PROPERTY(DataArrayPath NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
+    DREAM3D_FILTER_PARAMETER(QString, NewCellAttributeMatrixName)
+    Q_PROPERTY(QString NewCellAttributeMatrixName READ getNewCellAttributeMatrixName WRITE setNewCellAttributeMatrixName)
+	
+	DREAM3D_FILTER_PARAMETER(QString, NewCellFeatureAttributeMatrixName)
+    Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -94,14 +97,14 @@ class InsertTwins : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
     Q_PROPERTY(DataArrayPath CentroidsArrayPath READ getCentroidsArrayPath WRITE setCentroidsArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(QString, EquivalentDiametersArrayName)
-    Q_PROPERTY(QString EquivalentDiametersArrayName READ getEquivalentDiametersArrayName WRITE setEquivalentDiametersArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, EquivalentDiametersArrayPath)
+    Q_PROPERTY(DataArrayPath EquivalentDiametersArrayPath READ getEquivalentDiametersArrayPath WRITE setEquivalentDiametersArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(QString, FeatureEulerAnglesArrayName)
-    Q_PROPERTY(QString FeatureEulerAnglesArrayName READ getFeatureEulerAnglesArrayName WRITE setFeatureEulerAnglesArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
+    Q_PROPERTY(DataArrayPath FeatureEulerAnglesArrayPath READ getFeatureEulerAnglesArrayPath WRITE setFeatureEulerAnglesArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(QString, FeaturePhasesArrayName)
-    Q_PROPERTY(QString FeaturePhasesArrayName READ getFeaturePhasesArrayName WRITE setFeaturePhasesArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeaturePhasesArrayPath)
+    Q_PROPERTY(DataArrayPath FeaturePhasesArrayPath READ getFeaturePhasesArrayPath WRITE setFeaturePhasesArrayPath)
 
     DREAM3D_FILTER_PARAMETER(QString, ActiveArrayName)
     Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
@@ -109,20 +112,25 @@ class InsertTwins : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureParentIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureParentIdsArrayPath READ getFeatureParentIdsArrayPath WRITE setFeatureParentIdsArrayPath)
 	
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesPerParentArrayPath)
+    Q_PROPERTY(DataArrayPath NumFeaturesPerParentArrayPath READ getNumFeaturesPerParentArrayPath WRITE setNumFeaturesPerParentArrayPath)
+	
+	DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(QString, PhaseTypesArrayName)
-    Q_PROPERTY(QString PhaseTypesArrayName READ getPhaseTypesArrayName WRITE setPhaseTypesArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, PhaseTypesArrayPath)
+    Q_PROPERTY(DataArrayPath PhaseTypesArrayPath READ getPhaseTypesArrayPath WRITE setPhaseTypesArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(QString, ShapeTypesArrayName)
-    Q_PROPERTY(QString ShapeTypesArrayName READ getShapeTypesArrayName WRITE setShapeTypesArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, ShapeTypesArrayPath)
+    Q_PROPERTY(DataArrayPath ShapeTypesArrayPath READ getShapeTypesArrayPath WRITE setShapeTypesArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(QString, NumFeaturesPerParentArrayName)
-    Q_PROPERTY(QString NumFeaturesPerParentArrayName READ getNumFeaturesPerParentArrayName WRITE setNumFeaturesPerParentArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesArrayPath)
+    Q_PROPERTY(DataArrayPath NumFeaturesArrayPath READ getNumFeaturesArrayPath WRITE setNumFeaturesArrayPath)
 
-    virtual const QString getCompiledLibraryName() { return SyntheticBuilding::SyntheticBuildingBaseName; }
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    //typedef boost::shared_array<float> SharedFloatArray;
+    //typedef boost::shared_array<int> SharedIntArray;
+	
+	virtual const QString getCompiledLibraryName() { return SyntheticBuilding::SyntheticBuildingBaseName; }
 	virtual const QString getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
 	virtual const QString getSubGroupName() {return DREAM3D::FilterSubGroups::PackingFilters;}
     virtual const QString getHumanLabel() { return "Insert Twins"; }
@@ -144,6 +152,7 @@ class InsertTwins : public AbstractFilter
      * @brief Reimplemented from @see AbstractFilter class
      */
     virtual void execute();
+    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
     virtual void preflight();
 
 signals:
@@ -156,9 +165,9 @@ signals:
     InsertTwins();
 
 	void insert_twins();
-	bool place_twin(size_t curGrain, float sample111[], size_t totalFields, float plateThickness, float d, size_t numGrains);
-    void peninsula_twin(size_t curGrain, size_t totalFields);
-	size_t transfer_attributes(size_t totalFields, size_t totalPoints, QuatF q, float e[], size_t curGrain);
+	bool place_twin(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
+    void peninsula_twin(size_t curFeature, size_t totalFeatures);
+	size_t transfer_attributes(size_t totalFeatures, size_t totalPoints, QuatF q, float e[], size_t curFeature);
 	void filter_calls();
 
   private:
@@ -172,19 +181,19 @@ signals:
 	DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Active)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, EquivalentDiameters)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FieldEulerAngles)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
 	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(unsigned int, CrystalStructures)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
-	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, NumFields)
+	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
     // All other private variables
-    void dataCheck(bool preflight, size_t voxels, size_t fields, size_t ensembles);
+    void dataCheck();
     void updateFeatureInstancePointers();
 
     InsertTwins(const InsertTwins&); // Copy Constructor Not Implemented
