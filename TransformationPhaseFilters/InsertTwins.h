@@ -41,7 +41,7 @@
 #include <vector>
 #include <QtCore/QString>
 
-//#include <boost/shared_array.hpp>
+#include <boost/shared_array.hpp>
 
 #include "DREAM3DLib/DREAM3DLib.h"
 #include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"

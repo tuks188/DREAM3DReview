@@ -35,19 +35,20 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef TRANSFORMATIONPHASEPLUGIN_H_
-#define TRANSFORMATIONPHASEPLUGIN_H_
+#ifndef _TransformationPhase_H_
+#define _TransformationPhase_H_
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
-#include "QtSupport/DREAM3DPluginInterface.h"
+
+#include "DREAM3DLib/Plugin/DREAM3DPluginInterface.h"
 
 
 /**
  * @class TransformationPhasePlugin TransformationPhasePlugin.h TransformationPhase/TransformationPhasePlugin.h
  * @brief
  * @author Joseph C Tucker (UES) & Michael A Groeber (AFRL)
- * @date Mar 21, 2014
+ * @date June 3, 2014
  * @version 4.0
  */
 class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface

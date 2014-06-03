@@ -39,19 +39,17 @@
 #include "DREAM3DLib/Common/FilterManager.h"
 #include "DREAM3DLib/Common/IFilterFactory.hpp"
 #include "DREAM3DLib/Common/FilterFactory.hpp"
+#include "TransformationPhase/TransformationPhaseConstants.h"
 
-#include "PipelineBuilder/FilterWidgetManager.h"
-#include "FilterWidgets/QFilterWidgetFactory.hpp"
-
-#include "moc_TransformationPhasePlugin.cxx"
+#include "moc_TransformationPhasePlugin.cpp"
 
 Q_EXPORT_PLUGIN2(TransformationPhasePlugin, TransformationPhasePlugin)
 
 namespace Detail
 {
-   const std::string TransformationPhasePluginFile("TransformationPhasePlugin");
-   const std::string TransformationPhasePluginDisplayName("TransformationPhasePlugin");
-   const std::string TransformationPhasePluginBaseName("TransformationPhasePlugin");
+   const QString TransformationPhasePluginFile("TransformationPhasePlugin");
+   const QString TransformationPhasePluginDisplayName("TransformationPhasePlugin");
+   const QString TransformationPhasePluginBaseName("TransformationPhasePlugin");
 }
 
 // -----------------------------------------------------------------------------
@@ -93,5 +91,5 @@ void TransformationPhasePlugin::readSettings(QSettings &prefs)
 
 }
 
-#include "TransformationPhaseFilters/RegisterKnownFilterWidgets.cpp"
+//#include "TransformationPhaseFilters/RegisterKnownFilterWidgets.cpp"
 #include "TransformationPhaseFilters/RegisterKnownFilters.cpp"
