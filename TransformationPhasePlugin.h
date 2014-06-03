@@ -54,7 +54,8 @@
 class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
 {
     Q_OBJECT;
-    Q_INTERFACES(DREAM3DPluginInterface)
+    
+	Q_INTERFACES(DREAM3DPluginInterface)
 
   public:
     TransformationPhasePlugin();
@@ -63,11 +64,6 @@ class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
      * @brief Returns the name of the plugin
      */
     virtual QString getPluginName();
-
-    /**
-     * @brief Register all the filters with the FilterWidgetFactory
-     */
-    virtual void registerFilterWidgets();
 
     /**
      * @brief registerFilters
@@ -92,4 +88,4 @@ class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
     void operator=(const TransformationPhasePlugin&); // Operator '=' Not Implemented
 };
 
-#endif /* TRANSFORMATIONPHASE_H_ */
+#endif /* _TransformationPhase_H_ */

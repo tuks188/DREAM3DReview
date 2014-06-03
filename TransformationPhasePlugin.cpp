@@ -72,7 +72,7 @@ TransformationPhasePlugin::~TransformationPhasePlugin()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getPluginName()
 {
-  return QString::fromStdString(Detail::TransformationPhasePluginDisplayName);
+  return (Detail::TransformationPhasePluginDisplayName);
 }
 
 // -----------------------------------------------------------------------------

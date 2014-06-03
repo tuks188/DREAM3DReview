@@ -15,12 +15,12 @@ set(PLUGIN_NAME TransformationPhase)
 # --------------------------------------------------------------------
 # Look for Qt 4 as we need it for the plugin GUI to be generated
 if(NOT QT4_FOUND)
-    message(FATAL_ERROR "Qt 4 is Needed for this TransformationPhase.")
+    message(FATAL_ERROR "Qt 4 is Needed for this ${PLUGIN_NAME}Plugin.")
 endif()
 include( ${QT_USE_FILE} )
 
 
-set(TransformationPhase_Project_SRCS "")
+set(${PLUGIN_NAME}_Project_SRCS "")
 
 include(${DREAM3DProj_SOURCE_DIR}/Source/DREAM3DLib/DREAM3DLibMacros.cmake)
 
@@ -53,8 +53,8 @@ file(APPEND ${RegisterKnownFiltersFile} "\nvoid ${PLUGIN_NAME}Plugin::registerFi
 
 # --------------------------------------------------------------------
 # Generate a file with all of our MOC'ed sources and  headers
-set(FilterWidget_GEN_HDRS_File ${TransformationPhase_BINARY_DIR}/FilterWidget_GEN_HDRS_File.cmake)
-set(FilterWidget_GEN_SRCS_File ${TransformationPhase_BINARY_DIR}/FilterWidget_GEN_SRCS_File.cmake)
+set(FilterWidget_GEN_HDRS_File ${${PLUGIN_NAME}_BINARY_DIR}/FilterWidget_GEN_HDRS_File.cmake)
+set(FilterWidget_GEN_SRCS_File ${${PLUGIN_NAME}_BINARY_DIR}/FilterWidget_GEN_SRCS_File.cmake)
 file(WRITE ${FilterWidget_GEN_HDRS_File})
 file(WRITE ${FilterWidget_GEN_SRCS_File})
 
@@ -117,38 +117,44 @@ set(FILTER_WIDGETS_DOCS_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Documentation/Filters)
 set(FILTER_INCLUDE_PREFIX "${PLUGIN_NAME}")
 file(MAKE_DIRECTORY ${${PLUGIN_NAME}_BINARY_DIR}/Temp)
 
+
 # --------------------------------------------------------------------
 # On Linux we need -fPIC for linking static and shared libraries
 if(UNIX AND NOT APPLE)
   set_source_files_properties(${${PLUGIN_NAME}_Project_SRCS} PROPERTIES COMPILE_FLAGS -fPIC)
 endif()
 
-
 # --------------------------------------------------------------------
-# These are the NON-Filter but Qt derived sources of the plugin. In case you have
-# additional Qt source files that you need compiled.
-set(TransformationPhase_HDRS
-  ${PROJECT_SOURCE_DIR}/TransformationPhasePlugin.h
+#
+# --------------------------------------------------------------------
+set(${PLUGIN_NAME}_HDRS
+  ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}Plugin.h
 )
 
-set(TransformationPhase_SRCS
- ${PROJECT_SOURCE_DIR}/TransformationPhasePlugin.cpp
+set(${PLUGIN_NAME}_SRCS
+ ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}Plugin.cpp
 )
-cmp_IDE_SOURCE_PROPERTIES( "TransformationPhase/" "${TransformationPhase_HDRS}" "${TransformationPhase_SRCS}" "0")
 
+set(${PLUGIN_NAME}_MISC_HDRS
+    ${PROJECT_SOURCE_DIR}/${PLUGIN_NAME}Constants.h
+)
+cmp_IDE_SOURCE_PROPERTIES( "${PLUGIN_NAME}/" "${${PLUGIN_NAME}_HDRS};${${PLUGIN_NAME}_MISC_HDRS}" "${${PLUGIN_NAME}_SRCS}" "0")
+
+# -----------------------------------------------------------------------------
+# Collect all of our Generated header and source files so that they show up in the various projects
+set(${PLUGIN_NAME}_GEN_HDRS
+   ${AllFiltersHeaderFile}
+   ${RegisterKnownFiltersFile}
+   ${AllFilterParameterWidgetsHeaderFile}
+   ${RegisterKnownFilterParameterWidgetsFile}
+)
 
 # --------------------------------------------------------------------
 #
 # --------------------------------------------------------------------
-
-# These generated moc files will be #include in the FilterWidget source file that
-# are generated so we need to tell the build system to NOT compile these files
-set_source_files_properties( ${${PLUGIN_NAME}_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
-
-# --------------------------------------------------------------------
-# -- Create a Qt Resource header file of the documentation html files
-#QT4_ADD_RESOURCES( ${PLUGIN_NAME}_Generated_RC_SRCS "${HtmlDocQrcFile}"  )
-
+set_source_files_properties( ${${PLUGIN_NAME}_MODULE_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties( ${RegisterKnownFiltersFile} PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties( ${RegisterKnownFilterParameterWidgetsFile} PROPERTIES HEADER_FILE_ONLY TRUE)
 # --------------------------------------------------------------------
 # Group all the generated source files in IDE's that support it. Makes it clear
 # to the user of the IDE what is generated and what is not.
@@ -158,11 +164,8 @@ cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Qrc" "${${PLUGIN_NAME}_Generated_RC_SRC
 
 
 # --------------------------------------------------------------------
-# Create an install rule for the headers. If you do NOT want your headers
-# installed for a deployment to other machines then change the PROJECT_INSTALL_HEADERS
-# to a Zero
-
-
+#
+# --------------------------------------------------------------------
 set(${PLUGIN_NAME}_MODULE_SRCS
   ${${PLUGIN_NAME}_Project_SRCS}  # These sources come from the SourceList.cmake file and include .h/.cpp/moc/uic files
   ${${PLUGIN_NAME}_HDRS}
@@ -181,23 +184,21 @@ set(${PLUGIN_NAME}_MODULE_SRCS
   ${${PLUGIN_NAME}_Widgets_UIS}
   ${${PLUGIN_NAME}_Widgets_Generated_MOC_SRCS}
   ${${PLUGIN_NAME}_Widgets_Generated_UI_HDRS}
+  ${${PLUGIN_NAME}_GEN_HDRS}
 )
 
 # --------------------------------------------------------------------
 # Setup output Directory for the plugin
 if(NOT MSVC)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${DREAM3DProj_BINARY_DIR}/Bin/plugins  )
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${DREAM3DProj_BINARY_DIR}/Bin/Plugins  )
 endif()
 
-# --------------------------------------------------------------------
-# Add the plugin as a MODULE
-add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_Project_SRCS})
 
-# --------------------------------------------------------------------
-# Link the plugin with other DREAM3D Libraries.
+
+add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_MODULE_SRCS})
 target_link_libraries(${PLUGIN_NAME}
-                    DREAM3DLib
                     ${QT_QTCORE_LIBRARY}
+                    DREAM3DLib
                     ${QT_QTGUI_LIBRARY}
                     QtSupport
                     )
@@ -207,6 +208,7 @@ SET_TARGET_PROPERTIES(${PLUGIN_NAME} PROPERTIES FOLDER ${PLUGIN_NAME}Targets)
 # Set some additional properties of the plugin like its output name
 PluginProperties(${PLUGIN_NAME} "_debug" "${DREAM3D_VERSION}"
                 "${DREAM3D_BINARY_DIR}" "${CMP_PLUGIN_LIST_FILE}")
+
 
 # --------------------------------------------------------------------
 # Put back the output directory
