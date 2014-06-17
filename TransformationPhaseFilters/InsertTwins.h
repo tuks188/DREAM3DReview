@@ -57,8 +57,8 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author
- * @date May 21, 2014
- * @version 1.0
+ * @date June 17, 2014
+ * @version 5.0
  */
 class InsertTwins : public AbstractFilter
 {
@@ -112,8 +112,8 @@ class InsertTwins : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureParentIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureParentIdsArrayPath READ getFeatureParentIdsArrayPath WRITE setFeatureParentIdsArrayPath)
 	
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesPerParentArrayPath)
-    Q_PROPERTY(DataArrayPath NumFeaturesPerParentArrayPath READ getNumFeaturesPerParentArrayPath WRITE setNumFeaturesPerParentArrayPath)
+    DREAM3D_FILTER_PARAMETER(QString, NumFeaturesPerParentArrayName)
+    Q_PROPERTY(QString NumFeaturesPerParentArrayName READ getNumFeaturesPerParentArrayName WRITE setNumFeaturesPerParentArrayName)
 	
 	DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
@@ -173,7 +173,7 @@ signals:
   private:
 
     // Cell Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureIds)
 	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, CellEulerAngles)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
