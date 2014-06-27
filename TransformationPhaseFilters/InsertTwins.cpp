@@ -36,9 +36,9 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "InsertTwins.h"
-#include "DREAM3DLib\GenericFilters\FindFeatureCentroids.h"
+#include "Plugins\Generic\GenericFilters\FindFeatureCentroids.h"
 #include "Plugins\Statistics\StatisticsFilters\FindNeighbors.h"
-#include "DREAM3DLib\GenericFilters\FindSurfaceFeatures.h"
+#include "Plugins\Generic\GenericFilters\FindSurfaceFeatures.h"
 #include "Plugins\Statistics\StatisticsFilters\FindSizes.h"
 
 #include "DREAM3DLib/Common/Constants.h"

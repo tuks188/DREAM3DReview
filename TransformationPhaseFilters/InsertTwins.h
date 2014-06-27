@@ -132,7 +132,7 @@ class InsertTwins : public AbstractFilter
 	
 	virtual const QString getCompiledLibraryName() { return SyntheticBuilding::SyntheticBuildingBaseName; }
 	virtual const QString getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
-	virtual const QString getSubGroupName() {return DREAM3D::FilterSubGroups::PackingFilters;}
+	virtual const QString getSubGroupName() { return DREAM3D::FilterSubGroups::PackingFilters; }
     virtual const QString getHumanLabel() { return "Insert Twins"; }
     virtual const QString getBrandingString() { return SyntheticBuilding::SyntheticBuildingPluginDisplayName + " Filter"; }
 
