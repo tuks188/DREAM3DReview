@@ -56,8 +56,8 @@
 /**
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
- * @author
- * @date June 17, 2014
+ * @author Joseph C. Tucker (UES, Inc.)
+ * @date July 7, 2014
  * @version 5.0
  */
 class InsertTwins : public AbstractFilter
@@ -78,12 +78,6 @@ class InsertTwins : public AbstractFilter
     Q_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
     DREAM3D_FILTER_PARAMETER(float, PeninsulaFrac)
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
-
-    DREAM3D_FILTER_PARAMETER(QString, NewCellAttributeMatrixName)
-    Q_PROPERTY(QString NewCellAttributeMatrixName READ getNewCellAttributeMatrixName WRITE setNewCellAttributeMatrixName)
-	
-	DREAM3D_FILTER_PARAMETER(QString, NewCellFeatureAttributeMatrixName)
-    Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -109,8 +103,8 @@ class InsertTwins : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(QString, ActiveArrayName)
     Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureParentIdsArrayPath)
-    Q_PROPERTY(DataArrayPath FeatureParentIdsArrayPath READ getFeatureParentIdsArrayPath WRITE setFeatureParentIdsArrayPath)
+    DREAM3D_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
+    Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
 	
     DREAM3D_FILTER_PARAMETER(QString, NumFeaturesPerParentArrayName)
     Q_PROPERTY(QString NumFeaturesPerParentArrayName READ getNumFeaturesPerParentArrayName WRITE setNumFeaturesPerParentArrayName)
@@ -190,7 +184,7 @@ signals:
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
-	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, NumFeatures)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
     // All other private variables
     void dataCheck();
