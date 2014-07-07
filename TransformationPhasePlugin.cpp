@@ -91,5 +91,5 @@ void TransformationPhasePlugin::readSettings(QSettings &prefs)
 
 }
 
-//#include "TransformationPhaseFilters/RegisterKnownFilterWidgets.cpp"
 #include "TransformationPhaseFilters/RegisterKnownFilters.cpp"
+#include "TransformationPhase/FilterParameterWidgets/RegisterKnownFilterParameterWidgets.cpp"

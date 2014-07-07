@@ -48,7 +48,7 @@
  * @class TransformationPhasePlugin TransformationPhasePlugin.h TransformationPhase/TransformationPhasePlugin.h
  * @brief
  * @author Joseph C Tucker (UES) & Michael A Groeber (AFRL)
- * @date June 3, 2014
+ * @date July 7, 2014
  * @version 4.0
  */
 class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
@@ -60,12 +60,18 @@ class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
   public:
     TransformationPhasePlugin();
     virtual ~TransformationPhasePlugin();
-    /**
+    
+	/**
      * @brief Returns the name of the plugin
      */
     virtual QString getPluginName();
-
-    /**
+    
+	/**
+     * @brief Register all the filters with the FilterWidgetFactory
+     */
+    virtual void registerFilterWidgets(FilterWidgetManager* fwm);
+    
+	/**
      * @brief registerFilters
      */
     virtual void registerFilters(FilterManager* fm);
