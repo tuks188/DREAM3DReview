@@ -101,7 +101,6 @@ InsertTwins::InsertTwins() :
   m_NumFeaturesArrayName(DREAM3D::EnsembleData::NumFeatures),
   m_NumFeatures(NULL)
 {
-
   setupFilterParameters();
 }
 
@@ -199,14 +198,16 @@ void InsertTwins::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
 
-  if( NULL != m_ActivePtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
-  { m_Active = m_ActivePtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  if( NULL != m_AvgQuatsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_AvgQuats = m_AvgQuatsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  //if( NULL != m_ActivePtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  //{ m_Active = m_ActivePtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
   if( NULL != m_CentroidsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Centroids = m_CentroidsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if( NULL != m_EquivalentDiametersPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( NULL != m_FeatureEulerAnglesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_FeatureEulerAngles = m_FeatureEulerAnglesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
   if( NULL != m_EquivalentDiametersPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
-  { m_FeatureEulerAngles = m_FeatureEulerAnglesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  { m_EquivalentDiameters = m_EquivalentDiametersPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
   if( NULL != m_FeaturePhasesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_FeaturePhases = m_FeaturePhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
   if( NULL != m_FeatureParentIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
@@ -306,6 +307,10 @@ void InsertTwins::preflight()
   emit updateFilterParameters(this);
   dataCheck();
   emit preflightExecuted();
+
+  AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(getFeaturePhasesArrayPath());
+  if(attrMat == NULL) { return; }
+
   setInPreflight(false);
 }
 
@@ -320,8 +325,8 @@ void InsertTwins::execute()
 
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
-  int stop = 0;
- //  setting ensemble level data
+
+  //  setting ensemble level data
  // typedef dataarray<unsigned int> xtalstructarraytype;
  // typedef dataarray<unsigned int> ptypearraytype;
  // typedef dataarray<unsigned int> stypearraytype;
@@ -378,7 +383,8 @@ void InsertTwins::insert_twins()
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
   int64_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
-  int stop = 0;
+  QVector<size_t> tDims(1, 1);
+
   // find the minimum resolution
   float xRes = m->getXRes();
   float yRes = m->getYRes();
@@ -488,7 +494,7 @@ void InsertTwins::insert_twins()
 			  - sampleHabitPlane[2] * (m_Centroids[3*curFeature+2] + shifts[i]);
 
 			createdTwin = place_twin(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
-
+			int stop = 0;
 			// change an isthmus twin to a peninsula twin
 			random = static_cast<float>(rg.genrand_res53());
 			if (createdTwin == true) 
@@ -496,8 +502,10 @@ void InsertTwins::insert_twins()
 			  if (random < m_PeninsulaFrac) peninsula_twin(curFeature, totalFeatures);
 		  
 			  // filling in twin stats that already exist for parents
+			  tDims[0] = totalFeatures + 1;
+			  m->getAttributeMatrix(getFeaturePhasesArrayPath().getAttributeMatrixName())->resizeAttributeArrays(tDims);
 			  updateFeatureInstancePointers();
-			  totalFeatures = transfer_attributes(totalFeatures, totalPoints, q2, e, curFeature);
+			  totalFeatures = transfer_attributes(totalFeatures, q2, e, curFeature);
 			  ++m_NumFeaturesPerParent[curFeature];
 			}
 		  }
@@ -579,28 +587,41 @@ bool InsertTwins::place_twin(size_t curFeature, float sampleHabitPlane[3], size_
 //			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
 		  {	
 			// check if an "island" twin voxel will be placed (excluding the first voxel placement)
+			/*
 			if ((k == 0 || m_FeatureIds[zStride+yStride+k-1] != totalFeatures)
-				&& (k == (m->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] != totalFeatures)
+				&& (k == (xPoints - 1) || m_FeatureIds[zStride+yStride+k+1] != totalFeatures)
 				&& (j == 0 || m_FeatureIds[zStride+yStride+k-xPoints] != totalFeatures)
-				&& (j == (m->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] != totalFeatures)
+				&& (j == (yPoints - 1) || m_FeatureIds[zStride+yStride+k+xPoints] != totalFeatures)
 				&& (i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] != totalFeatures)
-				&& (i == (m->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] != totalFeatures)
+				&& (i == (zPoints - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] != totalFeatures)
 				&& firstVoxel == false)
 			{
 			  // if an "island" twin voxel is inserted flip all the twin voxels back to the grain ID
 			  // and this will go in the books as a failed twin insertion attempt
-			  for (int32_t l = 0; l < totalPoints; ++l) 
+			  for (int64_t l = 0; l < totalPoints; ++l) 
 			  {
-				if (m_FeatureIds[l] == totalFeatures) m_FeatureIds[l] = curFeature;
+				if (m_FeatureIds[l] == totalFeatures) 
+				{
+	//			  int goal = m_FeatureIds[l];
+				  m_FeatureIds[l] = curFeature;
+	//			  int one = m_FeatureIds[zStride+yStride+k+xPoints*yPoints];
+	//			  int two =  m_FeatureIds[zStride+yStride+k-xPoints*yPoints];
+	//			  int three = m_FeatureIds[zStride+yStride+k+xPoints];
+	//			  int four = m_FeatureIds[zStride+yStride+k-xPoints];
+	//			  int five = m_FeatureIds[zStride+yStride+k+1];
+	//			  int six = m_FeatureIds[zStride+yStride+k-1];
+				 int stop = 0; 
+				}
 			  }
 			    flag = false;
 			}
 			else
 			{
+			  */
 			  m_FeatureIds[zStride+yStride+k] = totalFeatures;
 			  flag = true;
-			  firstVoxel = false;
-			}
+			  firstVoxel = false; 
+	//		}
 		  }
 		}
 	  }
@@ -676,7 +697,7 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
   for(int i = 0; i < zPoints; i++)
   {
 	zStride = i * xPoints * yPoints;
-	for (int j = 0 ; j < yPoints; j++)
+	for (int j = 0; j < yPoints; j++)
 	{
 	  yStride = j * xPoints;
 	  for(int k = 0; k < xPoints; k++)
@@ -697,7 +718,7 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t InsertTwins::transfer_attributes(size_t totalFeatures, size_t totalPoints, QuatF q, float e[], size_t curFeature)
+size_t InsertTwins::transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature)
 { 
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
 
@@ -707,11 +728,15 @@ size_t InsertTwins::transfer_attributes(size_t totalFeatures, size_t totalPoints
   m_AvgQuats[4*totalFeatures+1] = q.y;
   m_AvgQuats[4*totalFeatures+2] = q.z;
   m_AvgQuats[4*totalFeatures+3] = q.w;
-  //m_Active[totalFeatures] = true;
+ // m_Active[totalFeatures] = true;
+  m_Centroids[3*totalFeatures+0] = 1.0f;
+  m_Centroids[3*totalFeatures+1] = 2.0f;
+  m_Centroids[3*totalFeatures+2] = 3.0f;
   m_FeatureEulerAngles[3*totalFeatures+0] = e[0];
   m_FeatureEulerAngles[3*totalFeatures+1] = e[1];
   m_FeatureEulerAngles[3*totalFeatures+2] = e[2];
-  m_FeaturePhases[totalFeatures] = numensembles - 1;
+  m_EquivalentDiameters[totalFeatures] = 4.0f;
+  m_FeaturePhases[totalFeatures] = numensembles;
   m_FeatureParentIds[totalFeatures] = curFeature;
   m_NumFeaturesPerParent[totalFeatures] = 0;
   return ++totalFeatures;

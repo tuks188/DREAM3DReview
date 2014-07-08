@@ -57,7 +57,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author Joseph C. Tucker (UES, Inc.)
- * @date July 7, 2014
+ * @date July 8, 2014
  * @version 5.0
  */
 class InsertTwins : public AbstractFilter
@@ -141,10 +141,9 @@ class InsertTwins : public AbstractFilter
     * @param reader The reader that is used to read the options from a file
     */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
-
     /**
-     * @brief Reimplemented from @see AbstractFilter class
-     */
+    * @brief Reimplemented from @see AbstractFilter class
+    */
     virtual void execute();
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
     virtual void preflight();
@@ -161,7 +160,7 @@ signals:
 	void insert_twins();
 	bool place_twin(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
     void peninsula_twin(size_t curFeature, size_t totalFeatures);
-	size_t transfer_attributes(size_t totalFeatures, size_t totalPoints, QuatF q, float e[], size_t curFeature);
+	size_t transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature);
 	void filter_calls();
 
   private:
