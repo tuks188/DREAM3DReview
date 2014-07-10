@@ -41,10 +41,10 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "Plugins\Generic\GenericFilters\FindFeatureCentroids.h"
-#include "Plugins\Statistics\StatisticsFilters\FindNeighbors.h"
-#include "Plugins\Generic\GenericFilters\FindSurfaceFeatures.h"
-#include "Plugins\Statistics\StatisticsFilters\FindSizes.h"
+#include "Plugins/Generic/GenericFilters/FindFeatureCentroids.h"
+#include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
+#include "Plugins/Generic/GenericFilters/FindSurfaceFeatures.h"
+#include "Plugins/Statistics/StatisticsFilters/FindSizes.h"
 
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/Math/DREAM3DMath.h"
