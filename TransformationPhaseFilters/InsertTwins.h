@@ -93,6 +93,7 @@ class DREAM3DLib_EXPORT InsertTwins : public AbstractFilter
     DREAM3D_INSTANCE_PROPERTY(int, NumTwinsPerGrain)
     DREAM3D_INSTANCE_PROPERTY(float, CoherentFrac)
     DREAM3D_INSTANCE_PROPERTY(float, PeninsulaFrac)
+    DREAM3D_INSTANCE_PROPERTY(int, VariantNum)
 
     virtual const std::string getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
 	virtual const std::string getSubGroupName() {return DREAM3D::FilterSubGroups::PackingFilters;}

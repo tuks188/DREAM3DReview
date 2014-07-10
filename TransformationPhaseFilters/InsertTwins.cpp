@@ -36,15 +36,15 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "InsertTwins.h"
-#include "DREAM3DLib\GenericFilters\FindGrainCentroids.h"
-#include "DREAM3DLib\StatisticsFilters\FindNeighbors.h"
-#include "DREAM3DLib\GenericFilters\FindSurfaceGrains.h"
-#include "DREAM3DLib\StatisticsFilters\FindSizes.h"
-#include "DREAM3DLib\ReconstructionFilters\ScalarSegmentGrains.h"
-#include "DREAM3DLib\GenericFilters\RenameCellArray.h"
-#include "DREAM3DLib\GenericFilters\RenameFieldArray.h"
-#include "DREAM3DLib\GenericFilters\LinkFieldMapToCellArray.h"
-#include "DREAM3DLib\GenericFilters\RemoveArrays.h"
+#include "DREAM3DLib/GenericFilters/FindGrainCentroids.h"
+#include "DREAM3DLib/StatisticsFilters/FindNeighbors.h"
+#include "DREAM3DLib/GenericFilters/FindSurfaceGrains.h"
+#include "DREAM3DLib/StatisticsFilters/FindSizes.h"
+#include "DREAM3DLib/ReconstructionFilters/ScalarSegmentGrains.h"
+#include "DREAM3DLib/GenericFilters/RenameCellArray.h"
+#include "DREAM3DLib/GenericFilters/RenameFieldArray.h"
+#include "DREAM3DLib/GenericFilters/LinkFieldMapToCellArray.h"
+#include "DREAM3DLib/GenericFilters/RemoveArrays.h"
 
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/Math/DREAM3DMath.h"
@@ -82,6 +82,7 @@ InsertTwins::InsertTwins() :
   m_NumFieldsArrayName(DREAM3D::EnsembleData::NumFields),
   m_TwinThickness(0.5f),
   m_NumTwinsPerGrain(2),
+  m_VariantNum(1),
   m_CoherentFrac(1.0f),
   m_PeninsulaFrac(0.0f),
   m_GrainIds(NULL),
@@ -156,6 +157,15 @@ void InsertTwins::setupFilterParameters()
     option->setUnits("");
     parameters.push_back(option);
   }
+  {
+    FilterParameter::Pointer option = FilterParameter::New();
+    option->setHumanLabel("Variant Number");
+    option->setPropertyName("VariantNum");
+    option->setWidgetType(FilterParameter::DoubleWidget);
+    option->setValueType("int");
+    option->setUnits("");
+    parameters.push_back(option);
+  }
   setFilterParameters(parameters);
 }
 
@@ -171,6 +181,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   setNumTwinsPerGrain( reader->readValue("NumTwinsPerGrain", getNumTwinsPerGrain()) );
   setCoherentFrac( reader->readValue("CoherentFrac", getCoherentFrac()) );
   setPeninsulaFrac( reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
+  setVariantNum( reader->readValue("VariantNum", getVariantNum()) );
 /* FILTER_WIDGETCODEGEN_AUTO_GENERATED_CODE END*/
   reader->closeFilterGroup();
 }
@@ -185,6 +196,7 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
   writer->writeValue("NumTwinsPerGrain", getNumTwinsPerGrain() );
   writer->writeValue("CoherentFrac", getCoherentFrac() );
   writer->writeValue("PeninsulaFrac", getPeninsulaFrac() );
+  writer->writeValue("VariantNum", getVariantNum() );
     writer->closeFilterGroup();
     return ++index; // we want to return the next index that was just written to
 }
@@ -358,8 +370,19 @@ void InsertTwins::insert_twins()
 	MatrixMath::Transpose3x3(g, gT);
     MatrixMath::Multiply3x3with3x1(g, crystalHabitPlane, sampleHabitPlane);
 
+    rotMat[0][0]=0.5774;
+    rotMat[0][1]=0.5774;
+    rotMat[0][2]=0.5774;
+    rotMat[1][0]=-0.4082;
+    rotMat[1][1]=-0.4082;
+    rotMat[1][2]=0.8165;
+    rotMat[2][0]=0.7071;
+    rotMat[2][1]=-0.7071;
+    rotMat[2][2]=0;
+
+
 	// generate twin orientation with a 60 degree rotation about the habit plane
-	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
+    //OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
 	OrientationMath::MatToEuler(newMat, e[0], e[1], e[2]);
 	OrientationMath::EulertoQuat(q2, e[0], e[1], e[2]);
@@ -529,7 +552,7 @@ bool InsertTwins::place_twin(size_t curGrain, float sampleHabitPlane[3], size_t 
 			{
 			  m_GrainIds[zStride+yStride+k] = totalFields;
 			  flag = true;
-			  firstVoxel == false;
+              firstVoxel = false;
 			}
 		  }
 		}
