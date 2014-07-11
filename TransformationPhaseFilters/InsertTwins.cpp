@@ -2,6 +2,7 @@
  * Copyright (c) 2011 Michael A. Jackson (BlueQuartz Software)
  * Copyright (c) 2011 Dr. Michael A. Groeber (US Air Force Research Laboratories)
  * Copyright (c) 2014 Dr. Joseph C. Tucker (UES, Inc.)
+ * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon University)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
