@@ -124,6 +124,9 @@ class InsertTwins : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesArrayPath)
     Q_PROPERTY(DataArrayPath NumFeaturesArrayPath READ getNumFeaturesArrayPath WRITE setNumFeaturesArrayPath)
 
+    DREAM3D_FILTER_PARAMETER(unsigned int, CrystalStructure)
+    Q_PROPERTY(unsigned int CrystalStructure READ getCrystalStructure WRITE setCrystalStructure)
+
     //typedef boost::shared_array<float> SharedFloatArray;
     //typedef boost::shared_array<int> SharedIntArray;
 	
@@ -167,6 +170,7 @@ signals:
 	void filter_calls();
 
   private:
+    QVector<OrientationOps::Pointer> m_OrientationOps;
 
     // Cell Data - make sure these are all initialized to NULL in the constructor
     DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureIds)

@@ -101,8 +101,10 @@ InsertTwins::InsertTwins() :
   m_PhaseTypes(NULL),
   m_ShapeTypes(NULL),
   m_NumFeaturesArrayName(DREAM3D::EnsembleData::NumFeatures),
-  m_NumFeatures(NULL)
+  m_NumFeatures(NULL),
+  m_CrystalStructure(Ebsd::CrystalStructure::UnknownCrystalStructure)
 {
+  m_OrientationOps = OrientationOps::getOrientationOpsVector();
   setupFilterParameters();
 }
 
@@ -401,15 +403,18 @@ void InsertTwins::insert_twins()
 
   float sampleHabitPlane[3] = {0.0f,0.0f,0.0f}, crystalHabitPlane[3] = {0.0f,0.0f,0.0f};
   QuatF q1, q2;
-  float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3];
+  float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3], newMatCopy[3][3], symMat[3][3];
   float plateThickness = 0.0f;
   size_t numFeatures = totalFeatures;
   float d, random, random2;
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
   std::vector<float> shifts;
-  int numTwins;
+  int numTwins = 0;
   bool createdTwin = false;
+  float traceMin = -1.0f;
+  float trace = 0.0f;
+  int minPos = 0;
 
   float voxelDiagonal = sqrtf(xRes*xRes + yRes*yRes + zRes*zRes);
 
@@ -455,6 +460,29 @@ void InsertTwins::insert_twins()
 	// OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
+
+	// find the minimum angle
+	MatrixMath::Copy3x3(newMat, newMatCopy);
+	// Get our OrientationOps pointer for the selected crystal structure
+	OrientationOps::Pointer orientOps = m_OrientationOps[m_CrystalStructure];
+
+	//get number of symmetry operators
+	int n_sym = orientOps->getNumSymOps();
+	int stop = 0;
+	for (int i = 0; i < n_sym; ++i)
+	{
+	  orientOps->getMatSymOp(i, symMat);
+	  MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
+	  trace = newMat[0][0] + newMat[1][1] + newMat[2][2];
+	  if (trace > traceMin)
+	  {
+		traceMin = trace;
+		minPos = i;
+	  }
+	}
+	orientOps->getMatSymOp(minPos, symMat);
+	MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
+
 	OrientationMath::MattoEuler(newMat, e[0], e[1], e[2]);
 	OrientationMath::EulertoQuat(e[0], e[1], e[2], q2);
 
