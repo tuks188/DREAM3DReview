@@ -32,7 +32,7 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  This code was written under United States Air Force Contract number
- *                   FA8650-07-D-5800 and FA8650-10-D-5226
+ *     FA8650-07-D-5800 and FA8650-10-D-5226 and The Boeing Company
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
