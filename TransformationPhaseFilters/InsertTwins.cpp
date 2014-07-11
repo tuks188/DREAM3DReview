@@ -83,6 +83,7 @@ InsertTwins::InsertTwins() :
   m_NumFeaturesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::NumFeatures),
   m_TwinThickness(0.5f),
   m_NumTwinsPerFeature(2),
+  m_VariantNum(1),
   m_CoherentFrac(1.0f),
   m_PeninsulaFrac(0.0f),
   m_FeatureIds(NULL),
@@ -121,6 +122,7 @@ void InsertTwins::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Average Number Of Twins Per Feature", "NumTwinsPerFeature", FilterParameterWidgetType::IntWidget, getNumTwinsPerFeature(), false));
   parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), false));
   parameters.push_back(FilterParameter::New("\"Peninsula\" Twin Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), false));
+  parameters.push_back(FilterParameter::New("Variant Number", "VariantNum", FilterParameterWidgetType::IntWidget, getVariantNum(), false));
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("Cell FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
@@ -149,6 +151,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   setNumTwinsPerFeature( reader->readValue("NumTwinsPerFeature", getNumTwinsPerFeature()) );
   setCoherentFrac( reader->readValue("CoherentFrac", getCoherentFrac()) );
   setPeninsulaFrac( reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
+  setVariantNum( reader->readValue("VariantNum", getVariantNum()) );
 
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
   setCellEulerAnglesArrayPath(reader->readDataArrayPath("CellEulerAnglesArrayPath", getCellEulerAnglesArrayPath() ) );
@@ -175,6 +178,8 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
   DREAM3D_FILTER_WRITE_PARAMETER(NumTwinsPerFeature)
   DREAM3D_FILTER_WRITE_PARAMETER(CoherentFrac)
   DREAM3D_FILTER_WRITE_PARAMETER(PeninsulaFrac)
+  DREAM3D_FILTER_WRITE_PARAMETER(VariantNum)
+
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
@@ -433,7 +438,20 @@ void InsertTwins::insert_twins()
 	MatrixMath::Transpose3x3(g, gT);
     MatrixMath::Multiply3x3with3x1(g, crystalHabitPlane, sampleHabitPlane);
 
+    rotMat[0][0]=0.5774;
+    rotMat[0][1]=0.5774;
+    rotMat[0][2]=0.5774;
+    rotMat[1][0]=-0.4082;
+    rotMat[1][1]=-0.4082;
+    rotMat[1][2]=0.8165;
+    rotMat[2][0]=0.7071;
+    rotMat[2][1]=-0.7071;
+    rotMat[2][2]=0;
+
 	// generate twin orientation with a 60 degree rotation about the habit plane
+
+	// Commented out for Sudipto's usage
+	// OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
 	OrientationMath::MattoEuler(newMat, e[0], e[1], e[2]);

@@ -57,7 +57,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author Joseph C. Tucker (UES, Inc.)
- * @date July 8, 2014
+ * @date July 11, 2014
  * @version 5.0
  */
 class InsertTwins : public AbstractFilter
@@ -78,6 +78,8 @@ class InsertTwins : public AbstractFilter
     Q_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
     DREAM3D_FILTER_PARAMETER(float, PeninsulaFrac)
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
+    DREAM3D_FILTER_PARAMETER(int, VariantNum)
+    Q_PROPERTY(int VariantNum READ getVariantNum WRITE setVariantNum)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
