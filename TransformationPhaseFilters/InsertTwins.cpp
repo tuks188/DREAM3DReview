@@ -85,6 +85,7 @@ InsertTwins::InsertTwins() :
   m_TwinThickness(0.5f),
   m_NumTwinsPerFeature(2),
   m_VariantNum(1),
+  m_TransCrystalStruct(999),
   m_CoherentFrac(1.0f),
   m_PeninsulaFrac(0.0f),
   m_FeatureIds(NULL),
@@ -101,8 +102,7 @@ InsertTwins::InsertTwins() :
   m_PhaseTypes(NULL),
   m_ShapeTypes(NULL),
   m_NumFeaturesArrayName(DREAM3D::EnsembleData::NumFeatures),
-  m_NumFeatures(NULL),
-  m_CrystalStructure(Ebsd::CrystalStructure::UnknownCrystalStructure)
+  m_NumFeatures(NULL)
 {
   m_OrientationOps = OrientationOps::getOrientationOpsVector();
   setupFilterParameters();
@@ -126,6 +126,7 @@ void InsertTwins::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), false));
   parameters.push_back(FilterParameter::New("\"Peninsula\" Twin Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), false));
   parameters.push_back(FilterParameter::New("Variant Number", "VariantNum", FilterParameterWidgetType::IntWidget, getVariantNum(), false));
+  parameters.push_back(FilterParameter::New("Transformation Phase Crystal Structure", "TransCrystalStruct", FilterParameterWidgetType::IntWidget, getTransCrystalStruct(), false));
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("Cell FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
@@ -155,6 +156,7 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   setCoherentFrac( reader->readValue("CoherentFrac", getCoherentFrac()) );
   setPeninsulaFrac( reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
   setVariantNum( reader->readValue("VariantNum", getVariantNum()) );
+  setTransCrystalStruct( reader->readValue("TransCrystalStruct", getTransCrystalStruct()) );
 
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
   setCellEulerAnglesArrayPath(reader->readDataArrayPath("CellEulerAnglesArrayPath", getCellEulerAnglesArrayPath() ) );
@@ -182,6 +184,7 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
   DREAM3D_FILTER_WRITE_PARAMETER(CoherentFrac)
   DREAM3D_FILTER_WRITE_PARAMETER(PeninsulaFrac)
   DREAM3D_FILTER_WRITE_PARAMETER(VariantNum)
+  DREAM3D_FILTER_WRITE_PARAMETER(TransCrystalStruct)
 
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
@@ -464,7 +467,7 @@ void InsertTwins::insert_twins()
 	// find the minimum angle
 	MatrixMath::Copy3x3(newMat, newMatCopy);
 	// Get our OrientationOps pointer for the selected crystal structure
-	OrientationOps::Pointer orientOps = m_OrientationOps[m_CrystalStructure];
+	OrientationOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
 
 	//get number of symmetry operators
 	int n_sym = orientOps->getNumSymOps();

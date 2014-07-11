@@ -81,6 +81,8 @@ class InsertTwins : public AbstractFilter
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
     DREAM3D_FILTER_PARAMETER(int, VariantNum)
     Q_PROPERTY(int VariantNum READ getVariantNum WRITE setVariantNum)
+    DREAM3D_FILTER_PARAMETER(int, TransCrystalStruct)
+    Q_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -123,9 +125,6 @@ class InsertTwins : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesArrayPath)
     Q_PROPERTY(DataArrayPath NumFeaturesArrayPath READ getNumFeaturesArrayPath WRITE setNumFeaturesArrayPath)
-
-    DREAM3D_FILTER_PARAMETER(unsigned int, CrystalStructure)
-    Q_PROPERTY(unsigned int CrystalStructure READ getCrystalStructure WRITE setCrystalStructure)
 
     //typedef boost::shared_array<float> SharedFloatArray;
     //typedef boost::shared_array<int> SharedIntArray;
