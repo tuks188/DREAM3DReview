@@ -2,7 +2,8 @@
  * Copyright (c) 2011 Michael A. Jackson (BlueQuartz Software)
  * Copyright (c) 2011 Dr. Michael A. Groeber (US Air Force Research Laboratories)
  * Copyright (c) 2014 Dr. Joseph C. Tucker (UES, Inc.)
- * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon University)
+ * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon 
+ * University)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -16,9 +17,9 @@
  * other materials provided with the distribution.
  *
  * Neither the name of Joseph C. Tucker, Michael A. Groeber, Michael A. Jackson,
- * UES, Inc., the US Air Force, BlueQuartz Software nor the names of its contributors
- * may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * Sudipto Mandal, Anthony D. Rollett, UES, Inc., the US Air Force, BlueQuartz  
+ * Software nor the names of its may be used to endorse or promote products derived 
+ * from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -471,7 +472,6 @@ void InsertTwins::insert_twins()
 
 	//get number of symmetry operators
 	int n_sym = orientOps->getNumSymOps();
-	int stop = 0;
 	for (int i = 0; i < n_sym; ++i)
 	{
 	  orientOps->getMatSymOp(i, symMat);
@@ -483,6 +483,7 @@ void InsertTwins::insert_twins()
 		minPos = i;
 	  }
 	}
+	// assign our symmetry matrix to that which produced the minimum angle
 	orientOps->getMatSymOp(minPos, symMat);
 	MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
 
