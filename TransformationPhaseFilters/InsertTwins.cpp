@@ -69,6 +69,8 @@ const static float m_pi = static_cast<float>(M_PI);
 // -----------------------------------------------------------------------------
 InsertTwins::InsertTwins() :
   AbstractFilter(),
+  m_StatsGenCellEnsembleAttributeMatrixPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, ""),
+  m_VolCellEnsembleAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, ""),
   m_FeatureIdsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
   m_CellEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::EulerAngles),
   m_AvgQuatsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::AvgQuats),
@@ -130,6 +132,8 @@ void InsertTwins::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Transformation Phase Crystal Structure", "TransCrystalStruct", FilterParameterWidgetType::IntWidget, getTransCrystalStruct(), false));
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
+  parameters.push_back(FilterParameter::New("StatsGenerator Cell Ensemble Attribute Matrix Name", "StatsGenCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getStatsGenCellEnsembleAttributeMatrixPath(), false, ""));
+  parameters.push_back(FilterParameter::New("Volume Cell Ensemble Attribute Matrix Name", "VolCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getVolCellEnsembleAttributeMatrixPath(), false, ""));
   parameters.push_back(FilterParameter::New("Cell FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Cell Euler Angles", "CellEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCellEulerAnglesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Average Quaterions", "AvgQuatsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getAvgQuatsArrayPath(), true, ""));
@@ -159,6 +163,8 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
   setVariantNum( reader->readValue("VariantNum", getVariantNum()) );
   setTransCrystalStruct( reader->readValue("TransCrystalStruct", getTransCrystalStruct()) );
 
+  setStatsGenCellEnsembleAttributeMatrixPath(reader->readDataArrayPath("StatsGenCellEnsembleAttributeMatrixPath", getStatsGenCellEnsembleAttributeMatrixPath()));
+  setVolCellEnsembleAttributeMatrixPath(reader->readDataArrayPath("VolCellEnsembleAttributeMatrixPath", getVolCellEnsembleAttributeMatrixPath()));
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
   setCellEulerAnglesArrayPath(reader->readDataArrayPath("CellEulerAnglesArrayPath", getCellEulerAnglesArrayPath() ) );
   setCentroidsArrayPath(reader->readDataArrayPath("CentroidsArrayPath", getCentroidsArrayPath() ) );
@@ -187,6 +193,8 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
   DREAM3D_FILTER_WRITE_PARAMETER(VariantNum)
   DREAM3D_FILTER_WRITE_PARAMETER(TransCrystalStruct)
 
+  DREAM3D_FILTER_WRITE_PARAMETER(StatsGenCellEnsembleAttributeMatrixPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(VolCellEnsembleAttributeMatrixPath)
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
@@ -231,13 +239,43 @@ void InsertTwins::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void InsertTwins::updateStatsGenEnsembleInstancePointers()
+{
+  setErrorCondition(0);
+
+  if( NULL != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  if( NULL != m_PhaseTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_PhaseTypes = m_PhaseTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  if( NULL != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InsertTwins::updateVolEnsembleInstancePointers()
+{
+  setErrorCondition(0);
+
+  if( NULL != m_NumFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_NumFeatures = m_NumFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void InsertTwins::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
 
   VolumeDataContainer* m = getDataContainerArray()->getPrereqDataContainer<VolumeDataContainer, AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
-  if(getErrorCondition() < 0 || NULL == m) { return; }
+  if(getErrorCondition() < 0 || m == NULL) { return; }
+  AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
+  if(getErrorCondition() < 0 || statsGenAttrMat == NULL) { return; }
+  AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getVolCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
+  if(getErrorCondition() < 0 || volAttrMat == NULL) { return; }
 
   QVector<size_t> dims(1, 1);
   // Cell Data
@@ -336,49 +374,47 @@ void InsertTwins::execute()
   if(getErrorCondition() < 0) { return; }
 
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  DataContainerArray::Pointer dca = getDataContainerArray();
+
+  // defining separate ensemble attribute matrix for statsgen & vol
+  AttributeMatrix::Pointer statsGenAttrMat = dca->getAttributeMatrix(getStatsGenCellEnsembleAttributeMatrixPath());
+  AttributeMatrix::Pointer volAttrMat = dca->getAttributeMatrix(getVolCellEnsembleAttributeMatrixPath());
+  
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
+  int64_t numensembles = m_PhaseTypesPtr.lock()->getNumberOfTuples();
 
-  //  setting ensemble level data
- // typedef dataarray<unsigned int> xtalstructarraytype;
- // typedef dataarray<unsigned int> ptypearraytype;
- // typedef dataarray<unsigned int> stypearraytype;
- // xtalstructarraytype::pointer m_xtalstructdata = xtalstructarraytype::createarray(m->getnumensembletuples()+1, dream3d::ensembledata::crystalstructures);
- // ptypearraytype::pointer m_phasetypedata = ptypearraytype::createarray(m->getnumensembletuples()+1, dream3d::ensembledata::phasetypes);
- // stypearraytype::pointer m_shapetypedata = stypearraytype::createarray(m->getnumensembletuples()+1, dream3d::ensembledata::shapetypes);
- // initialize the arrays with the "unknown" value
- // m_xtalstructdata->initializewithvalues(999);
- // m_phasetypedata->initializewithvalues(999);
- // m_shapetypedata->initializewithvalues(999);
+  // resizing statsgen attribute matrix to add new phase info
+  QVector<size_t> tDims(1, numensembles + 1);
+  statsGenAttrMat->resizeAttributeArrays(tDims);
+  updateStatsGenEnsembleInstancePointers();
 
- // for (size_t i = 0; i < m->getnumensembletuples(); ++i)
- // {
-	//m_xtalstructdata->setvalue(i, m_crystalstructures[i]);
-	//m_phasetypedata->setvalue(i, m_phasetypes[i]);  
-	//m_shapetypedata->setvalue(i, m_shapetypes[i]);  
- // }
-
- // m_xtalstructdata->setvalue(m->getnumensembletuples(), ebsd::crystalstructure::cubic_high);
- // m_phasetypedata->setvalue(m->getnumensembletuples(), dream3d::phasetype::transformationphase);  
- // m_shapetypedata->setvalue(m->getnumensembletuples(), dream3d::shapetype::ellipsoidshape);  
-
- // m->addensembledata(dream3d::ensembledata::crystalstructures, m_xtalstructdata);
- // m->addensembledata(dream3d::ensembledata::phasetypes, m_phasetypedata);
- // m->addensembledata(dream3d::ensembledata::shapetypes, m_shapetypedata);
+  // hard-coded to the below stats for now
+  m_CrystalStructures[numensembles] = Ebsd::CrystalStructure::Hexagonal_High;
+  m_PhaseTypes[numensembles] = DREAM3D::PhaseType::TransformationPhase;
+  m_ShapeTypes[numensembles] = DREAM3D::ShapeType::EllipsoidShape;
 
   // start insert twins routine
   insert_twins();
 
   notifyStatusMessage(getHumanLabel(), "Placement Complete");
 
+  // updating number of ensembles and features 
+  totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
+  numensembles = m_PhaseTypesPtr.lock()->getNumberOfTuples();
+
+  // resizing vol attribute matrix
+  volAttrMat->resizeAttributeArrays(tDims);
+  updateVolEnsembleInstancePointers();
+  
   // finding ensemble level number of features per phase
-  //for(size_t i = 1; i < m->getNumEnsembleTuples(); i++)
-  //{
-  //  m_NumFeatures[i] = 0;
-  //}
-  //for(size_t i = 1; i < m->getNumFeatureTuples(); i++)
-  //{
-  //  m_NumFeatures[m_FeaturePhases[i]]++;
-  //}
+  for(size_t i = 1; i < numensembles; ++i)
+  {
+    m_NumFeatures[i] = 0;
+  }
+  for(size_t i = 1; i < totalFeatures; ++i)
+  {
+    ++m_NumFeatures[m_FeaturePhases[i]];
+  }
 
   //filter_calls();
 
@@ -773,8 +809,6 @@ size_t InsertTwins::transfer_attributes(size_t totalFeatures, QuatF q, float e[]
 { 
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
 
-  int64_t numensembles = m_PhaseTypesPtr.lock()->getNumberOfTuples();
-
   m_AvgQuats[4*totalFeatures+0] = q.x;
   m_AvgQuats[4*totalFeatures+1] = q.y;
   m_AvgQuats[4*totalFeatures+2] = q.z;
@@ -787,10 +821,9 @@ size_t InsertTwins::transfer_attributes(size_t totalFeatures, QuatF q, float e[]
   m_FeatureEulerAngles[3*totalFeatures+1] = e[1];
   m_FeatureEulerAngles[3*totalFeatures+2] = e[2];
   m_EquivalentDiameters[totalFeatures] = 4.0f;
-  m_FeaturePhases[totalFeatures] = numensembles;
+  m_FeaturePhases[totalFeatures] = m_PhaseTypesPtr.lock()->getNumberOfTuples() - 1;;
   m_FeatureParentIds[totalFeatures] = curFeature;
   m_NumFeaturesPerParent[totalFeatures] = 0;
-  ++m_NumFeatures[numensembles];
   return ++totalFeatures;
 }
 

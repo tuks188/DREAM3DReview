@@ -59,7 +59,7 @@
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
  * @author Joseph C. Tucker (UES, Inc.) & Sudipto Mandal (CMU)
- * @date July 14, 2014
+ * @date July 15, 2014
  * @version 5.0
  */
 class InsertTwins : public AbstractFilter
@@ -85,7 +85,13 @@ class InsertTwins : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(int, TransCrystalStruct)
     Q_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+	DREAM3D_FILTER_PARAMETER(DataArrayPath, StatsGenCellEnsembleAttributeMatrixPath)
+    Q_PROPERTY(DataArrayPath StatsGenCellEnsembleAttributeMatrixPath READ getStatsGenCellEnsembleAttributeMatrixPath WRITE setStatsGenCellEnsembleAttributeMatrixPath)
+
+	DREAM3D_FILTER_PARAMETER(DataArrayPath, VolCellEnsembleAttributeMatrixPath)
+    Q_PROPERTY(DataArrayPath VolCellEnsembleAttributeMatrixPath READ getVolCellEnsembleAttributeMatrixPath WRITE setVolCellEnsembleAttributeMatrixPath)
+
+	DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     
 	DREAM3D_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
@@ -195,6 +201,8 @@ signals:
     // All other private variables
     void dataCheck();
     void updateFeatureInstancePointers();
+    void updateStatsGenEnsembleInstancePointers();
+    void updateVolEnsembleInstancePointers();
 
     InsertTwins(const InsertTwins&); // Copy Constructor Not Implemented
     void operator=(const InsertTwins&); // Operator '=' Not Implemented
