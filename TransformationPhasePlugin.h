@@ -35,40 +35,43 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef TRANSFORMATIONPHASEPLUGIN_H_
-#define TRANSFORMATIONPHASEPLUGIN_H_
+#ifndef _TransformationPhase_H_
+#define _TransformationPhase_H_
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
-#include "QtSupport/DREAM3DPluginInterface.h"
+
+#include "DREAM3DLib/Plugin/DREAM3DPluginInterface.h"
 
 
 /**
  * @class TransformationPhasePlugin TransformationPhasePlugin.h TransformationPhase/TransformationPhasePlugin.h
  * @brief
  * @author Joseph C Tucker (UES) & Michael A Groeber (AFRL)
- * @date Mar 21, 2014
+ * @date July 7, 2014
  * @version 4.0
  */
 class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
 {
     Q_OBJECT;
-    Q_INTERFACES(DREAM3DPluginInterface)
+    
+	Q_INTERFACES(DREAM3DPluginInterface)
 
   public:
     TransformationPhasePlugin();
     virtual ~TransformationPhasePlugin();
-    /**
+    
+	/**
      * @brief Returns the name of the plugin
      */
     virtual QString getPluginName();
-
-    /**
+    
+	/**
      * @brief Register all the filters with the FilterWidgetFactory
      */
-    virtual void registerFilterWidgets();
-
-    /**
+    virtual void registerFilterWidgets(FilterWidgetManager* fwm);
+    
+	/**
      * @brief registerFilters
      */
     virtual void registerFilters(FilterManager* fm);
@@ -91,4 +94,4 @@ class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
     void operator=(const TransformationPhasePlugin&); // Operator '=' Not Implemented
 };
 
-#endif /* TRANSFORMATIONPHASE_H_ */
+#endif /* _TransformationPhase_H_ */
