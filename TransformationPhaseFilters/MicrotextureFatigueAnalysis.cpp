@@ -42,6 +42,11 @@
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "DREAM3DLib/Common/ThresholdFilterHelper.h"
+#include "TransformationPhase/TransformationPhaseConstants.h"
+#include "DREAM3DLib/Math/MatrixMath.h"
+#include "DREAM3DLib/Math/OrientationMath.h"
+#include "DREAM3DLib/OrientationOps/OrientationOps.h"
+#include "DREAM3DLib/Math/GeometryMath.h"
 
 
 // -----------------------------------------------------------------------------
@@ -49,9 +54,25 @@
 // -----------------------------------------------------------------------------
 MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   AbstractFilter(),
-  m_DestinationArrayName(DREAM3D::GeneralData::ThresholdArray),
-  m_Destination(NULL)
+  m_InitiatorsArrayName(TransformationPhase::Initiators),
+  m_Initiators(NULL),
+  m_PropagatorsArrayName(TransformationPhase::Propagators),
+  m_Propagators(NULL),
+  m_BadActorsArrayName(TransformationPhase::BadActors),
+  m_BadActors(NULL),
+  m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
+  m_EulerAnglesArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
+  m_EulerAngles(NULL),
+  m_PhasesArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
+  m_Phases(NULL),
+  m_NeighborListArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
+  m_CrystalStructuresArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
+  m_CrystalStructures(NULL)
 {
+
+  m_StressAxis.x = 0.0f;
+  m_StressAxis.y = 0.0f;
+  m_StressAxis.z = 1.0f;
   setupFilterParameters();
 }
 
@@ -68,17 +89,19 @@ MicrotextureFatigueAnalysis::~MicrotextureFatigueAnalysis()
 void MicrotextureFatigueAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  {
-    ComparisonFilterParameter::Pointer parameter = ComparisonFilterParameter::New();
-    parameter->setHumanLabel("Select Arrays to Threshold");
-    parameter->setPropertyName("SelectedThresholds");
-    parameter->setWidgetType(FilterParameterWidgetType::ComparisonSelectionWidget);
-    parameter->setShowOperators(true);
-    parameters.push_back(parameter);
-  }
+  parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
-  parameters.push_back(FilterParameter::New("Output Array Name", "DestinationArrayName", FilterParameterWidgetType::StringWidget, getDestinationArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Propagators Array Name", "PropagatorsArrayName", FilterParameterWidgetType::StringWidget, getPropagatorsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Bad Actors Array Name", "BadActorsArrayName", FilterParameterWidgetType::StringWidget, getBadActorsArrayName(), true, ""));
+
+  parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
+  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
+  parameters.push_back(FilterParameter::New("Feature Euler Angles", "EulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getEulerAnglesArrayPath(), true, ""));
+  parameters.push_back(FilterParameter::New("Feature Phases", "PhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getPhasesArrayPath(), true, ""));
+  parameters.push_back(FilterParameter::New("NeighborList Array", "NeighborListArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNeighborListArrayPath(), true, ""));
+  parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), true, ""));
   setFilterParameters(parameters);
 }
 
@@ -88,8 +111,15 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDestinationArrayName(reader->readString("DestinationArrayName", getDestinationArrayName() ) );
-  setSelectedThresholds(reader->readComparisonInputs("SelectedThresholds", getSelectedThresholds()));
+  setStressAxis(reader->readFloatVec3("Stress Axis", getStressAxis() ) );
+  setInitiatorsArrayName(reader->readString("InitiatorsArrayName", getInitiatorsArrayName() ) );
+  setPropagatorsArrayName(reader->readString("PropagatorsArrayName", getPropagatorsArrayName() ) );
+  setBadActorsArrayName(reader->readString("BadActorsArrayName", getBadActorsArrayName() ) );
+  setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
+  setEulerAnglesArrayPath(reader->readDataArrayPath("EulerAnglesArrayPath", getEulerAnglesArrayPath() ) );
+  setPhasesArrayPath(reader->readDataArrayPath("PhasesArrayPath", getPhasesArrayPath() ) );
+  setNeighborListArrayPath( reader->readDataArrayPath("NeighborListArrayPath", getNeighborListArrayPath()));
+  setCrystalStructuresArrayPath(reader->readDataArrayPath("CrystalStructuresArrayPath", getCrystalStructuresArrayPath() ) );
   reader->closeFilterGroup();
 }
 
@@ -99,8 +129,15 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
 int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
-  DREAM3D_FILTER_WRITE_PARAMETER(DestinationArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(SelectedThresholds)
+  DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
+  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(PropagatorsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(BadActorsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  DREAM3D_FILTER_WRITE_PARAMETER(EulerAnglesArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(PhasesArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -113,63 +150,40 @@ void MicrotextureFatigueAnalysis::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
 
-  if (m_SelectedThresholds.size() == 0)
-  {
-    setErrorCondition(-12000);
-    notifyErrorMessage(getHumanLabel(), "You must add at least 1 threshold value.", getErrorCondition());
-  }
-  else
-  {
+  // Feature Data
+  QVector<size_t> dims(1, 1);
+  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getInitiatorsArrayName() );
+  m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_InitiatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_Initiators = m_InitiatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    int count = m_SelectedThresholds.size();
-    QSet<QString> dcSet;
-    QSet<QString> amSet;
-    // Loop through each selected threshold item which will have the complete path and check that path
-    for(int i = 0; i < count; i++)
-    {
-      ComparisonInput_t comp = m_SelectedThresholds[i];
-      dcSet.insert(comp.dataContainerName);
-      amSet.insert(comp.attributeMatrixName);
-    }
+  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getPropagatorsArrayName() );
+  m_PropagatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_PropagatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_Propagators = m_PropagatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    // Enforce that right now all the arrays MUST come from the same data container and attribute matrix
-    if(dcSet.size() != 1)
-    {
-      setErrorCondition(-13090);
-      QString ss = QObject::tr("Threshold selections must come from the same DataContainer. %1 were selected").arg(dcSet.size());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return;
-    }
-    if(amSet.size() != 1)
-    {
-      setErrorCondition(-13091);
-      QString ss = QObject::tr("Threshold selections must come from the same AttributeMatrix. %1 were selected").arg(amSet.size());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return;
-    }
+  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getBadActorsArrayName() );
+  m_BadActorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_BadActorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_BadActors = m_BadActorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    // Now that we passed all those tests, create our output array
-    DataContainerArray::Pointer dca = getDataContainerArray();
-    if(NULL == dca.get() )
-    {
-      setErrorCondition(-12001);
-      notifyErrorMessage(getHumanLabel(), "The DataContainerArray was NULL.", getErrorCondition());
-    }
-    else
-    {
-      ComparisonInput_t comp = m_SelectedThresholds[0];
-      // At this point we are going to just grab the DataContainer Name and AttributeMatrix Name
-      // from the first entry and use that to create a new AttributeArray
-      QVector<size_t> dims(1, 1);
-      tempPath.update(comp.dataContainerName, comp.attributeMatrixName, getDestinationArrayName() );
-      m_DestinationPtr = dca->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-      if( NULL != m_DestinationPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
-      { m_Destination = m_DestinationPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  dims[0] = 3;
+  m_EulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getEulerAnglesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_EulerAnglesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_EulerAngles = m_EulerAnglesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    }
-  }
+  dims[0] = 1;
+  m_PhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getPhasesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_PhasesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_Phases = m_PhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
+  m_NeighborList = getDataContainerArray()->getPrereqArrayFromPath<NeighborList<int>, AbstractFilter>(this, getNeighborListArrayPath(), dims);
 
+  // Ensemble Data
+  typedef DataArray<unsigned int> XTalStructArrayType;
+  m_CrystalStructuresPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<unsigned int>, AbstractFilter>(this, getCrystalStructuresArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 
 
@@ -196,64 +210,68 @@ void MicrotextureFatigueAnalysis::execute()
 
   dataCheck();
   if(getErrorCondition() < 0) { return; }
+  
+  size_t totalFeatures = m_PhasesPtr.lock()->getNumberOfTuples();
 
-  // Get the first comparison object
-  ComparisonInput_t& comp_0 = m_SelectedThresholds[0];
-  // Get the names of the Data Container and AttributeMatrix for later
-  QString dcName = comp_0.dataContainerName;
-  QString amName = comp_0.attributeMatrixName;
+  // Normalize input stress axis
+  MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
+  float sampleLoading[3] = {m_StressAxis.x, m_StressAxis.y, m_StressAxis.z};
+  float g[3][3] = {{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f}};
+  float gt[3][3] = {{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f}};
+  float v[3] = {0.0f,0.0f,0.0f};
+  float w = 0.0f;
+  float initiatorPlane[3] = {1,0,7}; 
+  /*  
+  float initiatorPlane[24][3] = 
+  {{1,0,7},
+  {0,1,7},
+  {1,7,0},
+  {0,7,1},
+  {7,1,0},
+  {7,0,1},
+  {-1,0,7},
+  {0,-1,7},
+  {-1,7,0},
+  {0,7,-1},
+  {7,-1,0},
+  {7,0,-1},
+  {1,0,-7},
+  {0,1,-7},
+  {1,-7,0},
+  {0,-7,1},
+  {-7,1,0},
+  {-7,0,1},
+  {-1,0,-7},
+  {0,-1,-7},
+  {-1,-7,0},
+  {0,-7,-1},
+  {-7,-1,0},
+  {-7,0,-1}};
+  */
 
-  DataContainerArray::Pointer dca = getDataContainerArray();
-  VolumeDataContainer* m = dca->getDataContainerAs<VolumeDataContainer>(dcName);
-
-  // Prime our output array with the result of the first comparison
+  for (int i = 0; i < totalFeatures; ++i)
   {
-    ThresholdFilterHelper filter(static_cast<DREAM3D::Comparison::Enumeration>(comp_0.compOperator), comp_0.compValue, m_DestinationPtr.lock().get());
-    // Run the first threshold and store the results in our output array
-    err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comp_0.attributeArrayName).get(), m_DestinationPtr.lock().get());
-    if (err < 0)
-    {
-      setErrorCondition(-13001);
-      notifyErrorMessage(getHumanLabel(), "Error Executing threshold filter on first array", getErrorCondition());
-      return;
-    }
+	OrientationMath::EulertoMat(m_EulerAngles[3*i+0], m_EulerAngles[3*i+1], m_EulerAngles[3*i+2], g);
+//	for (int j = 0; j < 24; ++j)
+//	{
+	  MatrixMath::Transpose3x3(g, gt);
+//	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane[j], v);
+	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane, v);
+	  //normalize so that the magnitude is 1
+	  MatrixMath::Normalize3x1(v);
+	  if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
+	  w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
+	  w = acos(w);
+	  w *= DREAM3D::Constants::k_180OverPi;
+int stop = 0;
+	  if (w > 30) 
+	  {
+		m_Initiators[i] = false;
+//		break;
+	  }
+//	}
   }
-
-  if (m_SelectedThresholds.size() > 1)
-  {
-    // Get the total number of tuples, create and initialize an array to use for these results
-    int64_t totalTuples = m->getAttributeMatrix(amName)->getNumTuples();
-    BoolArrayType::Pointer currentArrayPtr = BoolArrayType::CreateArray(totalTuples, "TEMP");
-
-    // Loop on the remaining Comparison objects updating our final result array as we go
-    for(size_t i = 1; i < m_SelectedThresholds.size(); ++i)
-    {
-      // Initialize the array to false
-      currentArrayPtr->initializeWithZeros();
-      // Get the pointer to the front of the array. Raw Pointers = fast access = NO Bounds Checking!!!
-      bool* currentArray = currentArrayPtr->getPointer(0);
-
-      ComparisonInput_t& compRef = m_SelectedThresholds[i];
-
-      ThresholdFilterHelper filter(static_cast<DREAM3D::Comparison::Enumeration>(compRef.compOperator), compRef.compValue, currentArrayPtr.get());
-
-      err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName).get(), currentArrayPtr.get());
-      if (err < 0)
-      {
-        setErrorCondition(-13002);
-        notifyErrorMessage(getHumanLabel(), "Error Executing threshold filter on array", getErrorCondition());
-        return;
-      }
-      for (int64_t p = 0; p < totalTuples; ++p)
-      {
-        if(m_Destination[p] == false || currentArray[p] == false)
-        {
-          m_Destination[p] = false;
-        }
-      }
-    }
-  }
-
+  
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
