@@ -36,12 +36,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MicrotextureFatigueAnalysis.h"
 
-#include <vector>
-
-
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
-#include "DREAM3DLib/Common/ThresholdFilterHelper.h"
 #include "TransformationPhase/TransformationPhaseConstants.h"
 #include "DREAM3DLib/Math/MatrixMath.h"
 #include "DREAM3DLib/Math/OrientationMath.h"
@@ -60,16 +56,15 @@ MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   m_Propagators(NULL),
   m_BadActorsArrayName(TransformationPhase::BadActors),
   m_BadActors(NULL),
-  m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
-  m_EulerAnglesArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
+  m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
+  m_EulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
   m_EulerAngles(NULL),
-  m_PhasesArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
+  m_PhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
   m_Phases(NULL),
-  m_NeighborListArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
-  m_CrystalStructuresArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
+  m_NeighborListArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
+  m_CrystalStructuresArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
   m_CrystalStructures(NULL)
 {
-
   m_StressAxis.x = 0.0f;
   m_StressAxis.y = 0.0f;
   m_StressAxis.z = 1.0f;
@@ -153,17 +148,17 @@ void MicrotextureFatigueAnalysis::dataCheck()
   // Feature Data
   QVector<size_t> dims(1, 1);
   tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getInitiatorsArrayName() );
-  m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_InitiatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Initiators = m_InitiatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getPropagatorsArrayName() );
-  m_PropagatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_PropagatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_PropagatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Propagators = m_PropagatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getBadActorsArrayName() );
-  m_BadActorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_BadActorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_BadActorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_BadActors = m_BadActorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
@@ -185,7 +180,6 @@ void MicrotextureFatigueAnalysis::dataCheck()
   if( NULL != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -213,11 +207,18 @@ void MicrotextureFatigueAnalysis::execute()
   
   size_t totalFeatures = m_PhasesPtr.lock()->getNumberOfTuples();
 
+  // But since a pointer is difficult to use operators with we will now create a
+  // reference variable to the pointer with the correct variable name that allows
+  // us to use the same syntax as the "vector of vectors"
+  NeighborList<int>& neighborlist = *(m_NeighborList.lock());
+
   // Normalize input stress axis
   MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
   float sampleLoading[3] = {m_StressAxis.x, m_StressAxis.y, m_StressAxis.z};
   float g[3][3] = {{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f}};
   float gt[3][3] = {{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f}};
+  float caxis[3] = {0.0f,0.0f,1.0f};
+  float c[3] = {0.0f,0.0f,1.0f};
   float v[3] = {0.0f,0.0f,0.0f};
   float w = 0.0f;
   float initiatorPlane[3] = {1,0,7}; 
@@ -254,24 +255,46 @@ void MicrotextureFatigueAnalysis::execute()
 	OrientationMath::EulertoMat(m_EulerAngles[3*i+0], m_EulerAngles[3*i+1], m_EulerAngles[3*i+2], g);
 //	for (int j = 0; j < 24; ++j)
 //	{
+	  // Determine if it's am initiator
 	  MatrixMath::Transpose3x3(g, gt);
 //	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane[j], v);
 	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane, v);
-	  //normalize so that the magnitude is 1
+	  // Normalize so that the magnitude is 1
 	  MatrixMath::Normalize3x1(v);
 	  if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
 	  w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
 	  w = acos(w);
+	  // Convert from radian to degrees
 	  w *= DREAM3D::Constants::k_180OverPi;
-int stop = 0;
-	  if (w > 30) 
-	  {
-		m_Initiators[i] = false;
-//		break;
-	  }
+	  if (w <= 30) { m_Initiators[i] = true; }
+
+      // Determine if it's a propagator
+	  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
+	  // Normalize so that the magnitude is 1
+	  MatrixMath::Normalize3x1(c);
+	  if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
+	  w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
+	  w = acos(w);
+	  // Convert from radian to degrees
+	  w *= DREAM3D::Constants::k_180OverPi;
+	  if (w >= 70 && w <= 90) { m_Propagators[i] = true; }
 //	}
   }
-  
+
+  // Determine bad actors
+  for (int i = 0; i < totalFeatures; ++i)
+  {
+	if (m_Initiators[i] == true)
+	{
+	  // if the current grain is an iniator then cycle through its neighbors to 
+	  // see if any are also propagators then flag those pairs as bad actors
+  	  for (int j = 0; j < neighborlist[i].size(); ++j)
+	  {
+		if (m_Propagators[j] == true) { m_BadActors[i] = true; m_BadActors[j] = true; }
+	  }
+	}
+  }
+
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
