@@ -57,11 +57,11 @@ MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   m_BadActorsArrayName(TransformationPhase::BadActors),
   m_BadActors(NULL),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
-  m_EulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
+  m_EulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
   m_EulerAngles(NULL),
-  m_PhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
+  m_PhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
   m_Phases(NULL),
-  m_NeighborListArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
+  m_NeighborListArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
   m_CrystalStructuresArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
   m_CrystalStructures(NULL)
 {
