@@ -2,46 +2,48 @@ Insert Twins {#inserttwins}
 ======
 	
 ## Group (Subgroup) ##
-Transformation Phase Filters (Packing)
+Synthetic Building Filters (Packing)
 
 ## Description ##
 Takes an already formed voxelized structure and inserts twin morphologies with the correct orientation relationship (and habit plane if coherent).
 
 ## Parameters ##
 
-| Name | Type |
-|------|------|
-| Twin Thickness | Float (Fraction between zero and 1) |
-| Average Number Of Twins Per Grain | Integer |
-| Coherent Fraction | Float (Fraction between zero and 1) |
-| "Peninsula" Twin Fraction | Float (Fraction between zero and 1) |
-| Uniquely Renumber Contiguous Regions | Boolean (Yes or no) |
+| Name | Type | Description |
+|------|------|------|
+| Twin Thickness | Float (Fraction between zero and 1) | The fraction of the current grain's sphere equivalent diameter |
+| Average Number Of Twins Per Feature | Integer | This will vary between zero and 2 times the input value |
+| Coherent Fraction | Float (Fraction between zero and 1) | Coherent vs. incoherent twins |
+| "Peninsula" Twin Fraction | Float (Fraction between zero and 1) | Specific twins that do not fully section the feature.  Variable peninsula lengths will result. |
+| Variant Number | Integer (Between 1 and the maximum number of variants) | |
+| Transformation Phase Crystal Structure | Default numeric values set in EBSDLib | Hexagonal = 0, Cubic = 1 |
 
 ## Required DataContainers ##
-Voxel
+Volume
 
 ## Required Arrays ##
 
 | Type | Default Name | Description | Comment | Filters Known to Create Data |
 |------|--------------|-------------|---------|-----|
-| Cell | GrainIds | Ids (ints) that specify to which **Field** each **Cell** belongs. | Values should be present from segmentation of experimental data or synthetic generation and cannot be determined by this filter. Not having these values will result in the filter to fail/not execute. | Segment Fields (Misorientation, C-Axis Misorientation, Scalar) (Reconstruction), Read Dx File (IO), Read Ph File (IO), Pack Primary Phases (SyntheticBuilding), Insert Precipitate Phases (SyntheticBuilding), Establish Matrix Phase (SyntheticBuilding) |
-| Field | AvgQuats | Five (4) values (floats) defining the average orientation of the **Field** in quaternion representation | Filter will calculate average quaternions for **Fields** if not already calculated. | Find Field Average Orientations (Statistics) |
-| Field | Centroids | X, Y, Z coordinates (floats) of **Field** center of mass | Filter will calculate **Field** centroids if not previously calculated | Find Field Centroids (Generic) |
-| Field | EquivalentDiameters | Diameter (float) of a sphere with the same volume as the **Field**. | Find Sizes (Statistics) |
-| Field | FieldEulerAngles | Three (3) angles (floats) defining the orientation of each **Field** in Bunge convention (Z-X-Z) | Find Average Orientations (Statistics)
-| Field | FieldPhases | Phase Id (int) specifying the phase of the **Field**| | Find Field Phases (Generic), Read Field Info File (IO), Pack Primary Phases (SyntheticBuilding), Insert Precipitate Phases (SyntheticBuilding), Establish Matrix Phase (SyntheticBuilding) |
+| Cell | FeatureIds | Ids (ints) that specify to which **Feature** each **Cell** belongs. | Values should be present from segmentation of experimental data or synthetic generation and cannot be determined by this filter. Not having these values will result in the filter to fail/not execute. | Segment Features (Misorientation, C-Axis Misorientation, Scalar) (Reconstruction), Read Dx File (IO), Read Ph File (IO), Pack Primary Phases (SyntheticBuilding), Insert Precipitate Phases (SyntheticBuilding), Establish Matrix Phase (SyntheticBuilding) |
+| Cell | CellEulerAngles | Three (3) angles (floats) defining the orientation of each Cell in Bunge convention (Z-X-Z) | | Import Orientation File(s) to H5Ebsd (IO) |
+| Feature | AvgQuats | Five (4) values (floats) defining the average orientation of the **Feature** in quaternion representation | Filter will calculate average quaternions for **Features** if not already calculated. | Find Feature Average Orientations (Statistics) |
+| Feature | Centroids | X, Y, Z coordinates (floats) of **Feature** center of mass | Filter will calculate **Feature** centroids if not previously calculated | Find Feature Centroids (Generic) |
+| Feature | EquivalentDiameters | Diameter (float) of a sphere with the same volume as the **Feature**. |  | Find Sizes (Statistics) |
+| Feature | FeatureEulerAngles | Three (3) angles (floats) defining the orientation of each Feature in Bunge convention (Z-X-Z) |  | Find Average Orientations (Statistics), Match Crystallography (SyntheticBuilding) |
+| Feature | FeaturePhases | Phase Id (int) specifying the phase of the **Feature**| | Find Feature Phases (Generic), Read Feature Info File (IO), Pack Primary Phases (SyntheticBuilding), Insert Precipitate Phases (SyntheticBuilding), Establish Matrix Phase (SyntheticBuilding) |
 | Ensemble | CrystalStructures | Enumeration (int) specifying the crystal structure of each Ensemble/phase (Hexagonal=0, Cubic=1, Orthorhombic=2) | Values should be present from experimental data or synthetic generation and cannot be determined by this filter. Not having these values will result in the filter to fail/not execute. | Read H5Ebsd File (IO), Read Ensemble Info File (IO), Initialize Synthetic Volume (SyntheticBuilding) |
 | Ensemble | PhaseTypes | Enumeration (int) specifying the type of phase of each Ensemble/phase (Primary=0, Precipitate=1, Transformation=2, Matrix=3, Boundary=4) |  | Intialize Synthetic Volume (SyntheticBuilding), Generate Ensemble Statistics (Statistics) |
-| Ensemble | ShapeTypes |  |  | Initialize Synthetic Volume (SyntheticBuilding) |
+| Ensemble | ShapeTypes |  |  | Establish Shape Types (SyntheticBuilding) |
 | Ensemble | Statistics |  |  | Generate Ensemble Statistics (Statistics), StatsGenerator Application |
 
 ## Created Arrays ##
 
 | Type | Default Name | Comment |
 |------|--------------|---------|
-| Field | Active | Boolean value specifying if the **Field** is still in the sample (1 if the **Field** is in the sample and 0 if it is not) | At the end of the filter, all **Fields** will be "Active" as the "Inactive" **Fields** will have been removed.  |
-| Field | ParentIds | List of grouped microtexture region **Fields**. |  |
-| Field | NumGrainsPerParent | Int of the number of grains contained in each parent grain. |  |
+| Feature | Active | Boolean value specifying if the **Feature** is still in the sample (1 if the **Feature** is in the sample and 0 if it is not). At the end of the filter, all **Features** will be "Active" as the "Inactive" **Features** will have been removed. |
+| Feature | FeatureParentIds | List of grouped microtexture region **Features**. |
+| Feature | NumFeaturesPerParent | Int of the number of **Features** contained in each **Feature**. |
 
 ## Authors ##
 
@@ -49,7 +51,7 @@ Voxel
 
 **Contact Info:** dream3d@bluequartz.net
 
-**Version:** 4.0.0
+**Version:** 5.0.0
 
 **License:**  See the License.txt file that came with DREAM3D.
 

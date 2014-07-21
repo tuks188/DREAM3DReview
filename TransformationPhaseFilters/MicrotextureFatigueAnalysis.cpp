@@ -86,17 +86,17 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
 
-  parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
-  parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
-  parameters.push_back(FilterParameter::New("Propagators Array Name", "PropagatorsArrayName", FilterParameterWidgetType::StringWidget, getPropagatorsArrayName(), true, ""));
-  parameters.push_back(FilterParameter::New("Bad Actors Array Name", "BadActorsArrayName", FilterParameterWidgetType::StringWidget, getBadActorsArrayName(), true, ""));
-
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
   parameters.push_back(FilterParameter::New("Feature Euler Angles", "EulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getEulerAnglesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Feature Phases", "PhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getPhasesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("NeighborList Array", "NeighborListArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNeighborListArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), true, ""));
+
+  parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
+  parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Propagators Array Name", "PropagatorsArrayName", FilterParameterWidgetType::StringWidget, getPropagatorsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Bad Actors Array Name", "BadActorsArrayName", FilterParameterWidgetType::StringWidget, getBadActorsArrayName(), true, ""));
   setFilterParameters(parameters);
 }
 

@@ -91,6 +91,9 @@ class InsertTwins : public AbstractFilter
 	DREAM3D_FILTER_PARAMETER(DataArrayPath, VolCellEnsembleAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath VolCellEnsembleAttributeMatrixPath READ getVolCellEnsembleAttributeMatrixPath WRITE setVolCellEnsembleAttributeMatrixPath)
 
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
+    Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
+
 	DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     
@@ -111,9 +114,6 @@ class InsertTwins : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeaturePhasesArrayPath)
     Q_PROPERTY(DataArrayPath FeaturePhasesArrayPath READ getFeaturePhasesArrayPath WRITE setFeaturePhasesArrayPath)
-
-    DREAM3D_FILTER_PARAMETER(QString, ActiveArrayName)
-    Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
     Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
