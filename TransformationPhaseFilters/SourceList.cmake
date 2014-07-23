@@ -21,6 +21,7 @@ set(_PublicFilters
 #  InsertTransformationPhase
   InsertTwins
   MicrotextureFatigueAnalysis
+  FindCSLBoundaries
 )
 
 
