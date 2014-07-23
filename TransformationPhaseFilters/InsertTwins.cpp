@@ -389,7 +389,7 @@ void InsertTwins::execute()
   updateStatsGenEnsembleInstancePointers();
 
   // hard-coded to the below stats for now
-  m_CrystalStructures[numensembles] = Ebsd::CrystalStructure::Hexagonal_High;
+  m_CrystalStructures[numensembles] = m_TransCrystalStruct;
   m_PhaseTypes[numensembles] = DREAM3D::PhaseType::TransformationPhase;
   m_ShapeTypes[numensembles] = DREAM3D::ShapeType::EllipsoidShape;
 
@@ -449,12 +449,12 @@ void InsertTwins::insert_twins()
   float d, random, random2;
   float sig3 = 60.0f * (m_pi/180.0f);
   float e[3];
-  std::vector<float> shifts;
-  int numTwins = 0;
-  bool createdTwin = false;
   float traceMin = -1.0f;
   float trace = 0.0f;
   int minPos = 0;
+  std::vector<float> shifts;
+  int numTwins = 0;
+  bool createdTwin = false;
 
   float voxelDiagonal = sqrtf(xRes*xRes + yRes*yRes + zRes*zRes);
 
@@ -482,31 +482,33 @@ void InsertTwins::insert_twins()
 	QuaternionMathF::Copy(avgQuats[curFeature], q1);
     OrientationMath::QuattoMat(q1, g);
 	MatrixMath::Transpose3x3(g, gT);
-    MatrixMath::Multiply3x3with3x1(g, crystalHabitPlane, sampleHabitPlane);
+    MatrixMath::Multiply3x3with3x1(gT, crystalHabitPlane, sampleHabitPlane);
 
-    rotMat[0][0]=0.5774;
-    rotMat[0][1]=0.5774;
-    rotMat[0][2]=0.5774;
-    rotMat[1][0]=-0.4082;
-    rotMat[1][1]=-0.4082;
-    rotMat[1][2]=0.8165;
-    rotMat[2][0]=0.7071;
-    rotMat[2][1]=-0.7071;
-    rotMat[2][2]=0;
+//    rotMat[0][0]=0.5774;
+//    rotMat[0][1]=0.5774;
+//    rotMat[0][2]=0.5774;
+//    rotMat[1][0]=-0.4082;
+//    rotMat[1][1]=-0.4082;
+//    rotMat[1][2]=0.8165;
+//    rotMat[2][0]=0.7071;
+//    rotMat[2][1]=-0.7071;
+//    rotMat[2][2]=0;
 
 	// generate twin orientation with a 60 degree rotation about the habit plane
 
 	// Commented out for Sudipto's usage
-	// OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
-	MatrixMath::Multiply3x3with3x3(g, rotMat, newMat);
+	MatrixMath::Multiply3x3with3x3(rotMat, g, newMat);
 
 	// find the minimum angle
 	MatrixMath::Copy3x3(newMat, newMatCopy);
+	int stop = 0;
 	// Get our OrientationOps pointer for the selected crystal structure
 	OrientationOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
-
+	
 	//get number of symmetry operators
+	traceMin = -1.0f;
+	minPos = 0;
 	int n_sym = orientOps->getNumSymOps();
 	for (int i = 0; i < n_sym; ++i)
 	{
@@ -522,7 +524,6 @@ void InsertTwins::insert_twins()
 	// assign our symmetry matrix to that which produced the minimum angle
 	orientOps->getMatSymOp(minPos, symMat);
 	MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
-
 	OrientationMath::MattoEuler(newMat, e[0], e[1], e[2]);
 	OrientationMath::EulertoQuat(e[0], e[1], e[2], q2);
 
