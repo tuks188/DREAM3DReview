@@ -255,7 +255,7 @@ void MicrotextureFatigueAnalysis::execute()
 	OrientationMath::EulertoMat(m_EulerAngles[3*i+0], m_EulerAngles[3*i+1], m_EulerAngles[3*i+2], g);
 //	for (int j = 0; j < 24; ++j)
 //	{
-	  // Determine if it's am initiator
+	  // Determine if it's an initiator
 	  MatrixMath::Transpose3x3(g, gt);
 //	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane[j], v);
 	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane, v);
