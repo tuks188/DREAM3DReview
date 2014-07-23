@@ -13,6 +13,8 @@ namespace TransformationPhase
   const DREAM3D_STRING Propagators("Propagators");
   const DREAM3D_STRING BadActors("BadActors");
 
+  const DREAM3D_STRING SurfaceMeshCSLBoundary("SurfaceMeshCSLBoundary");
+  const DREAM3D_STRING SurfaceMeshCSLBoundaryIncoherence("SurfaceMeshCSLBoundaryIncoherence");
   namespace CSL
   {
 
