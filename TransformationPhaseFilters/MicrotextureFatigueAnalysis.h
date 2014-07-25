@@ -57,8 +57,8 @@
  * @class MicrotextureFatigueAnalysis MicrotextureFatigueAnalysis.h /TransformationPhase/MicrotextureFatigueAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date July 21, 2014
- * @version 5.0
+ * @date July 25, 2014
+ * @version 5.1
  */
 class MicrotextureFatigueAnalysis : public AbstractFilter
 {
@@ -73,6 +73,14 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
 	DREAM3D_FILTER_PARAMETER(FloatVec3_t, StressAxis)
     Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
+    DREAM3D_FILTER_PARAMETER(float, InitiatorLowerThreshold)
+    Q_PROPERTY(float InitiatorLowerThreshold READ getInitiatorLowerThreshold WRITE setInitiatorLowerThreshold)
+    DREAM3D_FILTER_PARAMETER(float, InitiatorUpperThreshold)
+    Q_PROPERTY(float InitiatorUpperThreshold READ getInitiatorUpperThreshold WRITE setInitiatorUpperThreshold)
+    DREAM3D_FILTER_PARAMETER(float, PropagatorLowerThreshold)
+    Q_PROPERTY(float PropagatorLowerThreshold READ getPropagatorLowerThreshold WRITE setPropagatorLowerThreshold)
+    DREAM3D_FILTER_PARAMETER(float, PropagatorUpperThreshold)
+    Q_PROPERTY(float PropagatorUpperThreshold READ getPropagatorUpperThreshold WRITE setPropagatorUpperThreshold)
 	
     DREAM3D_FILTER_PARAMETER(QString, InitiatorsArrayName)
     Q_PROPERTY(QString InitiatorsArrayName READ getInitiatorsArrayName WRITE setInitiatorsArrayName)

@@ -50,6 +50,10 @@
 // -----------------------------------------------------------------------------
 MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   AbstractFilter(),
+  m_InitiatorLowerThreshold(0.0f),
+  m_InitiatorUpperThreshold(30.0f),
+  m_PropagatorLowerThreshold(70.0f),
+  m_PropagatorUpperThreshold(90.0f),
   m_InitiatorsArrayName(TransformationPhase::Initiators),
   m_Initiators(NULL),
   m_PropagatorsArrayName(TransformationPhase::Propagators),
@@ -85,6 +89,10 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
   parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
+  parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), false, "Degrees"));
+  parameters.push_back(FilterParameter::New("Initiator Upper Threshold", "InitiatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorUpperThreshold(), false, "Degrees"));
+  parameters.push_back(FilterParameter::New("Propagator Lower Threshold", "PropagatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getPropagatorLowerThreshold(), false, "Degrees"));
+  parameters.push_back(FilterParameter::New("Propagator Upper Threshold", "PropagatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getPropagatorUpperThreshold(), false, "Degrees"));
 
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
@@ -107,13 +115,17 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
 {
   reader->openFilterGroup(this, index);
   setStressAxis(reader->readFloatVec3("Stress Axis", getStressAxis() ) );
+  setInitiatorLowerThreshold(reader->readValue("InitiatorLowerThreshold", getInitiatorLowerThreshold()) );
+  setInitiatorUpperThreshold(reader->readValue("InitiatorUpperThreshold", getInitiatorUpperThreshold()) );
+  setPropagatorLowerThreshold(reader->readValue("PropagatorLowerThreshold", getPropagatorLowerThreshold()) );
+  setPropagatorUpperThreshold(reader->readValue("PropagatorUpperThreshold", getPropagatorUpperThreshold()) );
   setInitiatorsArrayName(reader->readString("InitiatorsArrayName", getInitiatorsArrayName() ) );
   setPropagatorsArrayName(reader->readString("PropagatorsArrayName", getPropagatorsArrayName() ) );
   setBadActorsArrayName(reader->readString("BadActorsArrayName", getBadActorsArrayName() ) );
   setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
   setEulerAnglesArrayPath(reader->readDataArrayPath("EulerAnglesArrayPath", getEulerAnglesArrayPath() ) );
   setPhasesArrayPath(reader->readDataArrayPath("PhasesArrayPath", getPhasesArrayPath() ) );
-  setNeighborListArrayPath( reader->readDataArrayPath("NeighborListArrayPath", getNeighborListArrayPath()));
+  setNeighborListArrayPath(reader->readDataArrayPath("NeighborListArrayPath", getNeighborListArrayPath()));
   setCrystalStructuresArrayPath(reader->readDataArrayPath("CrystalStructuresArrayPath", getCrystalStructuresArrayPath() ) );
   reader->closeFilterGroup();
 }
@@ -125,6 +137,10 @@ int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersW
 {
   writer->openFilterGroup(this, index);
   DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
+  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(PropagatorLowerThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(PropagatorUpperThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(PropagatorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(BadActorsArrayName)
@@ -266,7 +282,7 @@ void MicrotextureFatigueAnalysis::execute()
 	  w = acos(w);
 	  // Convert from radian to degrees
 	  w *= DREAM3D::Constants::k_180OverPi;
-	  if (w <= 30) { m_Initiators[i] = true; }
+	  if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold) { m_Initiators[i] = true; }
 
       // Determine if it's a propagator
 	  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
@@ -277,7 +293,7 @@ void MicrotextureFatigueAnalysis::execute()
 	  w = acos(w);
 	  // Convert from radian to degrees
 	  w *= DREAM3D::Constants::k_180OverPi;
-	  if (w >= 70 && w <= 90) { m_Propagators[i] = true; }
+	  if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold) { m_Propagators[i] = true; }
 //	}
   }
 
