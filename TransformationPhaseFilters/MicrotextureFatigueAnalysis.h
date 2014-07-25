@@ -109,7 +109,7 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
 	virtual const QString getCompiledLibraryName() { return Statistics::StatisticsBaseName; }
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 	virtual const QString getGroupName() { return DREAM3D::FilterGroups::StatisticsFilters; }
-	virtual const QString getSubGroupName()  { return DREAM3D::FilterSubGroups::StatisticsFilters; }
+	virtual const QString getSubGroupName()  { return DREAM3D::FilterSubGroups::CrystallographicFilters; }
     virtual const QString getHumanLabel() { return "Microtexture Fatigue Analysis"; }
 	virtual const QString getBrandingString() { return Statistics::StatisticsPluginDisplayName + " Filter"; }
 
