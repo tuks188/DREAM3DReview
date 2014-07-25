@@ -221,9 +221,9 @@ void MicrotextureFatigueAnalysis::execute()
   float c[3] = {0.0f,0.0f,1.0f};
   float v[3] = {0.0f,0.0f,0.0f};
   float w = 0.0f;
-  float initiatorPlane[3] = {1,0,7}; 
+  float initiatorPlaneNormal[3] = {1,0,7}; 
   /*  
-  float initiatorPlane[24][3] = 
+  float initiatorPlaneNormal[24][3] = 
   {{1,0,7},
   {0,1,7},
   {1,7,0},
@@ -257,8 +257,8 @@ void MicrotextureFatigueAnalysis::execute()
 //	{
 	  // Determine if it's an initiator
 	  MatrixMath::Transpose3x3(g, gt);
-//	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane[j], v);
-	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlane, v);
+//	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal[j], v);
+	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal, v);
 	  // Normalize so that the magnitude is 1
 	  MatrixMath::Normalize3x1(v);
 	  if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
