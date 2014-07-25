@@ -58,9 +58,10 @@
 /**
  * @class InsertTwins InsertTwins.h DREAM3DLib/SyntheticBuildingFilters/InsertTwins.h
  * @brief
- * @author Joseph C. Tucker (UES, Inc.) & Sudipto Mandal (CMU)
- * @date July 15, 2014
- * @version 5.0
+ * @author Joseph C. Tucker (UES, Inc.)
+ * @author Sudipto Mandal (CMU)
+ * @date July 25, 2014
+ * @version 5.1
  */
 class InsertTwins : public AbstractFilter
 {
