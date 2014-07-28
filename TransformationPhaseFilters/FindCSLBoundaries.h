@@ -56,8 +56,8 @@
  * @class FindCSLBoundaries FindCSLBoundaries.h /TransformationPhase/FindCSLBoundaries.h
  * @brief
  * @author Joseph C. Tucker
- * @date July 22, 2014
- * @version 5.0
+ * @date July 28, 2014
+ * @version 5.1
  */
 class FindCSLBoundaries : public AbstractFilter
 {

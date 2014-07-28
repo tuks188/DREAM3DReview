@@ -116,7 +116,9 @@ class CalculateCSLBoundaryImpl
         normal[0] = m_Normals[3 * i];
         normal[1] = m_Normals[3 * i + 1];
         normal[2] = m_Normals[3 * i + 2];
-        if(feature1 > 0 && feature2 > 0 && m_Phases[feature1] == m_Phases[feature2])
+		// different than Find Twin Boundaries here because will only compare if 
+		// the features are different phases
+        if(feature1 > 0 && feature2 > 0 && m_Phases[feature1] != m_Phases[feature2])
         {
           w = 10000.0;
 
@@ -138,7 +140,6 @@ class CalculateCSLBoundaryImpl
               //calculate crystal direction parallel to normal
               QuaternionMathF::Multiply(sym_q, misq, s1_misq);
               OrientationMath::MultiplyQuaternionVector(sym_q, xstl_norm, s_xstl_norm);
-              //QuaternionMathF::MultiplyQuatVec(sym_q, xstl_norm, s_xstl_norm);
               for (int k = 0; k < nsym; k++)
               {
                 //calculate the symmetric misorienation
