@@ -18,8 +18,7 @@ START_FILTER_GROUP(${TransformationPhase_BINARY_DIR} "${_filterGroupName}" "R3D 
 # List your public filters here
 
 set(_PublicFilters
-#  InsertTransformationPhase
-  InsertTwins
+  InsertTransformationPhases
   MicrotextureFatigueAnalysis
   FindCSLBoundaries
 )

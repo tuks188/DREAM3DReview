@@ -37,7 +37,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "InsertTwins.h"
+#include "InsertTransformationPhases.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QFile>
@@ -67,7 +67,7 @@ const static float m_pi = static_cast<float>(M_PI);
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InsertTwins::InsertTwins() :
+InsertTransformationPhases::InsertTransformationPhases() :
   AbstractFilter(),
   m_StatsGenCellEnsembleAttributeMatrixPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, ""),
   m_VolCellEnsembleAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, ""),
@@ -85,11 +85,13 @@ InsertTwins::InsertTwins() :
   m_PhaseTypesArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::PhaseTypes),
   m_ShapeTypesArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::ShapeTypes),
   m_NumFeaturesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::NumFeatures),
-  m_TwinThickness(0.5f),
-  m_NumTwinsPerFeature(2),
-  m_VariantNum(1),
-  m_TransCrystalStruct(999),
+  m_TransCrystalStruct(1),
+  m_TransformationPhaseMisorientation(60.0f),
+  m_DefineHabitPlane(true),
+  m_UseAllVariants(true),
   m_CoherentFrac(1.0f),
+  m_TransformationPhaseThickness(0.2f),
+  m_NumTransformationPhasesPerFeature(2),
   m_PeninsulaFrac(0.0f),
   m_FeatureIds(NULL),
   m_CellEulerAngles(NULL),
@@ -107,28 +109,36 @@ InsertTwins::InsertTwins() :
   m_NumFeatures(NULL)
 {
   m_OrientationOps = OrientationOps::getOrientationOpsVector();
+  m_TransformationPhaseHabitPlane.x = 1.0f;
+  m_TransformationPhaseHabitPlane.y = 1.0f;
+  m_TransformationPhaseHabitPlane.z = 1.0f;
   setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InsertTwins::~InsertTwins()
+InsertTransformationPhases::~InsertTransformationPhases()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::setupFilterParameters()
+void InsertTransformationPhases::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(FilterParameter::New("Twin Thickness", "TwinThickness", FilterParameterWidgetType::DoubleWidget, getTwinThickness(), false));
-  parameters.push_back(FilterParameter::New("Average Number Of Twins Per Feature", "NumTwinsPerFeature", FilterParameterWidgetType::IntWidget, getNumTwinsPerFeature(), false));
-  parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), false));
-  parameters.push_back(FilterParameter::New("\"Peninsula\" Twin Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), false));
-  parameters.push_back(FilterParameter::New("Variant Number", "VariantNum", FilterParameterWidgetType::IntWidget, getVariantNum(), false));
   parameters.push_back(FilterParameter::New("Transformation Phase Crystal Structure", "TransCrystalStruct", FilterParameterWidgetType::IntWidget, getTransCrystalStruct(), false));
+  parameters.push_back(FilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseMisorientation(), false));
+  QStringList linkedProps1("TransformationPhaseHabitPlane");
+  parameters.push_back(FilterParameter::NewConditional("Define Habit Plane", "DefineHabitPlane", FilterParameterWidgetType::LinkedBooleanWidget, getDefineHabitPlane(), false, linkedProps1));
+  parameters.push_back(FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", FilterParameterWidgetType::FloatVec3Widget, getTransformationPhaseHabitPlane(), false));
+  QStringList linkedProps2("CoherentFrac");
+  parameters.push_back(FilterParameter::NewConditional("Use All Variants", "UseAllVariants", FilterParameterWidgetType::LinkedBooleanWidget, getUseAllVariants(), false, linkedProps2));
+  parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), false));
+  parameters.push_back(FilterParameter::New("Transformation Phase Thickness", "TransformationPhaseThickness", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseThickness(), false));
+  parameters.push_back(FilterParameter::New("Average Number Of Transformation Phases Per Feature", "NumTransformationPhasesPerFeature", FilterParameterWidgetType::IntWidget, getNumTransformationPhasesPerFeature(), false));
+  parameters.push_back(FilterParameter::New("\"Peninsula\" Transformation Phase Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), false));
 
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("StatsGenerator Cell Ensemble Attribute Matrix Name", "StatsGenCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getStatsGenCellEnsembleAttributeMatrixPath(), true, ""));
@@ -155,15 +165,18 @@ void InsertTwins::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setTwinThickness( reader->readValue("TwinThickness", getTwinThickness()) );
-  setNumTwinsPerFeature( reader->readValue("NumTwinsPerFeature", getNumTwinsPerFeature()) );
-  setCoherentFrac( reader->readValue("CoherentFrac", getCoherentFrac()) );
-  setPeninsulaFrac( reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
-  setVariantNum( reader->readValue("VariantNum", getVariantNum()) );
-  setTransCrystalStruct( reader->readValue("TransCrystalStruct", getTransCrystalStruct()) );
+  setTransCrystalStruct(reader->readValue("TransCrystalStruct", getTransCrystalStruct()) );
+  setTransformationPhaseMisorientation(reader->readValue("TransformationPhaseMisorientation", getTransformationPhaseMisorientation()) );
+  setDefineHabitPlane(reader->readValue("DefineHabitPlane", getDefineHabitPlane()) );
+  setTransformationPhaseHabitPlane(reader->readFloatVec3("TransformationPhaseHabitPlane", getTransformationPhaseHabitPlane()) );
+  setUseAllVariants(reader->readValue("UseAllVariants", getUseAllVariants()) );
+  setCoherentFrac(reader->readValue("CoherentFrac", getCoherentFrac()) );
+  setTransformationPhaseThickness(reader->readValue("TransformationPhaseThickness", getTransformationPhaseThickness()) );
+  setNumTransformationPhasesPerFeature(reader->readValue("NumTransformationPhasesPerFeature", getNumTransformationPhasesPerFeature()) );
+  setPeninsulaFrac(reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
 
   setStatsGenCellEnsembleAttributeMatrixPath(reader->readDataArrayPath("StatsGenCellEnsembleAttributeMatrixPath", getStatsGenCellEnsembleAttributeMatrixPath()));
   setVolCellEnsembleAttributeMatrixPath(reader->readDataArrayPath("VolCellEnsembleAttributeMatrixPath", getVolCellEnsembleAttributeMatrixPath()));
@@ -186,15 +199,18 @@ void InsertTwins::readFilterParameters(AbstractFilterParametersReader* reader, i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
+int InsertTransformationPhases::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
-  DREAM3D_FILTER_WRITE_PARAMETER(TwinThickness)
-  DREAM3D_FILTER_WRITE_PARAMETER(NumTwinsPerFeature)
-  DREAM3D_FILTER_WRITE_PARAMETER(CoherentFrac)
-  DREAM3D_FILTER_WRITE_PARAMETER(PeninsulaFrac)
-  DREAM3D_FILTER_WRITE_PARAMETER(VariantNum)
   DREAM3D_FILTER_WRITE_PARAMETER(TransCrystalStruct)
+  DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseMisorientation)
+  DREAM3D_FILTER_WRITE_PARAMETER(DefineHabitPlane)
+  DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseHabitPlane)
+  DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseThickness)
+  DREAM3D_FILTER_WRITE_PARAMETER(UseAllVariants)
+  DREAM3D_FILTER_WRITE_PARAMETER(CoherentFrac)
+  DREAM3D_FILTER_WRITE_PARAMETER(NumTransformationPhasesPerFeature)
+  DREAM3D_FILTER_WRITE_PARAMETER(PeninsulaFrac)
 
   DREAM3D_FILTER_WRITE_PARAMETER(StatsGenCellEnsembleAttributeMatrixPath)
   DREAM3D_FILTER_WRITE_PARAMETER(VolCellEnsembleAttributeMatrixPath)
@@ -218,7 +234,7 @@ int InsertTwins::writeFilterParameters(AbstractFilterParametersWriter* writer, i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::updateFeatureInstancePointers()
+void InsertTransformationPhases::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
 
@@ -241,7 +257,7 @@ void InsertTwins::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::updateStatsGenEnsembleInstancePointers()
+void InsertTransformationPhases::updateStatsGenEnsembleInstancePointers()
 {
   setErrorCondition(0);
 
@@ -256,7 +272,7 @@ void InsertTwins::updateStatsGenEnsembleInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::updateVolEnsembleInstancePointers()
+void InsertTransformationPhases::updateVolEnsembleInstancePointers()
 {
   setErrorCondition(0);
 
@@ -267,7 +283,7 @@ void InsertTwins::updateVolEnsembleInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::dataCheck()
+void InsertTransformationPhases::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
@@ -350,7 +366,7 @@ void InsertTwins::dataCheck()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::preflight()
+void InsertTransformationPhases::preflight()
 {
   setInPreflight(true);
   emit preflightAboutToExecute();
@@ -367,7 +383,7 @@ void InsertTwins::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::execute()
+void InsertTransformationPhases::execute()
 {
   setErrorCondition(0);
   dataCheck();
@@ -393,8 +409,8 @@ void InsertTwins::execute()
   m_PhaseTypes[numensembles] = DREAM3D::PhaseType::TransformationPhase;
   m_ShapeTypes[numensembles] = DREAM3D::ShapeType::EllipsoidShape;
 
-  // start insert twins routine
-  insert_twins();
+  // start insert transformation phases routine
+  insert_transformationphases();
 
   notifyStatusMessage(getHumanLabel(), "Placement Complete");
 
@@ -424,7 +440,7 @@ void InsertTwins::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::insert_twins()
+void InsertTransformationPhases::insert_transformationphases()
 {
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
@@ -441,20 +457,22 @@ void InsertTwins::insert_twins()
   if (minRes > yRes) minRes = yRes;
   if (minRes > zRes) minRes = zRes;
 
-  float sampleHabitPlane[3] = {0.0f,0.0f,0.0f}, crystalHabitPlane[3] = {0.0f,0.0f,0.0f};
+  float sampleHabitPlane[3] = {0.0f,0.0f,0.0f};
+  // NOTE: incoherent habit planes e[-20,20] & are ints
+  float crystalHabitPlane[3] = {int(rg.genrand_res53() * 20.0f),int(rg.genrand_res53() * 20.0f),int(rg.genrand_res53() * 20.0f)}; 
   QuatF q1, q2;
   float g[3][3], gT[3][3], rotMat[3][3], newMat[3][3], newMatCopy[3][3], symMat[3][3];
   float plateThickness = 0.0f;
   size_t numFeatures = totalFeatures;
   float d, random, random2;
-  float sig3 = 60.0f * (m_pi/180.0f);
+  float sig3 = m_TransformationPhaseMisorientation * (m_pi/180.0f);
   float e[3];
   float traceMin = -1.0f;
   float trace = 0.0f;
   int minPos = 0;
   std::vector<float> shifts;
-  int numTwins = 0;
-  bool createdTwin = false;
+  int numTransformationPhases = 0;
+  bool createdTransformationPhase = false;
 
   float voxelDiagonal = sqrtf(xRes*xRes + yRes*yRes + zRes*zRes);
 
@@ -465,19 +483,62 @@ void InsertTwins::insert_twins()
 	// set the grain Id to the parent Id for if/when the features get uniquely renumbered 
 	m_FeatureParentIds[curFeature] = curFeature;
 
-	// pick a habit plane
-	random = static_cast<float>(rg.genrand_res53());
-	for (int i = 0; i < 3; ++i)
-	{
-	  crystalHabitPlane[i] = 1.0f;
-	  // decide whether to make it coherent or incoherent
-
-	  // NOTE: incoherent habit planes e[-20,20] & are ints
-	  if (random > m_CoherentFrac) crystalHabitPlane[i] = int(rg.genrand_res53() * 20.0f);
-	  random2 = static_cast<float>(rg.genrand_res53());
-	  if (random2 < 0.5f) crystalHabitPlane[i] *= -1.0f;
+	if (m_DefineHabitPlane == true) 
+	{ 
+	  crystalHabitPlane[0] = m_TransformationPhaseHabitPlane.x;
+	  crystalHabitPlane[1] = m_TransformationPhaseHabitPlane.y;
+	  crystalHabitPlane[2] = m_TransformationPhaseHabitPlane.z;
 	}
-
+	// pick a habit plane variant if user desires
+	if (m_UseAllVariants == true)
+	{
+	  random = static_cast<float>(rg.genrand_res53());
+	  for (int i = 0; i < 3; ++i)
+	  {
+		// decide whether to make it coherent or incoherent &
+		// decide whether its negative or positive
+		if (random < m_CoherentFrac && random2 < 0.5f) crystalHabitPlane[i] *= -1.0f;
+	  }
+	  // jumble the i,j,k order
+	  float tempCrystalHabitPlane[3] = {crystalHabitPlane[0],crystalHabitPlane[1],crystalHabitPlane[2]};
+	  random = static_cast<float>(rg.genrand_res53());
+	  if (random < 0.16667f)
+	  {
+		crystalHabitPlane[0] = tempCrystalHabitPlane[0];
+		crystalHabitPlane[1] = tempCrystalHabitPlane[1];
+		crystalHabitPlane[2] = tempCrystalHabitPlane[2];
+	  }
+	  else if (random >= 0.16667f && random < 0.33333f)
+	  {
+		crystalHabitPlane[0] = tempCrystalHabitPlane[0];
+		crystalHabitPlane[1] = tempCrystalHabitPlane[2];
+		crystalHabitPlane[2] = tempCrystalHabitPlane[1];
+	  }
+	  else if (random >= 0.33333f && random < 0.5f)
+	  {
+		crystalHabitPlane[0] = tempCrystalHabitPlane[1];
+		crystalHabitPlane[1] = tempCrystalHabitPlane[0];
+		crystalHabitPlane[2] = tempCrystalHabitPlane[2];
+	  }
+	  else if (random >= 0.5f && random < 0.66667f)
+	  {
+		crystalHabitPlane[0] = tempCrystalHabitPlane[1];
+		crystalHabitPlane[1] = tempCrystalHabitPlane[2];
+		crystalHabitPlane[2] = tempCrystalHabitPlane[0];
+	  }
+	  else if (random >= 0.66667f && random < 0.83333f)
+	  {
+		crystalHabitPlane[0] = tempCrystalHabitPlane[2];
+		crystalHabitPlane[1] = tempCrystalHabitPlane[0];
+		crystalHabitPlane[2] = tempCrystalHabitPlane[1];
+	  }
+	  else
+	  {
+		crystalHabitPlane[0] = tempCrystalHabitPlane[2];
+		crystalHabitPlane[1] = tempCrystalHabitPlane[1];
+		crystalHabitPlane[2] = tempCrystalHabitPlane[0];
+	  }
+	}
 	// find where the habit plane points
 	QuaternionMathF::Copy(avgQuats[curFeature], q1);
     OrientationMath::QuattoMat(q1, g);
@@ -494,7 +555,7 @@ void InsertTwins::insert_twins()
 //    rotMat[2][1]=-0.7071;
 //    rotMat[2][2]=0;
 
-	// generate twin orientation with a 60 degree rotation about the habit plane
+	// generate transformation phase orientation with a user-defined rotation about the habit plane
 
 	// Commented out for Sudipto's usage
 	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
@@ -528,21 +589,21 @@ void InsertTwins::insert_twins()
 	OrientationMath::EulertoQuat(e[0], e[1], e[2], q2);
 
 	// define plate = user input fraction of eq dia centered at centroid
-	// NOTE: we multiply by 0.5 because the twin thickness will be established by
+	// NOTE: we multiply by 0.5 because the transformation phase thickness will be established by
 	// a search from both sides
-	plateThickness = m_EquivalentDiameters[curFeature] * m_TwinThickness * 0.5f;
+	plateThickness = m_EquivalentDiameters[curFeature] * m_TransformationPhaseThickness * 0.5f;
 	// if the plate thickness is less than the minimum dimension resolution, 
-	// then don't try to insert a twin because the grain is too small and
-	// the twin thickness will be too small
+	// then don't try to insert a transformation phase because the grain is too small and
+	// the transformation phase thickness will be too small
 	if (plateThickness > minRes)
 	{
-	  // select number of twins to insert per grain from 2x user input to zero
-	  numTwins = int(rg.genrand_res53() * double(2*m_NumTwinsPerFeature + 1));
-	  shifts.resize(numTwins);
+	  // select number of transformation phases to insert per grain from 2x user input to zero
+	  numTransformationPhases = int(rg.genrand_res53() * double(2*m_NumTransformationPhasesPerFeature + 1));
+	  shifts.resize(numTransformationPhases);
 	  int attempt = 0;
 
-	  // each loop represents an attempt to insert a single twin (all in the same grain)
-	  for (int i = 0; i < numTwins; ++i)
+	  // each loop represents an attempt to insert a single transformation phase (all in the same grain)
+	  for (int i = 0; i < numTransformationPhases; ++i)
 	  {
 		// define the shift placement from centroid
 		random = static_cast<float>(rg.genrand_res53());
@@ -553,22 +614,22 @@ void InsertTwins::insert_twins()
 		random = static_cast<float>(rg.genrand_res53());
 		if (random < 0.5f) shifts[i] = -shifts[i];
 
-		// check if new twin will overlap an old twin
+		// check if new transformation phase will overlap an old transformation phase
 		int ii = i;
 		for (int j = 0; j <= ii; ++j)
 		{
-		  // if adding more than one twin in a grain, check the current shift from
-		  // center against the previous ones to make sure the new twin does not
+		  // if adding more than one transformation phase in a grain, check the current shift from
+		  // center against the previous ones to make sure the new transformation phase does not
 		  // overlap  
-		  // NOTE: that the twins can touch since we're using equiv dia,
+		  // NOTE: that the transformation phases can touch since we're using equiv dia,
 		  // they can be high aspect ratio grains inserted in the low aspect direction
 		  // which skews the calculation (FIX)
 		  // tolerance is set to 3x the plate thickness + 2x the voxel diagonal -- this empirically
-		  // keeps the twins separated enough
+		  // keeps the transformation phases separated enough
 		  if (fabs(shifts[i] - shifts[j]) <= (plateThickness*3.0f + voxelDiagonal*2.0f) && ii != j) 
 		  {
-			// if the attempted placement of a second, third, fourth, ... twin is too close to a
-			// previously inserted twin in the current grain, then increment the attempts counter
+			// if the attempted placement of a second, third, fourth, ... transformation phase is too close to a
+			// previously inserted transformation phase in the current grain, then increment the attempts counter
 			// and try a different shift
 			++attempt;
 			--i;
@@ -581,15 +642,15 @@ void InsertTwins::insert_twins()
 			  - sampleHabitPlane[1] * (m_Centroids[3*curFeature+1] + shifts[i]) 
 			  - sampleHabitPlane[2] * (m_Centroids[3*curFeature+2] + shifts[i]);
 
-			createdTwin = place_twin(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
+			createdTransformationPhase = place_transformationphase(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
 			int stop = 0;
-			// change an isthmus twin to a peninsula twin
+			// change an isthmus transformation phase to a peninsula transformation phase
 			random = static_cast<float>(rg.genrand_res53());
-			if (createdTwin == true) 
+			if (createdTransformationPhase == true) 
 			{
-			  if (random < m_PeninsulaFrac) peninsula_twin(curFeature, totalFeatures);
+			  if (random < m_PeninsulaFrac) peninsula_transformationphase(curFeature, totalFeatures);
 		  
-			  // filling in twin stats that already exist for parents
+			  // filling in transformation phase stats that already exist for parents
 			  tDims[0] = totalFeatures + 1;
 			  m->getAttributeMatrix(getFeaturePhasesArrayPath().getAttributeMatrixName())->resizeAttributeArrays(tDims);
 			  updateFeatureInstancePointers();
@@ -598,7 +659,7 @@ void InsertTwins::insert_twins()
 			}
 		  }
 		}
-		// try 10 times to insert 2+ twins, if it can't, the grain is probably too small
+		// try 10 times to insert 2+ transformation phases, if it can't, the grain is probably too small
 		if (attempt == 10) break;
 	  }
 	}
@@ -608,7 +669,7 @@ void InsertTwins::insert_twins()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool InsertTwins::place_twin(size_t curFeature, float sampleHabitPlane[3], size_t totalFeatures, float plateThickness, float d, size_t numFeatures)
+bool InsertTransformationPhases::place_transformationphase(size_t curFeature, float sampleHabitPlane[3], size_t totalFeatures, float plateThickness, float d, size_t numFeatures)
 {
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
@@ -652,8 +713,8 @@ bool InsertTwins::place_twin(size_t curFeature, float sampleHabitPlane[3], size_
 			+ sampleHabitPlane[2] * z * denom 
 			+ d * denom;  
 
-		  // if the cell-plane distance is less than the plate thickness then place a twin voxel
-		  // and that a neighboring cell is not a twin cell
+		  // if the cell-plane distance is less than the plate thickness then place a transformation phase voxel
+		  // and that a neighboring cell is not a transformation phase cell
 		  if (fabs(D) < plateThickness)
 ////			&& (k == 0 || m_FeatureIds[zStride+yStride+k-1] < numFeatures || m_FeatureIds[zStride+yStride+k-1] == totalFeatures) 
 ////			&& (k == (m->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
@@ -674,7 +735,7 @@ bool InsertTwins::place_twin(size_t curFeature, float sampleHabitPlane[3], size_
 //			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
 //			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
 		  {	
-			// check if an "island" twin voxel will be placed (excluding the first voxel placement)
+			// check if an "island" transformation phase voxel will be placed (excluding the first voxel placement)
 			/*
 			if ((k == 0 || m_FeatureIds[zStride+yStride+k-1] != totalFeatures)
 				&& (k == (xPoints - 1) || m_FeatureIds[zStride+yStride+k+1] != totalFeatures)
@@ -684,8 +745,8 @@ bool InsertTwins::place_twin(size_t curFeature, float sampleHabitPlane[3], size_
 				&& (i == (zPoints - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] != totalFeatures)
 				&& firstVoxel == false)
 			{
-			  // if an "island" twin voxel is inserted flip all the twin voxels back to the grain ID
-			  // and this will go in the books as a failed twin insertion attempt
+			  // if an "island" transformation phase voxel is inserted flip all the transformation phase voxels back to the grain ID
+			  // and this will go in the books as a failed transformation phase insertion attempt
 			  for (int64_t l = 0; l < totalPoints; ++l) 
 			  {
 				if (m_FeatureIds[l] == totalFeatures) 
@@ -722,7 +783,7 @@ bool InsertTwins::place_twin(size_t curFeature, float sampleHabitPlane[3], size_
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
+void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature, size_t totalFeatures)
 {
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
@@ -731,7 +792,7 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
   int zPoints = static_cast<int>(m->getZPoints());
 
   int x1 = -1, x2 = -1, y1 = -1, y2 = -1, z1 = -1, z2 = -1;
-  float twinLength = 0.0f, random = 0.0f, fractionKept = 0.0f, currentDistance = 0.0f;
+  float transformationPhaseLength = 0.0f, random = 0.0f, fractionKept = 0.0f, currentDistance = 0.0f;
   int zStride, yStride;
 
   // loop through all cells to find matching grain IDs
@@ -749,12 +810,12 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
 		{
 		  if (x1 == -1)
 		  {
-			// establish one extremum of the twin
+			// establish one extremum of the transformation phase
 			x1 = i;
 			y1 = j;
 			z1 = k;
 		  }
-		  // establish the other extremum of the twin
+		  // establish the other extremum of the transformation phase
 		  x2 = i;
 		  y2 = j;
 		  z2 = k;
@@ -764,10 +825,10 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
   }
 
   // calculate the distance between the extrema
-  twinLength = sqrtf((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
-  // if the twin is 1 voxel, set the length to 2 so it makes it through the below loop
+  transformationPhaseLength = sqrtf((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
+  // if the transformation phase is 1 voxel, set the length to 2 so it makes it through the below loop
   // but won't change anything
-  if (twinLength == 0.0f) twinLength = 2.0f;
+  if (transformationPhaseLength == 0.0f) transformationPhaseLength = 2.0f;
 
   // choose which extremum to start from
   random = static_cast<float>(rg.genrand_res53());
@@ -778,10 +839,10 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
 	z2 = z1;
   }
 
-  // choose how much of the twin to keep (has to be at least one voxel)
-  while (int(fractionKept * twinLength) < 1) fractionKept = static_cast<float>(rg.genrand_res53());
+  // choose how much of the transformation phase to keep (has to be at least one voxel)
+  while (int(fractionKept * transformationPhaseLength) < 1) fractionKept = static_cast<float>(rg.genrand_res53());
 
-  // loop through again to decide which twin Ids get flipped back to grain Ids
+  // loop through again to decide which transformation phase Ids get flipped back to grain Ids
   for(int i = 0; i < zPoints; i++)
   {
 	zStride = i * xPoints * yPoints;
@@ -795,8 +856,8 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
 		if (gnum == totalFeatures)
 		{
 			currentDistance = sqrtf((i-x1)*(i-x1) + (j-y1)*(j-y1) + (k-z1)*(k-z1));			
-			// if the distance is longer than the twin length, flip back to the parent ID 
-			if (currentDistance > twinLength * fractionKept) m_FeatureIds[zStride+yStride+k] = curFeature;
+			// if the distance is longer than the transformation phase length, flip back to the parent ID 
+			if (currentDistance > transformationPhaseLength * fractionKept) m_FeatureIds[zStride+yStride+k] = curFeature;
 		}
 	  }
 	}
@@ -806,7 +867,7 @@ void InsertTwins::peninsula_twin(size_t curFeature, size_t totalFeatures)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t InsertTwins::transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature)
+size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature)
 { 
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
 
@@ -830,7 +891,7 @@ size_t InsertTwins::transfer_attributes(size_t totalFeatures, QuatF q, float e[]
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTwins::filter_calls()
+void InsertTransformationPhases::filter_calls()
 {
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
 
@@ -897,14 +958,14 @@ void InsertTwins::filter_calls()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer InsertTwins::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyFilterParameters)
 {
   /*
   * ApplyToVoxelVolume
   * ApplyToSurfaceMesh
   * Origin
   */
-  InsertTwins::Pointer filter = InsertTwins::New();
+  InsertTransformationPhases::Pointer filter = InsertTransformationPhases::New();
   if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());

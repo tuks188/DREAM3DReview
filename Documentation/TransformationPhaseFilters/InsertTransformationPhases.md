@@ -1,20 +1,20 @@
-Insert Twins {#inserttwins}
+Insert Transformation Phases {#inserttransformationphases}
 ======
 	
 ## Group (Subgroup) ##
 Synthetic Building Filters (Packing)
 
 ## Description ##
-Takes an already formed voxelized structure and inserts twin morphologies with the correct orientation relationship (and habit plane if coherent).
+Takes an already formed voxelized structure and inserts transformation phase morphologies with the correct orientation relationship (and habit plane if coherent).
 
 ## Parameters ##
 
 | Name | Type | Description |
 |------|------|------|
-| Twin Thickness | Float (Fraction between zero and 1) | The fraction of the current grain's sphere equivalent diameter |
-| Average Number Of Twins Per Feature | Integer | This will vary between zero and 2 times the input value |
-| Coherent Fraction | Float (Fraction between zero and 1) | Coherent vs. incoherent twins |
-| "Peninsula" Twin Fraction | Float (Fraction between zero and 1) | Specific twins that do not fully section the feature.  Variable peninsula lengths will result. |
+| Transformation Phase Thickness | Float (Fraction between zero and 1) | The fraction of the current grain's sphere equivalent diameter |
+| Average Number Of Transformation Phases Per Feature | Integer | This will vary between zero and 2 times the input value |
+| Coherent Fraction | Float (Fraction between zero and 1) | Coherent vs. incoherent transformation phases |
+| "Peninsula" Transformation Phase Fraction | Float (Fraction between zero and 1) | Specific transformation phases that do not fully section the feature.  Variable peninsula lengths will result. |
 | Variant Number | Integer (Between 1 and the maximum number of variants) | |
 | Transformation Phase Crystal Structure | Default numeric values set in EBSDLib | Hexagonal = 0, Cubic = 1 |
 
