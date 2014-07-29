@@ -1,4 +1,4 @@
-Microtexture Fatigue Analysis (#microtexturefatigueanalysis)
+Microtexture Fatigue Analysis {#microtexturefatigueanalysis}
 ======
 	
 ## Group (Subgroup) ##
