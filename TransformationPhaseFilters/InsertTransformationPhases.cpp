@@ -85,7 +85,7 @@ InsertTransformationPhases::InsertTransformationPhases() :
   m_PhaseTypesArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::PhaseTypes),
   m_ShapeTypesArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::ShapeTypes),
   m_NumFeaturesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::NumFeatures),
-  m_TransCrystalStruct(1),
+  m_TransCrystalStruct(Ebsd::CrystalStructure::UnknownCrystalStructure),
   m_TransformationPhaseMisorientation(60.0f),
   m_DefineHabitPlane(true),
   m_UseAllVariants(true),
@@ -128,7 +128,28 @@ InsertTransformationPhases::~InsertTransformationPhases()
 void InsertTransformationPhases::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(FilterParameter::New("Transformation Phase Crystal Structure", "TransCrystalStruct", FilterParameterWidgetType::IntWidget, getTransCrystalStruct(), false));
+  {
+    ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();
+    option->setHumanLabel("Transformation Phase Crystal Structure");
+    option->setPropertyName("TransCrystalStruct");
+    option->setWidgetType(FilterParameterWidgetType::ChoiceWidget);
+    //option->setValueType("unsigned int");
+    QVector<QString> choices;
+    // The choices here are IN ORDER of the enumerations from the EBSDLib. DO NOT CHANGE THE ORDER.
+    choices.push_back("Hexagonal-High 6/mmm");
+    choices.push_back("Cubic-High m-3m");
+    choices.push_back("Hexagonal-Low 6/m");
+    choices.push_back("Cubic-Low m-3 (Tetrahedral)");
+    choices.push_back("TriClinic -1");
+    choices.push_back("Monoclinic 2/m");
+    choices.push_back("OrthoRhombic mmm");
+    choices.push_back("Tetragonal-Low 4/m");
+    choices.push_back("Tetragonal-High 4/mmm");
+    choices.push_back("Trigonal-Low -3");
+    choices.push_back("Trigonal-High -3m");
+    option->setChoices(choices);
+    parameters.push_back(option);
+  }
   parameters.push_back(FilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseMisorientation(), false));
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
@@ -557,14 +578,11 @@ void InsertTransformationPhases::insert_transformationphases()
 //    rotMat[2][2]=0;
 
 	// generate transformation phase orientation with a user-defined rotation about the habit plane
-
-	// Commented out for Sudipto's usage
 	OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
 	MatrixMath::Multiply3x3with3x3(rotMat, g, newMat);
 
 	// find the minimum angle
 	MatrixMath::Copy3x3(newMat, newMatCopy);
-	int stop = 0;
 	// Get our OrientationOps pointer for the selected crystal structure
 	OrientationOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
 	
@@ -572,6 +590,7 @@ void InsertTransformationPhases::insert_transformationphases()
 	traceMin = -1.0f;
 	minPos = 0;
 	int n_sym = orientOps->getNumSymOps();
+	int stop = 0;
 	for (int i = 0; i < n_sym; ++i)
 	{
 	  orientOps->getMatSymOp(i, symMat);
