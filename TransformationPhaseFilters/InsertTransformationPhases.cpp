@@ -130,7 +130,8 @@ void InsertTransformationPhases::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(FilterParameter::New("Transformation Phase Crystal Structure", "TransCrystalStruct", FilterParameterWidgetType::IntWidget, getTransCrystalStruct(), false));
   parameters.push_back(FilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseMisorientation(), false));
-  QStringList linkedProps1("TransformationPhaseHabitPlane");
+  QStringList linkedProps1;
+  linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
   parameters.push_back(FilterParameter::NewConditional("Define Habit Plane", "DefineHabitPlane", FilterParameterWidgetType::LinkedBooleanWidget, getDefineHabitPlane(), false, linkedProps1));
   parameters.push_back(FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", FilterParameterWidgetType::FloatVec3Widget, getTransformationPhaseHabitPlane(), false));
   QStringList linkedProps2("CoherentFrac");
