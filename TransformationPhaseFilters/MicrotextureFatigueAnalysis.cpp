@@ -50,6 +50,7 @@
 // -----------------------------------------------------------------------------
 MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   AbstractFilter(),
+  m_SubsurfaceDistance(0),
   m_InitiatorLowerThreshold(0.0f),
   m_InitiatorUpperThreshold(30.0f),
   m_PropagatorLowerThreshold(70.0f),
@@ -61,11 +62,13 @@ MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   m_BadActorsArrayName(TransformationPhase::BadActors),
   m_BadActors(NULL),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
-  m_EulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
-  m_EulerAngles(NULL),
-  m_PhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
-  m_Phases(NULL),
+  m_FeatureEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
+  m_FeatureEulerAngles(NULL),
+  m_FeaturePhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
+  m_FeaturePhases(NULL),
   m_NeighborListArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
+  m_CentroidsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Centroids),
+  m_Centroids(NULL),
   m_CrystalStructuresArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
   m_CrystalStructures(NULL)
 {
@@ -89,6 +92,7 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
   parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
+  parameters.push_back(FilterParameter::New("Subsurface Feature Distance To Consider", "SubsurfaceDistance", FilterParameterWidgetType::IntWidget, getSubsurfaceDistance(), false, "Microns"));
   parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), false, "Degrees"));
   parameters.push_back(FilterParameter::New("Initiator Upper Threshold", "InitiatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorUpperThreshold(), false, "Degrees"));
   parameters.push_back(FilterParameter::New("Propagator Lower Threshold", "PropagatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getPropagatorLowerThreshold(), false, "Degrees"));
@@ -96,9 +100,10 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
-  parameters.push_back(FilterParameter::New("Feature Euler Angles", "EulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getEulerAnglesArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Feature Phases", "PhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getPhasesArrayPath(), true, ""));
+  parameters.push_back(FilterParameter::New("Feature Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), true, ""));
+  parameters.push_back(FilterParameter::New("Feature FeaturePhases", "FeaturePhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeaturePhasesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("NeighborList Array", "NeighborListArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNeighborListArrayPath(), true, ""));
+  parameters.push_back(FilterParameter::New("Centroids", "CentroidsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCentroidsArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), true, ""));
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
@@ -115,6 +120,7 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
 {
   reader->openFilterGroup(this, index);
   setStressAxis(reader->readFloatVec3("Stress Axis", getStressAxis() ) );
+  setSubsurfaceDistance(reader->readValue("SubsurfaceDistance", getSubsurfaceDistance()) );
   setInitiatorLowerThreshold(reader->readValue("InitiatorLowerThreshold", getInitiatorLowerThreshold()) );
   setInitiatorUpperThreshold(reader->readValue("InitiatorUpperThreshold", getInitiatorUpperThreshold()) );
   setPropagatorLowerThreshold(reader->readValue("PropagatorLowerThreshold", getPropagatorLowerThreshold()) );
@@ -123,9 +129,10 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
   setPropagatorsArrayName(reader->readString("PropagatorsArrayName", getPropagatorsArrayName() ) );
   setBadActorsArrayName(reader->readString("BadActorsArrayName", getBadActorsArrayName() ) );
   setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
-  setEulerAnglesArrayPath(reader->readDataArrayPath("EulerAnglesArrayPath", getEulerAnglesArrayPath() ) );
-  setPhasesArrayPath(reader->readDataArrayPath("PhasesArrayPath", getPhasesArrayPath() ) );
+  setFeatureEulerAnglesArrayPath(reader->readDataArrayPath("FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath() ) );
+  setFeaturePhasesArrayPath(reader->readDataArrayPath("FeaturePhasesArrayPath", getFeaturePhasesArrayPath() ) );
   setNeighborListArrayPath(reader->readDataArrayPath("NeighborListArrayPath", getNeighborListArrayPath()));
+  setCentroidsArrayPath(reader->readDataArrayPath("CentroidsArrayPath", getCentroidsArrayPath()));
   setCrystalStructuresArrayPath(reader->readDataArrayPath("CrystalStructuresArrayPath", getCrystalStructuresArrayPath() ) );
   reader->closeFilterGroup();
 }
@@ -137,6 +144,7 @@ int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersW
 {
   writer->openFilterGroup(this, index);
   DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
+  DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(PropagatorLowerThreshold)
@@ -145,9 +153,10 @@ int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersW
   DREAM3D_FILTER_WRITE_PARAMETER(PropagatorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(BadActorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(EulerAnglesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(PhasesArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
@@ -179,18 +188,24 @@ void MicrotextureFatigueAnalysis::dataCheck()
   { m_BadActors = m_BadActorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   dims[0] = 3;
-  m_EulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getEulerAnglesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_EulerAnglesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
-  { m_EulerAngles = m_EulerAnglesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_FeatureEulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getFeatureEulerAnglesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_FeatureEulerAnglesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_FeatureEulerAngles = m_FeatureEulerAnglesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   dims[0] = 1;
-  m_PhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getPhasesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_PhasesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
-  { m_Phases = m_PhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_FeaturePhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeaturePhasesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_FeaturePhasesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_FeaturePhases = m_FeaturePhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_NeighborList = getDataContainerArray()->getPrereqArrayFromPath<NeighborList<int>, AbstractFilter>(this, getNeighborListArrayPath(), dims);
 
+  dims[0] = 3;
+  m_CentroidsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getCentroidsArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_CentroidsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_Centroids = m_CentroidsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+
   // Ensemble Data
+  dims[0] = 1;
   typedef DataArray<unsigned int> XTalStructArrayType;
   m_CrystalStructuresPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<unsigned int>, AbstractFilter>(this, getCrystalStructuresArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
@@ -221,7 +236,9 @@ void MicrotextureFatigueAnalysis::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
   
-  size_t totalFeatures = m_PhasesPtr.lock()->getNumberOfTuples();
+  // using feature euler angles simply because it's available
+  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(m_FeatureEulerAnglesArrayPath.getDataContainerName());
+  size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
 
   // But since a pointer is difficult to use operators with we will now create a
   // reference variable to the pointer with the correct variable name that allows
@@ -266,37 +283,53 @@ void MicrotextureFatigueAnalysis::execute()
   {-7,0,-1}};
   */
 
-  for (int i = 0; i < totalFeatures; ++i)
+  int xPoints = static_cast<int>(m->getXPoints());
+  int yPoints = static_cast<int>(m->getYPoints());
+  int zPoints = static_cast<int>(m->getZPoints());
+  float xRes = m->getXRes();
+  float yRes = m->getYRes();
+  float zRes = m->getZRes();
+  float xyzScaledDimension[3] = {xPoints*xRes, yPoints*yRes, zPoints*zRes};
+
+  for (int i = 1; i < totalFeatures; ++i)
   {
-	OrientationMath::EulertoMat(m_EulerAngles[3*i+0], m_EulerAngles[3*i+1], m_EulerAngles[3*i+2], g);
-//	for (int j = 0; j < 24; ++j)
-//	{
-	  // Determine if it's an initiator
-	  MatrixMath::Transpose3x3(g, gt);
-//	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal[j], v);
-	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal, v);
-	  // Normalize so that the magnitude is 1
-	  MatrixMath::Normalize3x1(v);
-	  if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
-	  w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
-	  w = acos(w);
-	  // Convert from radian to degrees
-	  w *= DREAM3D::Constants::k_180OverPi;
-	  if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold) { m_Initiators[i] = true; }
+	// check if current feature centroid is within the subsurface defined centroid
+	if ( m_Centroids[3*i+0] > m_SubsurfaceDistance && m_Centroids[3*i+0] < (xyzScaledDimension[0] - m_SubsurfaceDistance)
+	  && m_Centroids[3*i+1] > m_SubsurfaceDistance && m_Centroids[3*i+1] < (xyzScaledDimension[1] - m_SubsurfaceDistance)
+	  && m_Centroids[3*i+2] > m_SubsurfaceDistance && m_Centroids[3*i+2] < (xyzScaledDimension[2] - m_SubsurfaceDistance))
+	{
+	  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*i+0], m_FeatureEulerAngles[3*i+1], m_FeatureEulerAngles[3*i+2], g);
+	  float testEuler[3] = {10.0f*(M_PI/180.0f),20.0f*(M_PI/180.0f),30.0f*(M_PI/180.0f)};
+	  //OrientationMath::EulertoMat(testEuler[0], testEuler[1], testEuler[2], g);
+  //	for (int j = 0; j < 24; ++j)
+  //	{
+		// Determine if it's an initiator
+		MatrixMath::Transpose3x3(g, gt);
+  //	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal[j], v);
+		MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal, v);
+		int stop = 0;
+		// Normalize so that the magnitude is 1
+		MatrixMath::Normalize3x1(v);
+		if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
+		w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
+		w = acos(w);
+		// Convert from radian to degrees
+		w *= DREAM3D::Constants::k_180OverPi;
+		if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold) { m_Initiators[i] = true; }
 
-      // Determine if it's a propagator
-	  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
-	  // Normalize so that the magnitude is 1
-	  MatrixMath::Normalize3x1(c);
-	  if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
-	  w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
-	  w = acos(w);
-	  // Convert from radian to degrees
-	  w *= DREAM3D::Constants::k_180OverPi;
-	  if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold) { m_Propagators[i] = true; }
-//	}
+		// Determine if it's a propagator
+		MatrixMath::Multiply3x3with3x1(gt, caxis, c);
+		// Normalize so that the magnitude is 1
+		MatrixMath::Normalize3x1(c);
+		if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
+		w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
+		w = acos(w);
+		// Convert from radian to degrees
+		w *= DREAM3D::Constants::k_180OverPi;
+		if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold) { m_Propagators[i] = true; }
+  //	}
+	}
   }
-
   // Determine bad actors
   for (int i = 0; i < totalFeatures; ++i)
   {

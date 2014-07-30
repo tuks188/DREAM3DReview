@@ -57,7 +57,7 @@
  * @class MicrotextureFatigueAnalysis MicrotextureFatigueAnalysis.h /TransformationPhase/MicrotextureFatigueAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date July 25, 2014
+ * @date July 30, 2014
  * @version 5.1
  */
 class MicrotextureFatigueAnalysis : public AbstractFilter
@@ -73,6 +73,8 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
 	DREAM3D_FILTER_PARAMETER(FloatVec3_t, StressAxis)
     Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
+    DREAM3D_FILTER_PARAMETER(int, SubsurfaceDistance)
+    Q_PROPERTY(int SubsurfaceDistance READ getSubsurfaceDistance WRITE setSubsurfaceDistance)
     DREAM3D_FILTER_PARAMETER(float, InitiatorLowerThreshold)
     Q_PROPERTY(float InitiatorLowerThreshold READ getInitiatorLowerThreshold WRITE setInitiatorLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, InitiatorUpperThreshold)
@@ -93,15 +95,18 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
-	
-	DREAM3D_FILTER_PARAMETER(DataArrayPath, EulerAnglesArrayPath)
-    Q_PROPERTY(DataArrayPath EulerAnglesArrayPath READ getEulerAnglesArrayPath WRITE setEulerAnglesArrayPath)
+		
+	DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
+    Q_PROPERTY(DataArrayPath FeatureEulerAnglesArrayPath READ getFeatureEulerAnglesArrayPath WRITE setFeatureEulerAnglesArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, PhasesArrayPath)
-    Q_PROPERTY(DataArrayPath PhasesArrayPath READ getPhasesArrayPath WRITE setPhasesArrayPath)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeaturePhasesArrayPath)
+    Q_PROPERTY(DataArrayPath FeaturePhasesArrayPath READ getFeaturePhasesArrayPath WRITE setFeaturePhasesArrayPath)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborListArrayPath)
     Q_PROPERTY(DataArrayPath NeighborListArrayPath READ getNeighborListArrayPath WRITE setNeighborListArrayPath)
+
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
+    Q_PROPERTY(DataArrayPath CentroidsArrayPath READ getCentroidsArrayPath WRITE setCentroidsArrayPath)
 
 	DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
@@ -165,10 +170,15 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Propagators)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, BadActors)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, EulerAngles)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, Phases)
+
+    // Feature Data - make sure these are all initialized to NULL in the constructor
+	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
+    
+    // Ensemble Data - make sure these are all initialized to NULL in the constructor
+	DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
     MicrotextureFatigueAnalysis(const MicrotextureFatigueAnalysis&); // Copy Constructor Not Implemented
     void operator=(const MicrotextureFatigueAnalysis&); // Operator '=' Not Implemented
