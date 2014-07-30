@@ -91,7 +91,7 @@ InsertTransformationPhases::InsertTransformationPhases() :
   m_UseAllVariants(true),
   m_CoherentFrac(1.0f),
   m_TransformationPhaseThickness(0.2f),
-  m_NumTransformationPhasesPerFeature(2),
+  m_NumTransformationPhasesPerFeature(1),
   m_PeninsulaFrac(0.0f),
   m_FeatureIds(NULL),
   m_CellEulerAngles(NULL),
@@ -590,7 +590,6 @@ void InsertTransformationPhases::insert_transformationphases()
 	traceMin = -1.0f;
 	minPos = 0;
 	int n_sym = orientOps->getNumSymOps();
-	int stop = 0;
 	for (int i = 0; i < n_sym; ++i)
 	{
 	  orientOps->getMatSymOp(i, symMat);
