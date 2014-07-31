@@ -50,6 +50,8 @@
 // -----------------------------------------------------------------------------
 MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   AbstractFilter(),
+  m_LatticeParameterA(2.9131f),
+  m_LatticeParameterC(4.6572f),
   m_SubsurfaceDistance(0),
   m_InitiatorLowerThreshold(0.0f),
   m_InitiatorUpperThreshold(30.0f),
@@ -91,6 +93,8 @@ MicrotextureFatigueAnalysis::~MicrotextureFatigueAnalysis()
 void MicrotextureFatigueAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
+  parameters.push_back(FilterParameter::New("Lattice Parameter A", "LatticeParameterA", FilterParameterWidgetType::DoubleWidget, getLatticeParameterA(), false, ""));
+  parameters.push_back(FilterParameter::New("Lattice Parameter C", "LatticeParameterC", FilterParameterWidgetType::DoubleWidget, getLatticeParameterC(), false, ""));
   parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
   parameters.push_back(FilterParameter::New("Subsurface Feature Distance To Consider", "SubsurfaceDistance", FilterParameterWidgetType::IntWidget, getSubsurfaceDistance(), false, "Microns"));
   parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), false, "Degrees"));
@@ -119,6 +123,8 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
+  setLatticeParameterA(reader->readValue("LatticeParameterA", getLatticeParameterA()) );
+  setLatticeParameterC(reader->readValue("LatticeParameterC", getLatticeParameterC()) );
   setStressAxis(reader->readFloatVec3("Stress Axis", getStressAxis() ) );
   setSubsurfaceDistance(reader->readValue("SubsurfaceDistance", getSubsurfaceDistance()) );
   setInitiatorLowerThreshold(reader->readValue("InitiatorLowerThreshold", getInitiatorLowerThreshold()) );
@@ -143,6 +149,8 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
 int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
+  DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterA)
+  DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterC)
   DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
   DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
@@ -248,40 +256,28 @@ void MicrotextureFatigueAnalysis::execute()
   // Normalize input stress axis
   MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
   float sampleLoading[3] = {m_StressAxis.x, m_StressAxis.y, m_StressAxis.z};
-  float g[3][3] = {{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f}};
-  float gt[3][3] = {{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f}};
+  float g[3][3] = {0.0f}, gt[3][3] = {0.0f};
   float caxis[3] = {0.0f,0.0f,1.0f};
   float c[3] = {0.0f,0.0f,1.0f};
-  float v[3] = {0.0f,0.0f,0.0f};
+  float v[3] = {0.0f};
   float w = 0.0f;
-  float initiatorPlaneNormal[3] = {1,0,7}; 
-  /*  
-  float initiatorPlaneNormal[24][3] = 
-  {{1,0,7},
-  {0,1,7},
-  {1,7,0},
-  {0,7,1},
-  {7,1,0},
-  {7,0,1},
-  {-1,0,7},
-  {0,-1,7},
-  {-1,7,0},
-  {0,7,-1},
-  {7,-1,0},
-  {7,0,-1},
-  {1,0,-7},
-  {0,1,-7},
-  {1,-7,0},
-  {0,-7,1},
-  {-7,1,0},
-  {-7,0,1},
-  {-1,0,-7},
-  {0,-1,-7},
-  {-1,-7,0},
-  {0,-7,-1},
-  {-7,-1,0},
-  {-7,0,-1}};
-  */
+  int initiatorPlane[12][4] = 
+  {{-1,0,1,7},
+  {-1,1,0,-7},
+  {0,-1,1,7},
+  {1,0,-1,7},
+  {1,-1,0,-7},
+  {0,1,-1,7},
+  {0,-1,1,-7},
+  {0,1,-1,-7},
+  {1,0,-1,-7},
+  {-1,0,1,-7},
+  {-1,1,0,7},
+  {1,-1,0,7}};
+  float initiatorPlaneNormal[12][3] = {0.0f};
+  const float m_OneOverA = 1 / m_LatticeParameterA;
+  const float m_OneOverAxSqrtThree = 1 / (m_LatticeParameterA * sqrtf(3.0f));
+  const float m_OneOverC = 1 / m_LatticeParameterC;
 
   int xPoints = static_cast<int>(m->getXPoints());
   int yPoints = static_cast<int>(m->getYPoints());
@@ -299,15 +295,16 @@ void MicrotextureFatigueAnalysis::execute()
 	  && m_Centroids[3*i+2] > m_SubsurfaceDistance && m_Centroids[3*i+2] < (xyzScaledDimension[2] - m_SubsurfaceDistance))
 	{
 	  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*i+0], m_FeatureEulerAngles[3*i+1], m_FeatureEulerAngles[3*i+2], g);
-	  float testEuler[3] = {10.0f*(M_PI/180.0f),20.0f*(M_PI/180.0f),30.0f*(M_PI/180.0f)};
-	  //OrientationMath::EulertoMat(testEuler[0], testEuler[1], testEuler[2], g);
-  //	for (int j = 0; j < 24; ++j)
-  //	{
+  	  for (int j = 0; j < 12; ++j)
+  	  {
+		// convert Miller-Bravais to unit normal
+		initiatorPlaneNormal[j][0] = initiatorPlane[j][0] * m_OneOverA;
+		initiatorPlaneNormal[j][1] = (2.0f * initiatorPlane[j][1] + initiatorPlane[j][0]) * m_OneOverAxSqrtThree;
+		initiatorPlaneNormal[j][2] = initiatorPlane[j][3] * m_OneOverC;
+		MatrixMath::Normalize3x1(initiatorPlaneNormal[j]);
 		// Determine if it's an initiator
 		MatrixMath::Transpose3x3(g, gt);
-  //	  MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal[j], v);
-		MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal, v);
-		int stop = 0;
+		MatrixMath::Multiply3x3with3x1(gt, initiatorPlaneNormal[j], v);
 		// Normalize so that the magnitude is 1
 		MatrixMath::Normalize3x1(v);
 		if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
@@ -327,7 +324,7 @@ void MicrotextureFatigueAnalysis::execute()
 		// Convert from radian to degrees
 		w *= DREAM3D::Constants::k_180OverPi;
 		if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold) { m_Propagators[i] = true; }
-  //	}
+      }
 	}
   }
   // Determine bad actors

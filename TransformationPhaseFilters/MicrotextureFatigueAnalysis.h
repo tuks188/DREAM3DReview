@@ -57,7 +57,7 @@
  * @class MicrotextureFatigueAnalysis MicrotextureFatigueAnalysis.h /TransformationPhase/MicrotextureFatigueAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date July 30, 2014
+ * @date Jul 31, 2014
  * @version 5.1
  */
 class MicrotextureFatigueAnalysis : public AbstractFilter
@@ -71,6 +71,10 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     virtual ~MicrotextureFatigueAnalysis();
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
+    DREAM3D_FILTER_PARAMETER(float, LatticeParameterA)
+    Q_PROPERTY(float LatticeParameterA READ getLatticeParameterA WRITE setLatticeParameterA)
+    DREAM3D_FILTER_PARAMETER(float, LatticeParameterC)
+    Q_PROPERTY(float LatticeParameterC READ getLatticeParameterC WRITE setLatticeParameterC)
 	DREAM3D_FILTER_PARAMETER(FloatVec3_t, StressAxis)
     Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
     DREAM3D_FILTER_PARAMETER(int, SubsurfaceDistance)
