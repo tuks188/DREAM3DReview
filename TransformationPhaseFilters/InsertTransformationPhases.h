@@ -18,8 +18,9 @@
  *
  * Neither the name of Joseph C. Tucker, Michael A. Groeber, Michael A. Jackson,
  * Sudipto Mandal, Anthony D. Rollett, UES, Inc., the US Air Force, BlueQuartz  
- * Software nor the names of its may be used to endorse or promote products derived 
- * from this software without specific prior written permission.
+ * Software, Carnegie Mellon University nor the names of its contributors may be 
+ * used to endorse or promote products derived from this software without specific 
+ * prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -60,7 +61,7 @@
  * @brief
  * @author Joseph C. Tucker (UES, Inc.)
  * @author Sudipto Mandal (CMU)
- * @date July 29, 2014
+ * @date Jul 31, 2014
  * @version 5.1
  */
 class InsertTransformationPhases : public AbstractFilter
