@@ -479,7 +479,7 @@ void InsertTransformationPhases::insert_transformationphases()
   if (minRes > yRes) minRes = yRes;
   if (minRes > zRes) minRes = zRes;
 
-  float sampleHabitPlane[3] = {0.0f,0.0f,0.0f};
+  float sampleHabitPlane[3] = {0.0f};
   // NOTE: incoherent habit planes e[-20,20] & are ints
   float crystalHabitPlane[3] = {int(rg.genrand_res53() * 20.0f),int(rg.genrand_res53() * 20.0f),int(rg.genrand_res53() * 20.0f)};
   QuatF q1, q2;
