@@ -34,8 +34,8 @@
  *                   FA8650-07-D-5800 and FA8650-10-D-5226
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _MicrotextureFatigueAnalysis_H_
-#define _MicrotextureFatigueAnalysis_H_
+#ifndef _TiDwellFatigueCrystallographicAnalysis_H_
+#define _TiDwellFatigueCrystallographicAnalysis_H_
 
 #include <QtCore/QString>
 
@@ -54,21 +54,21 @@
 #include "DREAM3DLib/DataArrays/NeighborList.hpp"
 
 /**
- * @class MicrotextureFatigueAnalysis MicrotextureFatigueAnalysis.h /TransformationPhase/MicrotextureFatigueAnalysis.h
+ * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
  * @author Joseph C. Tucker
  * @date Aug 1, 2014
  * @version 5.1
  */
-class MicrotextureFatigueAnalysis : public AbstractFilter
+class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:
-    DREAM3D_SHARED_POINTERS(MicrotextureFatigueAnalysis)
-    DREAM3D_STATIC_NEW_MACRO(MicrotextureFatigueAnalysis)
-    DREAM3D_TYPE_MACRO_SUPER(MicrotextureFatigueAnalysis, AbstractFilter)
+    DREAM3D_SHARED_POINTERS(TiDwellFatigueCrystallographicAnalysis)
+    DREAM3D_STATIC_NEW_MACRO(TiDwellFatigueCrystallographicAnalysis)
+    DREAM3D_TYPE_MACRO_SUPER(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
 
-    virtual ~MicrotextureFatigueAnalysis();
+    virtual ~TiDwellFatigueCrystallographicAnalysis();
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
     DREAM3D_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
@@ -137,7 +137,7 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 	virtual const QString getGroupName() { return DREAM3D::FilterGroups::StatisticsFilters; }
 	virtual const QString getSubGroupName()  { return DREAM3D::FilterSubGroups::CrystallographicFilters; }
-    virtual const QString getHumanLabel() { return "Microtexture Fatigue Analysis"; }
+    virtual const QString getHumanLabel() { return "Ti Dwell Fatigue Crystallographic Analysis"; }
 	virtual const QString getBrandingString() { return Statistics::StatisticsPluginDisplayName + " Filter"; }
 
     /**
@@ -176,7 +176,7 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     void preflightExecuted();
 
   protected:
-    MicrotextureFatigueAnalysis();
+    TiDwellFatigueCrystallographicAnalysis();
 
     /**
     * @brief Checks for the appropriate parameter values and availability of
@@ -204,10 +204,10 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
 	DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
-    MicrotextureFatigueAnalysis(const MicrotextureFatigueAnalysis&); // Copy Constructor Not Implemented
-    void operator=(const MicrotextureFatigueAnalysis&); // Operator '=' Not Implemented
+    TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&); // Copy Constructor Not Implemented
+    void operator=(const TiDwellFatigueCrystallographicAnalysis&); // Operator '=' Not Implemented
 };
 
-#endif /* _MicrotextureFatigueAnalysis_H_ */
+#endif /* _TiDwellFatigueCrystallographicAnalysis_H_ */
 
 

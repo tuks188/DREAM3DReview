@@ -19,7 +19,7 @@ START_FILTER_GROUP(${TransformationPhase_BINARY_DIR} "${_filterGroupName}" "R3D 
 
 set(_PublicFilters
   InsertTransformationPhases
-  MicrotextureFatigueAnalysis
+  TiDwellFatigueCrystallographicAnalysis
   FindCSLBoundaries
 )
 

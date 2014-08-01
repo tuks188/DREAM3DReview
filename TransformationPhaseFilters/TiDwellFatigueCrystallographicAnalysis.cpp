@@ -34,7 +34,7 @@
  *                   FA8650-07-D-5800 and FA8650-10-D-5226
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "MicrotextureFatigueAnalysis.h"
+#include "TiDwellFatigueCrystallographicAnalysis.h"
 
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
@@ -48,7 +48,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
+TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis() :
   AbstractFilter(),
   m_AlphaGlobPhasePresent(true),
   m_AlphaGlobPhase(1),
@@ -65,6 +65,7 @@ MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   m_SoftFeatureUpperThreshold(90.0f),
   m_InitiatorsArrayName(TransformationPhase::Initiators),
   m_PropagatorsArrayName(TransformationPhase::Propagators),
+  m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
   m_BadActorsArrayName(TransformationPhase::BadActors),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
   m_FeatureEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
@@ -91,14 +92,14 @@ MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MicrotextureFatigueAnalysis::~MicrotextureFatigueAnalysis()
+TiDwellFatigueCrystallographicAnalysis::~TiDwellFatigueCrystallographicAnalysis()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MicrotextureFatigueAnalysis::setupFilterParameters()
+void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
   QStringList linkedProps1("AlphaGlobPhase");
@@ -139,7 +140,7 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
   setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
@@ -173,7 +174,7 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
+int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
   DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
@@ -208,7 +209,7 @@ int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersW
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MicrotextureFatigueAnalysis::dataCheck()
+void TiDwellFatigueCrystallographicAnalysis::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
@@ -265,7 +266,7 @@ void MicrotextureFatigueAnalysis::dataCheck()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MicrotextureFatigueAnalysis::preflight()
+void TiDwellFatigueCrystallographicAnalysis::preflight()
 {
   setInPreflight(true);
   emit preflightAboutToExecute();
@@ -278,7 +279,7 @@ void MicrotextureFatigueAnalysis::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MicrotextureFatigueAnalysis::execute()
+void TiDwellFatigueCrystallographicAnalysis::execute()
 {
   int err = 0;
   setErrorCondition(err);
@@ -429,9 +430,9 @@ void MicrotextureFatigueAnalysis::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer MicrotextureFatigueAnalysis::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstance(bool copyFilterParameters)
 {
-  MicrotextureFatigueAnalysis::Pointer filter = MicrotextureFatigueAnalysis::New();
+  TiDwellFatigueCrystallographicAnalysis::Pointer filter = TiDwellFatigueCrystallographicAnalysis::New();
   if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());

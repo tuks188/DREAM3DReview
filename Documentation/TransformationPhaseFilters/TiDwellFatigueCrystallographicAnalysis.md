@@ -1,4 +1,4 @@
-Microtexture Fatigue Analysis {#microtexturefatigueanalysis}
+Ti Dwell Fatigue Crystallographic Analysis {#tidwellfatiguecrystallographicanalysis}
 ======
 	
 ## Group (Subgroup) ##
@@ -11,6 +11,7 @@ Determines **Initiators**, **Propagators** and **Bad Actors** in microtextured v
 
 | Name | Type | Description |
 |------|------|------|
+
 | Lattice Parameter A | Float | The hexagonal basal lattice parameter. |
 | Lattice Parameter C | Float | The hexagonal height lattice parameter. |
 | Subsurface Feature Distance To Consider | Int | The distance (microns) from the surface defining a subvolume. |

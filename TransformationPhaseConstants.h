@@ -11,6 +11,7 @@ namespace TransformationPhase
 
   const DREAM3D_STRING Initiators("Initiators");
   const DREAM3D_STRING Propagators("Propagators");
+  const DREAM3D_STRING SoftFeatures("SoftFeatures");
   const DREAM3D_STRING BadActors("BadActors");
 
   const DREAM3D_STRING SurfaceMeshCSLBoundary("SurfaceMeshCSLBoundary");
