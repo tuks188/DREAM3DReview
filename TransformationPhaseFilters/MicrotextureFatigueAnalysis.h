@@ -71,7 +71,9 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     virtual ~MicrotextureFatigueAnalysis();
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-    DREAM3D_FILTER_PARAMETER(int, AlphaGlobPhase)
+    DREAM3D_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
+    Q_PROPERTY(bool AlphaGlobPhasePresent READ getAlphaGlobPhasePresent WRITE setAlphaGlobPhasePresent)
+	DREAM3D_FILTER_PARAMETER(int, AlphaGlobPhase)
     Q_PROPERTY(int AlphaGlobPhase READ getAlphaGlobPhase WRITE setAlphaGlobPhase)
     DREAM3D_FILTER_PARAMETER(int, MTRPhase)
     Q_PROPERTY(int MTRPhase READ getMTRPhase WRITE setMTRPhase)

@@ -50,6 +50,7 @@
 // -----------------------------------------------------------------------------
 MicrotextureFatigueAnalysis::MicrotextureFatigueAnalysis() :
   AbstractFilter(),
+  m_AlphaGlobPhasePresent(true),
   m_AlphaGlobPhase(1),
   m_MTRPhase(2),
   m_LatticeParameterA(2.9131f),
@@ -100,15 +101,17 @@ MicrotextureFatigueAnalysis::~MicrotextureFatigueAnalysis()
 void MicrotextureFatigueAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
+  QStringList linkedProps1("AlphaGlobPhase");
+  parameters.push_back(FilterParameter::NewConditional("Alpha Glob Phase Present", "AlphaGlobPhasePresent", FilterParameterWidgetType::LinkedBooleanWidget, getAlphaGlobPhasePresent(), false, linkedProps1));
   parameters.push_back(FilterParameter::New("Alpha Glob Phase Number", "AlphaGlobPhase", FilterParameterWidgetType::IntWidget, getAlphaGlobPhase(), false, ""));
   parameters.push_back(FilterParameter::New("Microtextured Region Phase Number", "MTRPhase", FilterParameterWidgetType::IntWidget, getMTRPhase(), false, ""));
   parameters.push_back(FilterParameter::New("Lattice Parameter A", "LatticeParameterA", FilterParameterWidgetType::DoubleWidget, getLatticeParameterA(), false, ""));
   parameters.push_back(FilterParameter::New("Lattice Parameter C", "LatticeParameterC", FilterParameterWidgetType::DoubleWidget, getLatticeParameterC(), false, ""));
   parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
   parameters.push_back(FilterParameter::New("Subsurface Feature Distance To Consider", "SubsurfaceDistance", FilterParameterWidgetType::IntWidget, getSubsurfaceDistance(), false, "Microns"));
-  QStringList linkedProps;
-  linkedProps << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
-  parameters.push_back(FilterParameter::NewConditional("Assume Initiator Presence", "AssumeInitiatorPresence", FilterParameterWidgetType::LinkedBooleanWidget, getAssumeInitiatorPresence(), false, linkedProps));
+  QStringList linkedProps2;
+  linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
+  parameters.push_back(FilterParameter::NewConditional("Assume Initiator Presence", "AssumeInitiatorPresence", FilterParameterWidgetType::LinkedBooleanWidget, getAssumeInitiatorPresence(), false, linkedProps2));
   parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), false, "Degrees"));
   parameters.push_back(FilterParameter::New("Initiator Upper Threshold", "InitiatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorUpperThreshold(), false, "Degrees"));
   parameters.push_back(FilterParameter::New("Propagator Lower Threshold", "PropagatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getPropagatorLowerThreshold(), false, "Degrees"));
@@ -139,6 +142,7 @@ void MicrotextureFatigueAnalysis::setupFilterParameters()
 void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
+  setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
   setAlphaGlobPhase(reader->readValue("AlphaGlobPhase", getAlphaGlobPhase()) );
   setMTRPhase(reader->readValue("MTRPhase", getMTRPhase()) );
   setLatticeParameterA(reader->readValue("LatticeParameterA", getLatticeParameterA()) );
@@ -172,6 +176,7 @@ void MicrotextureFatigueAnalysis::readFilterParameters(AbstractFilterParametersR
 int MicrotextureFatigueAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
+  DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
   DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
   DREAM3D_FILTER_WRITE_PARAMETER(MTRPhase)
   DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterA)
