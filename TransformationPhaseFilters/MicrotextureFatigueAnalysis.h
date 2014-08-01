@@ -57,7 +57,7 @@
  * @class MicrotextureFatigueAnalysis MicrotextureFatigueAnalysis.h /TransformationPhase/MicrotextureFatigueAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date Jul 31, 2014
+ * @date Aug 1, 2014
  * @version 5.1
  */
 class MicrotextureFatigueAnalysis : public AbstractFilter
@@ -71,6 +71,10 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     virtual ~MicrotextureFatigueAnalysis();
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
+    DREAM3D_FILTER_PARAMETER(int, AlphaGlobPhase)
+    Q_PROPERTY(int AlphaGlobPhase READ getAlphaGlobPhase WRITE setAlphaGlobPhase)
+    DREAM3D_FILTER_PARAMETER(int, MTRPhase)
+    Q_PROPERTY(int MTRPhase READ getMTRPhase WRITE setMTRPhase)
     DREAM3D_FILTER_PARAMETER(float, LatticeParameterA)
     Q_PROPERTY(float LatticeParameterA READ getLatticeParameterA WRITE setLatticeParameterA)
     DREAM3D_FILTER_PARAMETER(float, LatticeParameterC)
@@ -80,6 +84,8 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(int, SubsurfaceDistance)
     Q_PROPERTY(int SubsurfaceDistance READ getSubsurfaceDistance WRITE setSubsurfaceDistance)
     DREAM3D_FILTER_PARAMETER(float, InitiatorLowerThreshold)
+    DREAM3D_FILTER_PARAMETER(bool, AssumeInitiatorPresence)
+    Q_PROPERTY(bool AssumeInitiatorPresence READ getAssumeInitiatorPresence WRITE setAssumeInitiatorPresence)
     Q_PROPERTY(float InitiatorLowerThreshold READ getInitiatorLowerThreshold WRITE setInitiatorLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, InitiatorUpperThreshold)
     Q_PROPERTY(float InitiatorUpperThreshold READ getInitiatorUpperThreshold WRITE setInitiatorUpperThreshold)
@@ -87,12 +93,19 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
     Q_PROPERTY(float PropagatorLowerThreshold READ getPropagatorLowerThreshold WRITE setPropagatorLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, PropagatorUpperThreshold)
     Q_PROPERTY(float PropagatorUpperThreshold READ getPropagatorUpperThreshold WRITE setPropagatorUpperThreshold)
+    DREAM3D_FILTER_PARAMETER(float, SoftFeatureLowerThreshold)
+    Q_PROPERTY(float SoftFeatureLowerThreshold READ getSoftFeatureLowerThreshold WRITE setSoftFeatureLowerThreshold)
+    DREAM3D_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
+    Q_PROPERTY(float SoftFeatureUpperThreshold READ getSoftFeatureUpperThreshold WRITE setSoftFeatureUpperThreshold)
 	
     DREAM3D_FILTER_PARAMETER(QString, InitiatorsArrayName)
     Q_PROPERTY(QString InitiatorsArrayName READ getInitiatorsArrayName WRITE setInitiatorsArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, PropagatorsArrayName)
     Q_PROPERTY(QString PropagatorsArrayName READ getPropagatorsArrayName WRITE setPropagatorsArrayName)
+    
+	DREAM3D_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
+    Q_PROPERTY(QString SoftFeaturesArrayName READ getSoftFeaturesArrayName WRITE setSoftFeaturesArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, BadActorsArrayName)
     Q_PROPERTY(QString BadActorsArrayName READ getBadActorsArrayName WRITE setBadActorsArrayName)
@@ -108,6 +121,9 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborListArrayPath)
     Q_PROPERTY(DataArrayPath NeighborListArrayPath READ getNeighborListArrayPath WRITE setNeighborListArrayPath)
+    
+	DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborhoodListArrayPath)
+    Q_PROPERTY(DataArrayPath NeighborhoodListArrayPath READ getNeighborhoodListArrayPath WRITE setNeighborhoodListArrayPath)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
     Q_PROPERTY(DataArrayPath CentroidsArrayPath READ getCentroidsArrayPath WRITE setCentroidsArrayPath)
@@ -173,12 +189,14 @@ class MicrotextureFatigueAnalysis : public AbstractFilter
   private:
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Propagators)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SoftFeatures)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, BadActors)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
 	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
+    NeighborList<int>::WeakPointer m_NeighborhoodList;
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
     
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
