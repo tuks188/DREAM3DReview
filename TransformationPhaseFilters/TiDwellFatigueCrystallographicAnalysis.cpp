@@ -56,7 +56,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_LatticeParameterA(2.9131f),
   m_LatticeParameterC(4.6572f),
   m_SubsurfaceDistance(0),
-  m_AssumeInitiatorPresence(true),
+  m_DoNotAssumeInitiatorPresence(true),
   m_InitiatorLowerThreshold(40.0f),
   m_InitiatorUpperThreshold(50.0f),
   m_PropagatorLowerThreshold(0.0f),
@@ -112,7 +112,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Subsurface Feature Distance To Consider", "SubsurfaceDistance", FilterParameterWidgetType::IntWidget, getSubsurfaceDistance(), false, "Microns"));
   QStringList linkedProps2;
   linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
-  parameters.push_back(FilterParameter::NewConditional("Assume Initiator Presence", "AssumeInitiatorPresence", FilterParameterWidgetType::LinkedBooleanWidget, getAssumeInitiatorPresence(), false, linkedProps2));
+  parameters.push_back(FilterParameter::NewConditional("Do Not Assume Initiator Presence", "DoNotAssumeInitiatorPresence", FilterParameterWidgetType::LinkedBooleanWidget, getDoNotAssumeInitiatorPresence(), false, linkedProps2));
   parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), false, "Degrees"));
   parameters.push_back(FilterParameter::New("Initiator Upper Threshold", "InitiatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorUpperThreshold(), false, "Degrees"));
   parameters.push_back(FilterParameter::New("Propagator Lower Threshold", "PropagatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getPropagatorLowerThreshold(), false, "Degrees"));
@@ -150,7 +150,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setLatticeParameterC(reader->readValue("LatticeParameterC", getLatticeParameterC()) );
   setStressAxis(reader->readFloatVec3("Stress Axis", getStressAxis() ) );
   setSubsurfaceDistance(reader->readValue("SubsurfaceDistance", getSubsurfaceDistance()) );
-  setAssumeInitiatorPresence(reader->readValue("AssumeInitiatorPresence", getAssumeInitiatorPresence()) );
+  setDoNotAssumeInitiatorPresence(reader->readValue("DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence()) );
   setInitiatorLowerThreshold(reader->readValue("InitiatorLowerThreshold", getInitiatorLowerThreshold()) );
   setInitiatorUpperThreshold(reader->readValue("InitiatorUpperThreshold", getInitiatorUpperThreshold()) );
   setPropagatorLowerThreshold(reader->readValue("PropagatorLowerThreshold", getPropagatorLowerThreshold()) );
@@ -184,7 +184,7 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterC)
   DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
   DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
-  DREAM3D_FILTER_WRITE_PARAMETER(AssumeInitiatorPresence)
+  DREAM3D_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(PropagatorLowerThreshold)
@@ -363,7 +363,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 		  { 
 			m_Propagators[i] = true; 
 			// Determine if it's an initiator only if we're assuming initiators are not necessarily present
-			if (m_AssumeInitiatorPresence == false)
+			if (m_DoNotAssumeInitiatorPresence == false)
 			{
   			  for (int j = 0; j < neighborlist[i].size(); ++j)
 			  {
@@ -388,7 +388,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 			  }
 			}
 			// Determine if it's a soft feature
-			if (m_AssumeInitiatorPresence == false || initiatorFlag == true)
+			if (m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true)
 			{
   			  for (int k = 0; k < neighborhoodlist[i].size(); ++k)
 			  {
