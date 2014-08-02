@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Michael A. Jackson (BlueQuartz Software)
  * Copyright (c) 2011 Dr. Michael A. Groeber (US Air Force Research Laboratories)
  * Copyright (c) 2014 Dr. Joseph C. Tucker (UES, Inc.)
- * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon 
+ * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon
  * University)
  * All rights reserved.
  *
@@ -17,9 +17,9 @@
  * other materials provided with the distribution.
  *
  * Neither the name of Joseph C. Tucker, Michael A. Groeber, Michael A. Jackson,
- * Sudipto Mandal, Anthony D. Rollett, UES, Inc., the US Air Force, BlueQuartz  
- * Software, Carnegie Mellon University nor the names of its contributors may be 
- * used to endorse or promote products derived from this software without specific 
+ * Sudipto Mandal, Anthony D. Rollett, UES, Inc., the US Air Force, BlueQuartz
+ * Software, Carnegie Mellon University nor the names of its contributors may be
+ * used to endorse or promote products derived from this software without specific
  * prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -420,7 +420,7 @@ void InsertTransformationPhases::execute()
   AttributeMatrix::Pointer volAttrMat = dca->getAttributeMatrix(getVolCellEnsembleAttributeMatrixPath());
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
-  int64_t numensembles = m_PhaseTypesPtr.lock()->getNumberOfTuples();
+  size_t numensembles = m_PhaseTypesPtr.lock()->getNumberOfTuples();
 
   // resizing statsgen attribute matrix to add new phase info
   QVector<size_t> tDims(1, numensembles + 1);

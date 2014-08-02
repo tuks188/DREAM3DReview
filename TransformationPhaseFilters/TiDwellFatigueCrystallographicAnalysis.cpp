@@ -225,7 +225,7 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   m_PropagatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_PropagatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Propagators = m_PropagatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
-  
+
   tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getSoftFeaturesArrayName() );
   m_SoftFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_SoftFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
@@ -247,7 +247,7 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   { m_FeaturePhases = m_FeaturePhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_NeighborList = getDataContainerArray()->getPrereqArrayFromPath<NeighborList<int>, AbstractFilter>(this, getNeighborListArrayPath(), dims);
-  
+
   m_NeighborhoodList = getDataContainerArray()->getPrereqArrayFromPath<NeighborList<int>, AbstractFilter>(this, getNeighborhoodListArrayPath(), dims);
 
   dims[0] = 3;
@@ -286,7 +286,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   dataCheck();
   if(getErrorCondition() < 0) { return; }
-  
+
   // using feature euler angles simply because it's available
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(m_FeatureEulerAnglesArrayPath.getDataContainerName());
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
@@ -305,7 +305,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   float c[3] = {0.0f,0.0f,1.0f};
   float v[3] = {0.0f};
   float w = 0.0f;
-  int propagatorPlane[12][4] = 
+  int propagatorPlane[12][4] =
   {{-1,0,1,7},
   {-1,1,0,-7},
   {0,-1,1,7},
@@ -334,94 +334,94 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   for (int i = 1; i < totalFeatures; ++i)
   {
-	// check if current feature centroid is within the subsurface defined centroid
-	if ( m_Centroids[3*i+0] > m_SubsurfaceDistance && m_Centroids[3*i+0] < (xyzScaledDimension[0] - m_SubsurfaceDistance)
-	  && m_Centroids[3*i+1] > m_SubsurfaceDistance && m_Centroids[3*i+1] < (xyzScaledDimension[1] - m_SubsurfaceDistance)
-	  && m_Centroids[3*i+2] > m_SubsurfaceDistance && m_Centroids[3*i+2] < (xyzScaledDimension[2] - m_SubsurfaceDistance))
-	{
-	  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*i+0], m_FeatureEulerAngles[3*i+1], m_FeatureEulerAngles[3*i+2], g);
-	  // Determine if it's a propagator
-	  if (m_FeaturePhases[i] == m_MTRPhase)
-	  {
-		for (int j = 0; j < 12; ++j)
-  		{
-		  // convert Miller-Bravais to unit normal
-		  propagatorPlaneNormal[j][0] = propagatorPlane[j][0] * m_OneOverA;
-		  propagatorPlaneNormal[j][1] = (2.0f * propagatorPlane[j][1] + propagatorPlane[j][0]) * m_OneOverAxSqrtThree;
-		  propagatorPlaneNormal[j][2] = propagatorPlane[j][3] * m_OneOverC;
-		  MatrixMath::Normalize3x1(propagatorPlaneNormal[j]);
-		  MatrixMath::Transpose3x3(g, gt);
-		  MatrixMath::Multiply3x3with3x1(gt, propagatorPlaneNormal[j], v);
-		  // Normalize so that the magnitude is 1
-		  MatrixMath::Normalize3x1(v);
-		  if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
-		  w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
-		  w = acos(w);
-		  // Convert from radian to degrees
-		  w *= DREAM3D::Constants::k_180OverPi;
-		  if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold) 
-		  { 
-			m_Propagators[i] = true; 
-			// Determine if it's an initiator only if we're assuming initiators are not necessarily present
-			if (m_DoNotAssumeInitiatorPresence == false)
-			{
-  			  for (int j = 0; j < neighborlist[i].size(); ++j)
-			  {
-				if (m_FeaturePhases[j] == m_AlphaGlobPhase)
-				{
-				  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*j+0], m_FeatureEulerAngles[3*j+1], m_FeatureEulerAngles[3*j+2], g);
-				  MatrixMath::Transpose3x3(g, gt);
-				  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
-				  // Normalize so that the magnitude is 1
-				  MatrixMath::Normalize3x1(c);
-				  if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
-				  w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
-				  w = acos(w);
-				  // Convert from radian to degrees
-				  w *= DREAM3D::Constants::k_180OverPi;
-				  if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold) 
-				  { 
-					m_Initiators[j] = true;
-					initiatorFlag == true;
-				  }
-				}
-			  }
-			}
-			// Determine if it's a soft feature
-			if (m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true)
-			{
-  			  for (int k = 0; k < neighborhoodlist[i].size(); ++k)
-			  {
-				if (m_FeaturePhases[k] == m_AlphaGlobPhase)
-				{
-				  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*k+0], m_FeatureEulerAngles[3*k+1], m_FeatureEulerAngles[3*k+2], g);
-				  MatrixMath::Transpose3x3(g, gt);
-				  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
-				  // Normalize so that the magnitude is 1
-				  MatrixMath::Normalize3x1(c);
-				  if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
-				  w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
-				  w = acos(w);
-				  // Convert from radian to degrees
-				  w *= DREAM3D::Constants::k_180OverPi;
-				  if (w >= m_SoftFeatureLowerThreshold && w <= m_SoftFeatureUpperThreshold) 
-				  { 
-					m_SoftFeatures[k] = true;
-					m_BadActors[i] = true;
-					m_BadActors[j] = true;
-	  				for (int j = 0; j < neighborlist[i].size(); ++j)
-					{
-					  if (m_Initiators[j] == true) { m_BadActors[j] = true; }
-					}
-				  }
-				}
-			  }
-			}
-			break;
-		  }
-		}
-	  }
-	}
+    // check if current feature centroid is within the subsurface defined centroid
+    if ( m_Centroids[3*i+0] > m_SubsurfaceDistance && m_Centroids[3*i+0] < (xyzScaledDimension[0] - m_SubsurfaceDistance)
+      && m_Centroids[3*i+1] > m_SubsurfaceDistance && m_Centroids[3*i+1] < (xyzScaledDimension[1] - m_SubsurfaceDistance)
+      && m_Centroids[3*i+2] > m_SubsurfaceDistance && m_Centroids[3*i+2] < (xyzScaledDimension[2] - m_SubsurfaceDistance))
+    {
+      OrientationMath::EulertoMat(m_FeatureEulerAngles[3*i+0], m_FeatureEulerAngles[3*i+1], m_FeatureEulerAngles[3*i+2], g);
+      // Determine if it's a propagator
+      if (m_FeaturePhases[i] == m_MTRPhase)
+      {
+        for (int j = 0; j < 12; ++j)
+        {
+          // convert Miller-Bravais to unit normal
+          propagatorPlaneNormal[j][0] = propagatorPlane[j][0] * m_OneOverA;
+          propagatorPlaneNormal[j][1] = (2.0f * propagatorPlane[j][1] + propagatorPlane[j][0]) * m_OneOverAxSqrtThree;
+          propagatorPlaneNormal[j][2] = propagatorPlane[j][3] * m_OneOverC;
+          MatrixMath::Normalize3x1(propagatorPlaneNormal[j]);
+          MatrixMath::Transpose3x3(g, gt);
+          MatrixMath::Multiply3x3with3x1(gt, propagatorPlaneNormal[j], v);
+          // Normalize so that the magnitude is 1
+          MatrixMath::Normalize3x1(v);
+          if(v[2] < 0) { MatrixMath::Multiply3x1withConstant(v, -1); }
+          w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
+          w = acos(w);
+          // Convert from radian to degrees
+          w *= DREAM3D::Constants::k_180OverPi;
+          if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold)
+          {
+            m_Propagators[i] = true;
+            // Determine if it's an initiator only if we're assuming initiators are not necessarily present
+            if (m_DoNotAssumeInitiatorPresence == false)
+            {
+              for (int j = 0; j < neighborlist[i].size(); ++j)
+              {
+                if (m_FeaturePhases[j] == m_AlphaGlobPhase)
+                {
+                  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*j+0], m_FeatureEulerAngles[3*j+1], m_FeatureEulerAngles[3*j+2], g);
+                  MatrixMath::Transpose3x3(g, gt);
+                  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
+                  // Normalize so that the magnitude is 1
+                  MatrixMath::Normalize3x1(c);
+                  if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
+                  w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
+                  w = acos(w);
+                  // Convert from radian to degrees
+                  w *= DREAM3D::Constants::k_180OverPi;
+                  if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold)
+                  {
+                    m_Initiators[j] = true;
+                    initiatorFlag = true;
+                  }
+                }
+              }
+            }
+            // Determine if it's a soft feature
+            if (m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true)
+            {
+              for (int k = 0; k < neighborhoodlist[i].size(); ++k)
+              {
+                if (m_FeaturePhases[k] == m_AlphaGlobPhase)
+                {
+                  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*k+0], m_FeatureEulerAngles[3*k+1], m_FeatureEulerAngles[3*k+2], g);
+                  MatrixMath::Transpose3x3(g, gt);
+                  MatrixMath::Multiply3x3with3x1(gt, caxis, c);
+                  // Normalize so that the magnitude is 1
+                  MatrixMath::Normalize3x1(c);
+                  if(c[2] < 0) { MatrixMath::Multiply3x1withConstant(c, -1); }
+                  w = GeometryMath::CosThetaBetweenVectors(c, sampleLoading);
+                  w = acos(w);
+                  // Convert from radian to degrees
+                  w *= DREAM3D::Constants::k_180OverPi;
+                  if (w >= m_SoftFeatureLowerThreshold && w <= m_SoftFeatureUpperThreshold)
+                  {
+                    m_SoftFeatures[k] = true;
+                    m_BadActors[i] = true;
+                    m_BadActors[j] = true;
+                    for (int j = 0; j < neighborlist[i].size(); ++j)
+                    {
+                      if (m_Initiators[j] == true) { m_BadActors[j] = true; }
+                    }
+                  }
+                }
+              }
+            }
+            break;
+          }
+        }
+      }
+    }
   }
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
