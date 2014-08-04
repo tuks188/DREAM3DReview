@@ -57,7 +57,7 @@
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date Aug 1, 2014
+ * @date Aug 4, 2014
  * @version 5.1
  */
 class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
@@ -177,6 +177,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
   protected:
     TiDwellFatigueCrystallographicAnalysis();
+
+	float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
     /**
     * @brief Checks for the appropriate parameter values and availability of
