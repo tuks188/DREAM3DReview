@@ -398,7 +398,7 @@ void InsertTransformationPhases::preflight()
   emit preflightExecuted();
 
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(getFeaturePhasesArrayPath());
-  if(attrMat == NULL) { return; }
+  if(attrMat == NULL) { setInPreflight(false); return; }
 
   setInPreflight(false);
 }
