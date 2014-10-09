@@ -73,7 +73,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
     DREAM3D_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
     Q_PROPERTY(bool AlphaGlobPhasePresent READ getAlphaGlobPhasePresent WRITE setAlphaGlobPhasePresent)
-	DREAM3D_FILTER_PARAMETER(int, AlphaGlobPhase)
+    DREAM3D_FILTER_PARAMETER(int, AlphaGlobPhase)
     Q_PROPERTY(int AlphaGlobPhase READ getAlphaGlobPhase WRITE setAlphaGlobPhase)
     DREAM3D_FILTER_PARAMETER(int, MTRPhase)
     Q_PROPERTY(int MTRPhase READ getMTRPhase WRITE setMTRPhase)
@@ -81,13 +81,14 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     Q_PROPERTY(float LatticeParameterA READ getLatticeParameterA WRITE setLatticeParameterA)
     DREAM3D_FILTER_PARAMETER(float, LatticeParameterC)
     Q_PROPERTY(float LatticeParameterC READ getLatticeParameterC WRITE setLatticeParameterC)
-	DREAM3D_FILTER_PARAMETER(FloatVec3_t, StressAxis)
+    DREAM3D_FILTER_PARAMETER(FloatVec3_t, StressAxis)
     Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
     DREAM3D_FILTER_PARAMETER(int, SubsurfaceDistance)
     Q_PROPERTY(int SubsurfaceDistance READ getSubsurfaceDistance WRITE setSubsurfaceDistance)
-    DREAM3D_FILTER_PARAMETER(float, InitiatorLowerThreshold)
+
     DREAM3D_FILTER_PARAMETER(bool, DoNotAssumeInitiatorPresence)
     Q_PROPERTY(bool DoNotAssumeInitiatorPresence READ getDoNotAssumeInitiatorPresence WRITE setDoNotAssumeInitiatorPresence)
+    DREAM3D_FILTER_PARAMETER(float, InitiatorLowerThreshold)
     Q_PROPERTY(float InitiatorLowerThreshold READ getInitiatorLowerThreshold WRITE setInitiatorLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, InitiatorUpperThreshold)
     Q_PROPERTY(float InitiatorUpperThreshold READ getInitiatorUpperThreshold WRITE setInitiatorUpperThreshold)
@@ -99,14 +100,14 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     Q_PROPERTY(float SoftFeatureLowerThreshold READ getSoftFeatureLowerThreshold WRITE setSoftFeatureLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
     Q_PROPERTY(float SoftFeatureUpperThreshold READ getSoftFeatureUpperThreshold WRITE setSoftFeatureUpperThreshold)
-	
+
     DREAM3D_FILTER_PARAMETER(QString, InitiatorsArrayName)
     Q_PROPERTY(QString InitiatorsArrayName READ getInitiatorsArrayName WRITE setInitiatorsArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, PropagatorsArrayName)
     Q_PROPERTY(QString PropagatorsArrayName READ getPropagatorsArrayName WRITE setPropagatorsArrayName)
-    
-	DREAM3D_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
+
+    DREAM3D_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
     Q_PROPERTY(QString SoftFeaturesArrayName READ getSoftFeaturesArrayName WRITE setSoftFeaturesArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, BadActorsArrayName)
@@ -114,8 +115,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
-		
-	DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
+
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath FeatureEulerAnglesArrayPath READ getFeatureEulerAnglesArrayPath WRITE setFeatureEulerAnglesArrayPath)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeaturePhasesArrayPath)
@@ -123,22 +124,22 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborListArrayPath)
     Q_PROPERTY(DataArrayPath NeighborListArrayPath READ getNeighborListArrayPath WRITE setNeighborListArrayPath)
-    
-	DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborhoodListArrayPath)
+
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborhoodListArrayPath)
     Q_PROPERTY(DataArrayPath NeighborhoodListArrayPath READ getNeighborhoodListArrayPath WRITE setNeighborhoodListArrayPath)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
     Q_PROPERTY(DataArrayPath CentroidsArrayPath READ getCentroidsArrayPath WRITE setCentroidsArrayPath)
 
-	DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
-	virtual const QString getCompiledLibraryName() { return Statistics::StatisticsBaseName; }
+    virtual const QString getCompiledLibraryName() { return Statistics::StatisticsBaseName; }
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-	virtual const QString getGroupName() { return DREAM3D::FilterGroups::StatisticsFilters; }
-	virtual const QString getSubGroupName()  { return DREAM3D::FilterSubGroups::CrystallographicFilters; }
+    virtual const QString getGroupName() { return DREAM3D::FilterGroups::StatisticsFilters; }
+    virtual const QString getSubGroupName()  { return DREAM3D::FilterSubGroups::CrystallographicFilters; }
     virtual const QString getHumanLabel() { return "Ti Dwell Fatigue Crystallographic Analysis"; }
-	virtual const QString getBrandingString() { return Statistics::StatisticsPluginDisplayName + " Filter"; }
+    virtual const QString getBrandingString() { return Statistics::StatisticsPluginDisplayName + " Filter"; }
 
     /**
     * @brief This method will instantiate all the end user settable options/parameters
@@ -178,12 +179,12 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
   protected:
     TiDwellFatigueCrystallographicAnalysis();
 
-	void determine_subsurfacefeatures(int i);
-	void determine_propagators(int i);
-	bool determine_initiators(int i, int j, NeighborList<int>& neighborlist);
-	void determine_softfeatures(int i, int j, NeighborList<int>& neighborlist, NeighborList<int>& neighborhoodlist);
-	void assign_badactors(int i, int j, NeighborList<int>& neighborlist);
-	float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
+    void determine_subsurfacefeatures(int i);
+    void determine_propagators(int i);
+    bool determine_initiators(int i, int j, NeighborList<int>& neighborlist);
+    void determine_softfeatures(int i, int j, NeighborList<int>& neighborlist, NeighborList<int>& neighborhoodlist);
+    void assign_badactors(int i, int j, NeighborList<int>& neighborlist);
+    float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
     /**
     * @brief Checks for the appropriate parameter values and availability of
@@ -202,14 +203,14 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, BadActors)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
-	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
     NeighborList<int>::WeakPointer m_NeighborhoodList;
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
-    
+
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
-	DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
     TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&); // Copy Constructor Not Implemented
     void operator=(const TiDwellFatigueCrystallographicAnalysis&); // Operator '=' Not Implemented

@@ -412,7 +412,7 @@ void InsertTransformationPhases::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  //VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
   DataContainerArray::Pointer dca = getDataContainerArray();
 
   // defining separate ensemble attribute matrix for statsgen & vol
@@ -469,7 +469,7 @@ void InsertTransformationPhases::insert_transformationphases()
   DREAM3D_RANDOMNG_NEW()
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
-  int64_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
+  //int64_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
   QVector<size_t> tDims(1, 1);
 
   // find the minimum resolution
@@ -663,7 +663,7 @@ void InsertTransformationPhases::insert_transformationphases()
         - sampleHabitPlane[2] * (m_Centroids[3*curFeature+2] + shifts[i]);
 
       createdTransformationPhase = place_transformationphase(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
-      int stop = 0;
+      //int stop = 0;
       // change an isthmus transformation phase to a peninsula transformation phase
       random = static_cast<float>(rg.genrand_res53());
       if (createdTransformationPhase == true)
@@ -694,7 +694,7 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
 
-  size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
+  //size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
   int xPoints = static_cast<int>(m->getXPoints());
   int yPoints = static_cast<int>(m->getYPoints());
   int zPoints = static_cast<int>(m->getZPoints());
@@ -889,7 +889,7 @@ void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature
 // -----------------------------------------------------------------------------
 size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature)
 {
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  //VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
 
   m_AvgQuats[4*totalFeatures+0] = q.x;
   m_AvgQuats[4*totalFeatures+1] = q.y;
@@ -913,7 +913,7 @@ size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, Qua
 // -----------------------------------------------------------------------------
 void InsertTransformationPhases::filter_calls()
 {
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  //VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
 
  // // mapping euler angles from feature to cell
  // for (int64_t i = 0; i < m->getNumCellTuples(); ++i)
