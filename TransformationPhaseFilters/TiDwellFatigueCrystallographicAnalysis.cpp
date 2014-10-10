@@ -328,7 +328,7 @@ void TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::determine_propagators(int i)
+void TiDwellFatigueCrystallographicAnalysis::determine_propagators(int index)
 {
   // But since a pointer is difficult to use operators with we will now create a
   // reference variable to the pointer with the correct variable name that allows
@@ -354,7 +354,7 @@ void TiDwellFatigueCrystallographicAnalysis::determine_propagators(int i)
   {-1,1,0,7},
   {1,-1,0,7}};
   float propagatorPlaneNormal[12][3];
-  for(size_t i = 0; i < 12; i++) for(size_t j = 0; j < 3; j++) { propagatorPlaneNormal[i][j] = 0.0f; }
+  for(size_t i = 0; i < 12; i++) { for(size_t j = 0; j < 3; j++) { propagatorPlaneNormal[i][j] = 0.0f; } }
   const float m_OneOverA = 1 / m_LatticeParameterA;
   const float m_OneOverAxSqrtThree = 1 / (m_LatticeParameterA * sqrtf(3.0f));
   const float m_OneOverC = 1 / m_LatticeParameterC;
@@ -367,19 +367,19 @@ void TiDwellFatigueCrystallographicAnalysis::determine_propagators(int i)
   propagatorPlaneNormal[j][2] = propagatorPlane[j][3] * m_OneOverC;
   }
 
-  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*i+0], m_FeatureEulerAngles[3*i+1], m_FeatureEulerAngles[3*i+2], g);
-  if (m_FeaturePhases[i] == m_MTRPhase)
+  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*index+0], m_FeatureEulerAngles[3*index+1], m_FeatureEulerAngles[3*index+2], g);
+  if (m_FeaturePhases[index] == m_MTRPhase)
   {
   for (int j = 0; j < 12; ++j)
   {
     w = find_angle(g, propagatorPlaneNormal[j][0], propagatorPlaneNormal[j][1], propagatorPlaneNormal[j][2]);
     if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold)
     {
-    m_Propagators[i] = true;
+    m_Propagators[index] = true;
     // Determine if it's an initiator only if we're assuming initiators are not necessarily present
-    if (m_DoNotAssumeInitiatorPresence == false) { initiatorFlag = determine_initiators(i, j, neighborlist);}
+    if (m_DoNotAssumeInitiatorPresence == false) { initiatorFlag = determine_initiators(index, j, neighborlist);}
     // Determine if it's a soft feature
-    if (m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) { determine_softfeatures(i, j, neighborlist, neighborhoodlist); }
+    if (m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) { determine_softfeatures(index, j, neighborlist, neighborhoodlist); }
     }
   }
   }
