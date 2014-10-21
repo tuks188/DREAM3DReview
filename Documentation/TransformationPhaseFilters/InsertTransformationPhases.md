@@ -10,10 +10,10 @@ Takes an already formed voxelized structure and inserts transformation phase mor
 ## Parameters ##
 
 | Name | Type | Description |
-|------|------|------|
-| Transformation Phase Thickness | Float (Fraction between zero and 1) | The fraction of the current grain's sphere equivalent diameter |
+|------|------|-------------|
+| Transformation Phase Thickness | Float (Fraction between zero and 1) | The fraction of the current grain's sphere equivalent diameter. |
 | Average Number Of Transformation Phases Per Feature | Integer | This will vary between zero and 2 times the input value |
-| Coherent Fraction | Float (Fraction between zero and 1) | Coherent vs. incoherent transformation phases |
+| Coherent Fraction | Float (Fraction between zero and 1) | THe coherent vs. incoherent transformation phase fraction. |
 | "Peninsula" Transformation Phase Fraction | Float (Fraction between zero and 1) | Specific transformation phases that do not fully section the feature.  Variable peninsula lengths will result. |
 | Variant Number | Integer (Between 1 and the maximum number of variants) | |
 | Transformation Phase Crystal Structure | Default numeric values set in EBSDLib | Hexagonal = 0, Cubic = 1 |
@@ -24,7 +24,7 @@ Volume
 ## Required Arrays ##
 
 | Type | Default Name | Description | Comment | Filters Known to Create Data |
-|------|--------------|-------------|---------|-----|
+|------|--------------|-------------|---------|------------------------------|
 | Cell | FeatureIds | Ids (ints) that specify to which **Feature** each **Cell** belongs. | Values should be present from segmentation of experimental data or synthetic generation and cannot be determined by this filter. Not having these values will result in the filter to fail/not execute. | Segment Features (Misorientation, C-Axis Misorientation, Scalar) (Reconstruction), Read Dx File (IO), Read Ph File (IO), Pack Primary Phases (SyntheticBuilding), Insert Precipitate Phases (SyntheticBuilding), Establish Matrix Phase (SyntheticBuilding) |
 | Cell | CellEulerAngles | Three (3) angles (floats) defining the orientation of each Cell in Bunge convention (Z-X-Z) | | Import Orientation File(s) to H5Ebsd (IO) |
 | Feature | AvgQuats | Five (4) values (floats) defining the average orientation of the **Feature** in quaternion representation | Filter will calculate average quaternions for **Features** if not already calculated. | Find Feature Average Orientations (Statistics) |

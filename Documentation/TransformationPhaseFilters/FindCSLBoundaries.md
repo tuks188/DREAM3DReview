@@ -10,7 +10,7 @@ This filter identifies all **Faces** between neighboring **Features** that have 
 ## Parameters ##
 
 | Name | Type | Description |
-|------|------|------|
+|------|------|-------------|
 | CSL | Double | Coincident Site Lattice (CSL) Boundary.  DREAM.3D is implemented up to CSL 29b.  If a "b" CSL is desired, the proper entry is e.g. 11.5 of CSL 11b. |
 | Axis Tolerance | Double | The axis tolerance, in degrees, for the misorientation habit plane comparison. |
 | Angle Tolerance | Double | The angle tolerance, in degrees, for the misorientation angle comparision. |
@@ -23,7 +23,7 @@ This filter identifies all **Faces** between neighboring **Features** that have 
 ## Required Arrays ##
 
 | Type | Default Name | Description | Comment | Filters Known to Create Data |
-|------|--------------|-------------|---------|-----|
+|------|--------------|-------------|---------|------------------------------|
 | Face | SurfaceMeshFaceLabels | N x 2 Col of signed integer |  | Quick Surface Mesh (SurfaceMeshing), M3C Surface Meshing (Slice at a Time) |
 | Face | SurfaceMeshFaceNormals | N x 3 Col of floats |  | Generate Triangle Normals Filter (SurfaceMeshing) |
 | Face | SurfaceMeshTwinBoundary | boolean value equal to 1 for twin and 0 for non-twin |  | Find Twin Boundaries (Statistics) |
