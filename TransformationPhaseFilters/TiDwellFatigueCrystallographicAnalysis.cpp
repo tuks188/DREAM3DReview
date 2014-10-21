@@ -68,6 +68,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
   m_BadActorsArrayName(TransformationPhase::BadActors),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
+  m_FeatureParentIdsArrayName(DREAM3D::FeatureData::ParentIds),
   m_FeatureEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
   m_FeaturePhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
   m_NeighborListArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
@@ -78,6 +79,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_Propagators(NULL),
   m_SoftFeatures(NULL),
   m_BadActors(NULL),
+  m_FeatureParentIds(NULL),
   m_FeatureEulerAngles(NULL),
   m_FeaturePhases(NULL),
   m_Centroids(NULL),
@@ -134,6 +136,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Propagators Array Name", "PropagatorsArrayName", FilterParameterWidgetType::StringWidget, getPropagatorsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Soft Features Array Name", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Bad Actors Array Name", "BadActorsArrayName", FilterParameterWidgetType::StringWidget, getBadActorsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Feature Parent Ids", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), true, ""));
   setFilterParameters(parameters);
 }
 
@@ -162,6 +165,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setSoftFeaturesArrayName(reader->readString("SoftFeaturesArrayName", getSoftFeaturesArrayName() ) );
   setBadActorsArrayName(reader->readString("BadActorsArrayName", getBadActorsArrayName() ) );
   setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
+  setFeatureParentIdsArrayName(reader->readString("FeatureParentIdsArrayName", getFeatureParentIdsArrayName() ) );
   setFeatureEulerAnglesArrayPath(reader->readDataArrayPath("FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath() ) );
   setFeaturePhasesArrayPath(reader->readDataArrayPath("FeaturePhasesArrayPath", getFeaturePhasesArrayPath() ) );
   setNeighborListArrayPath(reader->readDataArrayPath("NeighborListArrayPath", getNeighborListArrayPath()));
@@ -196,6 +200,7 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(BadActorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
@@ -235,6 +240,11 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   m_BadActorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_BadActorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_BadActors = m_BadActorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+
+  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getFeatureParentIdsArrayName() );
+  m_FeatureParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_FeatureParentIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_FeatureParentIds = m_FeatureParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   dims[0] = 3;
   m_FeatureEulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getFeatureEulerAnglesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -289,13 +299,40 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
 
+  // But since a pointer is difficult to use operators with we will now create a
+  // reference variable to the pointer with the correct variable name that allows
+  // us to use the same syntax as the "vector of vectors"
+  NeighborList<int>& neighborlist = *(m_NeighborList.lock());
+  NeighborList<int>& neighborhoodlist = *(m_NeighborhoodList.lock());
+
+  bool subsurfaceFlag = false;
+  bool propagatorFlag = false;
+  bool initiatorFlag = false;
+  bool softfeatureFlag = false;
+
   // Normalize input stress axis
   MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
 
   for (int i = 1; i < totalFeatures; ++i)
   {
-  determine_subsurfacefeatures(i);
+	subsurfaceFlag = determine_subsurfacefeatures(i);
+	if (subsurfaceFlag == true) 
+	{ 
+	  // Determine if it's a propagator
+	  if (m_FeaturePhases[i] == m_MTRPhase) { propagatorFlag = determine_propagators(i); }
+	  // Determine if it's a soft feature only if it's not a propagator
+	  if (propagatorFlag == false && m_FeaturePhases[i] == m_MTRPhase) { softfeatureFlag = determine_softfeatures(i, neighborlist); }
+	  // Determine if it's an initiator only if we're assuming initiators are not necessarily present
+	  if (m_DoNotAssumeInitiatorPresence == false && m_FeaturePhases[i] == m_AlphaGlobPhase ) { initiatorFlag = determine_initiators(i, neighborlist); }
+	}
   }
+
+  for (int i = 1; i < totalFeatures; ++i)
+  {
+	// Determine if it's a hard-soft grouping only if there
+	if (m_Initiators[i] == true || m_Propagators[i] == true || m_SoftFeatures[i] == true) { assign_badactors(i, neighborlist); }
+  }
+
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -303,10 +340,12 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int i)
+bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int i)
 {
   // using feature euler angles simply because it's available
   VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(m_FeatureEulerAnglesArrayPath.getDataContainerName());
+
+  bool subsurfaceFlag = false;
 
   int xPoints = static_cast<int>(m->getXPoints());
   int yPoints = static_cast<int>(m->getYPoints());
@@ -321,24 +360,19 @@ void TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int i)
   && m_Centroids[3*i+1] > m_SubsurfaceDistance && m_Centroids[3*i+1] < (xyzScaledDimension[1] - m_SubsurfaceDistance)
   && m_Centroids[3*i+2] > m_SubsurfaceDistance && m_Centroids[3*i+2] < (xyzScaledDimension[2] - m_SubsurfaceDistance))
   {
-  determine_propagators(i);
+	subsurfaceFlag = true;
   }
+
+  if (subsurfaceFlag == true) { return true; }
+  else { return false; }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::determine_propagators(int index)
+bool TiDwellFatigueCrystallographicAnalysis::determine_propagators(int index)
 {
-  // But since a pointer is difficult to use operators with we will now create a
-  // reference variable to the pointer with the correct variable name that allows
-  // us to use the same syntax as the "vector of vectors"
-  NeighborList<int>& neighborlist = *(m_NeighborList.lock());
-  NeighborList<int>& neighborhoodlist = *(m_NeighborhoodList.lock());
-
-  bool initiatorFlag = false;
   float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f}};
-//  float gt[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f}};
   float w = 0.0f;
   const int propagatorPlane[12][4] =
   {{-1,0,1,7},
@@ -358,37 +392,38 @@ void TiDwellFatigueCrystallographicAnalysis::determine_propagators(int index)
   const float m_OneOverA = 1 / m_LatticeParameterA;
   const float m_OneOverAxSqrtThree = 1 / (m_LatticeParameterA * sqrtf(3.0f));
   const float m_OneOverC = 1 / m_LatticeParameterC;
+  bool propagatorFlag = false;
 
   // convert Miller-Bravais to unit normal
   for (int j = 0; j < 12; ++j)
   {
-  propagatorPlaneNormal[j][0] = propagatorPlane[j][0] * m_OneOverA;
-  propagatorPlaneNormal[j][1] = (2.0f * propagatorPlane[j][1] + propagatorPlane[j][0]) * m_OneOverAxSqrtThree;
-  propagatorPlaneNormal[j][2] = propagatorPlane[j][3] * m_OneOverC;
+	propagatorPlaneNormal[j][0] = propagatorPlane[j][0] * m_OneOverA;
+	propagatorPlaneNormal[j][1] = (2.0f * propagatorPlane[j][1] + propagatorPlane[j][0]) * m_OneOverAxSqrtThree;
+	propagatorPlaneNormal[j][2] = propagatorPlane[j][3] * m_OneOverC;
   }
 
   OrientationMath::EulertoMat(m_FeatureEulerAngles[3*index+0], m_FeatureEulerAngles[3*index+1], m_FeatureEulerAngles[3*index+2], g);
   if (m_FeaturePhases[index] == m_MTRPhase)
-  {
-  for (int j = 0; j < 12; ++j)
-  {
-    w = find_angle(g, propagatorPlaneNormal[j][0], propagatorPlaneNormal[j][1], propagatorPlaneNormal[j][2]);
-    if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold)
-    {
-    m_Propagators[index] = true;
-    // Determine if it's an initiator only if we're assuming initiators are not necessarily present
-    if (m_DoNotAssumeInitiatorPresence == false) { initiatorFlag = determine_initiators(index, j, neighborlist);}
-    // Determine if it's a soft feature
-    if (m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) { determine_softfeatures(index, j, neighborlist, neighborhoodlist); }
-    }
+	{
+	for (int j = 0; j < 12; ++j)
+	{
+	  w = find_angle(g, propagatorPlaneNormal[j][0], propagatorPlaneNormal[j][1], propagatorPlaneNormal[j][2]);
+	  if (w >= m_PropagatorLowerThreshold && w <= m_PropagatorUpperThreshold)
+	  {
+		m_Propagators[index] = true;
+		propagatorFlag = true;
+		break;
+      }
+	}
   }
-  }
+  if (propagatorFlag == true) { return true; }
+  else { return false; }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool TiDwellFatigueCrystallographicAnalysis::determine_initiators(int i, int j, NeighborList<int>& neighborlist)
+bool TiDwellFatigueCrystallographicAnalysis::determine_initiators(int i, NeighborList<int>& neighborlist)
 {
   const float caxis[3] = {0.0f,0.0f,1.0f};
   bool initiatorFlag = false;
@@ -397,16 +432,16 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_initiators(int i, int j, 
 
   for (int j = 0; j < neighborlist[i].size(); ++j)
   {
-  if (m_FeaturePhases[j] == m_AlphaGlobPhase)
-  {
-    OrientationMath::EulertoMat(m_FeatureEulerAngles[3*j+0], m_FeatureEulerAngles[3*j+1], m_FeatureEulerAngles[3*j+2], g);
-    w = find_angle(g, caxis[0], caxis[1], caxis[2]);
-    if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold)
-    {
-    m_Initiators[j] = true;
-    initiatorFlag = true;
-    }
-  }
+	if (m_FeaturePhases[j] == m_AlphaGlobPhase)
+	{
+	  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*j+0], m_FeatureEulerAngles[3*j+1], m_FeatureEulerAngles[3*j+2], g);
+	  w = find_angle(g, caxis[0], caxis[1], caxis[2]);
+	  if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold)
+	  {
+		m_Initiators[j] = true;
+		initiatorFlag = true;
+	  }
+	}
   }
 
   if (initiatorFlag == true) { return true; }
@@ -416,37 +451,82 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_initiators(int i, int j, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::determine_softfeatures(int i, int j, NeighborList<int>& neighborlist, NeighborList<int>& neighborhoodlist)
+bool TiDwellFatigueCrystallographicAnalysis::determine_softfeatures(int i, NeighborList<int>& neighborlist)
 {
   const float caxis[3] = {0.0f,0.0f,1.0f};
   float w = 0.0f;
   float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f}};
+  bool softfeatureFlag = false;
 
-  for (int k = 0; k < neighborhoodlist[i].size(); ++k)
+  for (int j = 0; j < neighborlist[i].size(); ++j)
   {
-  if (m_FeaturePhases[k] == m_AlphaGlobPhase)
-  {
-    OrientationMath::EulertoMat(m_FeatureEulerAngles[3*k+0], m_FeatureEulerAngles[3*k+1], m_FeatureEulerAngles[3*k+2], g);
-    w = find_angle(g, caxis[0], caxis[1], caxis[2]);
-    if (w >= m_SoftFeatureLowerThreshold && w <= m_SoftFeatureUpperThreshold)
-    {
-    m_SoftFeatures[k] = true;
-    assign_badactors(i, j, neighborlist);
-    }
+	if (m_FeaturePhases[neighborlist[i][j]] == m_AlphaGlobPhase)
+	{
+	  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*neighborlist[i][j]+0], m_FeatureEulerAngles[3*neighborlist[i][j]+1], m_FeatureEulerAngles[3*neighborlist[i][j]+2], g);
+	  w = find_angle(g, caxis[0], caxis[1], caxis[2]);
+	  if (w >= m_SoftFeatureLowerThreshold && w <= m_SoftFeatureUpperThreshold)
+	  {
+		m_SoftFeatures[neighborlist[i][j]] = true;
+		softfeatureFlag = true;
+	  }
+	}
   }
-  }
+  if (softfeatureFlag == true) { return true; }
+  else { return false; }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::assign_badactors(int i, int j, NeighborList<int>& neighborlist)
+void TiDwellFatigueCrystallographicAnalysis::assign_badactors(int i, NeighborList<int>& neighborlist)
 {
-  m_BadActors[i] = true;
-  m_BadActors[j] = true;
-  for (int l = 0; l < neighborlist[i].size(); ++l)
+  bool propagatorFlag = false;
+  bool initiatorFlag = false;
+  bool softfeatureFlag = false;
+  int initiatorIndex = 0;
+  int propagatorIndex = 0;
+  int softfeatureIndex = 0;
+
+  for (int j = 0; j < neighborlist[i].size(); ++j)
   {
-  if (m_Initiators[l] == true) { m_BadActors[l] = true; }
+	if (m_Initiators[i] == true)
+	{
+	  initiatorFlag = true; 
+	  initiatorIndex = i;
+	}
+	if (m_Initiators[neighborlist[i][j]] == true) 
+	{ 
+	  initiatorFlag = true; 
+	  initiatorIndex = j;
+	}
+	if (m_Propagators[i] == true)
+	{
+	  propagatorFlag = true; 
+	  propagatorIndex = i;
+	}
+	  if (m_Propagators[neighborlist[i][j]] == true) 
+	{ 
+	  propagatorFlag = true; 
+	  propagatorIndex = j;
+	}
+	if (m_SoftFeatures[i] == true)
+	{
+	  softfeatureFlag = true; 
+	  softfeatureIndex = i;
+	}
+	if (m_SoftFeatures[neighborlist[i][j]] == true)
+	{ 
+	  softfeatureFlag = true; 
+	  softfeatureIndex = j;
+	}
+	// only flag as a bad acting pair if there's a neighboring group of initiator - propagator - soft feature and either the current index of the propagator or
+	// soft feature have not already been flagged as a bad acting pair
+	if (initiatorFlag == true && propagatorFlag == true && softfeatureFlag == true && (m_BadActors[propagatorIndex] == false || m_BadActors[softfeatureIndex] == false))
+	{
+	  m_BadActors[propagatorIndex] = true;
+	  m_BadActors[softfeatureIndex] = true;
+	  break;
+	}
   }
 }
 

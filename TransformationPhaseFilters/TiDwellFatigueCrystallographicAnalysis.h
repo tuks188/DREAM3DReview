@@ -116,6 +116,9 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
+    DREAM3D_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
+    Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
+
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath FeatureEulerAnglesArrayPath READ getFeatureEulerAnglesArrayPath WRITE setFeatureEulerAnglesArrayPath)
 
@@ -179,11 +182,11 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
   protected:
     TiDwellFatigueCrystallographicAnalysis();
 
-    void determine_subsurfacefeatures(int i);
-    void determine_propagators(int i);
-    bool determine_initiators(int i, int j, NeighborList<int>& neighborlist);
-    void determine_softfeatures(int i, int j, NeighborList<int>& neighborlist, NeighborList<int>& neighborhoodlist);
-    void assign_badactors(int i, int j, NeighborList<int>& neighborlist);
+    bool determine_subsurfacefeatures(int i);
+    bool determine_propagators(int i);
+    bool determine_initiators(int i, NeighborList<int>& neighborlist);
+    bool determine_softfeatures(int i, NeighborList<int>& neighborlist);
+    void assign_badactors(int i, NeighborList<int>& neighborlist);
     float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
     /**
@@ -203,7 +206,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, BadActors)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
+	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
     NeighborList<int>::WeakPointer m_NeighborhoodList;
