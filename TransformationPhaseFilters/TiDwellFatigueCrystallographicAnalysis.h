@@ -182,11 +182,11 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
   protected:
     TiDwellFatigueCrystallographicAnalysis();
 
-    bool determine_subsurfacefeatures(int i);
-    bool determine_propagators(int i);
-    bool determine_initiators(int i, NeighborList<int>& neighborlist);
-    bool determine_softfeatures(int i, NeighborList<int>& neighborlist);
-    void assign_badactors(int i, NeighborList<int>& neighborlist);
+    bool determine_subsurfacefeatures(int index);
+    bool determine_propagators(int index);
+    void determine_initiators(int index);
+	void determine_softfeatures(int index);
+    void assign_badactors(int index);
     float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
     /**
