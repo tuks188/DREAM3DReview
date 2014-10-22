@@ -128,9 +128,6 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborListArrayPath)
     Q_PROPERTY(DataArrayPath NeighborListArrayPath READ getNeighborListArrayPath WRITE setNeighborListArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborhoodListArrayPath)
-    Q_PROPERTY(DataArrayPath NeighborhoodListArrayPath READ getNeighborhoodListArrayPath WRITE setNeighborhoodListArrayPath)
-
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
     Q_PROPERTY(DataArrayPath CentroidsArrayPath READ getCentroidsArrayPath WRITE setCentroidsArrayPath)
 
@@ -210,7 +207,6 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
-    NeighborList<int>::WeakPointer m_NeighborhoodList;
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
