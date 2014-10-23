@@ -118,7 +118,7 @@ class CalculateCSLBoundaryImpl
         normal[2] = m_Normals[3 * i + 2];
 		// different than Find Twin Boundaries here because will only compare if 
 		// the features are different phases
-        if(feature1 > 0 && feature2 > 0 && m_Phases[feature1] != m_Phases[feature2])
+        if(feature1 > 0 && feature2 > 0)// && m_Phases[feature1] != m_Phases[feature2])
         {
           w = 10000.0;
 
@@ -350,9 +350,9 @@ void FindCSLBoundaries::execute()
   int64_t numTriangles = m_SurfaceMeshFaceLabelsPtr.lock()->getNumberOfTuples();
 
   int cslindex = 0;
-  for (int i = 0; i < sizeof(TransformationPhase::CSLAxisAngle); ++i) 
+  for (int i = 0; i < 21; ++i) 
   { 
-	if (TransformationPhase::CSLAxisAngle[i][1] == m_CSL) 
+	if (static_cast<int>( TransformationPhase::CSLAxisAngle[i][0] ) == static_cast<int>( m_CSL )) 
 	{ 
 	  cslindex = i;
 	  break; 
