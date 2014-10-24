@@ -50,6 +50,7 @@
 // -----------------------------------------------------------------------------
 TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis() :
   AbstractFilter(),
+  m_NewCellFeatureAttributeMatrixName(DREAM3D::Defaults::NewCellFeatureAttributeMatrixName),
   m_AlphaGlobPhasePresent(true),
   m_AlphaGlobPhase(1),
   m_MTRPhase(2),
@@ -68,17 +69,24 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
   m_BadActorsArrayName(TransformationPhase::BadActors),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
+  m_FeatureIdsArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
+  m_CellParentIdsArrayName(DREAM3D::CellData::ParentIds),
   m_FeatureParentIdsArrayName(DREAM3D::FeatureData::ParentIds),
+  m_ActiveArrayName(DREAM3D::FeatureData::Active),
   m_FeatureEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
   m_FeaturePhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
   m_NeighborListArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::NeighborList),
   m_CentroidsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Centroids),
   m_CrystalStructuresArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
+  m_FeatureIdsArrayName(DREAM3D::CellData::FeatureIds),
   m_Initiators(NULL),
   m_Propagators(NULL),
   m_SoftFeatures(NULL),
   m_BadActors(NULL),
+  m_FeatureIds(NULL),
+  m_CellParentIds(NULL),
   m_FeatureParentIds(NULL),
+  m_Active(NULL),
   m_FeatureEulerAngles(NULL),
   m_FeaturePhases(NULL),
   m_Centroids(NULL),
@@ -123,6 +131,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
+  parameters.push_back(FilterParameter::New("FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Feature Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Feature FeaturePhases", "FeaturePhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeaturePhasesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("NeighborList Array", "NeighborListArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNeighborListArrayPath(), true, ""));
@@ -130,11 +139,14 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), true, ""));
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
+  parameters.push_back(FilterParameter::New("New Cell Feature Attribute Matrix Name", "NewCellFeatureAttributeMatrixName", FilterParameterWidgetType::StringWidget, getNewCellFeatureAttributeMatrixName(), true, ""));
   parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Propagators Array Name", "PropagatorsArrayName", FilterParameterWidgetType::StringWidget, getPropagatorsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Soft Features Array Name", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Bad Actors Array Name", "BadActorsArrayName", FilterParameterWidgetType::StringWidget, getBadActorsArrayName(), true, ""));
-  parameters.push_back(FilterParameter::New("Feature Parent Ids", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("CellParentIds", "CellParentIdsArrayName", FilterParameterWidgetType::StringWidget, getCellParentIdsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("FeatureParentIds", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Active", "ActiveArrayName", FilterParameterWidgetType::StringWidget, getActiveArrayName(), true, ""));
   setFilterParameters(parameters);
 }
 
@@ -144,6 +156,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
+  setNewCellFeatureAttributeMatrixName(reader->readString("NewCellFeatureAttributeMatrixName", getNewCellFeatureAttributeMatrixName() ) );
   setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
   setAlphaGlobPhase(reader->readValue("AlphaGlobPhase", getAlphaGlobPhase()) );
   setMTRPhase(reader->readValue("MTRPhase", getMTRPhase()) );
@@ -163,7 +176,10 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setSoftFeaturesArrayName(reader->readString("SoftFeaturesArrayName", getSoftFeaturesArrayName() ) );
   setBadActorsArrayName(reader->readString("BadActorsArrayName", getBadActorsArrayName() ) );
   setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
+  setActiveArrayName(reader->readString("ActiveArrayName", getActiveArrayName() ) );
+  setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
   setFeatureParentIdsArrayName(reader->readString("FeatureParentIdsArrayName", getFeatureParentIdsArrayName() ) );
+  setCellParentIdsArrayName(reader->readString("CellParentIdsArrayName", getCellParentIdsArrayName() ) );
   setFeatureEulerAnglesArrayPath(reader->readDataArrayPath("FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath() ) );
   setFeaturePhasesArrayPath(reader->readDataArrayPath("FeaturePhasesArrayPath", getFeaturePhasesArrayPath() ) );
   setNeighborListArrayPath(reader->readDataArrayPath("NeighborListArrayPath", getNeighborListArrayPath()));
@@ -197,7 +213,10 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(BadActorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(ActiveArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
@@ -210,13 +229,34 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::updateFeatureInstancePointers()
+{
+  setErrorCondition(0);
+
+  if( NULL != m_ActivePtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_Active = m_ActivePtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
 
+  VolumeDataContainer* m = getDataContainerArray()->getPrereqDataContainer<VolumeDataContainer, AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
+  if(getErrorCondition() < 0 || NULL == m) { return; }
+  QVector<size_t> tDims(1, 0);
+  AttributeMatrix::Pointer newCellFeatureAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getNewCellFeatureAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellFeature);
+  if(getErrorCondition() < 0) { return; }
+
   // Feature Data
   QVector<size_t> dims(1, 1);
+  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  
   tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getInitiatorsArrayName() );
   m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_InitiatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
@@ -236,6 +276,11 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   m_BadActorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_BadActorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_BadActors = m_BadActorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+
+  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getCellParentIdsArrayName() );
+  m_CellParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_CellParentIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_CellParentIds = m_CellParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getFeatureParentIdsArrayName() );
   m_FeatureParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -258,6 +303,13 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   m_CentroidsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getCentroidsArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_CentroidsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Centroids = m_CentroidsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+
+  // New Feature Data
+  //dims[0] = 1;
+  //tempPath.update(m_FeatureIdsArrayPath.getDataContainerName(), getNewCellFeatureAttributeMatrixName(), getActiveArrayName() );
+  //m_ActivePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  //if( NULL != m_ActivePtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  //{ m_Active = m_ActivePtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   // Ensemble Data
   dims[0] = 1;
@@ -292,6 +344,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   if(getErrorCondition() < 0) { return; }
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
+  size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
 
   bool subsurfaceFlag = false;
   bool propagatorFlag = false;
@@ -301,7 +354,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   // Normalize input stress axis
   MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
 
-  for (int i = 1; i < totalFeatures; ++i)
+  for (size_t i = 1; i < totalFeatures; ++i)
   {
 	subsurfaceFlag = determine_subsurfacefeatures(i);
 	if (subsurfaceFlag == true) 
@@ -315,7 +368,35 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 	}
   }
 
-  for (int i = 1; i < totalFeatures; ++i)
+  for (size_t i = 1; i < totalFeatures; ++i)
+  {
+	// Group neighboring propagators and soft features
+	if (m_Propagators[i] == true || m_SoftFeatures[i] == true)
+	{
+	  group_flaggedfeatures(i);
+	}
+  }
+  
+  size_t fid = 0;
+
+  for (size_t j = 0; j < totalPoints; ++j)
+  {
+//	fid = m_FeatureParentIds[m_FeatureIds[i]];
+//	if (fid != -1)
+//	{
+//	  fid = m_FeatureParentIds[m_FeatureIds[i]];
+//	  m_CellParentIds[i] = fid;
+//	}
+//	else
+//	{
+//  	  fid = m_FeatureIds[i];
+//	  m_CellParentIds[i] = fid;
+	fid = m_FeatureIds[j];
+//	  m_CellParentIds[j] = fid;
+//	}
+  }
+
+  for (size_t i = 1; i < totalFeatures; ++i)
   {
 	// only proceed if it's either an MTR or alpha glob
 	if (m_FeaturePhases[i] == m_MTRPhase || (m_FeaturePhases[i] == m_AlphaGlobPhase && m_DoNotAssumeInitiatorPresence == true))
@@ -451,6 +532,25 @@ void TiDwellFatigueCrystallographicAnalysis::determine_softfeatures(int index)
 	if (w >= m_SoftFeatureLowerThreshold && w <= m_SoftFeatureUpperThreshold)
 	{
 	  m_SoftFeatures[index] = true;
+	}
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::group_flaggedfeatures(int index)
+{
+  // But since a pointer is difficult to use operators with we will now create a
+  // reference variable to the pointer with the correct variable name that allows
+  // us to use the same syntax as the "vector of vectors"
+  NeighborList<int>& neighborlist = *(m_NeighborList.lock());
+
+  for (int j = 0; j < neighborlist[index].size(); ++j)
+  {
+	if ((m_Propagators[index] == true && m_Propagators[neighborlist[index][j]] == true) || (m_SoftFeatures[index] == true && m_SoftFeatures[neighborlist[index][j]]))
+	{
+	  m_FeatureParentIds[neighborlist[index][j]] = index;
 	}
   }
 }

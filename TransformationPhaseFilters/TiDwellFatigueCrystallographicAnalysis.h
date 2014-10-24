@@ -69,6 +69,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_TYPE_MACRO_SUPER(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
 
     virtual ~TiDwellFatigueCrystallographicAnalysis();
+    DREAM3D_FILTER_PARAMETER(QString, NewCellFeatureAttributeMatrixName)
+    Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
     DREAM3D_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
@@ -116,8 +118,17 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+	
+	DREAM3D_FILTER_PARAMETER(QString, CellParentIdsArrayName)
+    Q_PROPERTY(QString CellParentIdsArrayName READ getCellParentIdsArrayName WRITE setCellParentIdsArrayName)
+
     DREAM3D_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
     Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
+
+    DREAM3D_FILTER_PARAMETER(QString, ActiveArrayName)
+    Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath FeatureEulerAnglesArrayPath READ getFeatureEulerAnglesArrayPath WRITE setFeatureEulerAnglesArrayPath)
@@ -183,6 +194,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     bool determine_propagators(int index);
     void determine_initiators(int index);
 	void determine_softfeatures(int index);
+	void group_flaggedfeatures(int index);
     void assign_badactors(int index);
     float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
@@ -195,6 +207,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     * @param ensembles The number of ensembles
     */
     void dataCheck();
+    void updateFeatureInstancePointers();
 
   private:
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
@@ -203,7 +216,10 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, BadActors)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
+    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, CellParentIds)
     DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Active)
 	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
