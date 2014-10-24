@@ -57,7 +57,7 @@
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date Aug 4, 2014
+ * @date Oct 24, 2014
  * @version 5.1
  */
 class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
