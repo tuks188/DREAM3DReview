@@ -311,14 +311,18 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 	  // Determine if it's a soft feature only if it's not a propagator
 	  if (propagatorFlag == false && m_FeaturePhases[i] == m_MTRPhase) { determine_softfeatures(i); }
 	  // Determine if it's an initiator only if we're assuming initiators are not necessarily present
-	  if (m_DoNotAssumeInitiatorPresence == false && m_FeaturePhases[i] == m_AlphaGlobPhase ) { determine_initiators(i); }
+	  if (m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[i] == m_AlphaGlobPhase ) { determine_initiators(i); }
 	}
   }
 
   for (int i = 1; i < totalFeatures; ++i)
   {
-	// Determine if it's a hard-soft pair only if there the current ID is either a propagator, initiator or soft feature
-	if (m_Initiators[i] == true || m_Propagators[i] == true || m_SoftFeatures[i] == true) { assign_badactors(i); }
+	// only proceed if it's either an MTR or alpha glob
+	if (m_FeaturePhases[i] == m_MTRPhase || (m_FeaturePhases[i] == m_AlphaGlobPhase && m_DoNotAssumeInitiatorPresence == true))
+	{
+	  // Determine if it's a hard-soft pair only if there the current ID is either a propagator, initiator or soft feature
+	  if (m_Initiators[i] == true || m_Propagators[i] == true || m_SoftFeatures[i] == true) { assign_badactors(i); }
+	}
   }
 
   /* Let the GUI know we are done with this filter */
@@ -464,49 +468,49 @@ void TiDwellFatigueCrystallographicAnalysis::assign_badactors(int index)
   bool propagatorFlag = false;
   bool initiatorFlag = false;
   bool softfeatureFlag = false;
-  int initiatorIndex = 0;
   int propagatorIndex = 0;
   int softfeatureIndex = 0;
 
   for (int j = 0; j < neighborlist[index].size(); ++j)
   {
-	if (m_Initiators[index] == true && initiatorFlag == false)
+	if ((m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase) || m_FeaturePhases[neighborlist[index][j]] == m_MTRPhase)
 	{
-	  initiatorFlag = true; 
-	  initiatorIndex = index;
-	}
-	if (m_Initiators[neighborlist[index][j]] == true && initiatorFlag == false) 
-	{ 
-	  initiatorFlag = true; 
-	  initiatorIndex = j;
-	}
-	if (m_Propagators[index] == true && propagatorFlag == false)
-	{
-	  propagatorFlag = true; 
-	  propagatorIndex = index;
-	}
-	if (m_Propagators[neighborlist[index][j]] == true && propagatorFlag == false) 
-	{ 
-	  propagatorFlag = true; 
-	  propagatorIndex = j;
-	}
-	if (m_SoftFeatures[index] == true && softfeatureFlag == false)
-	{
-	  softfeatureFlag = true; 
-	  softfeatureIndex = index;
-	}
-	if (m_SoftFeatures[neighborlist[index][j]] == true && softfeatureFlag == false)
-	{ 
-	  softfeatureFlag = true; 
-	  softfeatureIndex = j;
-	}
-	// only flag as a bad acting pair if there's a neighboring group of initiator - propagator - soft feature and either the current index of the propagator or
-	// soft feature have not already been flagged as a bad acting pair
-	if ((m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) && propagatorFlag == true && softfeatureFlag == true && (m_BadActors[propagatorIndex] == false || m_BadActors[softfeatureIndex] == false))
-	{
-	  m_BadActors[propagatorIndex] = true;
-	  m_BadActors[softfeatureIndex] = true;
-	  break;
+	  if (m_Initiators[index] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase)
+	  {
+		initiatorFlag = true; 
+	  }
+	  if (m_Initiators[neighborlist[index][j]] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[neighborlist[index][j]] == m_AlphaGlobPhase) 
+	  { 
+		initiatorFlag = true; 
+	  }
+	  if (m_Propagators[index] == true && propagatorFlag == false && m_FeaturePhases[index] == m_MTRPhase)
+	  {
+		propagatorFlag = true; 
+		propagatorIndex = index;
+	  }
+	  if (m_Propagators[neighborlist[index][j]] == true && propagatorFlag == false && m_FeaturePhases[neighborlist[index][j]] == m_MTRPhase) 
+	  { 
+		propagatorFlag = true; 
+		propagatorIndex = neighborlist[index][j];
+	  }
+	  if (m_SoftFeatures[index] == true && softfeatureFlag == false && m_FeaturePhases[index] == m_MTRPhase)
+	  {
+		softfeatureFlag = true; 
+		softfeatureIndex = index;
+	  }
+	  if (m_SoftFeatures[neighborlist[index][j]] == true && softfeatureFlag == false && m_FeaturePhases[neighborlist[index][j]] == m_MTRPhase)
+	  { 
+		softfeatureFlag = true; 
+		softfeatureIndex = neighborlist[index][j];
+	  }
+	  // only flag as a bad acting pair if there's a neighboring group of initiator - propagator - soft feature and either the current index of the propagator or
+	  // soft feature have not already been flagged as a bad acting pair
+	  if ((m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) && propagatorFlag == true && softfeatureFlag == true && (m_BadActors[propagatorIndex] == false || m_BadActors[softfeatureIndex] == false))
+	  {
+		m_BadActors[propagatorIndex] = true;
+		m_BadActors[softfeatureIndex] = true;
+		break;
+	  }
 	}
   }
 }
