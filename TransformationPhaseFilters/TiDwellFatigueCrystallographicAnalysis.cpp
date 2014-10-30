@@ -44,12 +44,19 @@
 #include "DREAM3DLib/OrientationOps/OrientationOps.h"
 #include "DREAM3DLib/Math/GeometryMath.h"
 
+#include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
+#include "DREAM3DLib/Common/FilterManager.h"
+#include "DREAM3DLib/Common/FilterFactory.hpp"
+#include "DREAM3DLib/Common/FilterPipeline.h"
+#include "DREAM3DLib/Plugin/DREAM3DPluginInterface.h"
+#include "DREAM3DLib/Plugin/DREAM3DPluginLoader.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis() :
   AbstractFilter(),
+  m_DataContainerName(DREAM3D::Defaults::SyntheticVolumeDataContainerName),
   m_NewCellFeatureAttributeMatrixName(DREAM3D::Defaults::NewCellFeatureAttributeMatrixName),
   m_AlphaGlobPhasePresent(true),
   m_AlphaGlobPhase(1),
@@ -68,7 +75,8 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_PropagatorsArrayName(TransformationPhase::Propagators),
   m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
   m_BadActorsArrayName(TransformationPhase::BadActors),
-  m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
+  m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::CellFeatureAttributeMatrixName),
+  m_CellFeatureAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
   m_FeatureIdsArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
   m_CellParentIdsArrayName(DREAM3D::CellData::ParentIds),
   m_FeatureParentIdsArrayName(DREAM3D::FeatureData::ParentIds),
@@ -130,7 +138,8 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Soft Feature Upper Threshold", "SoftFeatureUpperThreshold", FilterParameterWidgetType::DoubleWidget, getSoftFeatureUpperThreshold(), false, "Degrees"));
 
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
-  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
+  parameters.push_back(FilterParameter::New("Data Container Name", "DataContainerName", FilterParameterWidgetType::StringWidget, getDataContainerName(), true, ""));
+  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Path", "CellFeatureAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixPath(), true, ""));
   parameters.push_back(FilterParameter::New("FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Feature Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Feature FeaturePhases", "FeaturePhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeaturePhasesArrayPath(), true, ""));
@@ -156,6 +165,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
+  setDataContainerName(reader->readString("DataContainerName", getDataContainerName() ) );
   setNewCellFeatureAttributeMatrixName(reader->readString("NewCellFeatureAttributeMatrixName", getNewCellFeatureAttributeMatrixName() ) );
   setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
   setAlphaGlobPhase(reader->readValue("AlphaGlobPhase", getAlphaGlobPhase()) );
@@ -175,7 +185,8 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setPropagatorsArrayName(reader->readString("PropagatorsArrayName", getPropagatorsArrayName() ) );
   setSoftFeaturesArrayName(reader->readString("SoftFeaturesArrayName", getSoftFeaturesArrayName() ) );
   setBadActorsArrayName(reader->readString("BadActorsArrayName", getBadActorsArrayName() ) );
-  setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
+  setCellFeatureAttributeMatrixName(reader->readString("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
+  setCellFeatureAttributeMatrixPath(reader->readDataArrayPath("CellFeatureAttributeMatrixPath", getCellFeatureAttributeMatrixPath()));
   setActiveArrayName(reader->readString("ActiveArrayName", getActiveArrayName() ) );
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
   setFeatureParentIdsArrayName(reader->readString("FeatureParentIdsArrayName", getFeatureParentIdsArrayName() ) );
@@ -212,7 +223,9 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   DREAM3D_FILTER_WRITE_PARAMETER(PropagatorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(BadActorsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(DataContainerName)
   DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
   DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
@@ -257,32 +270,32 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   if( NULL != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
   
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getInitiatorsArrayName() );
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getInitiatorsArrayName() );
   m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_InitiatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Initiators = m_InitiatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getPropagatorsArrayName() );
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getPropagatorsArrayName() );
   m_PropagatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_PropagatorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_Propagators = m_PropagatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getSoftFeaturesArrayName() );
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getSoftFeaturesArrayName() );
   m_SoftFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_SoftFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_SoftFeatures = m_SoftFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getBadActorsArrayName() );
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getBadActorsArrayName() );
   m_BadActorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_BadActorsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_BadActors = m_BadActorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getCellParentIdsArrayName() );
+  tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCellParentIdsArrayName() );
   m_CellParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_CellParentIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_CellParentIds = m_CellParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getFeatureParentIdsArrayName() );
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getFeatureParentIdsArrayName() );
   m_FeatureParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_FeatureParentIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_FeatureParentIds = m_FeatureParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -379,22 +392,133 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   
   size_t fid = 0;
 
-  for (size_t j = 0; j < totalPoints; ++j)
+  // map grouped features to the cells
+  for (size_t i = 0; i < totalPoints; ++i)
   {
-//	fid = m_FeatureParentIds[m_FeatureIds[i]];
-//	if (fid != -1)
-//	{
-//	  fid = m_FeatureParentIds[m_FeatureIds[i]];
-//	  m_CellParentIds[i] = fid;
-//	}
-//	else
-//	{
-//  	  fid = m_FeatureIds[i];
-//	  m_CellParentIds[i] = fid;
-	fid = m_FeatureIds[j];
-//	  m_CellParentIds[j] = fid;
-//	}
+	fid = m_FeatureParentIds[m_FeatureIds[i]];
+	if (fid != -1)
+	{
+	  m_CellParentIds[i] = fid;
+	}
+	else
+	{
+	  m_CellParentIds[i] = m_FeatureIds[i];
+	}
   }
+
+  QString filtName = "FindNeighbors";
+  FilterManager* fm = FilterManager::Instance();
+  IFilterFactory::Pointer findNeighborFactory = fm->getFactoryForFilter(filtName);
+
+  DataArrayPath tempPath;
+
+  if (NULL != findNeighborFactory.get() )
+  {
+	// If we get this far, the Factory is good so creating the filter should not fail unless something has
+	// horribly gone wrong in which case the system is going to come down quickly after this.
+    AbstractFilter::Pointer find_Neighbor = findNeighborFactory->create();
+
+    // Connect up the Error/Warning/Progress object so the filter can report those things
+    connect(find_Neighbor.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
+            this, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    find_Neighbor->setDataContainerArray(getDataContainerArray()); // AbstractFilter implements this so no problem
+    // Now set the filter parameters for the filter using QProperty System since we can not directly
+    // instantiate the filter since it resides in a plugin. These calls are SLOW. DO NOT EVER do this in a
+    // tight loop. Your filter will slow down by 10X.
+	tempPath.update(getDataContainerName(), getCellFeatureAttributeMatrixName(), "");
+    QVariant v;
+    v.setValue(tempPath);
+    bool propWasSet = find_Neighbor->setProperty("CellFeatureAttributeMatrixPath", v);
+    if(false == propWasSet)
+    {
+      QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("CellFeatureAttributeMatrixPath").arg(filtName);
+      setErrorCondition(-109872);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    }
+
+	tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCellParentIdsArrayName() );
+    v.setValue(tempPath);
+    propWasSet = find_Neighbor->setProperty("FeatureIdsArrayPath", v);
+    if(false == propWasSet)
+    {
+      QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("FeatureIdsArrayPath").arg(filtName);
+      setErrorCondition(-109873);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    }
+
+	QString tempString("BoundaryCells");
+	v.setValue(tempString);
+	propWasSet = find_Neighbor->setProperty("BoundaryCellsArrayName", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("BoundaryCellsArrayName").arg(filtName);
+	  setErrorCondition(-109874);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+
+	tempString = "SurfaceFeatures";
+	v.setValue(tempString);
+	propWasSet = find_Neighbor->setProperty("SurfaceFeaturesArrayName", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("SurfaceFeaturesArrayName").arg(filtName);
+	  setErrorCondition(-109875);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+
+	v.setValue(false);
+	propWasSet = find_Neighbor->setProperty("StoreBoundaryCells", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("StoreBoundaryCellsArrayName").arg(filtName);
+	  setErrorCondition(-109876);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+
+	v.setValue(false);
+	propWasSet = find_Neighbor->setProperty("StoreSurfaceFeatures", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("StoreSurfaceFeaturesArrayName").arg(filtName);
+	  setErrorCondition(-109877);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+
+	tempString = "ParentNumNeighbors";
+	v.setValue(tempString);
+	propWasSet = find_Neighbor->setProperty("NumNeighborsArrayName", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentNumNeighbors").arg(filtName);
+	  setErrorCondition(-109878);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+
+	tempString = "ParentNeighborList";
+	v.setValue(tempString);
+	propWasSet = find_Neighbor->setProperty("NeighborListArrayName", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentNeighborList").arg(filtName);
+	  setErrorCondition(-109879);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+
+	tempString = "ParentSharedSurfaceAreaList";
+	v.setValue(tempString);
+	propWasSet = find_Neighbor->setProperty("SharedSurfaceAreaListArrayName", v);
+	if(false == propWasSet)
+	{
+	  QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentSharedSurfaceAreaList").arg(filtName);
+	  setErrorCondition(-109880);
+	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+	}
+	find_Neighbor->execute();
+  } 
+
+  QVector<size_t> cDims(1, 1);
+  tempPath.update(getFeatureEulerAnglesArrayPath().getDataContainerName(), getFeatureEulerAnglesArrayPath().getAttributeMatrixName(), "ParentNeighborList");
+  m_ParentNeighborList = getDataContainerArray()->getPrereqArrayFromPath<NeighborList<int>, AbstractFilter>(this, tempPath, cDims);
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
@@ -548,9 +672,23 @@ void TiDwellFatigueCrystallographicAnalysis::group_flaggedfeatures(int index)
 
   for (int j = 0; j < neighborlist[index].size(); ++j)
   {
-	if ((m_Propagators[index] == true && m_Propagators[neighborlist[index][j]] == true) || (m_SoftFeatures[index] == true && m_SoftFeatures[neighborlist[index][j]]))
+	if (m_FeatureParentIds[index] != neighborlist[index][j] && ((m_Propagators[index] == true && m_Propagators[neighborlist[index][j]] == true) || (m_SoftFeatures[index] == true && m_SoftFeatures[neighborlist[index][j]])))
 	{
-	  m_FeatureParentIds[neighborlist[index][j]] = index;
+	  if (m_FeatureParentIds[index] == -1 && m_FeatureParentIds[neighborlist[index][j]] == -1)
+	  {
+		m_FeatureParentIds[neighborlist[index][j]] = index;
+	  }
+
+//	  if (m_FeatureParentIds[index] == -1 && m_FeatureParentIds[neighborlist[index][j]] != -1)
+//	  {
+//		m_FeatureParentIds[index] = m_FeatureParentIds[neighborlist[index][j]];
+//		index = m_FeatureParentIds[index];
+//	  }
+
+//	  if (m_FeatureParentIds[index] != -1 && m_FeatureParentIds[neighborlist[index][j]] == -1)
+//	  {
+//		m_FeatureParentIds[neighborlist[index][j]] = m_FeatureParentIds[index];
+//	  }
 	}
   }
 }
@@ -563,7 +701,7 @@ void TiDwellFatigueCrystallographicAnalysis::assign_badactors(int index)
   // But since a pointer is difficult to use operators with we will now create a
   // reference variable to the pointer with the correct variable name that allows
   // us to use the same syntax as the "vector of vectors"
-  NeighborList<int>& neighborlist = *(m_NeighborList.lock());
+  NeighborList<int>& parentneighborlist = *(m_ParentNeighborList.lock());
 
   bool propagatorFlag = false;
   bool initiatorFlag = false;
@@ -571,15 +709,15 @@ void TiDwellFatigueCrystallographicAnalysis::assign_badactors(int index)
   int propagatorIndex = 0;
   int softfeatureIndex = 0;
 
-  for (int j = 0; j < neighborlist[index].size(); ++j)
+  for (int j = 0; j < parentneighborlist[index].size(); ++j)
   {
-	if ((m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase) || m_FeaturePhases[neighborlist[index][j]] == m_MTRPhase)
+	if ((m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase) || m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
 	{
 	  if (m_Initiators[index] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase)
 	  {
 		initiatorFlag = true; 
 	  }
-	  if (m_Initiators[neighborlist[index][j]] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[neighborlist[index][j]] == m_AlphaGlobPhase) 
+	  if (m_Initiators[parentneighborlist[index][j]] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[parentneighborlist[index][j]] == m_AlphaGlobPhase) 
 	  { 
 		initiatorFlag = true; 
 	  }
@@ -588,20 +726,20 @@ void TiDwellFatigueCrystallographicAnalysis::assign_badactors(int index)
 		propagatorFlag = true; 
 		propagatorIndex = index;
 	  }
-	  if (m_Propagators[neighborlist[index][j]] == true && propagatorFlag == false && m_FeaturePhases[neighborlist[index][j]] == m_MTRPhase) 
+	  if (m_Propagators[parentneighborlist[index][j]] == true && propagatorFlag == false && m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase) 
 	  { 
 		propagatorFlag = true; 
-		propagatorIndex = neighborlist[index][j];
+		propagatorIndex = parentneighborlist[index][j];
 	  }
 	  if (m_SoftFeatures[index] == true && softfeatureFlag == false && m_FeaturePhases[index] == m_MTRPhase)
 	  {
 		softfeatureFlag = true; 
 		softfeatureIndex = index;
 	  }
-	  if (m_SoftFeatures[neighborlist[index][j]] == true && softfeatureFlag == false && m_FeaturePhases[neighborlist[index][j]] == m_MTRPhase)
+	  if (m_SoftFeatures[parentneighborlist[index][j]] == true && softfeatureFlag == false && m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
 	  { 
 		softfeatureFlag = true; 
-		softfeatureIndex = neighborlist[index][j];
+		softfeatureIndex = parentneighborlist[index][j];
 	  }
 	  // only flag as a bad acting pair if there's a neighboring group of initiator - propagator - soft feature and either the current index of the propagator or
 	  // soft feature have not already been flagged as a bad acting pair

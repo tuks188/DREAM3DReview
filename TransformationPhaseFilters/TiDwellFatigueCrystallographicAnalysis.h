@@ -69,6 +69,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_TYPE_MACRO_SUPER(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
 
     virtual ~TiDwellFatigueCrystallographicAnalysis();
+    DREAM3D_FILTER_PARAMETER(QString, DataContainerName)
+    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
     DREAM3D_FILTER_PARAMETER(QString, NewCellFeatureAttributeMatrixName)
     Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
@@ -115,8 +117,11 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(QString, BadActorsArrayName)
     Q_PROPERTY(QString BadActorsArrayName READ getBadActorsArrayName WRITE setBadActorsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
-    Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
+    DREAM3D_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
+    Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
+
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
+    Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -223,6 +228,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
+    NeighborList<int>::WeakPointer m_ParentNeighborList;
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
