@@ -57,7 +57,7 @@
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date Oct 24, 2014
+ * @date Oct 31, 2014
  * @version 5.1
  */
 class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
@@ -96,10 +96,10 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     Q_PROPERTY(float InitiatorLowerThreshold READ getInitiatorLowerThreshold WRITE setInitiatorLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, InitiatorUpperThreshold)
     Q_PROPERTY(float InitiatorUpperThreshold READ getInitiatorUpperThreshold WRITE setInitiatorUpperThreshold)
-    DREAM3D_FILTER_PARAMETER(float, PropagatorLowerThreshold)
-    Q_PROPERTY(float PropagatorLowerThreshold READ getPropagatorLowerThreshold WRITE setPropagatorLowerThreshold)
-    DREAM3D_FILTER_PARAMETER(float, PropagatorUpperThreshold)
-    Q_PROPERTY(float PropagatorUpperThreshold READ getPropagatorUpperThreshold WRITE setPropagatorUpperThreshold)
+    DREAM3D_FILTER_PARAMETER(float, HardFeatureLowerThreshold)
+    Q_PROPERTY(float HardFeatureLowerThreshold READ getHardFeatureLowerThreshold WRITE setHardFeatureLowerThreshold)
+    DREAM3D_FILTER_PARAMETER(float, HardFeatureUpperThreshold)
+    Q_PROPERTY(float HardFeatureUpperThreshold READ getHardFeatureUpperThreshold WRITE setHardFeatureUpperThreshold)
     DREAM3D_FILTER_PARAMETER(float, SoftFeatureLowerThreshold)
     Q_PROPERTY(float SoftFeatureLowerThreshold READ getSoftFeatureLowerThreshold WRITE setSoftFeatureLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
@@ -108,14 +108,14 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(QString, InitiatorsArrayName)
     Q_PROPERTY(QString InitiatorsArrayName READ getInitiatorsArrayName WRITE setInitiatorsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, PropagatorsArrayName)
-    Q_PROPERTY(QString PropagatorsArrayName READ getPropagatorsArrayName WRITE setPropagatorsArrayName)
+    DREAM3D_FILTER_PARAMETER(QString, HardFeaturesArrayName)
+    Q_PROPERTY(QString HardFeaturesArrayName READ getHardFeaturesArrayName WRITE setHardFeaturesArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
     Q_PROPERTY(QString SoftFeaturesArrayName READ getSoftFeaturesArrayName WRITE setSoftFeaturesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, BadActorsArrayName)
-    Q_PROPERTY(QString BadActorsArrayName READ getBadActorsArrayName WRITE setBadActorsArrayName)
+    DREAM3D_FILTER_PARAMETER(QString, HardSoftPairsArrayName)
+    Q_PROPERTY(QString HardSoftPairsArrayName READ getHardSoftPairsArrayName WRITE setHardSoftPairsArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
     Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
@@ -196,11 +196,11 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     TiDwellFatigueCrystallographicAnalysis();
 
     bool determine_subsurfacefeatures(int index);
-    bool determine_propagators(int index);
+    bool determine_hardfeatures(int index);
     void determine_initiators(int index);
 	void determine_softfeatures(int index);
 	void group_flaggedfeatures(int index);
-    void assign_badactors(int index);
+    void assign_hardsoftpairs(int index);
     float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
     /**
@@ -216,9 +216,9 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
   private:
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Propagators)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardFeatures)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SoftFeatures)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, BadActors)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardSoftPairs)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeatureIds)

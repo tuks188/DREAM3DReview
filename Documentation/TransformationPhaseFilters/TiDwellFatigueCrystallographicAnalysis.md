@@ -5,7 +5,7 @@ Ti Dwell Fatigue Crystallographic Analysis {#tidwellfatiguecrystallographicanaly
 Statistics Filters (Crystallographic)
 
 ## Description ##
-Determines **Initiators**, **Propagators**, **Soft Features** and **Bad Actors** in microtextured voxelized structures.  **Initiators** are alpha globs defined as the user defined angle range between the c-axis ([0001]) and the user defined stress axis.  **Propagators** are microtextured regions (MTRs) defined as the user defined angle range between {10-17} plane normal and the user defined stress axis.  **Soft Features** are MTRs defined as the user defined angle range between the c-axis ([0001]) and the user defined stress axis.  Note that the **Initiators** and **Soft Features** calculations is the same as the **Find Basal Loading Factor** filter calculation.  **Bad Actors** are **Propagators** - **Soft Features** pairs with a neighboring **Initiator** that is not flagged here.  Note the **Stress Axis** does not have not be a unit vector.  Note that **Lattice Parameter A** and **Lattice Parameter C** is defaulted for alpha Ti.  The **Subsurface Feature Distance To Consider** defines a subvolume in which only **Features** whose centroid lies within the subvolume are considered for **Initiators**, **Propagators**, **Soft Features** and **Bad Actors** criteria.  All other **Features** are ignored.
+Determines **Initiators**, **Hard Features**, **Soft Features** and **Hard-Soft Pairs** in microtextured voxelized structures.  **Initiators** are alpha globs defined as the user defined angle range between the c-axis ([0001]) and the user defined stress axis.  **Hard Features** are microtextured regions (MTRs) defined as the user defined angle range between {10-17} plane normal and the user defined stress axis.  **Soft Features** are MTRs defined as the user defined angle range between the c-axis ([0001]) and the user defined stress axis.  Note that the **Initiators** and **Soft Features** calculations is the same as the **Find Basal Loading Factor** filter calculation.  **Hard-Soft Pairs** are **HardFeatures** - **Soft Features** pairs with a neighboring **Initiator** that is not flagged here.  Note the **Stress Axis** does not have not be a unit vector.  Note that **Lattice Parameter A** and **Lattice Parameter C** is defaulted for alpha Ti.  The **Subsurface Feature Distance To Consider** defines a subvolume in which only **Features** whose centroid lies within the subvolume are considered for **Initiators**, **Hard Features**, **Soft Features** and **Hard-Soft Pairs** criteria.  All other **Features** are ignored.
 
 ## Parameters ##
 
@@ -40,9 +40,14 @@ Volume
 | Type | Default Name | Comment |
 |------|--------------|---------|
 | Feature | Initiators | Boolean value specifying if the **Feature** meets the **Initiators** criteria. |
-| Feature | Propagators | Boolean value specifying if the **Feature** meets the **Propagators** criteria. |
-| Feature | Bad Actors | Boolean value specifying if the **Feature** meets the **Bad Actors** criteria. |
-| Feature | FeatureParentIds | List of grouped hard or soft **Features**. |
+| Feature | HardFeatures | Boolean value specifying if the **Feature** meets the **Hard Features** criteria. |
+| Feature | SoftFeatures | Boolean value specifying if the **Feature** meets the **Soft Features** criteria. |
+| Feature | HardSoftPairs | Boolean value specifying if the **Feature** meets the **Hard-Soft Pairs** criteria. |
+| Feature | ParentIds | List of grouped hard or soft **Features**. |
+| Feature | ParentNumNeighbors | Value (int) equal to the number of contiguous neighboring **ParentIds** for given **ParentIds** |  |
+| Feature | ParentNeighborLists | List of the contiguous neighboring **ParentIds** for given **ParentIds** |  |
+| Feature | ParentSharedSurfaceAreaLists | List of the area shared between contiguous neighboring **ParentIds** for given **ParentIds** |  |
+| Cell | ParentIds | List of grouped hard or soft **Cells**. |
 
 ## Authors ##
 

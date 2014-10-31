@@ -10,9 +10,9 @@ namespace TransformationPhase
   const QString TransformationPhaseBaseName("TransformationPhasePlugin");
 
   const DREAM3D_STRING Initiators("Initiators");
-  const DREAM3D_STRING Propagators("Propagators");
+  const DREAM3D_STRING HardFeatures("HardFeatures");
   const DREAM3D_STRING SoftFeatures("SoftFeatures");
-  const DREAM3D_STRING BadActors("BadActors");
+  const DREAM3D_STRING HardSoftPairs("HardSoftPairs");
 
   const DREAM3D_STRING SurfaceMeshCSLBoundary("SurfaceMeshCSLBoundary");
   const DREAM3D_STRING SurfaceMeshCSLBoundaryIncoherence("SurfaceMeshCSLBoundaryIncoherence");
