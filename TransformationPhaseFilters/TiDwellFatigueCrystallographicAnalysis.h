@@ -57,7 +57,7 @@
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date Oct 31, 2014
+ * @date Nov 6, 2014
  * @version 5.1
  */
 class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
@@ -89,6 +89,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
     DREAM3D_FILTER_PARAMETER(int, SubsurfaceDistance)
     Q_PROPERTY(int SubsurfaceDistance READ getSubsurfaceDistance WRITE setSubsurfaceDistance)
+    Q_PROPERTY(float ConsiderationFraction READ getConsiderationFraction WRITE setConsiderationFraction)
+    DREAM3D_FILTER_PARAMETER(float, ConsiderationFraction)
 
     DREAM3D_FILTER_PARAMETER(bool, DoNotAssumeInitiatorPresence)
     Q_PROPERTY(bool DoNotAssumeInitiatorPresence READ getDoNotAssumeInitiatorPresence WRITE setDoNotAssumeInitiatorPresence)

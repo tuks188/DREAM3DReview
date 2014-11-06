@@ -50,6 +50,7 @@
 #include "DREAM3DLib/Common/FilterPipeline.h"
 #include "DREAM3DLib/Plugin/DREAM3DPluginInterface.h"
 #include "DREAM3DLib/Plugin/DREAM3DPluginLoader.h"
+#include "DREAM3DLib/Utilities/DREAM3DRandom.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -64,6 +65,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_LatticeParameterA(2.9131f),
   m_LatticeParameterC(4.6572f),
   m_SubsurfaceDistance(0),
+  m_ConsiderationFraction(1.0f),
   m_DoNotAssumeInitiatorPresence(true),
   m_InitiatorLowerThreshold(40.0f),
   m_InitiatorUpperThreshold(50.0f),
@@ -127,6 +129,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Lattice Parameter C", "LatticeParameterC", FilterParameterWidgetType::DoubleWidget, getLatticeParameterC(), false, ""));
   parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), false));
   parameters.push_back(FilterParameter::New("Subsurface Feature Distance To Consider", "SubsurfaceDistance", FilterParameterWidgetType::IntWidget, getSubsurfaceDistance(), false, "Microns"));
+  parameters.push_back(FilterParameter::New("Fraction Of Features To Consider", "ConsiderationFraction", FilterParameterWidgetType::DoubleWidget, getConsiderationFraction(), false, ""));
   QStringList linkedProps2;
   linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
   parameters.push_back(LinkedBooleanFilterParameter::New("Do Not Assume Initiator Presence", "DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence(), linkedProps2, false));
@@ -174,6 +177,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setLatticeParameterC(reader->readValue("LatticeParameterC", getLatticeParameterC()) );
   setStressAxis(reader->readFloatVec3("Stress Axis", getStressAxis() ) );
   setSubsurfaceDistance(reader->readValue("SubsurfaceDistance", getSubsurfaceDistance()) );
+  setConsiderationFraction(reader->readValue("ConsiderationFraction", getConsiderationFraction()) );
   setDoNotAssumeInitiatorPresence(reader->readValue("DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence()) );
   setInitiatorLowerThreshold(reader->readValue("InitiatorLowerThreshold", getInitiatorLowerThreshold()) );
   setInitiatorUpperThreshold(reader->readValue("InitiatorUpperThreshold", getInitiatorUpperThreshold()) );
@@ -212,6 +216,7 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterC)
   DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
   DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
+  DREAM3D_FILTER_WRITE_PARAMETER(ConsiderationFraction)
   DREAM3D_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
@@ -351,6 +356,8 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
+  DREAM3D_RANDOMNG_NEW()
+
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
   size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
 
@@ -359,12 +366,15 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   bool initiatorFlag = false;
   bool softfeatureFlag = false;
 
+  float random = 0.0f;
+
   // Normalize input stress axis
   MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
-	subsurfaceFlag = determine_subsurfacefeatures(i);
+    random = static_cast<float>(rg.genrand_res53());
+	if (random < m_ConsiderationFraction) { subsurfaceFlag = determine_subsurfacefeatures(i); }
 	if (subsurfaceFlag == true) 
 	{ 
 	  // Determine if it's a hard feature
@@ -669,20 +679,16 @@ void TiDwellFatigueCrystallographicAnalysis::group_flaggedfeatures(int index)
   {
 	if (m_FeatureParentIds[index] != neighborlist[index][j] && ((m_HardFeatures[index] == true && m_HardFeatures[neighborlist[index][j]] == true) || (m_SoftFeatures[index] == true && m_SoftFeatures[neighborlist[index][j]])))
 	{
-	  if (m_FeatureParentIds[index] == -1 && m_FeatureParentIds[neighborlist[index][j]] == -1)
+	  if (m_FeatureParentIds[neighborlist[index][j]] == -1)
 	  {
-		m_FeatureParentIds[neighborlist[index][j]] = index;
+		if (m_FeatureParentIds[index] == -1) { m_FeatureParentIds[neighborlist[index][j]] = index; }
+		if (m_FeatureParentIds[index] != -1) { m_FeatureParentIds[neighborlist[index][j]] = m_FeatureParentIds[index]; }
+		group_flaggedfeatures(neighborlist[index][j]);
 	  }
-
-//	  if (m_FeatureParentIds[index] == -1 && m_FeatureParentIds[neighborlist[index][j]] != -1)
-//	  {
-//		m_FeatureParentIds[index] = m_FeatureParentIds[neighborlist[index][j]];
-//		index = m_FeatureParentIds[index];
-//	  }
 
 //	  if (m_FeatureParentIds[index] != -1 && m_FeatureParentIds[neighborlist[index][j]] == -1)
 //	  {
-//		m_FeatureParentIds[neighborlist[index][j]] = m_FeatureParentIds[index];
+//		 m_FeatureParentIds[neighborlist[index][j]] = m_FeatureParentIds[index];
 //	  }
 	}
   }

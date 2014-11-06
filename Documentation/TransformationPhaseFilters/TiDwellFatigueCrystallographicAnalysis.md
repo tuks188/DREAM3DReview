@@ -14,6 +14,7 @@ Determines **Initiators**, **Hard Features**, **Soft Features** and **Hard-Soft 
 | Lattice Parameter A | Float | The hexagonal basal lattice parameter. |
 | Lattice Parameter C | Float | The hexagonal height lattice parameter. |
 | Subsurface Feature Distance To Consider | Int | The distance (microns) from the surface defining a subvolume. |
+| Fraction Of Features To Consider | Float | The fraction of **Features** to randomly consider from the input volume element. |
 | Stress Axis X | Float | The X component of the stress axis in the sample reference frame. |
 | Stress Axis Y | Float | The Y component of the stress axis in the sample reference frame. |
 | Stress Axis Z | Float | The Z component of the stress axis in the sample reference frame. |
