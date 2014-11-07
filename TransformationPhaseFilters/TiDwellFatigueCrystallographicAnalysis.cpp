@@ -73,6 +73,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_HardFeatureUpperThreshold(25.0f),
   m_SoftFeatureLowerThreshold(70.0f),
   m_SoftFeatureUpperThreshold(90.0f),
+  m_SelectedFeaturesArrayName(TransformationPhase::SelectedFeatures),
   m_InitiatorsArrayName(TransformationPhase::Initiators),
   m_HardFeaturesArrayName(TransformationPhase::HardFeatures),
   m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
@@ -89,6 +90,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_CentroidsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Centroids),
   m_CrystalStructuresArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
   m_FeatureIdsArrayName(DREAM3D::CellData::FeatureIds),
+  m_SelectedFeatures(NULL),
   m_Initiators(NULL),
   m_HardFeatures(NULL),
   m_SoftFeatures(NULL),
@@ -152,6 +154,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 
   parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
   parameters.push_back(FilterParameter::New("New Cell Feature Attribute Matrix Name", "NewCellFeatureAttributeMatrixName", FilterParameterWidgetType::StringWidget, getNewCellFeatureAttributeMatrixName(), true, ""));
+  parameters.push_back(FilterParameter::New("Selected Features Array Name", "SelectedFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSelectedFeaturesArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Hard Features Array Name", "HardFeaturesArrayName", FilterParameterWidgetType::StringWidget, getHardFeaturesArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Soft Features Array Name", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), true, ""));
@@ -185,6 +188,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setHardFeatureUpperThreshold(reader->readValue("HardFeatureUpperThreshold", getHardFeatureUpperThreshold()) );
   setSoftFeatureLowerThreshold(reader->readValue("SoftFeatureLowerThreshold", getSoftFeatureLowerThreshold()) );
   setSoftFeatureUpperThreshold(reader->readValue("SoftFeatureUpperThreshold", getSoftFeatureUpperThreshold()) );
+  setSelectedFeaturesArrayName(reader->readString("SelectedFeaturesArrayName", getSelectedFeaturesArrayName() ) );
   setInitiatorsArrayName(reader->readString("InitiatorsArrayName", getInitiatorsArrayName() ) );
   setHardFeaturesArrayName(reader->readString("HardFeaturesArrayName", getHardFeaturesArrayName() ) );
   setSoftFeaturesArrayName(reader->readString("SoftFeaturesArrayName", getSoftFeaturesArrayName() ) );
@@ -224,6 +228,7 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
   DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
@@ -274,6 +279,11 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getSelectedFeaturesArrayName() );
+  m_SelectedFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_SelectedFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_SelectedFeatures = m_SelectedFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
   
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getInitiatorsArrayName() );
   m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -373,8 +383,13 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
+	int stop = 0;
     random = static_cast<float>(rg.genrand_res53());
-	if (random < m_ConsiderationFraction) { subsurfaceFlag = determine_subsurfacefeatures(i); }
+	if (random < m_ConsiderationFraction) 
+	{ 
+	  m_SelectedFeatures[i] = true;
+	  subsurfaceFlag = determine_subsurfacefeatures(i); 
+	}
 	if (subsurfaceFlag == true) 
 	{ 
 	  // Determine if it's a hard feature
@@ -383,8 +398,9 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 	  if (hardfeatureFlag == false && m_FeaturePhases[i] == m_MTRPhase) { determine_softfeatures(i); }
 	  // Determine if it's an initiator only if we're assuming initiators are not necessarily present
 	  if (m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[i] == m_AlphaGlobPhase ) { determine_initiators(i); }
+	  subsurfaceFlag = false;
 	}
-  }
+}
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
@@ -685,11 +701,6 @@ void TiDwellFatigueCrystallographicAnalysis::group_flaggedfeatures(int index)
 		if (m_FeatureParentIds[index] != -1) { m_FeatureParentIds[neighborlist[index][j]] = m_FeatureParentIds[index]; }
 		group_flaggedfeatures(neighborlist[index][j]);
 	  }
-
-//	  if (m_FeatureParentIds[index] != -1 && m_FeatureParentIds[neighborlist[index][j]] == -1)
-//	  {
-//		 m_FeatureParentIds[neighborlist[index][j]] = m_FeatureParentIds[index];
-//	  }
 	}
   }
 }

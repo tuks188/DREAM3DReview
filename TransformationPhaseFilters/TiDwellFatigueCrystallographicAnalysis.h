@@ -107,6 +107,9 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
     Q_PROPERTY(float SoftFeatureUpperThreshold READ getSoftFeatureUpperThreshold WRITE setSoftFeatureUpperThreshold)
 
+    DREAM3D_FILTER_PARAMETER(QString, SelectedFeaturesArrayName)
+    Q_PROPERTY(QString SelectedFeaturesArrayName READ getSelectedFeaturesArrayName WRITE setSelectedFeaturesArrayName)
+
     DREAM3D_FILTER_PARAMETER(QString, InitiatorsArrayName)
     Q_PROPERTY(QString InitiatorsArrayName READ getInitiatorsArrayName WRITE setInitiatorsArrayName)
 
@@ -217,6 +220,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     void updateFeatureInstancePointers();
 
   private:
+    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SelectedFeatures)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardFeatures)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SoftFeatures)

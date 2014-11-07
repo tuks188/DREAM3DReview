@@ -13,6 +13,8 @@ namespace TransformationPhase
   const DREAM3D_STRING HardFeatures("HardFeatures");
   const DREAM3D_STRING SoftFeatures("SoftFeatures");
   const DREAM3D_STRING HardSoftPairs("HardSoftPairs");
+  const DREAM3D_STRING SelectedFeatures("SelectedFeatures");
+  const DREAM3D_STRING SubsurfaceFeatures("SubsurfaceFeatures");
 
   const DREAM3D_STRING SurfaceMeshCSLBoundary("SurfaceMeshCSLBoundary");
   const DREAM3D_STRING SurfaceMeshCSLBoundaryIncoherence("SurfaceMeshCSLBoundaryIncoherence");

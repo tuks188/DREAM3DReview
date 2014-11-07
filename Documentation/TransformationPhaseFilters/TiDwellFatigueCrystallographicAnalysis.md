@@ -40,14 +40,15 @@ Volume
 
 | Type | Default Name | Comment |
 |------|--------------|---------|
+| Feature | SelectedFeatures | Boolean value specifying if the **Feature** is randomly selected based on the **Fraction Of Features To Consider** criterion. |
 | Feature | Initiators | Boolean value specifying if the **Feature** meets the **Initiators** criteria. |
 | Feature | HardFeatures | Boolean value specifying if the **Feature** meets the **Hard Features** criteria. |
 | Feature | SoftFeatures | Boolean value specifying if the **Feature** meets the **Soft Features** criteria. |
 | Feature | HardSoftPairs | Boolean value specifying if the **Feature** meets the **Hard-Soft Pairs** criteria. |
 | Feature | ParentIds | List of grouped hard or soft **Features**. |
-| Feature | ParentNumNeighbors | Value (int) equal to the number of contiguous neighboring **ParentIds** for given **ParentIds** |  |
-| Feature | ParentNeighborLists | List of the contiguous neighboring **ParentIds** for given **ParentIds** |  |
-| Feature | ParentSharedSurfaceAreaLists | List of the area shared between contiguous neighboring **ParentIds** for given **ParentIds** |  |
+| Feature | ParentNumNeighbors | Value (int) equal to the number of contiguous neighboring **ParentIds** for given **ParentIds**. |  |
+| Feature | ParentNeighborLists | List of the contiguous neighboring **ParentIds** for given **ParentIds**. |  |
+| Feature | ParentSharedSurfaceAreaLists | List of the area shared between contiguous neighboring **ParentIds** for given **ParentIds**. |  |
 | Cell | ParentIds | List of grouped hard or soft **Cells**. |
 
 ## Authors ##
