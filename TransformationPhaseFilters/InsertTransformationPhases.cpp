@@ -109,7 +109,7 @@ InsertTransformationPhases::InsertTransformationPhases() :
   m_NumFeaturesArrayName(DREAM3D::EnsembleData::NumFeatures),
   m_NumFeatures(NULL)
 {
-  m_OrientationOps = OrientationOps::getOrientationOpsVector();
+  m_OrientationOps = OrientationOps::getOrientationOpsQVector();
   m_TransformationPhaseHabitPlane.x = 1.0f;
   m_TransformationPhaseHabitPlane.y = 1.0f;
   m_TransformationPhaseHabitPlane.z = 1.0f;
