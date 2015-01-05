@@ -75,7 +75,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_InitiatorsArrayName(TransformationPhase::Initiators),
   m_HardFeaturesArrayName(TransformationPhase::HardFeatures),
   m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
-  m_HardSoftPairsArrayName(TransformationPhase::HardSoftPairs),
+  m_HardSoftGroupsArrayName(TransformationPhase::HardSoftGroups),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::CellFeatureAttributeMatrixName),
   m_CellFeatureAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
   m_FeatureIdsArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
@@ -91,7 +91,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_Initiators(NULL),
   m_HardFeatures(NULL),
   m_SoftFeatures(NULL),
-  m_HardSoftPairs(NULL),
+  m_HardSoftGroups(NULL),
   m_FeatureIdsArrayName(DREAM3D::CellData::FeatureIds),
   m_FeatureIds(NULL),
   m_CellParentIds(NULL),
@@ -156,7 +156,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Hard Features Array Name", "HardFeaturesArrayName", FilterParameterWidgetType::StringWidget, getHardFeaturesArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Soft Features Array Name", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), true, ""));
-  parameters.push_back(FilterParameter::New("Hard-Soft Pairs Array Name", "HardSoftPairsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftPairsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Hard-Soft Pairs Array Name", "HardSoftGroupsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftGroupsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Cell ParentIds", "CellParentIdsArrayName", FilterParameterWidgetType::StringWidget, getCellParentIdsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Feature ParentIds", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Active", "ActiveArrayName", FilterParameterWidgetType::StringWidget, getActiveArrayName(), true, ""));
@@ -190,7 +190,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setInitiatorsArrayName(reader->readString("InitiatorsArrayName", getInitiatorsArrayName() ) );
   setHardFeaturesArrayName(reader->readString("HardFeaturesArrayName", getHardFeaturesArrayName() ) );
   setSoftFeaturesArrayName(reader->readString("SoftFeaturesArrayName", getSoftFeaturesArrayName() ) );
-  setHardSoftPairsArrayName(reader->readString("HardSoftPairsArrayName", getHardSoftPairsArrayName() ) );
+  setHardSoftGroupsArrayName(reader->readString("HardSoftGroupsArrayName", getHardSoftGroupsArrayName() ) );
   setCellFeatureAttributeMatrixName(reader->readString("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
   setCellFeatureAttributeMatrixPath(reader->readDataArrayPath("CellFeatureAttributeMatrixPath", getCellFeatureAttributeMatrixPath()));
   setActiveArrayName(reader->readString("ActiveArrayName", getActiveArrayName() ) );
@@ -230,7 +230,7 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
       DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
       DREAM3D_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
       DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(HardSoftPairsArrayName)
+      DREAM3D_FILTER_WRITE_PARAMETER(HardSoftGroupsArrayName)
       DREAM3D_FILTER_WRITE_PARAMETER(DataContainerName)
       DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
       DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
@@ -298,10 +298,10 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   if( NULL != m_SoftFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_SoftFeatures = m_SoftFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getHardSoftPairsArrayName() );
-  m_HardSoftPairsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_HardSoftPairsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
-  { m_HardSoftPairs = m_HardSoftPairsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getHardSoftGroupsArrayName() );
+  m_HardSoftGroupsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( NULL != m_HardSoftGroupsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  { m_HardSoftGroups = m_HardSoftGroupsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCellParentIdsArrayName() );
   m_CellParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -545,7 +545,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if (m_FeaturePhases[i] == m_MTRPhase || (m_FeaturePhases[i] == m_AlphaGlobPhase && m_DoNotAssumeInitiatorPresence == true))
     {
       // Determine if it's a hard-soft pair only if there the current ID is either a hardfeature, initiator or soft feature
-      if (m_Initiators[i] == true || m_HardFeatures[i] == true || m_SoftFeatures[i] == true) { assign_hardsoftpairs(i); }
+      if (m_Initiators[i] == true || m_HardFeatures[i] == true || m_SoftFeatures[i] == true) { assign_HardSoftGroups(i); }
     }
   }
 
@@ -706,7 +706,7 @@ void TiDwellFatigueCrystallographicAnalysis::group_flaggedfeatures(int index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::assign_hardsoftpairs(int index)
+void TiDwellFatigueCrystallographicAnalysis::assign_HardSoftGroups(int index)
 {
   // But since a pointer is difficult to use operators with we will now create a
   // reference variable to the pointer with the correct variable name that allows
@@ -753,10 +753,10 @@ void TiDwellFatigueCrystallographicAnalysis::assign_hardsoftpairs(int index)
       }
       // only flag as a hard-soft pair if there's a neighboring group of initiator - hardfeature - soft feature and either the current index of the hardfeature or
       // soft feature have not already been flagged as a bad acting pair
-      if ((m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) && hardfeatureFlag == true && softfeatureFlag == true && (m_HardSoftPairs[hardfeatureIndex] == false || m_HardSoftPairs[softfeatureIndex] == false))
+      if ((m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) && hardfeatureFlag == true && softfeatureFlag == true && (m_HardSoftGroups[hardfeatureIndex] == false || m_HardSoftGroups[softfeatureIndex] == false))
       {
-        m_HardSoftPairs[hardfeatureIndex] = true;
-        m_HardSoftPairs[softfeatureIndex] = true;
+        m_HardSoftGroups[hardfeatureIndex] = true;
+        m_HardSoftGroups[softfeatureIndex] = true;
         break;
       }
     }

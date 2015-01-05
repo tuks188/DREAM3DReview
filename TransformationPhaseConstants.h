@@ -12,7 +12,7 @@ namespace TransformationPhase
   const DREAM3D_STRING Initiators("Initiators");
   const DREAM3D_STRING HardFeatures("HardFeatures");
   const DREAM3D_STRING SoftFeatures("SoftFeatures");
-  const DREAM3D_STRING HardSoftPairs("HardSoftPairs");
+  const DREAM3D_STRING HardSoftGroups("HardSoftGroups");
   const DREAM3D_STRING SelectedFeatures("SelectedFeatures");
   const DREAM3D_STRING SubsurfaceFeatures("SubsurfaceFeatures");
 

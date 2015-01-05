@@ -119,8 +119,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
     Q_PROPERTY(QString SoftFeaturesArrayName READ getSoftFeaturesArrayName WRITE setSoftFeaturesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, HardSoftPairsArrayName)
-    Q_PROPERTY(QString HardSoftPairsArrayName READ getHardSoftPairsArrayName WRITE setHardSoftPairsArrayName)
+    DREAM3D_FILTER_PARAMETER(QString, HardSoftGroupsArrayName)
+    Q_PROPERTY(QString HardSoftGroupsArrayName READ getHardSoftGroupsArrayName WRITE setHardSoftGroupsArrayName)
 
     DREAM3D_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
     Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
@@ -205,7 +205,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     void determine_initiators(int index);
 	void determine_softfeatures(int index);
 	void group_flaggedfeatures(int index);
-    void assign_hardsoftpairs(int index);
+    void assign_HardSoftGroups(int index);
     float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
     /**
@@ -224,7 +224,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardFeatures)
     DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SoftFeatures)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardSoftPairs)
+    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardSoftGroups)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
     DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeatureIds)
