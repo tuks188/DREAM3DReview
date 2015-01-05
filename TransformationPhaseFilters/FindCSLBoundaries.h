@@ -44,13 +44,14 @@
 #include "DREAM3DLib/DREAM3DLib.h"
 #include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"
 #include "DREAM3DLib/DataArrays/IDataArray.h"
-
 #include "DREAM3DLib/Common/AbstractFilter.h"
-#include "DREAM3DLib/OrientationOps/OrientationOps.h"
-#include "DREAM3DLib/OrientationOps/CubicOps.h"
-#include "DREAM3DLib/OrientationOps/HexagonalOps.h"
-#include "DREAM3DLib/OrientationOps/OrthoRhombicOps.h"
 #include "DREAM3DLib/DataContainers/VolumeDataContainer.h"
+
+
+#include "OrientationLib/OrientationOps/OrientationOps.h"
+#include "OrientationLib/OrientationOps/CubicOps.h"
+#include "OrientationLib/OrientationOps/HexagonalOps.h"
+#include "OrientationLib/OrientationOps/OrthoRhombicOps.h"
 
 /**
  * @class FindCSLBoundaries FindCSLBoundaries.h /TransformationPhase/FindCSLBoundaries.h

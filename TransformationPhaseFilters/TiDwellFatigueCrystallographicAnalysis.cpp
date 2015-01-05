@@ -40,8 +40,8 @@
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "TransformationPhase/TransformationPhaseConstants.h"
 #include "DREAM3DLib/Math/MatrixMath.h"
-#include "DREAM3DLib/Math/OrientationMath.h"
-#include "DREAM3DLib/OrientationOps/OrientationOps.h"
+#include "OrientationLib/Math/OrientationMath.h"
+#include "OrientationLib/OrientationOps/OrientationOps.h"
 #include "DREAM3DLib/Math/GeometryMath.h"
 
 #include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
