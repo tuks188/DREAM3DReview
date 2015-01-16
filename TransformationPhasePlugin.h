@@ -121,6 +121,11 @@ class TransformationPhasePlugin : public QObject, public DREAM3DPluginInterface
      */
     virtual QList<QString> getDependencies();
 
+    /**
+     * @brief Returns the third party licenses of the plugin
+     */
+    virtual QMap<QString, QString> getThirdPartyLicenses();
+
   /**
      * @brief Register all the filters with the FilterWidgetFactory
      */
