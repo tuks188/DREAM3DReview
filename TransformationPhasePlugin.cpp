@@ -36,6 +36,9 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "TransformationPhasePlugin.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+
 #include "DREAM3DLib/Common/FilterManager.h"
 #include "DREAM3DLib/Common/IFilterFactory.hpp"
 #include "DREAM3DLib/Common/FilterFactory.hpp"
@@ -65,7 +68,7 @@ m_Location(""),
 m_Platforms(QList<QString>()),
 m_Description(""),
 m_Copyright(""),
-m_License(""),
+
 m_Dependencies(QList<QString>())
 {
 
@@ -91,7 +94,7 @@ QString TransformationPhasePlugin::getPluginName()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getVersion()
 {
-  return "";
+  return m_Version;
 }
 
 // -----------------------------------------------------------------------------
@@ -99,7 +102,7 @@ QString TransformationPhasePlugin::getVersion()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getCompatibilityVersion()
 {
-  return "";
+  return m_CompatibilityVersion;
 }
 
 // -----------------------------------------------------------------------------
@@ -107,7 +110,7 @@ QString TransformationPhasePlugin::getCompatibilityVersion()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getVendor()
 {
-  return "";
+  return m_Vendor;
 }
 
 // -----------------------------------------------------------------------------
@@ -115,7 +118,7 @@ QString TransformationPhasePlugin::getVendor()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getGroup()
 {
-  return "";
+  return m_Group;
 }
 
 // -----------------------------------------------------------------------------
@@ -123,7 +126,7 @@ QString TransformationPhasePlugin::getGroup()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getURL()
 {
-  return "";
+  return m_URL;
 }
 
 // -----------------------------------------------------------------------------
@@ -131,7 +134,7 @@ QString TransformationPhasePlugin::getURL()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getLocation()
 {
-  return "";
+  return m_Location;
 }
 
 // -----------------------------------------------------------------------------
@@ -139,8 +142,7 @@ QString TransformationPhasePlugin::getLocation()
 // -----------------------------------------------------------------------------
 QList<QString> TransformationPhasePlugin::getPlatforms()
 {
-  QList<QString> empty;
-  return empty;
+  return m_Platforms;
 }
 
 // -----------------------------------------------------------------------------
@@ -148,7 +150,7 @@ QList<QString> TransformationPhasePlugin::getPlatforms()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getDescription()
 {
-  return "";
+  return m_Description;
 }
 
 // -----------------------------------------------------------------------------
@@ -156,7 +158,7 @@ QString TransformationPhasePlugin::getDescription()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getCopyright()
 {
-  return "";
+  return m_Copyright;
 }
 
 // -----------------------------------------------------------------------------
@@ -164,7 +166,19 @@ QString TransformationPhasePlugin::getCopyright()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getLicense()
 {
-  return "";
+  QFile licenseFile(":/TransformationPhaseResources/License.txt");
+  QFileInfo licenseFileInfo(licenseFile);
+  QString text = "<<--License was not read-->>";
+
+  if ( licenseFileInfo.exists() )
+  {
+    if ( licenseFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    {
+      QTextStream in(&licenseFile);
+      text = in.readAll();
+    }
+  }
+  return text;
 }
 
 // -----------------------------------------------------------------------------
@@ -172,8 +186,7 @@ QString TransformationPhasePlugin::getLicense()
 // -----------------------------------------------------------------------------
 QList<QString> TransformationPhasePlugin::getDependencies()
 {
-  QList<QString> empty;
-  return empty;
+  return m_Dependencies;
 }
 
 // -----------------------------------------------------------------------------
