@@ -2,5 +2,6 @@
  <RCC version="1.0">
  <qresource>
  <file>TransformationPhase/TransformationPhaseLicense.txt</file>
+ <file>TransformationPhase/TransformationPhaseDescription.txt</file>
  </qresource>
  </RCC>

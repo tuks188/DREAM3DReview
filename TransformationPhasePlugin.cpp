@@ -51,7 +51,7 @@ Q_EXPORT_PLUGIN2(TransformationPhasePlugin, TransformationPhasePlugin)
 namespace Detail
 {
    const QString TransformationPhasePluginFile("TransformationPhasePlugin");
-   const QString TransformationPhasePluginDisplayName("TransformationPhasePlugin");
+   const QString TransformationPhasePluginDisplayName("TransformationPhase");
    const QString TransformationPhasePluginBaseName("TransformationPhasePlugin");
 }
 
@@ -59,16 +59,13 @@ namespace Detail
 //
 // -----------------------------------------------------------------------------
 TransformationPhasePlugin::TransformationPhasePlugin() :
-m_Version(""),
-m_CompatibilityVersion(""),
-m_Vendor(""),
-m_Group(""),
-m_URL(""),
+m_Version(DREAM3DLib::Version::Package()),
+m_CompatibilityVersion(DREAM3DLib::Version::Package()),
+m_Vendor(DREAM3D::BlueQuartz::VendorName),
+m_URL(DREAM3D::BlueQuartz::URL),
 m_Location(""),
 m_Platforms(QList<QString>()),
-m_Description(""),
-m_Copyright(""),
-
+m_Copyright(DREAM3D::BlueQuartz::Copyright),
 m_Dependencies(QList<QString>())
 {
 
@@ -116,14 +113,6 @@ QString TransformationPhasePlugin::getVendor()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString TransformationPhasePlugin::getGroup()
-{
-  return m_Group;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getURL()
 {
   return m_URL;
@@ -150,7 +139,19 @@ QList<QString> TransformationPhasePlugin::getPlatforms()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getDescription()
 {
-  return m_Description;
+  QFile licenseFile(":/TransformationPhase/TransformationPhaseDescription.txt");
+  QFileInfo licenseFileInfo(licenseFile);
+  QString text = "<<--Description was not read-->>";
+
+  if ( licenseFileInfo.exists() )
+  {
+    if ( licenseFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    {
+      QTextStream in(&licenseFile);
+      text = in.readAll();
+    }
+  }
+  return text;
 }
 
 // -----------------------------------------------------------------------------
@@ -166,7 +167,7 @@ QString TransformationPhasePlugin::getCopyright()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getLicense()
 {
-  QFile licenseFile(":/TransformationPhaseResources/License.txt");
+  QFile licenseFile(":/TransformationPhase/TransformationPhaseLicense.txt");
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--License was not read-->>";
 
