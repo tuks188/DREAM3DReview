@@ -392,6 +392,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     }
     if (subsurfaceFlag == true)
     {
+	  int stop = 0;
       // Determine if it's a hard feature
       if (m_FeaturePhases[i] == m_MTRPhase) { hardfeatureFlag = determine_hardfeatures(i); }
       // Determine if it's a soft feature only if it's not a hard feature
@@ -574,13 +575,13 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xyzScaledDimension[3] = {xPoints*xRes, yPoints*yRes, zPoints*zRes};
 
   // check if current feature centroid is within the subsurface defined centroid
-  if ( m_Centroids[3*index+0] > m_SubsurfaceDistance && m_Centroids[3*index+0] < (xyzScaledDimension[0] - m_SubsurfaceDistance)
-       && m_Centroids[3*index+1] > m_SubsurfaceDistance && m_Centroids[3*index+1] < (xyzScaledDimension[1] - m_SubsurfaceDistance)
-       && m_Centroids[3*index+2] > m_SubsurfaceDistance && m_Centroids[3*index+2] < (xyzScaledDimension[2] - m_SubsurfaceDistance))
+  if ( m_Centroids[3*index+0] >= m_SubsurfaceDistance && m_Centroids[3*index+0] <= (xyzScaledDimension[0] - m_SubsurfaceDistance)
+       && m_Centroids[3*index+1] >= m_SubsurfaceDistance && m_Centroids[3*index+1] <= (xyzScaledDimension[1] - m_SubsurfaceDistance)
+       && m_Centroids[3*index+2] >= m_SubsurfaceDistance && m_Centroids[3*index+2] <= (xyzScaledDimension[2] - m_SubsurfaceDistance))
   {
     subsurfaceFlag = true;
   }
-
+  int stop = 0;
   if (subsurfaceFlag == true) { return true; }
   else { return false; }
 }
