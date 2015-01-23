@@ -57,7 +57,7 @@
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
  * @author Joseph C. Tucker
- * @date Nov 6, 2014
+ * @date Jan 23, 2015
  * @version 5.1
  */
 class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
@@ -71,8 +71,6 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     virtual ~TiDwellFatigueCrystallographicAnalysis();
     DREAM3D_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
-    DREAM3D_FILTER_PARAMETER(QString, NewCellFeatureAttributeMatrixName)
-    Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
     DREAM3D_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
@@ -106,6 +104,10 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     Q_PROPERTY(float SoftFeatureLowerThreshold READ getSoftFeatureLowerThreshold WRITE setSoftFeatureLowerThreshold)
     DREAM3D_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
     Q_PROPERTY(float SoftFeatureUpperThreshold READ getSoftFeatureUpperThreshold WRITE setSoftFeatureUpperThreshold)
+
+
+    DREAM3D_FILTER_PARAMETER(QString,NewCellFeatureAttributeMatrixName)
+    Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
     DREAM3D_FILTER_PARAMETER(QString, SelectedFeaturesArrayName)
     Q_PROPERTY(QString SelectedFeaturesArrayName READ getSelectedFeaturesArrayName WRITE setSelectedFeaturesArrayName)

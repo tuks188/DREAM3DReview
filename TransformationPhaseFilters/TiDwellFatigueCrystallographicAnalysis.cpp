@@ -71,6 +71,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_HardFeatureUpperThreshold(25.0f),
   m_SoftFeatureLowerThreshold(70.0f),
   m_SoftFeatureUpperThreshold(90.0f),
+  m_NewCellFeatureAttributeMatrixName(DREAM3D::Defaults::NewCellFeatureAttributeMatrixName),
   m_SelectedFeaturesArrayName(TransformationPhase::SelectedFeatures),
   m_InitiatorsArrayName(TransformationPhase::Initiators),
   m_HardFeaturesArrayName(TransformationPhase::HardFeatures),
@@ -78,7 +79,7 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_HardSoftGroupsArrayName(TransformationPhase::HardSoftGroups),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::CellFeatureAttributeMatrixName),
   m_CellFeatureAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
-  m_FeatureIdsArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
+  m_FeatureIdsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
   m_CellParentIdsArrayName(DREAM3D::CellData::ParentIds),
   m_FeatureParentIdsArrayName(DREAM3D::FeatureData::ParentIds),
   m_ActiveArrayName(DREAM3D::FeatureData::Active),
@@ -141,7 +142,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Soft Feature Upper Threshold", "SoftFeatureUpperThreshold", FilterParameterWidgetType::DoubleWidget, getSoftFeatureUpperThreshold(), false, "Degrees"));
 
   parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
-  parameters.push_back(FilterParameter::New("Data Container Name", "DataContainerName", FilterParameterWidgetType::StringWidget, getDataContainerName(), true, ""));
+  parameters.push_back(FilterParameter::New("Data Container Name", "DataContainerName", FilterParameterWidgetType::DataContainerSelectionWidget, getDataContainerName(), true, ""));
   parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Path", "CellFeatureAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixPath(), true, ""));
   parameters.push_back(FilterParameter::New("FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
   parameters.push_back(FilterParameter::New("Feature Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), true, ""));
@@ -156,7 +157,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Hard Features Array Name", "HardFeaturesArrayName", FilterParameterWidgetType::StringWidget, getHardFeaturesArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Soft Features Array Name", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), true, ""));
-  parameters.push_back(FilterParameter::New("Hard-Soft Pairs Array Name", "HardSoftGroupsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftGroupsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Hard-Soft Groups Array Name", "HardSoftGroupsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftGroupsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Cell ParentIds", "CellParentIdsArrayName", FilterParameterWidgetType::StringWidget, getCellParentIdsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Feature ParentIds", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), true, ""));
   parameters.push_back(FilterParameter::New("Active", "ActiveArrayName", FilterParameterWidgetType::StringWidget, getActiveArrayName(), true, ""));
@@ -170,7 +171,6 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
 {
   reader->openFilterGroup(this, index);
   setDataContainerName(reader->readString("DataContainerName", getDataContainerName() ) );
-  setNewCellFeatureAttributeMatrixName(reader->readString("NewCellFeatureAttributeMatrixName", getNewCellFeatureAttributeMatrixName() ) );
   setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
   setAlphaGlobPhase(reader->readValue("AlphaGlobPhase", getAlphaGlobPhase()) );
   setMTRPhase(reader->readValue("MTRPhase", getMTRPhase()) );
@@ -186,6 +186,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
   setHardFeatureUpperThreshold(reader->readValue("HardFeatureUpperThreshold", getHardFeatureUpperThreshold()) );
   setSoftFeatureLowerThreshold(reader->readValue("SoftFeatureLowerThreshold", getSoftFeatureLowerThreshold()) );
   setSoftFeatureUpperThreshold(reader->readValue("SoftFeatureUpperThreshold", getSoftFeatureUpperThreshold()) );
+  setNewCellFeatureAttributeMatrixName(reader->readString("NewCellFeatureAttributeMatrixName", getNewCellFeatureAttributeMatrixName() ) );
   setSelectedFeaturesArrayName(reader->readString("SelectedFeaturesArrayName", getSelectedFeaturesArrayName() ) );
   setInitiatorsArrayName(reader->readString("InitiatorsArrayName", getInitiatorsArrayName() ) );
   setHardFeaturesArrayName(reader->readString("HardFeaturesArrayName", getHardFeaturesArrayName() ) );
@@ -226,6 +227,7 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
       DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
       DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
       DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
+	  DREAM3D_FILTER_WRITE_PARAMETER(NewCellFeatureAttributeMatrixName)
       DREAM3D_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
       DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
       DREAM3D_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
@@ -331,7 +333,7 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   { m_Centroids = m_CentroidsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   // New Feature Data
-
+ 
   // Ensemble Data
   dims[0] = 1;
   typedef DataArray<unsigned int> XTalStructArrayType;
