@@ -176,14 +176,6 @@ QString TransformationPhasePlugin::getLicense()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> TransformationPhasePlugin::getFilters()
-{
-  return getFiltersList();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QMap<QString, QString> TransformationPhasePlugin::getThirdPartyLicenses()
 {
   QMap<QString, QString> licenseMap;
