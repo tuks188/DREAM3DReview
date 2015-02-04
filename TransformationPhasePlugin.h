@@ -144,6 +144,11 @@ class TransformationPhasePlugin : public QObject, public IDREAM3DPlugin
     virtual void registerFilters(FilterManager* fm);
 
     /**
+    * @brief This returns a list of names for the filters that this plugin implements
+    */
+    QList<QString> getFiltersList();
+
+    /**
      * @brief Writes the settings in the input gui to the Application's preference file
      * @param prefs A valid QSettings pointer.
      */
@@ -163,7 +168,6 @@ class TransformationPhasePlugin : public QObject, public IDREAM3DPlugin
     QString             m_URL;
     QString             m_Location;
     QString             m_Copyright;
-    QList<QString>      m_Filters;
     bool                m_DidLoad;
 
     TransformationPhasePlugin(const TransformationPhasePlugin&); // Copy Constructor Not Implemented
