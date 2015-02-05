@@ -269,7 +269,7 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
 
-  VolumeDataContainer* m = getDataContainerArray()->getPrereqDataContainer<VolumeDataContainer, AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
+DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || NULL == m) { return; }
   QVector<size_t> tDims(1, 0);
   AttributeMatrix::Pointer newCellFeatureAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getNewCellFeatureAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellFeature);
@@ -354,6 +354,12 @@ void TiDwellFatigueCrystallographicAnalysis::preflight()
   dataCheck();
   emit preflightExecuted();
   setInPreflight(false);
+
+  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
+  setErrorCondition(0xABABABAB);
+  QString ss = QObject::tr("Filter is NOT updated for IGeometry Redesign. A Programmer needs to check this filter. Please report this to the DREAM3D developers.");
+  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
 }
 
 // -----------------------------------------------------------------------------
@@ -563,16 +569,16 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int index)
 {
   // using feature euler angles simply because it's available
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(m_FeatureEulerAnglesArrayPath.getDataContainerName());
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_FeatureEulerAnglesArrayPath.getDataContainerName());
 
   bool subsurfaceFlag = false;
 
-  int xPoints = static_cast<int>(m->getXPoints());
-  int yPoints = static_cast<int>(m->getYPoints());
-  int zPoints = static_cast<int>(m->getZPoints());
-  float xRes = m->getXRes();
-  float yRes = m->getYRes();
-  float zRes = m->getZRes();
+  int xPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints());
+  int yPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints());
+  int zPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints());
+  float xRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXRes();
+  float yRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYRes();
+  float zRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZRes();
   float xyzScaledDimension[3] = {xPoints*xRes, yPoints*yRes, zPoints*zRes};
 
   // check if current feature centroid is within the subsurface defined centroid

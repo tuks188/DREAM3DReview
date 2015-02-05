@@ -319,7 +319,7 @@ void InsertTransformationPhases::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
 
-  VolumeDataContainer* m = getDataContainerArray()->getPrereqDataContainer<VolumeDataContainer, AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
+DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || m == NULL) { return; }
   AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || statsGenAttrMat == NULL) { return; }
@@ -422,7 +422,7 @@ void InsertTransformationPhases::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  //VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DataContainerArray::Pointer dca = getDataContainerArray();
 
   // defining separate ensemble attribute matrix for statsgen & vol
@@ -475,7 +475,7 @@ void InsertTransformationPhases::execute()
 // -----------------------------------------------------------------------------
 void InsertTransformationPhases::insert_transformationphases()
 {
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
@@ -483,9 +483,9 @@ void InsertTransformationPhases::insert_transformationphases()
   QVector<size_t> tDims(1, 1);
 
   // find the minimum resolution
-  float xRes = m->getXRes();
-  float yRes = m->getYRes();
-  float zRes = m->getZRes();
+  float xRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXRes();
+  float yRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYRes();
+  float zRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZRes();
   float minRes = xRes;
   if (minRes > yRes) minRes = yRes;
   if (minRes > zRes) minRes = zRes;
@@ -704,16 +704,16 @@ void InsertTransformationPhases::insert_transformationphases()
 // -----------------------------------------------------------------------------
 bool InsertTransformationPhases::place_transformationphase(size_t curFeature, float sampleHabitPlane[3], size_t totalFeatures, float plateThickness, float d, size_t numFeatures)
 {
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
 
   //size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
-  int xPoints = static_cast<int>(m->getXPoints());
-  int yPoints = static_cast<int>(m->getYPoints());
-  int zPoints = static_cast<int>(m->getZPoints());
-  float xRes = m->getXRes();
-  float yRes = m->getYRes();
-  float zRes = m->getZRes();
+  int xPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints());
+  int yPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints());
+  int zPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints());
+  float xRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXRes();
+  float yRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYRes();
+  float zRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZRes();
   bool flag = false;
   float x, y, z, D;
   bool firstVoxel = true;
@@ -750,23 +750,23 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
       // and that a neighboring cell is not a transformation phase cell
       if (fabs(D) < plateThickness)
 ////			&& (k == 0 || m_FeatureIds[zStride+yStride+k-1] < numFeatures || m_FeatureIds[zStride+yStride+k-1] == totalFeatures)
-////			&& (k == (m->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
+////			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
 ////			&& (j == 0 || m_FeatureIds[zStride+yStride+k-xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints] == totalFeatures)
-////			&& (j == (m->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints] == totalFeatures)
+////			&& (j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints] == totalFeatures)
 ////			&& (i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] == totalFeatures)
-////			&& (i == (m->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] == totalFeatures))
+////			&& (i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] == totalFeatures))
 //			&& (k == 0 || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints-1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints+1] == totalFeatures)
-//			&& (k == 0 || j == (m->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints-1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints+1] == totalFeatures)
-//			&& (k == 0 || j == 0 || i == (m->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == 0 || i == (m->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] == totalFeatures)
-//			&& (k == 0 || j == (m->getYPoints() - 1) || i == (m->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || i == (m->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] == totalFeatures)
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints+1] == totalFeatures)
+//			&& (k == 0 || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints-1] == totalFeatures)
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints+1] == totalFeatures)
+//			&& (k == 0 || j == 0 || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] == totalFeatures)
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] == totalFeatures)
+//			&& (k == 0 || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] == totalFeatures)
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] == totalFeatures)
 //			&& (k == 0 || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
-//			&& (k == (m->getXPoints() - 1) || j == (m->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] == totalFeatures)
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
+//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
       {
       // check if an "island" transformation phase voxel will be placed (excluding the first voxel placement)
       /*
@@ -818,11 +818,11 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
 // -----------------------------------------------------------------------------
 void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature, size_t totalFeatures)
 {
-  VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
-  int xPoints = static_cast<int>(m->getXPoints());
-  int yPoints = static_cast<int>(m->getYPoints());
-  int zPoints = static_cast<int>(m->getZPoints());
+  int xPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints());
+  int yPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints());
+  int zPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints());
 
   int x1 = -1, x2 = -1, y1 = -1, y2 = -1, z1 = -1, z2 = -1;
   float transformationPhaseLength = 0.0f, random = 0.0f, fractionKept = 0.0f, currentDistance = 0.0f;
@@ -902,7 +902,7 @@ void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature
 // -----------------------------------------------------------------------------
 size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature)
 {
-  //VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
 
   m_AvgQuats[4*totalFeatures+0] = q.x;
   m_AvgQuats[4*totalFeatures+1] = q.y;
@@ -926,7 +926,7 @@ size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, Qua
 // -----------------------------------------------------------------------------
 void InsertTransformationPhases::filter_calls()
 {
-  //VolumeDataContainer* m = getDataContainerArray()->getDataContainerAs<VolumeDataContainer>(getFeatureIdsArrayPath().getDataContainerName());
+  //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
 
  // // mapping euler angles from feature to cell
  // for (int64_t i = 0; i < m->getNumCellTuples(); ++i)

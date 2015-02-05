@@ -186,11 +186,11 @@ FindCSLBoundaries::FindCSLBoundaries()  :
   m_CSL(3.0f),
   m_AxisTolerance(0.0f),
   m_AngleTolerance(0.0f),
-  m_AvgQuatsArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::AvgQuats),
-  m_FeaturePhasesArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
-  m_CrystalStructuresArrayPath(DREAM3D::Defaults::VolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
-  m_SurfaceMeshFaceLabelsArrayPath(DREAM3D::Defaults::SurfaceDataContainerName, DREAM3D::Defaults::FaceAttributeMatrixName, DREAM3D::FaceData::SurfaceMeshFaceLabels),
-  m_SurfaceMeshFaceNormalsArrayPath(DREAM3D::Defaults::SurfaceDataContainerName, DREAM3D::Defaults::FaceAttributeMatrixName, DREAM3D::FaceData::SurfaceMeshFaceNormals),
+  m_AvgQuatsArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::AvgQuats),
+  m_FeaturePhasesArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
+  m_CrystalStructuresArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
+  m_SurfaceMeshFaceLabelsArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::FaceAttributeMatrixName, DREAM3D::FaceData::SurfaceMeshFaceLabels),
+  m_SurfaceMeshFaceNormalsArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::FaceAttributeMatrixName, DREAM3D::FaceData::SurfaceMeshFaceNormals),
   m_SurfaceMeshCSLBoundaryArrayName(TransformationPhase::SurfaceMeshCSLBoundary),
   m_SurfaceMeshCSLBoundaryIncoherenceArrayName(TransformationPhase::SurfaceMeshCSLBoundaryIncoherence),
   m_AvgQuatsArrayName(DREAM3D::FeatureData::AvgQuats),
@@ -334,6 +334,12 @@ void FindCSLBoundaries::preflight()
   dataCheckSurfaceMesh();
   emit preflightExecuted();
   setInPreflight(false);
+
+  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
+  setErrorCondition(0xABABABAB);
+  QString ss = QObject::tr("Filter is NOT updated for IGeometry Redesign. A Programmer needs to check this filter. Please report this to the DREAM3D developers.");
+  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
 }
 // -----------------------------------------------------------------------------
 //
