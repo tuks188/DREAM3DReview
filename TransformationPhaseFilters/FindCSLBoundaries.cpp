@@ -259,6 +259,7 @@ void FindCSLBoundaries::readFilterParameters(AbstractFilterParametersReader* rea
 int FindCSLBoundaries::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
+  DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
   DREAM3D_FILTER_WRITE_PARAMETER(SurfaceMeshCSLBoundaryIncoherenceArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(SurfaceMeshCSLBoundaryArrayName)
   DREAM3D_FILTER_WRITE_PARAMETER(SurfaceMeshFaceNormalsArrayPath)

@@ -228,6 +228,7 @@ void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersRe
 int InsertTransformationPhases::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
+  DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
   DREAM3D_FILTER_WRITE_PARAMETER(TransCrystalStruct)
   DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseMisorientation)
   DREAM3D_FILTER_WRITE_PARAMETER(DefineHabitPlane)

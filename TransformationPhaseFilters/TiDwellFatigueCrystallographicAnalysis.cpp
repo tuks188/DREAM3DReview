@@ -212,6 +212,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
 int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
+  DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
   DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
       DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
       DREAM3D_FILTER_WRITE_PARAMETER(MTRPhase)
