@@ -46,8 +46,6 @@
 
 #include "moc_TransformationPhasePlugin.cpp"
 
-Q_EXPORT_PLUGIN2(TransformationPhasePlugin, TransformationPhasePlugin)
-
 namespace Detail
 {
    const QString TransformationPhasePluginFile("TransformationPhasePlugin");
