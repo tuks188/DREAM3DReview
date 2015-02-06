@@ -11,6 +11,7 @@ Takes an already formed voxelized structure and inserts transformation phase mor
 
 | Name | Type | Description |
 |------|------|-------------|
+| Parent Phase | Int | The phase which the transformation phase is inserted. |
 | Transformation Phase Thickness | Float (Fraction between zero and 1) | The fraction of the current grain's sphere equivalent diameter. |
 | Average Number Of Transformation Phases Per Feature | Integer | This will vary between zero and 2 times the input value |
 | Coherent Fraction | Float (Fraction between zero and 1) | THe coherent vs. incoherent transformation phase fraction. |

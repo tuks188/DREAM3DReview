@@ -1,7 +1,7 @@
 /* ============================================================================
  * Copyright (c) 2011 Michael A. Jackson (BlueQuartz Software)
  * Copyright (c) 2011 Dr. Michael A. Groeber (US Air Force Research Laboratories)
- * Copyright (c) 2014 Dr. Joseph C. Tucker (UES, Inc.)
+ * Copyright (c) 2015 Dr. Joseph C. Tucker (UES, Inc.)
  * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon 
  * University)
  * All rights reserved.
@@ -61,7 +61,7 @@
  * @brief
  * @author Joseph C. Tucker (UES, Inc.)
  * @author Sudipto Mandal (CMU)
- * @date Jul 31, 2014
+ * @date Feb 6, 2015
  * @version 5.1
  */
 class InsertTransformationPhases : public AbstractFilter
@@ -74,6 +74,8 @@ class InsertTransformationPhases : public AbstractFilter
 
     virtual ~InsertTransformationPhases();
 
+    DREAM3D_FILTER_PARAMETER(int, ParentPhase)
+    Q_PROPERTY(int ParentPhase READ getParentPhase WRITE setParentPhase)
     DREAM3D_FILTER_PARAMETER(int, TransCrystalStruct)
     Q_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
 	DREAM3D_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
