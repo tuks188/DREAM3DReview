@@ -73,7 +73,7 @@ class CalculateCSLBoundaryImpl
   public:
     CalculateCSLBoundaryImpl(int cslindex, float angtol, float axistol, int32_t* Labels, double* Normals, float* Quats, int32_t* Phases, unsigned int* CrystalStructures, bool* CSLBoundary, float* CSLBoundaryIncoherence) :
       m_CSLIndex(cslindex),
-    m_AxisTol(axistol),
+      m_AxisTol(axistol),
       m_AngTol(angtol),
       m_Labels(Labels),
       m_Normals(Normals),
@@ -109,9 +109,9 @@ class CalculateCSLBoundaryImpl
       QuatF* quats = reinterpret_cast<QuatF*>(m_Quats);
 
       float xstl_norm[3], s_xstl_norm[3], cslAxisNorm[3];
-    float cslAxisNormDenom = 0.0f;
-    cslAxisNormDenom = sqrtf(TransformationPhase::CSLAxisAngle[m_CSLIndex][2] + TransformationPhase::CSLAxisAngle[m_CSLIndex][3] + TransformationPhase::CSLAxisAngle[m_CSLIndex][4]);
-    for (int i = 0; i < 3; ++i) { cslAxisNorm[i] = TransformationPhase::CSLAxisAngle[m_CSLIndex][i+2] / cslAxisNormDenom; };
+      float cslAxisNormDenom = 0.0f;
+      cslAxisNormDenom = sqrtf(TransformationPhase::CSLAxisAngle[m_CSLIndex][2] + TransformationPhase::CSLAxisAngle[m_CSLIndex][3] + TransformationPhase::CSLAxisAngle[m_CSLIndex][4]);
+      for (int i = 0; i < 3; ++i) { cslAxisNorm[i] = TransformationPhase::CSLAxisAngle[m_CSLIndex][i+2] / cslAxisNormDenom; };
       for (size_t i = start; i < end; i++)
       {
         feature1 = m_Labels[2 * i];
@@ -152,7 +152,7 @@ class CalculateCSLBoundaryImpl
                 OrientationMath::QuattoAxisAngle(s2_misq, w, n1, n2, n3);
                 w = w * 180.0 / DREAM3D::Constants::k_Pi;
                 axisdiffCSL = acosf(fabs(n1) * cslAxisNorm[0] + fabs(n2) * cslAxisNorm[1] + fabs(n3) * cslAxisNorm[2]);
-        angdiffCSL = fabs(w - TransformationPhase::CSLAxisAngle[m_CSLIndex][1]);
+                angdiffCSL = fabs(w - TransformationPhase::CSLAxisAngle[m_CSLIndex][1]);
                 if (axisdiffCSL < m_AxisTol && angdiffCSL < m_AngTol)
                 {
                   n[0] = n1;
@@ -334,13 +334,8 @@ void FindCSLBoundaries::preflight()
   dataCheckSurfaceMesh();
   emit preflightExecuted();
   setInPreflight(false);
-
-  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
-  setErrorCondition(0xABABABAB);
-  QString ss = QObject::tr("Filter is NOT updated for IGeometry Redesign. A Programmer needs to check this filter. Please report this to the DREAM3D developers.");
-  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

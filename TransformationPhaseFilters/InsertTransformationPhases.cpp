@@ -319,12 +319,15 @@ void InsertTransformationPhases::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
 
-DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || m == NULL) { return; }
   AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || statsGenAttrMat == NULL) { return; }
   AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getVolCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || volAttrMat == NULL) { return; }
+
+  ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
+  if(getErrorCondition() < 0 || NULL == image.get()) { return; }
 
   QVector<size_t> dims(1, 1);
   // Cell Data
@@ -483,9 +486,9 @@ void InsertTransformationPhases::insert_transformationphases()
   QVector<size_t> tDims(1, 1);
 
   // find the minimum resolution
-  float xRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZRes();
+  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
+  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
+  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
   float minRes = xRes;
   if (minRes > yRes) minRes = yRes;
   if (minRes > zRes) minRes = zRes;
@@ -511,191 +514,191 @@ void InsertTransformationPhases::insert_transformationphases()
 
   for (size_t curFeature = 1; curFeature < numFeatures; ++curFeature)
   {
-	if (m_FeaturePhases[curFeature] == m_ParentPhase)
-	{
-	  QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
+  if (m_FeaturePhases[curFeature] == m_ParentPhase)
+  {
+    QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
 
-	  // set the grain Id to the parent Id for if/when the features get uniquely renumbered
-	  m_FeatureParentIds[curFeature] = curFeature;
+    // set the grain Id to the parent Id for if/when the features get uniquely renumbered
+    m_FeatureParentIds[curFeature] = curFeature;
 
-	  if (m_DefineHabitPlane == true)
-	  {
-		crystalHabitPlane[0] = m_TransformationPhaseHabitPlane.x;
-		crystalHabitPlane[1] = m_TransformationPhaseHabitPlane.y;
-		crystalHabitPlane[2] = m_TransformationPhaseHabitPlane.z;
-	  }
-	  // pick a habit plane variant if user desires
-	  if (m_UseAllVariants == true)
-	  {
-		random = static_cast<float>(rg.genrand_res53());
-		for (int i = 0; i < 3; ++i)
-		{
-		// decide whether to make it coherent or incoherent &
-		// decide whether its negative or positive
-		if (random < m_CoherentFrac && random2 < 0.5f) crystalHabitPlane[i] *= -1.0f;
-		}
-		// jumble the i,j,k order
-		float tempCrystalHabitPlane[3] = {crystalHabitPlane[0],crystalHabitPlane[1],crystalHabitPlane[2]};
-		random = static_cast<float>(rg.genrand_res53());
-		if (random < 0.16667f)
-		{
-		crystalHabitPlane[0] = tempCrystalHabitPlane[0];
-		crystalHabitPlane[1] = tempCrystalHabitPlane[1];
-		crystalHabitPlane[2] = tempCrystalHabitPlane[2];
-		}
-		else if (random >= 0.16667f && random < 0.33333f)
-		{
-		crystalHabitPlane[0] = tempCrystalHabitPlane[0];
-		crystalHabitPlane[1] = tempCrystalHabitPlane[2];
-		crystalHabitPlane[2] = tempCrystalHabitPlane[1];
-		}
-		else if (random >= 0.33333f && random < 0.5f)
-		{
-		crystalHabitPlane[0] = tempCrystalHabitPlane[1];
-		crystalHabitPlane[1] = tempCrystalHabitPlane[0];
-		crystalHabitPlane[2] = tempCrystalHabitPlane[2];
-		}
-		else if (random >= 0.5f && random < 0.66667f)
-		{
-		crystalHabitPlane[0] = tempCrystalHabitPlane[1];
-		crystalHabitPlane[1] = tempCrystalHabitPlane[2];
-		crystalHabitPlane[2] = tempCrystalHabitPlane[0];
-		}
-		else if (random >= 0.66667f && random < 0.83333f)
-		{
-		crystalHabitPlane[0] = tempCrystalHabitPlane[2];
-		crystalHabitPlane[1] = tempCrystalHabitPlane[0];
-		crystalHabitPlane[2] = tempCrystalHabitPlane[1];
-		}
-		else
-		{
-		crystalHabitPlane[0] = tempCrystalHabitPlane[2];
-		crystalHabitPlane[1] = tempCrystalHabitPlane[1];
-		crystalHabitPlane[2] = tempCrystalHabitPlane[0];
-		}
-	  }
-	  // find where the habit plane points
-	  QuaternionMathF::Copy(avgQuats[curFeature], q1);
-		OrientationMath::QuattoMat(q1, g);
-	  MatrixMath::Transpose3x3(g, gT);
-		MatrixMath::Multiply3x3with3x1(gT, crystalHabitPlane, sampleHabitPlane);
+    if (m_DefineHabitPlane == true)
+    {
+    crystalHabitPlane[0] = m_TransformationPhaseHabitPlane.x;
+    crystalHabitPlane[1] = m_TransformationPhaseHabitPlane.y;
+    crystalHabitPlane[2] = m_TransformationPhaseHabitPlane.z;
+    }
+    // pick a habit plane variant if user desires
+    if (m_UseAllVariants == true)
+    {
+    random = static_cast<float>(rg.genrand_res53());
+    for (int i = 0; i < 3; ++i)
+    {
+    // decide whether to make it coherent or incoherent &
+    // decide whether its negative or positive
+    if (random < m_CoherentFrac && random2 < 0.5f) crystalHabitPlane[i] *= -1.0f;
+    }
+    // jumble the i,j,k order
+    float tempCrystalHabitPlane[3] = {crystalHabitPlane[0],crystalHabitPlane[1],crystalHabitPlane[2]};
+    random = static_cast<float>(rg.genrand_res53());
+    if (random < 0.16667f)
+    {
+    crystalHabitPlane[0] = tempCrystalHabitPlane[0];
+    crystalHabitPlane[1] = tempCrystalHabitPlane[1];
+    crystalHabitPlane[2] = tempCrystalHabitPlane[2];
+    }
+    else if (random >= 0.16667f && random < 0.33333f)
+    {
+    crystalHabitPlane[0] = tempCrystalHabitPlane[0];
+    crystalHabitPlane[1] = tempCrystalHabitPlane[2];
+    crystalHabitPlane[2] = tempCrystalHabitPlane[1];
+    }
+    else if (random >= 0.33333f && random < 0.5f)
+    {
+    crystalHabitPlane[0] = tempCrystalHabitPlane[1];
+    crystalHabitPlane[1] = tempCrystalHabitPlane[0];
+    crystalHabitPlane[2] = tempCrystalHabitPlane[2];
+    }
+    else if (random >= 0.5f && random < 0.66667f)
+    {
+    crystalHabitPlane[0] = tempCrystalHabitPlane[1];
+    crystalHabitPlane[1] = tempCrystalHabitPlane[2];
+    crystalHabitPlane[2] = tempCrystalHabitPlane[0];
+    }
+    else if (random >= 0.66667f && random < 0.83333f)
+    {
+    crystalHabitPlane[0] = tempCrystalHabitPlane[2];
+    crystalHabitPlane[1] = tempCrystalHabitPlane[0];
+    crystalHabitPlane[2] = tempCrystalHabitPlane[1];
+    }
+    else
+    {
+    crystalHabitPlane[0] = tempCrystalHabitPlane[2];
+    crystalHabitPlane[1] = tempCrystalHabitPlane[1];
+    crystalHabitPlane[2] = tempCrystalHabitPlane[0];
+    }
+    }
+    // find where the habit plane points
+    QuaternionMathF::Copy(avgQuats[curFeature], q1);
+    OrientationMath::QuattoMat(q1, g);
+    MatrixMath::Transpose3x3(g, gT);
+    MatrixMath::Multiply3x3with3x1(gT, crystalHabitPlane, sampleHabitPlane);
 
-	//    rotMat[0][0]=0.5774;
-	//    rotMat[0][1]=0.5774;
-	//    rotMat[0][2]=0.5774;
-	//    rotMat[1][0]=-0.4082;
-	//    rotMat[1][1]=-0.4082;
-	//    rotMat[1][2]=0.8165;
-	//    rotMat[2][0]=0.7071;
-	//    rotMat[2][1]=-0.7071;
-	//    rotMat[2][2]=0;
+  //    rotMat[0][0]=0.5774;
+  //    rotMat[0][1]=0.5774;
+  //    rotMat[0][2]=0.5774;
+  //    rotMat[1][0]=-0.4082;
+  //    rotMat[1][1]=-0.4082;
+  //    rotMat[1][2]=0.8165;
+  //    rotMat[2][0]=0.7071;
+  //    rotMat[2][1]=-0.7071;
+  //    rotMat[2][2]=0;
 
-	  // generate transformation phase orientation with a user-defined rotation about the habit plane
-	  OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
-	  MatrixMath::Multiply3x3with3x3(rotMat, g, newMat);
+    // generate transformation phase orientation with a user-defined rotation about the habit plane
+    OrientationMath::AxisAngletoMat(sig3, crystalHabitPlane[0], crystalHabitPlane[1], crystalHabitPlane[2], rotMat);
+    MatrixMath::Multiply3x3with3x3(rotMat, g, newMat);
 
-	  // find the minimum angle
-	  MatrixMath::Copy3x3(newMat, newMatCopy);
-	  // Get our OrientationOps pointer for the selected crystal structure
-	  OrientationOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
+    // find the minimum angle
+    MatrixMath::Copy3x3(newMat, newMatCopy);
+    // Get our OrientationOps pointer for the selected crystal structure
+    OrientationOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
 
-	  //get number of symmetry operators
-	  traceMin = -1.0f;
-	  minPos = 0;
-	  int n_sym = orientOps->getNumSymOps();
-	  for (int i = 0; i < n_sym; ++i)
-	  {
-		orientOps->getMatSymOp(i, symMat);
-		MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
-		trace = newMat[0][0] + newMat[1][1] + newMat[2][2];
-		if (trace > traceMin)
-		{
-		traceMin = trace;
-		minPos = i;
-		}
-	  }
-	  // assign our symmetry matrix to that which produced the minimum angle
-	  orientOps->getMatSymOp(minPos, symMat);
-	  MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
-	  OrientationMath::MattoEuler(newMat, e[0], e[1], e[2]);
-	  OrientationMath::EulertoQuat(e[0], e[1], e[2], q2);
+    //get number of symmetry operators
+    traceMin = -1.0f;
+    minPos = 0;
+    int n_sym = orientOps->getNumSymOps();
+    for (int i = 0; i < n_sym; ++i)
+    {
+    orientOps->getMatSymOp(i, symMat);
+    MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
+    trace = newMat[0][0] + newMat[1][1] + newMat[2][2];
+    if (trace > traceMin)
+    {
+    traceMin = trace;
+    minPos = i;
+    }
+    }
+    // assign our symmetry matrix to that which produced the minimum angle
+    orientOps->getMatSymOp(minPos, symMat);
+    MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
+    OrientationMath::MattoEuler(newMat, e[0], e[1], e[2]);
+    OrientationMath::EulertoQuat(e[0], e[1], e[2], q2);
 
-	  // define plate = user input fraction of eq dia centered at centroid
-	  // NOTE: we multiply by 0.5 because the transformation phase thickness will be established by
-	  // a search from both sides
-	  plateThickness = m_EquivalentDiameters[curFeature] * m_TransformationPhaseThickness * 0.5f;
-	  // if the plate thickness is less than the minimum dimension resolution,
-	  // then don't try to insert a transformation phase because the grain is too small and
-	  // the transformation phase thickness will be too small
-	  if (plateThickness > minRes)
-	  {
-		// select number of transformation phases to insert per grain from 2x user input to zero
-		numTransformationPhases = int(rg.genrand_res53() * double(2*m_NumTransformationPhasesPerFeature + 1));
-		shifts.resize(numTransformationPhases);
-		int attempt = 0;
+    // define plate = user input fraction of eq dia centered at centroid
+    // NOTE: we multiply by 0.5 because the transformation phase thickness will be established by
+    // a search from both sides
+    plateThickness = m_EquivalentDiameters[curFeature] * m_TransformationPhaseThickness * 0.5f;
+    // if the plate thickness is less than the minimum dimension resolution,
+    // then don't try to insert a transformation phase because the grain is too small and
+    // the transformation phase thickness will be too small
+    if (plateThickness > minRes)
+    {
+    // select number of transformation phases to insert per grain from 2x user input to zero
+    numTransformationPhases = int(rg.genrand_res53() * double(2*m_NumTransformationPhasesPerFeature + 1));
+    shifts.resize(numTransformationPhases);
+    int attempt = 0;
 
-		// each loop represents an attempt to insert a single transformation phase (all in the same grain)
-		for (int i = 0; i < numTransformationPhases; ++i)
-		{
-		// define the shift placement from centroid
-		random = static_cast<float>(rg.genrand_res53());
-		// shift defined as random (float) e[0,1] x grain's eq dia x 0.5
-		// NOTE: we multiply by 0.5 because it starts at the center and we don't
-		// want to run off the end of the grain
-		shifts[i] = random * m_EquivalentDiameters[curFeature] * 0.5f;
-		random = static_cast<float>(rg.genrand_res53());
-		if (random < 0.5f) shifts[i] = -shifts[i];
+    // each loop represents an attempt to insert a single transformation phase (all in the same grain)
+    for (int i = 0; i < numTransformationPhases; ++i)
+    {
+    // define the shift placement from centroid
+    random = static_cast<float>(rg.genrand_res53());
+    // shift defined as random (float) e[0,1] x grain's eq dia x 0.5
+    // NOTE: we multiply by 0.5 because it starts at the center and we don't
+    // want to run off the end of the grain
+    shifts[i] = random * m_EquivalentDiameters[curFeature] * 0.5f;
+    random = static_cast<float>(rg.genrand_res53());
+    if (random < 0.5f) shifts[i] = -shifts[i];
 
-		// check if new transformation phase will overlap an old transformation phase
-		int ii = i;
-		for (int j = 0; j <= ii; ++j)
-		{
-		  // if adding more than one transformation phase in a grain, check the current shift from
-		  // center against the previous ones to make sure the new transformation phase does not
-		  // overlap
-		  // NOTE: that the transformation phases can touch since we're using equiv dia,
-		  // they can be high aspect ratio grains inserted in the low aspect direction
-		  // which skews the calculation (FIX)
-		  // tolerance is set to 3x the plate thickness + 2x the voxel diagonal -- this empirically
-		  // keeps the transformation phases separated enough
-		  if (fabs(shifts[i] - shifts[j]) <= (plateThickness*3.0f + voxelDiagonal*2.0f) && ii != j)
-		  {
-		  // if the attempted placement of a second, third, fourth, ... transformation phase is too close to a
-		  // previously inserted transformation phase in the current grain, then increment the attempts counter
-		  // and try a different shift
-		  ++attempt;
-		  --i;
-		  break;
-		  }
-		  else
-		  {
-		  // set the origin of the plane
-		  d = -sampleHabitPlane[0] * (m_Centroids[3*curFeature+0] + shifts[i])
-			- sampleHabitPlane[1] * (m_Centroids[3*curFeature+1] + shifts[i])
-			- sampleHabitPlane[2] * (m_Centroids[3*curFeature+2] + shifts[i]);
+    // check if new transformation phase will overlap an old transformation phase
+    int ii = i;
+    for (int j = 0; j <= ii; ++j)
+    {
+      // if adding more than one transformation phase in a grain, check the current shift from
+      // center against the previous ones to make sure the new transformation phase does not
+      // overlap
+      // NOTE: that the transformation phases can touch since we're using equiv dia,
+      // they can be high aspect ratio grains inserted in the low aspect direction
+      // which skews the calculation (FIX)
+      // tolerance is set to 3x the plate thickness + 2x the voxel diagonal -- this empirically
+      // keeps the transformation phases separated enough
+      if (fabs(shifts[i] - shifts[j]) <= (plateThickness*3.0f + voxelDiagonal*2.0f) && ii != j)
+      {
+      // if the attempted placement of a second, third, fourth, ... transformation phase is too close to a
+      // previously inserted transformation phase in the current grain, then increment the attempts counter
+      // and try a different shift
+      ++attempt;
+      --i;
+      break;
+      }
+      else
+      {
+      // set the origin of the plane
+      d = -sampleHabitPlane[0] * (m_Centroids[3*curFeature+0] + shifts[i])
+      - sampleHabitPlane[1] * (m_Centroids[3*curFeature+1] + shifts[i])
+      - sampleHabitPlane[2] * (m_Centroids[3*curFeature+2] + shifts[i]);
 
-		  createdTransformationPhase = place_transformationphase(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
-		  //int stop = 0;
-		  // change an isthmus transformation phase to a peninsula transformation phase
-		  random = static_cast<float>(rg.genrand_res53());
-		  if (createdTransformationPhase == true)
-		  {
-			if (random < m_PeninsulaFrac) peninsula_transformationphase(curFeature, totalFeatures);
+      createdTransformationPhase = place_transformationphase(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
+      //int stop = 0;
+      // change an isthmus transformation phase to a peninsula transformation phase
+      random = static_cast<float>(rg.genrand_res53());
+      if (createdTransformationPhase == true)
+      {
+      if (random < m_PeninsulaFrac) peninsula_transformationphase(curFeature, totalFeatures);
 
-			// filling in transformation phase stats that already exist for parents
-			tDims[0] = totalFeatures + 1;
-			m->getAttributeMatrix(getFeaturePhasesArrayPath().getAttributeMatrixName())->resizeAttributeArrays(tDims);
-			updateFeatureInstancePointers();
-			totalFeatures = transfer_attributes(totalFeatures, q2, e, curFeature);
-			++m_NumFeaturesPerParent[curFeature];
-		  }
-		  }
-		}
-		// try 10 times to insert 2+ transformation phases, if it can't, the grain is probably too small
-		if (attempt == 10) break;
-		}
-	  }
-	}
+      // filling in transformation phase stats that already exist for parents
+      tDims[0] = totalFeatures + 1;
+      m->getAttributeMatrix(getFeaturePhasesArrayPath().getAttributeMatrixName())->resizeAttributeArrays(tDims);
+      updateFeatureInstancePointers();
+      totalFeatures = transfer_attributes(totalFeatures, q2, e, curFeature);
+      ++m_NumFeaturesPerParent[curFeature];
+      }
+      }
+    }
+    // try 10 times to insert 2+ transformation phases, if it can't, the grain is probably too small
+    if (attempt == 10) break;
+    }
+    }
+  }
   }
 }
 
@@ -708,12 +711,12 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
   DREAM3D_RANDOMNG_NEW()
 
   //size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
-  int xPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints());
-  int yPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints());
-  int zPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints());
-  float xRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZRes();
+  int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
+  int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
+  int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
+  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
+  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
+  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
   bool flag = false;
   float x, y, z, D;
   bool firstVoxel = true;
@@ -750,23 +753,23 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
       // and that a neighboring cell is not a transformation phase cell
       if (fabs(D) < plateThickness)
 ////			&& (k == 0 || m_FeatureIds[zStride+yStride+k-1] < numFeatures || m_FeatureIds[zStride+yStride+k-1] == totalFeatures)
-////			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
+////			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
 ////			&& (j == 0 || m_FeatureIds[zStride+yStride+k-xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints] == totalFeatures)
-////			&& (j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints] == totalFeatures)
+////			&& (j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints] == totalFeatures)
 ////			&& (i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] == totalFeatures)
-////			&& (i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] == totalFeatures))
+////			&& (i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] == totalFeatures))
 //			&& (k == 0 || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints-1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints+1] == totalFeatures)
-//			&& (k == 0 || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints-1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints+1] == totalFeatures)
-//			&& (k == 0 || j == 0 || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] == totalFeatures)
-//			&& (k == 0 || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] == totalFeatures)
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints+1] == totalFeatures)
+//			&& (k == 0 || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints-1] == totalFeatures)
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints+1] == totalFeatures)
+//			&& (k == 0 || j == 0 || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] == totalFeatures)
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] == totalFeatures)
+//			&& (k == 0 || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] == totalFeatures)
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] == totalFeatures)
 //			&& (k == 0 || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
-//			&& (k == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] == totalFeatures)
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
+//			&& (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
       {
       // check if an "island" transformation phase voxel will be placed (excluding the first voxel placement)
       /*
@@ -820,9 +823,9 @@ void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DREAM3D_RANDOMNG_NEW()
-  int xPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints());
-  int yPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints());
-  int zPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints());
+  int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
+  int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
+  int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
 
   int x1 = -1, x2 = -1, y1 = -1, y2 = -1, z1 = -1, z2 = -1;
   float transformationPhaseLength = 0.0f, random = 0.0f, fractionKept = 0.0f, currentDistance = 0.0f;

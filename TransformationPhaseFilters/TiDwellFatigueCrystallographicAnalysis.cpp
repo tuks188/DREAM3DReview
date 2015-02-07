@@ -214,39 +214,39 @@ int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilter
   writer->openFilterGroup(this, index);
   DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
   DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
-      DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
-      DREAM3D_FILTER_WRITE_PARAMETER(MTRPhase)
-      DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterA)
-      DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterC)
-      DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
-      DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
-      DREAM3D_FILTER_WRITE_PARAMETER(ConsiderationFraction)
-      DREAM3D_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
-      DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
-      DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
-      DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureLowerThreshold)
-      DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
-      DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
-      DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
-	  DREAM3D_FILTER_WRITE_PARAMETER(NewCellFeatureAttributeMatrixName)
-      DREAM3D_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(HardSoftGroupsArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(DataContainerName)
-      DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-      DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(ActiveArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-      writer->closeFilterGroup();
+  DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
+  DREAM3D_FILTER_WRITE_PARAMETER(MTRPhase)
+  DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterA)
+  DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterC)
+  DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
+  DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
+  DREAM3D_FILTER_WRITE_PARAMETER(ConsiderationFraction)
+  DREAM3D_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
+  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureLowerThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
+  DREAM3D_FILTER_WRITE_PARAMETER(NewCellFeatureAttributeMatrixName)
+  DREAM3D_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(HardSoftGroupsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(DataContainerName)
+  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(ActiveArrayName)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
+  DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
+  writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
 
@@ -269,11 +269,14 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
 
-DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
-  if(getErrorCondition() < 0 || NULL == m) { return; }
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
+  if(getErrorCondition() < 0 || NULL == m.get()) { return; }
   QVector<size_t> tDims(1, 0);
   AttributeMatrix::Pointer newCellFeatureAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getNewCellFeatureAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellFeature);
   if(getErrorCondition() < 0) { return; }
+
+  ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
+  if(getErrorCondition() < 0 || NULL == image.get()) { return; }
 
   // Feature Data
   QVector<size_t> dims(1, 1);
@@ -334,7 +337,7 @@ DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<Abstr
   { m_Centroids = m_CentroidsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   // New Feature Data
- 
+
   // Ensemble Data
   dims[0] = 1;
   typedef DataArray<unsigned int> XTalStructArrayType;
@@ -354,12 +357,6 @@ void TiDwellFatigueCrystallographicAnalysis::preflight()
   dataCheck();
   emit preflightExecuted();
   setInPreflight(false);
-
-  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
-  setErrorCondition(0xABABABAB);
-  QString ss = QObject::tr("Filter is NOT updated for IGeometry Redesign. A Programmer needs to check this filter. Please report this to the DREAM3D developers.");
-  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  /* *** THIS FILTER NEEDS TO BE CHECKED *** */
 }
 
 // -----------------------------------------------------------------------------
@@ -375,7 +372,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   DREAM3D_RANDOMNG_NEW()
 
-      size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
+  size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
   size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
 
   bool subsurfaceFlag = false;
@@ -399,7 +396,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     }
     if (subsurfaceFlag == true)
     {
-	  int stop = 0;
+    int stop = 0;
       // Determine if it's a hard feature
       if (m_FeaturePhases[i] == m_MTRPhase) { hardfeatureFlag = determine_hardfeatures(i); }
       // Determine if it's a soft feature only if it's not a hard feature
@@ -573,12 +570,12 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
 
   bool subsurfaceFlag = false;
 
-  int xPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXPoints());
-  int yPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYPoints());
-  int zPoints = static_cast<int>(/* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZPoints());
-  float xRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = /* FIXME: ImageGeom */ m->getGeometryAs<ImageGeom>()->getZRes();
+  int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
+  int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
+  int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
+  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
+  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
+  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
   float xyzScaledDimension[3] = {xPoints*xRes, yPoints*yRes, zPoints*zRes};
 
   // check if current feature centroid is within the subsurface defined centroid
