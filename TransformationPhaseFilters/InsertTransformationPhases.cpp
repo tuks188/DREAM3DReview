@@ -52,6 +52,7 @@
 #include "OrientationLib/Math/OrientationMath.h"
 #include "OrientationLib/OrientationOps/OrientationOps.h"
 
+#include "TransformationPhase/TransformationPhaseConstants.h"
 
 #include "Plugins/Generic/GenericFilters/FindFeatureCentroids.h"
 #include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
@@ -1007,4 +1008,39 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
     copyFilterParameterInstanceVariables(filter.get());
   }
   return filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString InsertTransformationPhases::getCompiledLibraryName()
+{
+  return TransformationPhase::TransformationPhaseBaseName;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString InsertTransformationPhases::getGroupName()
+{
+  return TransformationPhase::TransformationPhaseFilters;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString InsertTransformationPhases::getSubGroupName()
+{
+  return DREAM3D::FilterSubGroups::PackingFilters;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString InsertTransformationPhases::getHumanLabel()
+{
+  return "Insert Tranformation Phases";
 }

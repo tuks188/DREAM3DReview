@@ -805,3 +805,38 @@ AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstanc
   }
   return filter;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
+{
+  return TransformationPhase::TransformationPhaseBaseName;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TiDwellFatigueCrystallographicAnalysis::getGroupName()
+{
+  return TransformationPhase::TransformationPhaseFilters;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName()
+{
+  return DREAM3D::FilterSubGroups::CrystallographicFilters;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TiDwellFatigueCrystallographicAnalysis::getHumanLabel()
+{
+  return "Ti Dwell Fatigue Crystallographic Analysis";
+}

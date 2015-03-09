@@ -8,7 +8,8 @@ namespace TransformationPhase
   const QString TransformationPhasePluginFile("TransformationPhasePlugin");
   const QString TransformationPhasePluginDisplayName("TransformationPhasePlugin");
   const QString TransformationPhaseBaseName("TransformationPhasePlugin");
-
+  const QString TransformationPhaseFilters("TransformationPhase");
+ 
   const DREAM3D_STRING Initiators("Initiators");
   const DREAM3D_STRING HardFeatures("HardFeatures");
   const DREAM3D_STRING SoftFeatures("SoftFeatures");

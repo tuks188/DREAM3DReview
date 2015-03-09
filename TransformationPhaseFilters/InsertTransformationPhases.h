@@ -131,7 +131,7 @@ class InsertTransformationPhases : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(QString, NumFeaturesPerParentArrayName)
     Q_PROPERTY(QString NumFeaturesPerParentArrayName READ getNumFeaturesPerParentArrayName WRITE setNumFeaturesPerParentArrayName)
 	
-	DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+	  DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
     DREAM3D_FILTER_PARAMETER(DataArrayPath, PhaseTypesArrayPath)
@@ -143,11 +143,21 @@ class InsertTransformationPhases : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesArrayPath)
     Q_PROPERTY(DataArrayPath NumFeaturesArrayPath READ getNumFeaturesArrayPath WRITE setNumFeaturesArrayPath)
 	
-	virtual const QString getCompiledLibraryName() { return SyntheticBuilding::SyntheticBuildingBaseName; }
-	virtual const QString getGroupName() { return DREAM3D::FilterGroups::SyntheticBuildingFilters; }
-	virtual const QString getSubGroupName() { return DREAM3D::FilterSubGroups::PackingFilters; }
-    virtual const QString getHumanLabel() { return "Insert Tranformation Phases"; }
-    virtual const QString getBrandingString() { return SyntheticBuilding::SyntheticBuildingPluginDisplayName + " Filter"; }
+    /**
+    * @brief This returns the group that the filter belongs to. You can select
+    * a different group if you want. The string returned here will be displayed
+    * in the GUI for the filter
+    */
+    virtual const QString getCompiledLibraryName();
+    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    virtual const QString getGroupName();
+    virtual const QString getSubGroupName();
+
+    /**
+    * @brief This returns a string that is displayed in the GUI. It should be readable
+    * and understandable by humans.
+    */
+    virtual const QString getHumanLabel();
 
     virtual void setupFilterParameters();
     /**
@@ -164,7 +174,6 @@ class InsertTransformationPhases : public AbstractFilter
     * @brief Reimplemented from @see AbstractFilter class
     */
     virtual void execute();
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
     virtual void preflight();
 
 signals:

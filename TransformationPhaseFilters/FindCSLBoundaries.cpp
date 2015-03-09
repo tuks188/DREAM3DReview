@@ -400,26 +400,34 @@ AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterPara
 //
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getCompiledLibraryName()
-{ return Statistics::StatisticsBaseName; }
+{
+  return TransformationPhase::TransformationPhaseBaseName;
+}
 
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getGroupName()
-{ return DREAM3D::FilterGroups::StatisticsFilters; }
+{
+  return TransformationPhase::TransformationPhaseFilters;
+}
 
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::CrystallographicFilters; }
+{
+  return DREAM3D::FilterSubGroups::CrystallographicFilters;
+}
 
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getHumanLabel()
-{ return "Find CSL Boundaries"; }
+{
+  return "Find CSL Boundaries";
+}
 
