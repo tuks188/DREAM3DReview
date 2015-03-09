@@ -53,7 +53,7 @@ Volume
 
 ## Authors ##
 
-**Copyright:** 2014 Joseph C. Tucker (UES), 2012 Michael A. Groeber (AFRL), 2012 Michael A. Jackson (BlueQuartz Software)
+**Copyright:** 2014 Joseph C. Tucker (UES), 2012 Michael A. Groeber (AFRL), 201 BlueQuartz Software, LLC
 
 **Contact Info:** dream3d@bluequartz.net
 
