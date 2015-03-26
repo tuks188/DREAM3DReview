@@ -38,19 +38,24 @@
 
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
-#include "TransformationPhase/TransformationPhaseConstants.h"
 #include "DREAM3DLib/Math/MatrixMath.h"
-#include "OrientationLib/Math/OrientationMath.h"
-#include "OrientationLib/OrientationOps/OrientationOps.h"
 #include "DREAM3DLib/Math/GeometryMath.h"
-
-#include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
+#include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "DREAM3DLib/Common/FilterManager.h"
 #include "DREAM3DLib/Common/FilterFactory.hpp"
 #include "DREAM3DLib/Common/FilterPipeline.h"
 #include "DREAM3DLib/Plugin/IDREAM3DPlugin.h"
 #include "DREAM3DLib/Plugin/DREAM3DPluginLoader.h"
 #include "DREAM3DLib/Utilities/DREAM3DRandom.h"
+
+#include "OrientationLib/Math/OrientationMath.h"
+#include "OrientationLib/OrientationOps/OrientationOps.h"
+
+#include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
+
+#include "TransformationPhase/TransformationPhaseConstants.h"
+
 
 // -----------------------------------------------------------------------------
 //
