@@ -78,11 +78,11 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_SoftFeatureLowerThreshold(70.0f),
   m_SoftFeatureUpperThreshold(90.0f),
   m_NewCellFeatureAttributeMatrixName(DREAM3D::Defaults::NewCellFeatureAttributeMatrixName),
-  m_SelectedFeaturesArrayName(TransformationPhase::SelectedFeatures),
-  m_InitiatorsArrayName(TransformationPhase::Initiators),
-  m_HardFeaturesArrayName(TransformationPhase::HardFeatures),
-  m_SoftFeaturesArrayName(TransformationPhase::SoftFeatures),
-  m_HardSoftGroupsArrayName(TransformationPhase::HardSoftGroups),
+  m_SelectedFeaturesArrayName(TransformationPhaseConstants::SelectedFeatures),
+  m_InitiatorsArrayName(TransformationPhaseConstants::Initiators),
+  m_HardFeaturesArrayName(TransformationPhaseConstants::HardFeatures),
+  m_SoftFeaturesArrayName(TransformationPhaseConstants::SoftFeatures),
+  m_HardSoftGroupsArrayName(TransformationPhaseConstants::HardSoftGroups),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::CellFeatureAttributeMatrixName),
   m_CellFeatureAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
   m_FeatureIdsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
@@ -817,7 +817,7 @@ AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstanc
 // -----------------------------------------------------------------------------
 const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 {
-  return TransformationPhase::TransformationPhaseBaseName;
+  return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
 
 
@@ -826,7 +826,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString TiDwellFatigueCrystallographicAnalysis::getGroupName()
 {
-  return TransformationPhase::TransformationPhaseFilters;
+  return TransformationPhaseConstants::TransformationPhaseFilters;
 }
 
 

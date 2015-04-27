@@ -1020,7 +1020,7 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getCompiledLibraryName()
 {
-  return TransformationPhase::TransformationPhaseBaseName;
+  return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
 
 
@@ -1029,7 +1029,7 @@ const QString InsertTransformationPhases::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getGroupName()
 {
-  return TransformationPhase::TransformationPhaseFilters;
+  return TransformationPhaseConstants::TransformationPhaseFilters;
 }
 
 

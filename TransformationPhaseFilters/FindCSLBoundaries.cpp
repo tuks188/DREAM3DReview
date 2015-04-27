@@ -114,8 +114,8 @@ class CalculateCSLBoundaryImpl
 
       float xstl_norm[3], s_xstl_norm[3], cslAxisNorm[3];
       float cslAxisNormDenom = 0.0f;
-      cslAxisNormDenom = sqrtf(TransformationPhase::CSLAxisAngle[m_CSLIndex][2] + TransformationPhase::CSLAxisAngle[m_CSLIndex][3] + TransformationPhase::CSLAxisAngle[m_CSLIndex][4]);
-      for (int i = 0; i < 3; ++i) { cslAxisNorm[i] = TransformationPhase::CSLAxisAngle[m_CSLIndex][i+2] / cslAxisNormDenom; };
+      cslAxisNormDenom = sqrtf(TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][2] + TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][3] + TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][4]);
+      for (int i = 0; i < 3; ++i) { cslAxisNorm[i] = TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][i+2] / cslAxisNormDenom; };
       for (size_t i = start; i < end; i++)
       {
         feature1 = m_Labels[2 * i];
@@ -156,7 +156,7 @@ class CalculateCSLBoundaryImpl
                 OrientationMath::QuattoAxisAngle(s2_misq, w, n1, n2, n3);
                 w = w * 180.0 / DREAM3D::Constants::k_Pi;
                 axisdiffCSL = acosf(fabs(n1) * cslAxisNorm[0] + fabs(n2) * cslAxisNorm[1] + fabs(n3) * cslAxisNorm[2]);
-                angdiffCSL = fabs(w - TransformationPhase::CSLAxisAngle[m_CSLIndex][1]);
+                angdiffCSL = fabs(w - TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][1]);
                 if (axisdiffCSL < m_AxisTol && angdiffCSL < m_AngTol)
                 {
                   n[0] = n1;
@@ -195,8 +195,8 @@ FindCSLBoundaries::FindCSLBoundaries()  :
   m_CrystalStructuresArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
   m_SurfaceMeshFaceLabelsArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::FaceAttributeMatrixName, DREAM3D::FaceData::SurfaceMeshFaceLabels),
   m_SurfaceMeshFaceNormalsArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::FaceAttributeMatrixName, DREAM3D::FaceData::SurfaceMeshFaceNormals),
-  m_SurfaceMeshCSLBoundaryArrayName(TransformationPhase::SurfaceMeshCSLBoundary),
-  m_SurfaceMeshCSLBoundaryIncoherenceArrayName(TransformationPhase::SurfaceMeshCSLBoundaryIncoherence),
+  m_SurfaceMeshCSLBoundaryArrayName(TransformationPhaseConstants::SurfaceMeshCSLBoundary),
+  m_SurfaceMeshCSLBoundaryIncoherenceArrayName(TransformationPhaseConstants::SurfaceMeshCSLBoundaryIncoherence),
   m_AvgQuatsArrayName(DREAM3D::FeatureData::AvgQuats),
   m_AvgQuats(NULL),
   m_FeaturePhasesArrayName(DREAM3D::FeatureData::Phases),
@@ -361,7 +361,7 @@ void FindCSLBoundaries::execute()
   int cslindex = 0;
   for (int i = 0; i < 21; ++i)
   {
-  if (static_cast<int>( TransformationPhase::CSLAxisAngle[i][0] ) == static_cast<int>( m_CSL ))
+  if (static_cast<int>( TransformationPhaseConstants::CSLAxisAngle[i][0] ) == static_cast<int>( m_CSL ))
   {
     cslindex = i;
     break;
@@ -405,7 +405,7 @@ AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getCompiledLibraryName()
 {
-  return TransformationPhase::TransformationPhaseBaseName;
+  return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
 
 
@@ -414,7 +414,7 @@ const QString FindCSLBoundaries::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getGroupName()
 {
-  return TransformationPhase::TransformationPhaseFilters;
+  return TransformationPhaseConstants::TransformationPhaseFilters;
 }
 
 
