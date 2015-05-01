@@ -3,7 +3,7 @@
 
 #include <QtCore/QString>
 
-namespace TransformationPhase
+namespace TransformationPhaseConstants
 {
   const QString TransformationPhasePluginFile("TransformationPhasePlugin");
   const QString TransformationPhasePluginDisplayName("TransformationPhasePlugin");

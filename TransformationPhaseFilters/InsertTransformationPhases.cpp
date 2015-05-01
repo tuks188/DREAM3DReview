@@ -50,7 +50,8 @@
 #include "DREAM3DLib/Utilities/DREAM3DRandom.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
-
+#include "DREAM3DLib/FilterParameters/ChoiceFilterParameter.h"
+#include "DREAM3DLib/FilterParameters/LinkedBooleanFilterParameter.h"
 
 
 #include "OrientationLib/Math/OrientationMath.h"
@@ -1019,7 +1020,7 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getCompiledLibraryName()
 {
-  return TransformationPhase::TransformationPhaseBaseName;
+  return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
 
 
@@ -1028,7 +1029,7 @@ const QString InsertTransformationPhases::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getGroupName()
 {
-  return TransformationPhase::TransformationPhaseFilters;
+  return TransformationPhaseConstants::TransformationPhaseFilters;
 }
 
 
