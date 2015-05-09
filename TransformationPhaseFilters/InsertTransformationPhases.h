@@ -52,7 +52,7 @@
 
 #include "DREAM3DLib/Common/AbstractFilter.h"
 #include "DREAM3DLib/DataContainers/DataContainer.h"
-#include "OrientationLib/OrientationOps/OrientationOps.h"
+#include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
 #include "DREAM3DLib/DataArrays/NeighborList.hpp"
 #include "Plugins/SyntheticBuilding/SyntheticBuildingConstants.h"
 
@@ -192,7 +192,7 @@ signals:
 	void filter_calls();
 
   private:
-    QVector<OrientationOps::Pointer> m_OrientationOps;
+    QVector<SpaceGroupOps::Pointer> m_OrientationOps;
 
     // Cell Data - make sure these are all initialized to NULL in the constructor
     DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureIds)

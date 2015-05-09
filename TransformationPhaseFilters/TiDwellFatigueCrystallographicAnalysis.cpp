@@ -50,8 +50,10 @@
 #include "DREAM3DLib/Plugin/DREAM3DPluginLoader.h"
 #include "DREAM3DLib/Utilities/DREAM3DRandom.h"
 
-#include "OrientationLib/Math/OrientationMath.h"
-#include "OrientationLib/OrientationOps/OrientationOps.h"
+#include "OrientationLib/OrientationMath/OrientationMath.h"
+#include "OrientationLib/OrientationMath/OrientationArray.hpp"
+#include "OrientationLib/OrientationMath/OrientationTransforms.hpp"
+#include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
 
 #include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
 
@@ -631,7 +633,9 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_hardfeatures(int index)
     hardfeaturePlaneNormal[j][2] = hardfeaturePlane[j][3] * m_OneOverC;
   }
 
-  OrientationMath::EulertoMat(m_FeatureEulerAngles[3*index+0], m_FeatureEulerAngles[3*index+1], m_FeatureEulerAngles[3*index+2], g);
+  FOrientArrayType om(9, 0.0);
+  FOrientTransformsType::eu2om(FOrientArrayType( &(m_FeatureEulerAngles[3*index+0]), 3), om);
+  om.toGMatrix(g);
   if (m_FeaturePhases[index] == m_MTRPhase)
   {
     for (int j = 0; j < 12; ++j)
@@ -661,7 +665,10 @@ void TiDwellFatigueCrystallographicAnalysis::determine_initiators(int index)
 
   if (m_FeaturePhases[index] == m_AlphaGlobPhase)
   {
-    OrientationMath::EulertoMat(m_FeatureEulerAngles[3*index+0], m_FeatureEulerAngles[3*index+1], m_FeatureEulerAngles[3*index+2], g);
+    FOrientArrayType om(9, 0.0);
+    FOrientTransformsType::eu2om(FOrientArrayType(&(m_FeatureEulerAngles[3*index+0]), 3), om);
+    om.toGMatrix(g);
+
     w = find_angle(g, caxis[0], caxis[1], caxis[2]);
     if (w >= m_InitiatorLowerThreshold && w <= m_InitiatorUpperThreshold)
     {
@@ -683,7 +690,10 @@ void TiDwellFatigueCrystallographicAnalysis::determine_softfeatures(int index)
 
   if (m_FeaturePhases[index] == m_MTRPhase)
   {
-    OrientationMath::EulertoMat(m_FeatureEulerAngles[3*index+0], m_FeatureEulerAngles[3*index+1], m_FeatureEulerAngles[3*index+2], g);
+    FOrientArrayType om(9, 0.0);
+    FOrientTransformsType::eu2om(FOrientArrayType(&(m_FeatureEulerAngles[3*index+0]), 3), om);
+    om.toGMatrix(g);
+
     w = find_angle(g, caxis[0], caxis[1], caxis[2]);
     if (w >= m_SoftFeatureLowerThreshold && w <= m_SoftFeatureUpperThreshold)
     {

@@ -54,7 +54,7 @@
 
 
 
-#include "OrientationLib/Math/OrientationMath.h"
+#include "OrientationLib/OrientationMath/OrientationMath.h"
 
 #include "TransformationPhase/TransformationPhaseConstants.h"
 
@@ -72,7 +72,7 @@ class CalculateCSLBoundaryImpl
     bool* m_CSLBoundary;
     float* m_CSLBoundaryIncoherence;
     unsigned int* m_CrystalStructures;
-    QVector<OrientationOps::Pointer> m_OrientationOps;
+    QVector<SpaceGroupOps::Pointer> m_OrientationOps;
 
   public:
     CalculateCSLBoundaryImpl(int cslindex, float angtol, float axistol, int32_t* Labels, double* Normals, float* Quats, int32_t* Phases, unsigned int* CrystalStructures, bool* CSLBoundary, float* CSLBoundaryIncoherence) :
@@ -87,7 +87,7 @@ class CalculateCSLBoundaryImpl
       m_CSLBoundaryIncoherence(CSLBoundaryIncoherence),
       m_CrystalStructures(CrystalStructures)
     {
-      m_OrientationOps = OrientationOps::getOrientationOpsQVector();
+      m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
     }
 
     virtual ~CalculateCSLBoundaryImpl() {}
@@ -139,7 +139,9 @@ class CalculateCSLBoundaryImpl
             int nsym = m_OrientationOps[phase1]->getNumSymOps();
             QuaternionMathF::Conjugate(q2);
             QuaternionMathF::Multiply(q2, q1, misq);
-            OrientationMath::QuattoMat(q1, g1);
+            FOrientArrayType om(9);
+            FOrientTransformsType::qu2om(FOrientArrayType(q1), om);
+            om.toGMatrix(g1);
             MatrixMath::Multiply3x3with3x1(g1, normal, xstl_norm);
             for (int j = 0; j < nsym; j++)
             {
@@ -153,7 +155,10 @@ class CalculateCSLBoundaryImpl
                 m_OrientationOps[phase1]->getQuatSymOp(k, sym_q);
                 QuaternionMathF::Conjugate(sym_q);
                 QuaternionMathF::Multiply(s1_misq, sym_q, s2_misq);
-                OrientationMath::QuattoAxisAngle(s2_misq, w, n1, n2, n3);
+
+                FOrientArrayType ax(4);
+                FOrientTransformsType::qu2ax(FOrientArrayType(s2_misq), ax);
+                ax.toAxisAngle(n1, n2, n3, w);
                 w = w * 180.0 / DREAM3D::Constants::k_Pi;
                 axisdiffCSL = acosf(fabs(n1) * cslAxisNorm[0] + fabs(n2) * cslAxisNorm[1] + fabs(n3) * cslAxisNorm[2]);
                 angdiffCSL = fabs(w - TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][1]);
@@ -210,7 +215,7 @@ FindCSLBoundaries::FindCSLBoundaries()  :
   m_SurfaceMeshCSLBoundary(NULL),
   m_SurfaceMeshCSLBoundaryIncoherence(NULL)
 {
-  m_OrientationOps = OrientationOps::getOrientationOpsQVector();
+  m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
   setupFilterParameters();
 }
 
