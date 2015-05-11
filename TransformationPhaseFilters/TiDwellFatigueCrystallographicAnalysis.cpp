@@ -404,7 +404,6 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     }
     if (subsurfaceFlag == true)
     {
-    int stop = 0;
       // Determine if it's a hard feature
       if (m_FeaturePhases[i] == m_MTRPhase) { hardfeatureFlag = determine_hardfeatures(i); }
       // Determine if it's a soft feature only if it's not a hard feature
@@ -593,7 +592,6 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   {
     subsurfaceFlag = true;
   }
-  int stop = 0;
   if (subsurfaceFlag == true) { return true; }
   else { return false; }
 }
