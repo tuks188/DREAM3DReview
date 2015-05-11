@@ -631,11 +631,11 @@ void InsertTransformationPhases::insert_transformationphases()
       // assign our symmetry matrix to that which produced the minimum angle
       orientOps->getMatSymOp(minPos, symMat);
       MatrixMath::Multiply3x3with3x3(symMat, newMatCopy, newMat);
-
-      FOrientTransformsType::om2eu(FOrientArrayType(newMat), FOrientArrayType(e, 3));
+      FOrientArrayType eOut(e, 3);
+      FOrientTransformsType::om2eu(FOrientArrayType(newMat), eOut);
 
       FOrientArrayType quat(4);
-      FOrientTransformsType::eu2qu(FOrientArrayType(e, 3), quat);
+      FOrientTransformsType::eu2qu(eOut, quat);
       q2 = quat.toQuaternion();
 
       // define plate = user input fraction of eq dia centered at centroid
