@@ -79,7 +79,6 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_HardFeatureUpperThreshold(25.0f),
   m_SoftFeatureLowerThreshold(70.0f),
   m_SoftFeatureUpperThreshold(90.0f),
-  m_NewCellFeatureAttributeMatrixName(DREAM3D::Defaults::NewCellFeatureAttributeMatrixName),
   m_SelectedFeaturesArrayName(TransformationPhaseConstants::SelectedFeatures),
   m_InitiatorsArrayName(TransformationPhaseConstants::Initiators),
   m_HardFeaturesArrayName(TransformationPhaseConstants::HardFeatures),
