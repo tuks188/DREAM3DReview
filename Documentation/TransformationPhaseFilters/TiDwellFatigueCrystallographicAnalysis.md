@@ -51,18 +51,11 @@ Volume
 | Feature | ParentSharedSurfaceAreaLists | List of the area shared between contiguous neighboring **ParentIds** for given **ParentIds**. |  |
 | Cell | ParentIds | List of grouped hard or soft **Cells**. |
 
-## Authors ##
-
-**Copyright:** 2014 Joseph C. Tucker (UES), 2012 Michael A. Groeber (AFRL), 201 BlueQuartz Software, LLC
-
-**Contact Info:** dream3d@bluequartz.net
-
-**Version:** 5.1.0
-
-**License:**  See the License.txt file that came with DREAM3D.
 
 
+## License & Copyright ##
 
+Please see the description file distributed with this plugin.
 
 ## DREAM3D Mailing Lists ##
 
