@@ -12,6 +12,12 @@ if(NOT Qt5Core_FOUND)
     message(FATAL_ERROR "Qt 5 is Needed for plugin ${PLUGIN_NAME}Plugin.")
 endif()
 
+set(CMP_VERSION_HEADER_FILE_NAME "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.h")
+cmpVersionStringsFromGit( GENERATED_HEADER_FILE_PATH "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.h"
+                          GENERATED_SOURCE_FILE_PATH "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.cpp"
+                          NAMESPACE "TransformationPhase"
+                          cmpProjectName "TransformationPhase"
+                          PROJECT_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR})
 
 set(${PLUGIN_NAME}_Project_SRCS "")
 
