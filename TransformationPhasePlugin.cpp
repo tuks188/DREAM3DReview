@@ -43,8 +43,7 @@
 #include "DREAM3DLib/Common/IFilterFactory.hpp"
 #include "DREAM3DLib/Common/FilterFactory.hpp"
 #include "TransformationPhase/TransformationPhaseConstants.h"
-
-#include "moc_TransformationPhasePlugin.cpp"
+#include "TransformationPhase/TransformationPhaseVersion.h"
 
 namespace Detail
 {
@@ -57,12 +56,12 @@ namespace Detail
 //
 // -----------------------------------------------------------------------------
 TransformationPhasePlugin::TransformationPhasePlugin() :
-m_Version(DREAM3DLib::Version::Package()),
-m_CompatibilityVersion(DREAM3DLib::Version::Package()),
-m_Vendor("Open-Source"),
-m_URL("http://www.github.com/dream3d/TransformationPhase"),
-m_Location(""),
-m_Copyright(DREAM3D::BlueQuartz::Copyright),
+  m_Version(TransformationPhase::Version::Package()),
+  m_CompatibilityVersion(TransformationPhase::Version::Package()),
+  m_Vendor("Open-Source"),
+  m_URL("http://www.github.com/dream3d/TransformationPhase"),
+  m_Location(""),
+  m_Copyright(DREAM3D::BlueQuartz::Copyright),
   m_DidLoad(false)
 {
 
