@@ -2,7 +2,7 @@
 #-- Your License or copyright can go here
 #--////////////////////////////////////////////////////////////////////////////
 
-project(TransformationPhase)
+project(TransformationPhase VERSION 1.0)
 
 set(PLUGIN_NAME TransformationPhase)
 
@@ -13,15 +13,16 @@ if(NOT Qt5Core_FOUND)
 endif()
 
 set(CMP_TOP_HEADER_FILE "${PLUGIN_NAME}Plugin.h")
-set(CMP_VERSION_HEADER_FILE_NAME "${PLUGIN_NAME}Version.h")
-cmpVersionStringsFromGit( GENERATED_HEADER_FILE_PATH "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.h"
-                          GENERATED_SOURCE_FILE_PATH "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.cpp"
-                          NAMESPACE "${PLUGIN_NAME}"
-                          cmpProjectName "${PLUGIN_NAME}"
-                          PROJECT_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR}
-                          PROJECT_VERSION_MAJOR  "1.0"
-                          EXPORT_MACRO "")
+set(VERSION_HEADER_FILE_NAME "${PLUGIN_NAME}Version.h")
+set(VERSION_SOURCE_FILE_NAME "${PLUGIN_NAME}Version.cpp")
 
+cmpRevisionString( GENERATED_HEADER_FILE_PATH "${VERSION_HEADER_FILE_NAME}"
+                    GENERATED_SOURCE_FILE_PATH "${VERSION_SOURCE_FILE_NAME}"
+                    NAMESPACE "${PLUGIN_NAME}"
+                    PROJECT_NAME "${PROJECT_NAME}"
+                    EXPORT_MACRO "")
+
+# -----
 set(${PLUGIN_NAME}_Project_SRCS "")
 
 include(${DREAM3DProj_SOURCE_DIR}/Source/DREAM3DLib/DREAM3DLibMacros.cmake)
@@ -175,6 +176,9 @@ set(${PLUGIN_NAME}_MODULE_SRCS
   ${${PLUGIN_NAME}_GEN_HDRS}
   # -- Add in the miscellaneous resources (license, plugin info, ...)
   ${${PLUGIN_NAME}_Generated_RC_SRCS}
+  # -- Add in our Generated Version Files
+  ${${PLUGIN_NAME}_BINARY_DIR}/${VERSION_HEADER_FILE_NAME}
+  ${${PLUGIN_NAME}_BINARY_DIR}/ ${VERSION_SOURCE_FILE_NAME}
 )
 
 # --------------------------------------------------------------------
