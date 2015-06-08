@@ -231,7 +231,7 @@ FindCSLBoundaries::~FindCSLBoundaries()
 void FindCSLBoundaries::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(FilterParameter::New("CSL", "CSL", FilterParameterWidgetType::DoubleWidget , getCSL(), false, "Sigma"));
+  parameters.push_back(FilterParameter::New("CSL", "CSL", FilterParameterWidgetType::DoubleWidget , getCSL(), FilterParameter::Uncategorized, "Sigma"));
   parameters.push_back(FilterParameter::New("Axis Tolerance", "AxisTolerance", FilterParameterWidgetType::DoubleWidget, getAxisTolerance(), FilterParameter::Uncategorized, "Degrees"));
   parameters.push_back(FilterParameter::New("Angle Tolerance", "AngleTolerance", FilterParameterWidgetType::DoubleWidget, getAngleTolerance(), FilterParameter::Uncategorized, "Degrees"));
   parameters.push_back(SeparatorFilterParameter::New("Required Information", FilterParameter::Uncategorized));

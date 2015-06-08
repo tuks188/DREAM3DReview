@@ -131,7 +131,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
   QStringList linkedProps1("AlphaGlobPhase");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Alpha Glob Phase Present", "AlphaGlobPhasePresent", getAlphaGlobPhasePresent(), linkedProps1, false));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Alpha Glob Phase Present", "AlphaGlobPhasePresent", getAlphaGlobPhasePresent(), linkedProps1, FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("Alpha Glob Phase Number", "AlphaGlobPhase", FilterParameterWidgetType::IntWidget, getAlphaGlobPhase(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Microtextured Region Phase Number", "MTRPhase", FilterParameterWidgetType::IntWidget, getMTRPhase(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Lattice Parameter A", "LatticeParameterA", FilterParameterWidgetType::DoubleWidget, getLatticeParameterA(), FilterParameter::Uncategorized, ""));
@@ -141,7 +141,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Fraction Of Features To Consider", "ConsiderationFraction", FilterParameterWidgetType::DoubleWidget, getConsiderationFraction(), FilterParameter::Uncategorized, ""));
   QStringList linkedProps2;
   linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Do Not Assume Initiator Presence", "DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence(), linkedProps2, false));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Do Not Assume Initiator Presence", "DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence(), linkedProps2, FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), FilterParameter::Uncategorized, "Degrees"));
   parameters.push_back(FilterParameter::New("Initiator Upper Threshold", "InitiatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorUpperThreshold(), FilterParameter::Uncategorized, "Degrees"));
   parameters.push_back(FilterParameter::New("Hard Feature Lower Threshold", "HardFeatureLowerThreshold", FilterParameterWidgetType::DoubleWidget, getHardFeatureLowerThreshold(), FilterParameter::Uncategorized, "Degrees"));
@@ -165,7 +165,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Initiators Array Name", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Hard Features Array Name", "HardFeaturesArrayName", FilterParameterWidgetType::StringWidget, getHardFeaturesArrayName(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Soft Features Array Name", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), FilterParameter::Uncategorized, ""));
-  parameters.push_back(FilterParameter::New("Hard-Soft Groups Array Name", "HardSoftGroupsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftGroupsArrayName(), true, ""));
+  parameters.push_back(FilterParameter::New("Hard-Soft Groups Array Name", "HardSoftGroupsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftGroupsArrayName(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Cell ParentIds", "CellParentIdsArrayName", FilterParameterWidgetType::StringWidget, getCellParentIdsArrayName(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Feature ParentIds", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), FilterParameter::Uncategorized, ""));
   parameters.push_back(FilterParameter::New("Active", "ActiveArrayName", FilterParameterWidgetType::StringWidget, getActiveArrayName(), FilterParameter::Uncategorized, ""));

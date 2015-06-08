@@ -167,14 +167,14 @@ void InsertTransformationPhases::setupFilterParameters()
   parameters.push_back(FilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseMisorientation(), FilterParameter::Uncategorized));
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), linkedProps1, false));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), linkedProps1, FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", FilterParameterWidgetType::FloatVec3Widget, getTransformationPhaseHabitPlane(), FilterParameter::Uncategorized));
   QStringList linkedProps2("CoherentFrac");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), linkedProps2, false));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), linkedProps2, FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("Transformation Phase Thickness", "TransformationPhaseThickness", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseThickness(), FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("Average Number Of Transformation Phases Per Feature", "NumTransformationPhasesPerFeature", FilterParameterWidgetType::IntWidget, getNumTransformationPhasesPerFeature(), FilterParameter::Uncategorized));
-  parameters.push_back(FilterParameter::New("\"Peninsula\" Transformation Phase Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), false));
+  parameters.push_back(FilterParameter::New("'Peninsula' Transformation Phase Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), FilterParameter::Uncategorized));
 
   parameters.push_back(SeparatorFilterParameter::New("Required Information", FilterParameter::Uncategorized));
   parameters.push_back(FilterParameter::New("StatsGenerator Cell Ensemble Attribute Matrix Name", "StatsGenCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getStatsGenCellEnsembleAttributeMatrixPath(), FilterParameter::Uncategorized, ""));
