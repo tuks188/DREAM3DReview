@@ -38,18 +38,11 @@ This filter identifies all **Faces** between neighboring **Features** that have 
 | Face | SurfaceMeshTwinBoundary | boolean value equal to 1 for twin and 0 for non-twin |  |
 | Face | SurfaceMeshTwinBoundaryIncoherence | Angle in degrees between crystal direction parallel to **Face** normal and misorientation axis |  |
 
-## Authors ##
-
-**Copyright:** 2014 Joseph C. Tucker (UES), 2013 Michael A. Groeber (AFRL)
-
-**Contact Info:** dream3d@bluequartz.net
-
-**Version:** 5.1.0
-
-**License:**  See the License.txt file that came with DREAM3D.
 
 
+## License & Copyright ##
 
+Please see the description file distributed with this plugin.
 
 ## DREAM3D Mailing Lists ##
 

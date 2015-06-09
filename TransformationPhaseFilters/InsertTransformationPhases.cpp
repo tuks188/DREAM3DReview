@@ -52,7 +52,7 @@
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "DREAM3DLib/FilterParameters/ChoiceFilterParameter.h"
 #include "DREAM3DLib/FilterParameters/LinkedBooleanFilterParameter.h"
-
+#include "DREAM3DLib/FilterParameters/SeparatorFilterParameter.h"
 
 #include "OrientationLib/OrientationMath/OrientationMath.h"
 #include "OrientationLib/OrientationMath/OrientationArray.hpp"
@@ -141,7 +141,7 @@ InsertTransformationPhases::~InsertTransformationPhases()
 void InsertTransformationPhases::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(FilterParameter::New("Parent Phase", "ParentPhase", FilterParameterWidgetType::IntWidget, getParentPhase(), false));
+  parameters.push_back(FilterParameter::New("Parent Phase", "ParentPhase", FilterParameterWidgetType::IntWidget, getParentPhase(), FilterParameter::Uncategorized));
   {
     ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();
     option->setHumanLabel("Transformation Phase Crystal Structure");
@@ -164,37 +164,37 @@ void InsertTransformationPhases::setupFilterParameters()
     option->setChoices(choices);
     parameters.push_back(option);
   }
-  parameters.push_back(FilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseMisorientation(), false));
+  parameters.push_back(FilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseMisorientation(), FilterParameter::Uncategorized));
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), linkedProps1, false));
-  parameters.push_back(FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", FilterParameterWidgetType::FloatVec3Widget, getTransformationPhaseHabitPlane(), false));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), linkedProps1, FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", FilterParameterWidgetType::FloatVec3Widget, getTransformationPhaseHabitPlane(), FilterParameter::Uncategorized));
   QStringList linkedProps2("CoherentFrac");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), linkedProps2, false));
-  parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), false));
-  parameters.push_back(FilterParameter::New("Transformation Phase Thickness", "TransformationPhaseThickness", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseThickness(), false));
-  parameters.push_back(FilterParameter::New("Average Number Of Transformation Phases Per Feature", "NumTransformationPhasesPerFeature", FilterParameterWidgetType::IntWidget, getNumTransformationPhasesPerFeature(), false));
-  parameters.push_back(FilterParameter::New("\"Peninsula\" Transformation Phase Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), false));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), linkedProps2, FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Coherent Fraction", "CoherentFrac", FilterParameterWidgetType::DoubleWidget, getCoherentFrac(), FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Transformation Phase Thickness", "TransformationPhaseThickness", FilterParameterWidgetType::DoubleWidget, getTransformationPhaseThickness(), FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Average Number Of Transformation Phases Per Feature", "NumTransformationPhasesPerFeature", FilterParameterWidgetType::IntWidget, getNumTransformationPhasesPerFeature(), FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("'Peninsula' Transformation Phase Fraction", "PeninsulaFrac", FilterParameterWidgetType::DoubleWidget, getPeninsulaFrac(), FilterParameter::Uncategorized));
 
-  parameters.push_back(FilterParameter::New("Required Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
-  parameters.push_back(FilterParameter::New("StatsGenerator Cell Ensemble Attribute Matrix Name", "StatsGenCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getStatsGenCellEnsembleAttributeMatrixPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Volume Cell Ensemble Attribute Matrix Name", "VolCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getVolCellEnsembleAttributeMatrixPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), true, ""));
-  parameters.push_back(FilterParameter::New("Cell FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Cell Euler Angles", "CellEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCellEulerAnglesArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Average Quaterions", "AvgQuatsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getAvgQuatsArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Centroids", "CentroidsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCentroidsArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Equivalent Diameters", "EquivalentDiametersArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getEquivalentDiametersArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Feature Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Feature Phases", "FeaturePhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeaturePhasesArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), true, ""));
-  parameters.push_back(FilterParameter::New("Phase Types Array", "PhaseTypesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getPhaseTypesArrayPath(), true));
-  parameters.push_back(FilterParameter::New("Shape Types Array", "ShapeTypesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getShapeTypesArrayPath(), true));
-  parameters.push_back(FilterParameter::New("Number of Features", "NumFeaturesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNumFeaturesArrayPath(), true, ""));
+  parameters.push_back(SeparatorFilterParameter::New("Required Information", FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("StatsGenerator Cell Ensemble Attribute Matrix Name", "StatsGenCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getStatsGenCellEnsembleAttributeMatrixPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Volume Cell Ensemble Attribute Matrix Name", "VolCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getVolCellEnsembleAttributeMatrixPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix Name", "CellFeatureAttributeMatrixName", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixName(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Cell FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Cell Euler Angles", "CellEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCellEulerAnglesArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Average Quaterions", "AvgQuatsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getAvgQuatsArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Centroids", "CentroidsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCentroidsArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Equivalent Diameters", "EquivalentDiametersArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getEquivalentDiametersArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Feature Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Feature Phases", "FeaturePhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeaturePhasesArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Phase Types Array", "PhaseTypesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getPhaseTypesArrayPath(), FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Shape Types Array", "ShapeTypesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getShapeTypesArrayPath(), FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Number of Features", "NumFeaturesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNumFeaturesArrayPath(), FilterParameter::Uncategorized, ""));
 
-  parameters.push_back(FilterParameter::New("Created Information", "", FilterParameterWidgetType::SeparatorWidget, "", true));
-  parameters.push_back(FilterParameter::New("Feature Parent Ids", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), true, ""));
-  parameters.push_back(FilterParameter::New("Number Of Features Per Parent", "NumFeaturesPerParentArrayName", FilterParameterWidgetType::StringWidget, getNumFeaturesPerParentArrayName(), true, ""));
+  parameters.push_back(SeparatorFilterParameter::New("Created Information", FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Feature Parent Ids", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), FilterParameter::Uncategorized, ""));
+  parameters.push_back(FilterParameter::New("Number Of Features Per Parent", "NumFeaturesPerParentArrayName", FilterParameterWidgetType::StringWidget, getNumFeaturesPerParentArrayName(), FilterParameter::Uncategorized, ""));
   setFilterParameters(parameters);
 }
 
