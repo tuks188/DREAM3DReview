@@ -138,7 +138,7 @@ class CalculateCSLBoundaryImpl
           {
             int nsym = m_OrientationOps[phase1]->getNumSymOps();
             QuaternionMathF::Conjugate(q2);
-            QuaternionMathF::Multiply(q2, q1, misq);
+			QuaternionMathF::Multiply(q1, q2, misq);
             FOrientArrayType om(9);
             FOrientTransformsType::qu2om(FOrientArrayType(q1), om);
             om.toGMatrix(g1);
@@ -147,14 +147,14 @@ class CalculateCSLBoundaryImpl
             {
               m_OrientationOps[phase1]->getQuatSymOp(j, sym_q);
               //calculate crystal direction parallel to normal
-              QuaternionMathF::Multiply(sym_q, misq, s1_misq);
+			  QuaternionMathF::Multiply(misq, sym_q, s1_misq);
               OrientationMath::MultiplyQuaternionVector(sym_q, xstl_norm, s_xstl_norm);
               for (int k = 0; k < nsym; k++)
               {
                 //calculate the symmetric misorienation
                 m_OrientationOps[phase1]->getQuatSymOp(k, sym_q);
                 QuaternionMathF::Conjugate(sym_q);
-                QuaternionMathF::Multiply(s1_misq, sym_q, s2_misq);
+				QuaternionMathF::Multiply(sym_q, s1_misq, s2_misq);
 
                 FOrientArrayType ax(4);
                 FOrientTransformsType::qu2ax(FOrientArrayType(s2_misq), ax);
