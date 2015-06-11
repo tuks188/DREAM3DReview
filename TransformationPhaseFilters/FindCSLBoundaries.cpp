@@ -242,7 +242,7 @@ void FindCSLBoundaries::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Surface Mesh Arrays", FilterParameter::RequiredArray));
   parameters.push_back(FilterParameter::New("SurfaceMeshFaceLabels", "SurfaceMeshFaceLabelsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getSurfaceMeshFaceLabelsArrayPath(), FilterParameter::RequiredArray, ""));
   parameters.push_back(FilterParameter::New("SurfaceMeshFaceNormals", "SurfaceMeshFaceNormalsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getSurfaceMeshFaceNormalsArrayPath(), FilterParameter::RequiredArray, ""));
-  //parameters.push_back(SeparatorFilterParameter::New("Created Information", FilterParameter::Uncategorized));
+
   parameters.push_back(FilterParameter::New("SurfaceMeshCSLBoundary", "SurfaceMeshCSLBoundaryArrayName", FilterParameterWidgetType::StringWidget, getSurfaceMeshCSLBoundaryArrayName(), FilterParameter::CreatedArray, ""));
   parameters.push_back(FilterParameter::New("SurfaceMeshCSLBoundaryIncoherence", "SurfaceMeshCSLBoundaryIncoherenceArrayName", FilterParameterWidgetType::StringWidget, getSurfaceMeshCSLBoundaryIncoherenceArrayName(), FilterParameter::CreatedArray, ""));
   setFilterParameters(parameters);

@@ -141,7 +141,7 @@ InsertTransformationPhases::~InsertTransformationPhases()
 void InsertTransformationPhases::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(FilterParameter::New("Parent Phase", "ParentPhase", FilterParameterWidgetType::IntWidget, getParentPhase(), FilterParameter::Uncategorized));
+  parameters.push_back(FilterParameter::New("Parent Phase", "ParentPhase", FilterParameterWidgetType::IntWidget, getParentPhase(), FilterParameter::Parameter));
   {
     ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();
     option->setHumanLabel("Transformation Phase Crystal Structure");
