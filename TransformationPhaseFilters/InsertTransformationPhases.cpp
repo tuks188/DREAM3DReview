@@ -91,7 +91,6 @@ InsertTransformationPhases::InsertTransformationPhases() :
   m_NumTransformationPhasesPerFeature(1),
   m_PeninsulaFrac(0.0f),
   m_StatsGenCellEnsembleAttributeMatrixPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, ""),
-  m_VolCellEnsembleAttributeMatrixPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, ""),
   m_CellFeatureAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, ""),
   m_FeatureIdsArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
   m_CellEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::EulerAngles),
@@ -101,7 +100,7 @@ InsertTransformationPhases::InsertTransformationPhases() :
   m_FeatureEulerAnglesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::EulerAngles),
   m_FeaturePhasesArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellFeatureAttributeMatrixName, DREAM3D::FeatureData::Phases),
   m_FeatureParentIdsArrayName(DREAM3D::FeatureData::ParentIds),
-  m_NumFeaturesPerParentArrayName(DREAM3D::FeatureData::NumFeaturesPerParent),
+  m_NumFeaturesPerParentArrayPath(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::FeatureData::NumFeaturesPerParent),
   m_CrystalStructuresArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::CrystalStructures),
   m_PhaseTypesArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::PhaseTypes),
   m_ShapeTypesArrayPath(DREAM3D::Defaults::StatsGenerator, DREAM3D::Defaults::CellEnsembleAttributeMatrixName, DREAM3D::EnsembleData::ShapeTypes),
@@ -193,7 +192,7 @@ void InsertTransformationPhases::setupFilterParameters()
 
   parameters.push_back(SeparatorFilterParameter::New("Ensemble Data", FilterParameter::RequiredArray));
   parameters.push_back(FilterParameter::New("StatsGenerator Cell Ensemble Attribute Matrix Name", "StatsGenCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getStatsGenCellEnsembleAttributeMatrixPath(), FilterParameter::RequiredArray, ""));
-  parameters.push_back(FilterParameter::New("Cell Ensemble Attribute Matrix Name", "VolCellEnsembleAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getVolCellEnsembleAttributeMatrixPath(), FilterParameter::RequiredArray, ""));
+
   parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, ""));
   parameters.push_back(FilterParameter::New("Phase Types Array", "PhaseTypesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getPhaseTypesArrayPath(), FilterParameter::RequiredArray));
   parameters.push_back(FilterParameter::New("Shape Types Array", "ShapeTypesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getShapeTypesArrayPath(), FilterParameter::RequiredArray));
@@ -201,7 +200,7 @@ void InsertTransformationPhases::setupFilterParameters()
 
   parameters.push_back(SeparatorFilterParameter::New("Created Information", FilterParameter::RequiredArray));
   parameters.push_back(FilterParameter::New("Feature Parent Ids Array Name", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Number Of Features Per Parent Array Name", "NumFeaturesPerParentArrayName", FilterParameterWidgetType::StringWidget, getNumFeaturesPerParentArrayName(), FilterParameter::CreatedArray, ""));
+  parameters.push_back(FilterParameter::New("Number Of Features Per Parent Array Path", "NumFeaturesPerParentArrayPath", FilterParameterWidgetType::DataArrayCreationWidget, getNumFeaturesPerParentArrayPath(), FilterParameter::CreatedArray, ""));
   setFilterParameters(parameters);
 }
 
@@ -223,7 +222,6 @@ void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersRe
   setPeninsulaFrac(reader->readValue("PeninsulaFrac", getPeninsulaFrac()) );
 
   setStatsGenCellEnsembleAttributeMatrixPath(reader->readDataArrayPath("StatsGenCellEnsembleAttributeMatrixPath", getStatsGenCellEnsembleAttributeMatrixPath()));
-  setVolCellEnsembleAttributeMatrixPath(reader->readDataArrayPath("VolCellEnsembleAttributeMatrixPath", getVolCellEnsembleAttributeMatrixPath()));
   setCellFeatureAttributeMatrixName(reader->readDataArrayPath("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
   setCellEulerAnglesArrayPath(reader->readDataArrayPath("CellEulerAnglesArrayPath", getCellEulerAnglesArrayPath() ) );
@@ -232,7 +230,7 @@ void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersRe
   setFeatureEulerAnglesArrayPath(reader->readDataArrayPath("FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath() ) );
   setFeaturePhasesArrayPath(reader->readDataArrayPath("FeaturePhasesArrayPath", getFeaturePhasesArrayPath() ) );
   setFeatureParentIdsArrayName(reader->readString("FeatureParentIdsArrayName", getFeatureParentIdsArrayName() ) );
-  setNumFeaturesPerParentArrayName(reader->readString("NumFeaturesPerParentArrayName", getNumFeaturesPerParentArrayName() ) );
+  setNumFeaturesPerParentArrayPath(reader->readDataArrayPath("NumFeaturesPerParentArrayPath", getNumFeaturesPerParentArrayPath()));
   setCrystalStructuresArrayPath(reader->readDataArrayPath("CrystalStructuresArrayPath", getCrystalStructuresArrayPath() ) );
   setPhaseTypesArrayPath(reader->readDataArrayPath("PhaseTypesArrayPath", getPhaseTypesArrayPath() ) );
   setShapeTypesArrayPath(reader->readDataArrayPath("ShapeTypesArrayPath", getShapeTypesArrayPath() ) );
@@ -259,7 +257,6 @@ int InsertTransformationPhases::writeFilterParameters(AbstractFilterParametersWr
       DREAM3D_FILTER_WRITE_PARAMETER(PeninsulaFrac)
 
       DREAM3D_FILTER_WRITE_PARAMETER(StatsGenCellEnsembleAttributeMatrixPath)
-      DREAM3D_FILTER_WRITE_PARAMETER(VolCellEnsembleAttributeMatrixPath)
       DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
       DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
       DREAM3D_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
@@ -268,7 +265,7 @@ int InsertTransformationPhases::writeFilterParameters(AbstractFilterParametersWr
       DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
       DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
       DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
-      DREAM3D_FILTER_WRITE_PARAMETER(NumFeaturesPerParentArrayName)
+      DREAM3D_FILTER_WRITE_PARAMETER(NumFeaturesPerParentArrayPath)
       DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
       DREAM3D_FILTER_WRITE_PARAMETER(PhaseTypesArrayPath)
       DREAM3D_FILTER_WRITE_PARAMETER(ShapeTypesArrayPath)
@@ -338,7 +335,7 @@ void InsertTransformationPhases::dataCheck()
   if(getErrorCondition() < 0 || m == NULL) { return; }
   AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || statsGenAttrMat == NULL) { return; }
-  AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getVolCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
+  AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getNumFeaturesPerParentArrayPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || volAttrMat == NULL) { return; }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
@@ -387,7 +384,7 @@ void InsertTransformationPhases::dataCheck()
   if( NULL != m_FeatureParentIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_FeatureParentIds = m_FeatureParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getNumFeaturesPerParentArrayName() );
+  tempPath.update(getCellFeatureAttributeMatrixName().getDataContainerName(), getCellFeatureAttributeMatrixName().getAttributeMatrixName(), getNumFeaturesPerParentArrayPath().getDataArrayName());
   m_NumFeaturesPerParentPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_NumFeaturesPerParentPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_NumFeaturesPerParent = m_NumFeaturesPerParentPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -408,7 +405,6 @@ void InsertTransformationPhases::dataCheck()
   if( NULL != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  tempPath.update(getVolCellEnsembleAttributeMatrixPath().getDataContainerName(), getVolCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), getNumFeaturesPerParentArrayName() );
   m_NumFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this,  getNumFeaturesArrayPath(), 0, dims, getNumFeaturesArrayName()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( NULL != m_NumFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
   { m_NumFeatures = m_NumFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -445,7 +441,7 @@ void InsertTransformationPhases::execute()
 
   // defining separate ensemble attribute matrix for statsgen & vol
   AttributeMatrix::Pointer statsGenAttrMat = dca->getAttributeMatrix(getStatsGenCellEnsembleAttributeMatrixPath());
-  AttributeMatrix::Pointer volAttrMat = dca->getAttributeMatrix(getVolCellEnsembleAttributeMatrixPath());
+  AttributeMatrix::Pointer volAttrMat = dca->getAttributeMatrix(getNumFeaturesPerParentArrayPath());
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
   size_t numensembles = m_PhaseTypesPtr.lock()->getNumberOfTuples();

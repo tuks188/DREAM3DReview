@@ -98,9 +98,6 @@ class InsertTransformationPhases : public AbstractFilter
 	DREAM3D_FILTER_PARAMETER(DataArrayPath, StatsGenCellEnsembleAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath StatsGenCellEnsembleAttributeMatrixPath READ getStatsGenCellEnsembleAttributeMatrixPath WRITE setStatsGenCellEnsembleAttributeMatrixPath)
 
-	DREAM3D_FILTER_PARAMETER(DataArrayPath, VolCellEnsembleAttributeMatrixPath)
-    Q_PROPERTY(DataArrayPath VolCellEnsembleAttributeMatrixPath READ getVolCellEnsembleAttributeMatrixPath WRITE setVolCellEnsembleAttributeMatrixPath)
-
     DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
@@ -128,8 +125,8 @@ class InsertTransformationPhases : public AbstractFilter
     DREAM3D_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
     Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
 	
-    DREAM3D_FILTER_PARAMETER(QString, NumFeaturesPerParentArrayName)
-    Q_PROPERTY(QString NumFeaturesPerParentArrayName READ getNumFeaturesPerParentArrayName WRITE setNumFeaturesPerParentArrayName)
+    DREAM3D_FILTER_PARAMETER(DataArrayPath, NumFeaturesPerParentArrayPath)
+    Q_PROPERTY(DataArrayPath NumFeaturesPerParentArrayPath READ getNumFeaturesPerParentArrayPath WRITE setNumFeaturesPerParentArrayPath)
 	
 	  DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
