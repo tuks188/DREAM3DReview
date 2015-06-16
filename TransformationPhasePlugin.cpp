@@ -45,12 +45,7 @@
 #include "TransformationPhase/TransformationPhaseConstants.h"
 #include "TransformationPhase/TransformationPhaseVersion.h"
 
-namespace Detail
-{
-   const QString TransformationPhasePluginFile("TransformationPhasePlugin");
-   const QString TransformationPhasePluginDisplayName("TransformationPhase");
-   const QString TransformationPhasePluginBaseName("TransformationPhasePlugin");
-}
+#include "TransformationPhase/TransformationPhaseConstants.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -79,7 +74,7 @@ TransformationPhasePlugin::~TransformationPhasePlugin()
 // -----------------------------------------------------------------------------
 QString TransformationPhasePlugin::getPluginName()
 {
-  return (Detail::TransformationPhasePluginDisplayName);
+  return (TransformationPhaseConstants::TransformationPhasePluginDisplayName);
 }
 
 // -----------------------------------------------------------------------------

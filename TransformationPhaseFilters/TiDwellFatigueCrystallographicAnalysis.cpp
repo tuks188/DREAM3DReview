@@ -834,7 +834,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString TiDwellFatigueCrystallographicAnalysis::getGroupName()
 {
-  return TransformationPhaseConstants::TransformationPhaseFilters;
+  return TransformationPhaseConstants::FilterGroups::TransformationPhaseFilters;
 }
 
 

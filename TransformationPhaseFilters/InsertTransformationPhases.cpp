@@ -1041,7 +1041,7 @@ const QString InsertTransformationPhases::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getGroupName()
 {
-  return TransformationPhaseConstants::TransformationPhaseFilters;
+  return TransformationPhaseConstants::FilterGroups::TransformationPhaseFilters;
 }
 
 
