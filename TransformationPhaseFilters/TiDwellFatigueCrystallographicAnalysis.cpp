@@ -101,7 +101,6 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
   m_HardFeatures(NULL),
   m_SoftFeatures(NULL),
   m_HardSoftGroups(NULL),
-  m_FeatureIdsArrayName(DREAM3D::CellData::FeatureIds),
   m_FeatureIds(NULL),
   m_CellParentIds(NULL),
   m_FeatureParentIds(NULL),

@@ -231,25 +231,25 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     void updateFeatureInstancePointers();
 
   private:
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SelectedFeatures)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Initiators)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardFeatures)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SoftFeatures)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, HardSoftGroups)
+    DEFINE_DATAARRAY_VARIABLE(bool, SelectedFeatures)
+    DEFINE_DATAARRAY_VARIABLE(bool, Initiators)
+    DEFINE_DATAARRAY_VARIABLE(bool, HardFeatures)
+    DEFINE_DATAARRAY_VARIABLE(bool, SoftFeatures)
+    DEFINE_DATAARRAY_VARIABLE(bool, HardSoftGroups)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, CellParentIds)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Active)
-	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+	DEFINE_DATAARRAY_VARIABLE(int32_t, CellParentIds)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
+    DEFINE_DATAARRAY_VARIABLE(bool, Active)
+	DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
     NeighborList<int>::WeakPointer m_ParentNeighborList;
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
+    DEFINE_DATAARRAY_VARIABLE(float, Centroids)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+    DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
     TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&); // Copy Constructor Not Implemented
     void operator=(const TiDwellFatigueCrystallographicAnalysis&); // Operator '=' Not Implemented

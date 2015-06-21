@@ -72,7 +72,7 @@ class FindCSLBoundaries : public AbstractFilter
 
     DREAM3D_FILTER_PARAMETER(float, CSL)
     Q_PROPERTY(float CSL READ getCSL WRITE setCSL)
-	DREAM3D_FILTER_PARAMETER(float, AxisTolerance)
+  DREAM3D_FILTER_PARAMETER(float, AxisTolerance)
     Q_PROPERTY(float AxisTolerance READ getAxisTolerance WRITE setAxisTolerance)
     DREAM3D_FILTER_PARAMETER(float, AngleTolerance)
     Q_PROPERTY(float AngleTolerance READ getAngleTolerance WRITE setAngleTolerance)
@@ -138,13 +138,13 @@ class FindCSLBoundaries : public AbstractFilter
     HexagonalOps::Pointer m_HexOps;
     OrthoRhombicOps::Pointer m_OrthoOps;
 
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, AvgQuats)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(unsigned int, CrystalStructures)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, SurfaceMeshFaceLabels)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(double, SurfaceMeshFaceNormals)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(bool, SurfaceMeshCSLBoundary)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(float, SurfaceMeshCSLBoundaryIncoherence)
+    DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
+    DEFINE_DATAARRAY_VARIABLE(unsigned int, CrystalStructures)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, SurfaceMeshFaceLabels)
+    DEFINE_DATAARRAY_VARIABLE(double, SurfaceMeshFaceNormals)
+    DEFINE_DATAARRAY_VARIABLE(bool, SurfaceMeshCSLBoundary)
+    DEFINE_DATAARRAY_VARIABLE(float, SurfaceMeshCSLBoundaryIncoherence)
 
     void dataCheckVoxel();
     void dataCheckSurfaceMesh();

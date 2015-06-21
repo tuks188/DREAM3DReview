@@ -192,24 +192,24 @@ signals:
     QVector<SpaceGroupOps::Pointer> m_OrientationOps;
 
     // Cell Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, CellEulerAngles)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+	DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
-	DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, AvgQuats)
-	DEFINE_CREATED_DATAARRAY_VARIABLE(bool, Active)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, Centroids)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, EquivalentDiameters)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
-    DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
-	DEFINE_CREATED_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
+	DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
+	DEFINE_DATAARRAY_VARIABLE(bool, Active)
+    DEFINE_DATAARRAY_VARIABLE(float, Centroids)
+    DEFINE_DATAARRAY_VARIABLE(float, EquivalentDiameters)
+    DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
+	DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
-    DEFINE_REQUIRED_DATAARRAY_VARIABLE(int32_t, NumFeatures)
+    DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+    DEFINE_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
+    DEFINE_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
     // All other private variables
     void dataCheck();
