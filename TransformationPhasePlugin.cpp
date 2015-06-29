@@ -222,7 +222,7 @@ void TransformationPhasePlugin::setLocation(QString filePath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TransformationPhasePlugin::writeSettings(QSettings &prefs)
+void TransformationPhasePlugin::writeSettings(QSettings& prefs)
 {
 
 }
@@ -230,7 +230,7 @@ void TransformationPhasePlugin::writeSettings(QSettings &prefs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TransformationPhasePlugin::readSettings(QSettings &prefs)
+void TransformationPhasePlugin::readSettings(QSettings& prefs)
 {
 
 }

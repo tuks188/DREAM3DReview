@@ -115,7 +115,7 @@ class CalculateCSLBoundaryImpl
       float xstl_norm[3], s_xstl_norm[3], cslAxisNorm[3];
       float cslAxisNormDenom = 0.0f;
       cslAxisNormDenom = sqrtf(TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][2] + TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][3] + TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][4]);
-      for (int i = 0; i < 3; ++i) { cslAxisNorm[i] = TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][i+2] / cslAxisNormDenom; };
+      for (int i = 0; i < 3; ++i) { cslAxisNorm[i] = TransformationPhaseConstants::CSLAxisAngle[m_CSLIndex][i + 2] / cslAxisNormDenom; };
       for (size_t i = start; i < end; i++)
       {
         feature1 = m_Labels[2 * i];
@@ -123,8 +123,8 @@ class CalculateCSLBoundaryImpl
         normal[0] = m_Normals[3 * i];
         normal[1] = m_Normals[3 * i + 1];
         normal[2] = m_Normals[3 * i + 2];
-    // different than Find Twin Boundaries here because will only compare if
-    // the features are different phases
+        // different than Find Twin Boundaries here because will only compare if
+        // the features are different phases
         if(feature1 > 0 && feature2 > 0)// && m_Phases[feature1] != m_Phases[feature2])
         {
           w = 10000.0;
@@ -368,11 +368,11 @@ void FindCSLBoundaries::execute()
   int cslindex = 0;
   for (int i = 0; i < 21; ++i)
   {
-  if (static_cast<int>( TransformationPhaseConstants::CSLAxisAngle[i][0] ) == static_cast<int>( m_CSL ))
-  {
-    cslindex = i;
-    break;
-  }
+    if (static_cast<int>( TransformationPhaseConstants::CSLAxisAngle[i][0] ) == static_cast<int>( m_CSL ))
+    {
+      cslindex = i;
+      break;
+    }
   }
   float angtol = m_AngleTolerance;
   float axistol = static_cast<float>( m_AxisTolerance * M_PI / 180.0f );
@@ -421,7 +421,7 @@ const QString FindCSLBoundaries::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getGroupName()
 {
-  return TransformationPhaseConstants::FilterGroups::TransformationPhaseFilters;
+  return DREAM3D::FilterGroups::Unsupported;
 }
 
 

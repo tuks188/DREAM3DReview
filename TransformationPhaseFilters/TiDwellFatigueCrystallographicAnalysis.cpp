@@ -402,7 +402,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
-    //	int stop = 0;
+    //  int stop = 0;
     random = static_cast<float>(rg.genrand_res53());
     if (random < m_ConsiderationFraction)
     {
@@ -590,12 +590,12 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
   float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
   float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
-  float xyzScaledDimension[3] = {xPoints*xRes, yPoints*yRes, zPoints*zRes};
+  float xyzScaledDimension[3] = {xPoints * xRes, yPoints * yRes, zPoints * zRes};
 
   // check if current feature centroid is within the subsurface defined centroid
-  if ( m_Centroids[3*index+0] >= m_SubsurfaceDistance && m_Centroids[3*index+0] <= (xyzScaledDimension[0] - m_SubsurfaceDistance)
-       && m_Centroids[3*index+1] >= m_SubsurfaceDistance && m_Centroids[3*index+1] <= (xyzScaledDimension[1] - m_SubsurfaceDistance)
-       && m_Centroids[3*index+2] >= m_SubsurfaceDistance && m_Centroids[3*index+2] <= (xyzScaledDimension[2] - m_SubsurfaceDistance))
+  if ( m_Centroids[3 * index + 0] >= m_SubsurfaceDistance && m_Centroids[3 * index + 0] <= (xyzScaledDimension[0] - m_SubsurfaceDistance)
+       && m_Centroids[3 * index + 1] >= m_SubsurfaceDistance && m_Centroids[3 * index + 1] <= (xyzScaledDimension[1] - m_SubsurfaceDistance)
+       && m_Centroids[3 * index + 2] >= m_SubsurfaceDistance && m_Centroids[3 * index + 2] <= (xyzScaledDimension[2] - m_SubsurfaceDistance))
   {
     subsurfaceFlag = true;
   }
@@ -608,21 +608,23 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
 // -----------------------------------------------------------------------------
 bool TiDwellFatigueCrystallographicAnalysis::determine_hardfeatures(int index)
 {
-  float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f}};
+  float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}};
   float w = 0.0f;
   const int hardfeaturePlane[12][4] =
-  {{-1,0,1,7},
-   {-1,1,0,-7},
-   {0,-1,1,7},
-   {1,0,-1,7},
-   {1,-1,0,-7},
-   {0,1,-1,7},
-   {0,-1,1,-7},
-   {0,1,-1,-7},
-   {1,0,-1,-7},
-   {-1,0,1,-7},
-   {-1,1,0,7},
-   {1,-1,0,7}};
+  {
+    { -1, 0, 1, 7},
+    { -1, 1, 0, -7},
+    {0, -1, 1, 7},
+    {1, 0, -1, 7},
+    {1, -1, 0, -7},
+    {0, 1, -1, 7},
+    {0, -1, 1, -7},
+    {0, 1, -1, -7},
+    {1, 0, -1, -7},
+    { -1, 0, 1, -7},
+    { -1, 1, 0, 7},
+    {1, -1, 0, 7}
+  };
   float hardfeaturePlaneNormal[12][3];
   for(size_t i = 0; i < 12; i++) { for(size_t j = 0; j < 3; j++) { hardfeaturePlaneNormal[i][j] = 0.0f; } }
   const float m_OneOverA = 1 / m_LatticeParameterA;
@@ -639,7 +641,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_hardfeatures(int index)
   }
 
   FOrientArrayType om(9, 0.0);
-  FOrientTransformsType::eu2om(FOrientArrayType( &(m_FeatureEulerAngles[3*index+0]), 3), om);
+  FOrientTransformsType::eu2om(FOrientArrayType( &(m_FeatureEulerAngles[3 * index + 0]), 3), om);
   om.toGMatrix(g);
   if (m_FeaturePhases[index] == m_MTRPhase)
   {
@@ -663,15 +665,15 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_hardfeatures(int index)
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::determine_initiators(int index)
 {
-  const float caxis[3] = {0.0f,0.0f,1.0f};
+  const float caxis[3] = {0.0f, 0.0f, 1.0f};
   bool initiatorFlag = false;
   float w = 0.0f;
-  float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f}};
+  float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}};
 
   if (m_FeaturePhases[index] == m_AlphaGlobPhase)
   {
     FOrientArrayType om(9, 0.0);
-    FOrientTransformsType::eu2om(FOrientArrayType(&(m_FeatureEulerAngles[3*index+0]), 3), om);
+    FOrientTransformsType::eu2om(FOrientArrayType(&(m_FeatureEulerAngles[3 * index + 0]), 3), om);
     om.toGMatrix(g);
 
     w = find_angle(g, caxis[0], caxis[1], caxis[2]);
@@ -688,15 +690,15 @@ void TiDwellFatigueCrystallographicAnalysis::determine_initiators(int index)
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::determine_softfeatures(int index)
 {
-  const float caxis[3] = {0.0f,0.0f,1.0f};
+  const float caxis[3] = {0.0f, 0.0f, 1.0f};
   float w = 0.0f;
-  float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f}};
+  float g[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}};
   //bool softfeatureFlag = false;
 
   if (m_FeaturePhases[index] == m_MTRPhase)
   {
     FOrientArrayType om(9, 0.0);
-    FOrientTransformsType::eu2om(FOrientArrayType(&(m_FeatureEulerAngles[3*index+0]), 3), om);
+    FOrientTransformsType::eu2om(FOrientArrayType(&(m_FeatureEulerAngles[3 * index + 0]), 3), om);
     om.toGMatrix(g);
 
     w = find_angle(g, caxis[0], caxis[1], caxis[2]);
@@ -841,7 +843,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString TiDwellFatigueCrystallographicAnalysis::getGroupName()
 {
-  return TransformationPhaseConstants::FilterGroups::TransformationPhaseFilters;
+  return DREAM3D::FilterGroups::Unsupported;
 }
 
 
