@@ -52,6 +52,7 @@
 #include "Plugins/Statistics/StatisticsConstants.h"
 #include "DREAM3DLib/DataContainers/DataContainer.h"
 #include "DREAM3DLib/DataArrays/NeighborList.hpp"
+#include "DREAM3DLib/FilterParameters/FloatVec3FilterParameter.h"
 
 /**
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
