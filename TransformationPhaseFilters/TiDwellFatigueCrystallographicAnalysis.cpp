@@ -38,9 +38,16 @@
 
 #include "DREAM3DLib/Common/Constants.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
+
+#include "DREAM3DLib/FilterParameters/IntFilterParameter.h"
+#include "DREAM3DLib/FilterParameters/DoubleFilterParameter.h"
+#include "DREAM3DLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "DREAM3DLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "DREAM3DLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "DREAM3DLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "DREAM3DLib/FilterParameters/StringFilterParameter.h"
 #include "DREAM3DLib/Math/MatrixMath.h"
 #include "DREAM3DLib/Math/GeometryMath.h"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "DREAM3DLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "DREAM3DLib/FilterParameters/SeparatorFilterParameter.h"
@@ -131,51 +138,51 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   FilterParameterVector parameters;
   QStringList linkedProps1("AlphaGlobPhase");
   parameters.push_back(LinkedBooleanFilterParameter::New("Alpha Glob Phase Present", "AlphaGlobPhasePresent", getAlphaGlobPhasePresent(), linkedProps1, FilterParameter::Parameter));
-  parameters.push_back(FilterParameter::New("Alpha Glob Phase Number", "AlphaGlobPhase", FilterParameterWidgetType::IntWidget, getAlphaGlobPhase(), FilterParameter::Parameter, ""));
-  parameters.push_back(FilterParameter::New("Microtextured Region Phase Number", "MTRPhase", FilterParameterWidgetType::IntWidget, getMTRPhase(), FilterParameter::Parameter, ""));
-  parameters.push_back(FilterParameter::New("Lattice Parameter A", "LatticeParameterA", FilterParameterWidgetType::DoubleWidget, getLatticeParameterA(), FilterParameter::Parameter, ""));
-  parameters.push_back(FilterParameter::New("Lattice Parameter C", "LatticeParameterC", FilterParameterWidgetType::DoubleWidget, getLatticeParameterC(), FilterParameter::Parameter, ""));
-  parameters.push_back(FilterParameter::New("Stress Axis", "StressAxis", FilterParameterWidgetType::FloatVec3Widget, getStressAxis(), FilterParameter::Parameter));
-  parameters.push_back(FilterParameter::New("Subsurface Feature Distance to Consider", "SubsurfaceDistance", FilterParameterWidgetType::IntWidget, getSubsurfaceDistance(), FilterParameter::Parameter, "Microns"));
-  parameters.push_back(FilterParameter::New("Fraction of Features to Consider", "ConsiderationFraction", FilterParameterWidgetType::DoubleWidget, getConsiderationFraction(), FilterParameter::Parameter, ""));
+  parameters.push_back(IntFilterParameter::New("Alpha Glob Phase Number", "AlphaGlobPhase", getAlphaGlobPhase(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Microtextured Region Phase Number", "MTRPhase", getMTRPhase(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Lattice Parameter A", "LatticeParameterA", getLatticeParameterA(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Lattice Parameter C", "LatticeParameterC", getLatticeParameterC(), FilterParameter::Parameter));
+  parameters.push_back(FloatVec3FilterParameter::New("Stress Axis", "StressAxis", getStressAxis(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Subsurface Feature Distance to Consider (Microns)", "SubsurfaceDistance", getSubsurfaceDistance(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Fraction of Features to Consider", "ConsiderationFraction", getConsiderationFraction(), FilterParameter::Parameter));
   QStringList linkedProps2;
   linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
   parameters.push_back(LinkedBooleanFilterParameter::New("Do Not Assume Initiator Presence", "DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence(), linkedProps2, FilterParameter::Parameter));
-  parameters.push_back(FilterParameter::New("Initiator Lower Threshold", "InitiatorLowerThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorLowerThreshold(), FilterParameter::Parameter, "Degrees"));
-  parameters.push_back(FilterParameter::New("Initiator Upper Threshold", "InitiatorUpperThreshold", FilterParameterWidgetType::DoubleWidget, getInitiatorUpperThreshold(), FilterParameter::Parameter, "Degrees"));
-  parameters.push_back(FilterParameter::New("Hard Feature Lower Threshold", "HardFeatureLowerThreshold", FilterParameterWidgetType::DoubleWidget, getHardFeatureLowerThreshold(), FilterParameter::Parameter, "Degrees"));
-  parameters.push_back(FilterParameter::New("Hard Feature Upper Threshold", "HardFeatureUpperThreshold", FilterParameterWidgetType::DoubleWidget, getHardFeatureUpperThreshold(), FilterParameter::Parameter, "Degrees"));
-  parameters.push_back(FilterParameter::New("Soft Feature Lower Threshold", "SoftFeatureLowerThreshold", FilterParameterWidgetType::DoubleWidget, getSoftFeatureLowerThreshold(), FilterParameter::Parameter, "Degrees"));
-  parameters.push_back(FilterParameter::New("Soft Feature Upper Threshold", "SoftFeatureUpperThreshold", FilterParameterWidgetType::DoubleWidget, getSoftFeatureUpperThreshold(), FilterParameter::Parameter, "Degrees"));
+  parameters.push_back(DoubleFilterParameter::New("Initiator Lower Threshold (Degrees)", "InitiatorLowerThreshold", getInitiatorLowerThreshold(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Initiator Upper Threshold (Degrees)", "InitiatorUpperThreshold", getInitiatorUpperThreshold(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Hard Feature Lower Threshold (Degrees)", "HardFeatureLowerThreshold", getHardFeatureLowerThreshold(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Hard Feature Upper Threshold (Degrees)", "HardFeatureUpperThreshold", getHardFeatureUpperThreshold(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Soft Feature Lower Threshold (Degrees)", "SoftFeatureLowerThreshold", getSoftFeatureLowerThreshold(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("Soft Feature Upper Threshold (Degrees)", "SoftFeatureUpperThreshold", getSoftFeatureUpperThreshold(), FilterParameter::Parameter));
 
 
-  parameters.push_back(FilterParameter::New("Data Container", "DataContainerName", FilterParameterWidgetType::DataContainerSelectionWidget, getDataContainerName(), FilterParameter::RequiredArray, ""));
+  parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
-  parameters.push_back(FilterParameter::New("FeatureIds", "FeatureIdsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureIdsArrayPath(), FilterParameter::RequiredArray, ""));
+  parameters.push_back(DataArraySelectionFilterParameter::New("FeatureIds", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
-  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix", "CellFeatureAttributeMatrixPath", FilterParameterWidgetType::AttributeMatrixSelectionWidget, getCellFeatureAttributeMatrixPath(), FilterParameter::RequiredArray, ""));
-  parameters.push_back(FilterParameter::New("Average Euler Angles", "FeatureEulerAnglesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeatureEulerAnglesArrayPath(), FilterParameter::RequiredArray, ""));
-  parameters.push_back(FilterParameter::New("Phases", "FeaturePhasesArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getFeaturePhasesArrayPath(), FilterParameter::RequiredArray, ""));
-  parameters.push_back(FilterParameter::New("Neighbor List", "NeighborListArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getNeighborListArrayPath(), FilterParameter::RequiredArray, ""));
-  parameters.push_back(FilterParameter::New("Centroids", "CentroidsArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCentroidsArrayPath(), FilterParameter::RequiredArray, ""));
+  parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Feature Attribute Matrix", "CellFeatureAttributeMatrixPath", getCellFeatureAttributeMatrixPath(), FilterParameter::RequiredArray));
+  parameters.push_back(DataArraySelectionFilterParameter::New("Average Euler Angles", "FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath(), FilterParameter::RequiredArray));
+  parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "FeaturePhasesArrayPath", getFeaturePhasesArrayPath(), FilterParameter::RequiredArray));
+  parameters.push_back(DataArraySelectionFilterParameter::New("Neighbor List", "NeighborListArrayPath", getNeighborListArrayPath(), FilterParameter::RequiredArray));
+  parameters.push_back(DataArraySelectionFilterParameter::New("Centroids", "CentroidsArrayPath", getCentroidsArrayPath(), FilterParameter::RequiredArray));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
-  parameters.push_back(FilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", FilterParameterWidgetType::DataArraySelectionWidget, getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, ""));
+  parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
-  parameters.push_back(FilterParameter::New("Parent Ids", "CellParentIdsArrayName", FilterParameterWidgetType::StringWidget, getCellParentIdsArrayName(), FilterParameter::CreatedArray, ""));
+  parameters.push_back(StringFilterParameter::New("Parent Ids", "CellParentIdsArrayName", getCellParentIdsArrayName(), FilterParameter::CreatedArray));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(FilterParameter::New("Cell Feature Attribute Matrix", "NewCellFeatureAttributeMatrixName", FilterParameterWidgetType::StringWidget, getNewCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Selected Features", "SelectedFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSelectedFeaturesArrayName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Initiators", "InitiatorsArrayName", FilterParameterWidgetType::StringWidget, getInitiatorsArrayName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Hard Features", "HardFeaturesArrayName", FilterParameterWidgetType::StringWidget, getHardFeaturesArrayName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Soft Features", "SoftFeaturesArrayName", FilterParameterWidgetType::StringWidget, getSoftFeaturesArrayName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Hard-Soft Groups", "HardSoftGroupsArrayName", FilterParameterWidgetType::StringWidget, getHardSoftGroupsArrayName(), FilterParameter::CreatedArray, ""));
-  parameters.push_back(FilterParameter::New("Parent Ids", "FeatureParentIdsArrayName", FilterParameterWidgetType::StringWidget, getFeatureParentIdsArrayName(), FilterParameter::CreatedArray, ""));
+  parameters.push_back(StringFilterParameter::New("Cell Feature Attribute Matrix", "NewCellFeatureAttributeMatrixName", getNewCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Selected Features", "SelectedFeaturesArrayName", getSelectedFeaturesArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Initiators", "InitiatorsArrayName", getInitiatorsArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Hard Features", "HardFeaturesArrayName", getHardFeaturesArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Soft Features", "SoftFeaturesArrayName", getSoftFeaturesArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Hard-Soft Groups", "HardSoftGroupsArrayName", getHardSoftGroupsArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Parent Ids", "FeatureParentIdsArrayName", getFeatureParentIdsArrayName(), FilterParameter::CreatedArray));
 
-  //parameters.push_back(FilterParameter::New("Active", "ActiveArrayName", FilterParameterWidgetType::StringWidget, getActiveArrayName(), FilterParameter::CreatedArray, ""));
+  //parameters.push_back(StringFilterParameter::New("Active", "ActiveArrayName", getActiveArrayName(), FilterParameter::CreatedArray));
   setFilterParameters(parameters);
 }
 
