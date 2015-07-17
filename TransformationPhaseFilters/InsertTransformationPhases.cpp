@@ -259,7 +259,10 @@ void InsertTransformationPhases::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
-  parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Ensemble Attribute Matrix", "StatsGenCellEnsembleAttributeMatrixPath", getStatsGenCellEnsembleAttributeMatrixPath(), FilterParameter::RequiredArray));
+  {
+    AttributeMatrixSelectionFilterParameter::DataStructureRequirements req;
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Ensemble Attribute Matrix", "StatsGenCellEnsembleAttributeMatrixPath", getStatsGenCellEnsembleAttributeMatrixPath(), FilterParameter::RequiredArray, req));
+  }
   {
     DataArraySelectionFilterParameter::DataStructureRequirements req;
     QVector<unsigned int> amTypes;
