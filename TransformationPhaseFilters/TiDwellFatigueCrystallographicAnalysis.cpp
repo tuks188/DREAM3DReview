@@ -155,8 +155,10 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(DoubleFilterParameter::New("Soft Feature Lower Threshold (Degrees)", "SoftFeatureLowerThreshold", getSoftFeatureLowerThreshold(), FilterParameter::Parameter));
   parameters.push_back(DoubleFilterParameter::New("Soft Feature Upper Threshold (Degrees)", "SoftFeatureUpperThreshold", getSoftFeatureUpperThreshold(), FilterParameter::Parameter));
 
-
-  parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray));
+  {
+    DataContainerSelectionFilterParameter::DataStructureRequirements req;
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req));
+  }
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
 
   {
