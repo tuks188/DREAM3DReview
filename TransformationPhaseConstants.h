@@ -6,7 +6,7 @@
 namespace TransformationPhaseConstants
 {
   const QString TransformationPhasePluginFile("TransformationPhasePlugin");
-  const QString TransformationPhasePluginDisplayName("TransformationPhasePlugin");
+  const QString TransformationPhasePluginDisplayName("TransformationPhase");
   const QString TransformationPhaseBaseName("TransformationPhasePlugin");
 
   namespace FilterGroups
@@ -14,15 +14,16 @@ namespace TransformationPhaseConstants
     const QString TransformationPhaseFilters("Transformation Phase");
   }
 
-  const DREAM3D_STRING Initiators("Initiators");
-  const DREAM3D_STRING HardFeatures("HardFeatures");
-  const DREAM3D_STRING SoftFeatures("SoftFeatures");
-  const DREAM3D_STRING HardSoftGroups("HardSoftGroups");
-  const DREAM3D_STRING SelectedFeatures("SelectedFeatures");
-  const DREAM3D_STRING SubsurfaceFeatures("SubsurfaceFeatures");
+  const QString Initiators("Initiators");
+  const QString HardFeatures("HardFeatures");
+  const QString SoftFeatures("SoftFeatures");
+  const QString HardSoftGroups("HardSoftGroups");
+  const QString SelectedFeatures("SelectedFeatures");
+  const QString SubsurfaceFeatures("SubsurfaceFeatures");
 
-  const DREAM3D_STRING SurfaceMeshCSLBoundary("SurfaceMeshCSLBoundary");
-  const DREAM3D_STRING SurfaceMeshCSLBoundaryIncoherence("SurfaceMeshCSLBoundaryIncoherence");
+  const QString SurfaceMeshCSLBoundary("SurfaceMeshCSLBoundary");
+  const QString SurfaceMeshCSLBoundaryIncoherence("SurfaceMeshCSLBoundaryIncoherence");
+
   namespace CSL
   {
 
