@@ -315,8 +315,7 @@ void TesselateFarFieldGrains::setupFilterParameters()
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
-    AttributeMatrixSelectionFilterParameter::DataStructureRequirements req;
-    req.amTypes = QVector<unsigned int>(1, DREAM3D::AttributeMatrixType::Cell);
+    AttributeMatrixSelectionFilterParameter::DataStructureRequirements req = AttributeMatrixSelectionFilterParameter::CreateRequirement(DREAM3D::AttributeMatrixType::Cell, DREAM3D::GeometryType::UnknownGeometry);
     parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "OutputCellAttributeMatrixName", getOutputCellAttributeMatrixName(), FilterParameter::RequiredArray, req));
   }
 
