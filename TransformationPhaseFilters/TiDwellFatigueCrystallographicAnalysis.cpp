@@ -36,27 +36,27 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "TiDwellFatigueCrystallographicAnalysis.h"
 
-#include "DREAM3DLib/Common/Constants.h"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
-#include "DREAM3DLib/FilterParameters/IntFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DoubleFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/FloatVec3FilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DataContainerSelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/StringFilterParameter.h"
-#include "DREAM3DLib/Math/MatrixMath.h"
-#include "DREAM3DLib/Math/GeometryMath.h"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "DREAM3DLib/FilterParameters/LinkedBooleanFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/SeparatorFilterParameter.h"
-#include "DREAM3DLib/Common/FilterManager.h"
-#include "DREAM3DLib/Common/FilterFactory.hpp"
-#include "DREAM3DLib/Common/FilterPipeline.h"
-#include "DREAM3DLib/Plugin/IDREAM3DPlugin.h"
-#include "DREAM3DLib/Plugin/DREAM3DPluginLoader.h"
-#include "DREAM3DLib/Utilities/DREAM3DRandom.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Math/MatrixMath.h"
+#include "SIMPLib/Math/GeometryMath.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Utilities/SIMPLibRandom.h"
 
 #include "OrientationLib/OrientationMath/OrientationMath.h"
 #include "OrientationLib/OrientationMath/OrientationArray.hpp"
@@ -258,40 +258,40 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
 int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
-  DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
-  DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
-  DREAM3D_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
-  DREAM3D_FILTER_WRITE_PARAMETER(MTRPhase)
-  DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterA)
-  DREAM3D_FILTER_WRITE_PARAMETER(LatticeParameterC)
-  DREAM3D_FILTER_WRITE_PARAMETER(StressAxis)
-  DREAM3D_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
-  DREAM3D_FILTER_WRITE_PARAMETER(ConsiderationFraction)
-  DREAM3D_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
-  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
-  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
-  DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureLowerThreshold)
-  DREAM3D_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
-  DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
-  DREAM3D_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
-  DREAM3D_FILTER_WRITE_PARAMETER(NewCellFeatureAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(HardSoftGroupsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(DataContainerName)
-  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(ActiveArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
+  SIMPL_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
+  SIMPL_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
+  SIMPL_FILTER_WRITE_PARAMETER(MTRPhase)
+  SIMPL_FILTER_WRITE_PARAMETER(LatticeParameterA)
+  SIMPL_FILTER_WRITE_PARAMETER(LatticeParameterC)
+  SIMPL_FILTER_WRITE_PARAMETER(StressAxis)
+  SIMPL_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
+  SIMPL_FILTER_WRITE_PARAMETER(ConsiderationFraction)
+  SIMPL_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
+  SIMPL_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
+  SIMPL_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
+  SIMPL_FILTER_WRITE_PARAMETER(HardFeatureLowerThreshold)
+  SIMPL_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
+  SIMPL_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
+  SIMPL_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
+  SIMPL_FILTER_WRITE_PARAMETER(NewCellFeatureAttributeMatrixName)
+  SIMPL_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(HardSoftGroupsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
+  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(ActiveArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -416,7 +416,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  DREAM3D_RANDOMNG_NEW()
+  SIMPL_RANDOMNG_NEW()
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
   size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
@@ -844,7 +844,7 @@ float TiDwellFatigueCrystallographicAnalysis::find_angle(float g[3][3], float pl
   w = GeometryMath::CosThetaBetweenVectors(v, sampleLoading);
   w = acos(w);
   // Convert from radian to degrees
-  return w *= DREAM3D::Constants::k_180OverPi;
+  return w *= SIMPLib::Constants::k_180OverPi;
 }
 
 // -----------------------------------------------------------------------------

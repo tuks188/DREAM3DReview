@@ -44,23 +44,23 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "DREAM3DLib/Common/Constants.h"
-#include "DREAM3DLib/Math/DREAM3DMath.h"
-#include "DREAM3DLib/Math/MatrixMath.h"
-#include "DREAM3DLib/Utilities/DREAM3DRandom.h"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/Math/MatrixMath.h"
+#include "SIMPLib/Utilities/SIMPLibRandom.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
-#include "DREAM3DLib/FilterParameters/IntFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DoubleFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/FloatVec3FilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/StringFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DataArrayCreationFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "DREAM3DLib/FilterParameters/ChoiceFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/LinkedBooleanFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 
 #include "OrientationLib/OrientationMath/OrientationMath.h"
 #include "OrientationLib/OrientationMath/OrientationArray.hpp"
@@ -290,32 +290,32 @@ void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersRe
 int InsertTransformationPhases::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
-  DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
-  DREAM3D_FILTER_WRITE_PARAMETER(ParentPhase)
-  DREAM3D_FILTER_WRITE_PARAMETER(TransCrystalStruct)
-  DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseMisorientation)
-  DREAM3D_FILTER_WRITE_PARAMETER(DefineHabitPlane)
-  DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseHabitPlane)
-  DREAM3D_FILTER_WRITE_PARAMETER(TransformationPhaseThickness)
-  DREAM3D_FILTER_WRITE_PARAMETER(UseAllVariants)
-  DREAM3D_FILTER_WRITE_PARAMETER(CoherentFrac)
-  DREAM3D_FILTER_WRITE_PARAMETER(NumTransformationPhasesPerFeature)
-  DREAM3D_FILTER_WRITE_PARAMETER(PeninsulaFrac)
+  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
+  SIMPL_FILTER_WRITE_PARAMETER(ParentPhase)
+  SIMPL_FILTER_WRITE_PARAMETER(TransCrystalStruct)
+  SIMPL_FILTER_WRITE_PARAMETER(TransformationPhaseMisorientation)
+  SIMPL_FILTER_WRITE_PARAMETER(DefineHabitPlane)
+  SIMPL_FILTER_WRITE_PARAMETER(TransformationPhaseHabitPlane)
+  SIMPL_FILTER_WRITE_PARAMETER(TransformationPhaseThickness)
+  SIMPL_FILTER_WRITE_PARAMETER(UseAllVariants)
+  SIMPL_FILTER_WRITE_PARAMETER(CoherentFrac)
+  SIMPL_FILTER_WRITE_PARAMETER(NumTransformationPhasesPerFeature)
+  SIMPL_FILTER_WRITE_PARAMETER(PeninsulaFrac)
 
-  DREAM3D_FILTER_WRITE_PARAMETER(StatsGenCellEnsembleAttributeMatrixPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(EquivalentDiametersArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(NumFeaturesPerParentArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(PhaseTypesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(ShapeTypesArrayPath)
-  DREAM3D_FILTER_WRITE_PARAMETER(NumFeaturesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(StatsGenCellEnsembleAttributeMatrixPath)
+  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(EquivalentDiametersArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(NumFeaturesPerParentArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(PhaseTypesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(ShapeTypesArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(NumFeaturesArrayPath)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -536,7 +536,7 @@ void InsertTransformationPhases::execute()
 void InsertTransformationPhases::insert_transformationphases()
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
-  DREAM3D_RANDOMNG_NEW()
+  SIMPL_RANDOMNG_NEW()
 
   size_t totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
   //int64_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
@@ -772,7 +772,7 @@ void InsertTransformationPhases::insert_transformationphases()
 bool InsertTransformationPhases::place_transformationphase(size_t curFeature, float sampleHabitPlane[3], size_t totalFeatures, float plateThickness, float d, size_t numFeatures)
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
-  DREAM3D_RANDOMNG_NEW()
+  SIMPL_RANDOMNG_NEW()
 
   //size_t totalPoints = static_cast<size_t>(m_FeatureIdsPtr.lock()->getNumberOfTuples());
   int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
@@ -886,7 +886,7 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
 void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature, size_t totalFeatures)
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
-  DREAM3D_RANDOMNG_NEW()
+  SIMPL_RANDOMNG_NEW()
   int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
   int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
   int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());

@@ -41,18 +41,18 @@
 
 #include <boost/shared_array.hpp>
 
-#include "DREAM3DLib/DREAM3DLib.h"
-#include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"
-#include "DREAM3DLib/DataArrays/IDataArray.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
-#include "DREAM3DLib/DREAM3DLib.h"
-#include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"
-#include "DREAM3DLib/DataArrays/IDataArray.h"
-#include "DREAM3DLib/Common/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/Common/AbstractFilter.h"
 #include "Plugins/Statistics/StatisticsConstants.h"
-#include "DREAM3DLib/DataContainers/DataContainer.h"
-#include "DREAM3DLib/DataArrays/NeighborList.hpp"
-#include "DREAM3DLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataArrays/NeighborList.hpp"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 
 /**
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
@@ -65,97 +65,97 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:
-    DREAM3D_SHARED_POINTERS(TiDwellFatigueCrystallographicAnalysis)
-    DREAM3D_STATIC_NEW_MACRO(TiDwellFatigueCrystallographicAnalysis)
-    DREAM3D_TYPE_MACRO_SUPER(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
+    SIMPL_SHARED_POINTERS(TiDwellFatigueCrystallographicAnalysis)
+    SIMPL_STATIC_NEW_MACRO(TiDwellFatigueCrystallographicAnalysis)
+    SIMPL_TYPE_MACRO_SUPER(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
 
     virtual ~TiDwellFatigueCrystallographicAnalysis();
-    DREAM3D_FILTER_PARAMETER(QString, DataContainerName)
+    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-    DREAM3D_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
+    SIMPL_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
     Q_PROPERTY(bool AlphaGlobPhasePresent READ getAlphaGlobPhasePresent WRITE setAlphaGlobPhasePresent)
-    DREAM3D_FILTER_PARAMETER(int, AlphaGlobPhase)
+    SIMPL_FILTER_PARAMETER(int, AlphaGlobPhase)
     Q_PROPERTY(int AlphaGlobPhase READ getAlphaGlobPhase WRITE setAlphaGlobPhase)
-    DREAM3D_FILTER_PARAMETER(int, MTRPhase)
+    SIMPL_FILTER_PARAMETER(int, MTRPhase)
     Q_PROPERTY(int MTRPhase READ getMTRPhase WRITE setMTRPhase)
-    DREAM3D_FILTER_PARAMETER(float, LatticeParameterA)
+    SIMPL_FILTER_PARAMETER(float, LatticeParameterA)
     Q_PROPERTY(float LatticeParameterA READ getLatticeParameterA WRITE setLatticeParameterA)
-    DREAM3D_FILTER_PARAMETER(float, LatticeParameterC)
+    SIMPL_FILTER_PARAMETER(float, LatticeParameterC)
     Q_PROPERTY(float LatticeParameterC READ getLatticeParameterC WRITE setLatticeParameterC)
-    DREAM3D_FILTER_PARAMETER(FloatVec3_t, StressAxis)
+    SIMPL_FILTER_PARAMETER(FloatVec3_t, StressAxis)
     Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
-    DREAM3D_FILTER_PARAMETER(int, SubsurfaceDistance)
+    SIMPL_FILTER_PARAMETER(int, SubsurfaceDistance)
     Q_PROPERTY(int SubsurfaceDistance READ getSubsurfaceDistance WRITE setSubsurfaceDistance)
     Q_PROPERTY(float ConsiderationFraction READ getConsiderationFraction WRITE setConsiderationFraction)
-    DREAM3D_FILTER_PARAMETER(float, ConsiderationFraction)
+    SIMPL_FILTER_PARAMETER(float, ConsiderationFraction)
 
-    DREAM3D_FILTER_PARAMETER(bool, DoNotAssumeInitiatorPresence)
+    SIMPL_FILTER_PARAMETER(bool, DoNotAssumeInitiatorPresence)
     Q_PROPERTY(bool DoNotAssumeInitiatorPresence READ getDoNotAssumeInitiatorPresence WRITE setDoNotAssumeInitiatorPresence)
-    DREAM3D_FILTER_PARAMETER(float, InitiatorLowerThreshold)
+    SIMPL_FILTER_PARAMETER(float, InitiatorLowerThreshold)
     Q_PROPERTY(float InitiatorLowerThreshold READ getInitiatorLowerThreshold WRITE setInitiatorLowerThreshold)
-    DREAM3D_FILTER_PARAMETER(float, InitiatorUpperThreshold)
+    SIMPL_FILTER_PARAMETER(float, InitiatorUpperThreshold)
     Q_PROPERTY(float InitiatorUpperThreshold READ getInitiatorUpperThreshold WRITE setInitiatorUpperThreshold)
-    DREAM3D_FILTER_PARAMETER(float, HardFeatureLowerThreshold)
+    SIMPL_FILTER_PARAMETER(float, HardFeatureLowerThreshold)
     Q_PROPERTY(float HardFeatureLowerThreshold READ getHardFeatureLowerThreshold WRITE setHardFeatureLowerThreshold)
-    DREAM3D_FILTER_PARAMETER(float, HardFeatureUpperThreshold)
+    SIMPL_FILTER_PARAMETER(float, HardFeatureUpperThreshold)
     Q_PROPERTY(float HardFeatureUpperThreshold READ getHardFeatureUpperThreshold WRITE setHardFeatureUpperThreshold)
-    DREAM3D_FILTER_PARAMETER(float, SoftFeatureLowerThreshold)
+    SIMPL_FILTER_PARAMETER(float, SoftFeatureLowerThreshold)
     Q_PROPERTY(float SoftFeatureLowerThreshold READ getSoftFeatureLowerThreshold WRITE setSoftFeatureLowerThreshold)
-    DREAM3D_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
+    SIMPL_FILTER_PARAMETER(float, SoftFeatureUpperThreshold)
     Q_PROPERTY(float SoftFeatureUpperThreshold READ getSoftFeatureUpperThreshold WRITE setSoftFeatureUpperThreshold)
 
 
-    DREAM3D_FILTER_PARAMETER(QString,NewCellFeatureAttributeMatrixName)
+    SIMPL_FILTER_PARAMETER(QString,NewCellFeatureAttributeMatrixName)
     Q_PROPERTY(QString NewCellFeatureAttributeMatrixName READ getNewCellFeatureAttributeMatrixName WRITE setNewCellFeatureAttributeMatrixName)
 
-    DREAM3D_FILTER_PARAMETER(QString, SelectedFeaturesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, SelectedFeaturesArrayName)
     Q_PROPERTY(QString SelectedFeaturesArrayName READ getSelectedFeaturesArrayName WRITE setSelectedFeaturesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, InitiatorsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, InitiatorsArrayName)
     Q_PROPERTY(QString InitiatorsArrayName READ getInitiatorsArrayName WRITE setInitiatorsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, HardFeaturesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, HardFeaturesArrayName)
     Q_PROPERTY(QString HardFeaturesArrayName READ getHardFeaturesArrayName WRITE setHardFeaturesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, SoftFeaturesArrayName)
     Q_PROPERTY(QString SoftFeaturesArrayName READ getSoftFeaturesArrayName WRITE setSoftFeaturesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, HardSoftGroupsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, HardSoftGroupsArrayName)
     Q_PROPERTY(QString HardSoftGroupsArrayName READ getHardSoftGroupsArrayName WRITE setHardSoftGroupsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
+    SIMPL_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
     Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 	
-	DREAM3D_FILTER_PARAMETER(QString, CellParentIdsArrayName)
+	SIMPL_FILTER_PARAMETER(QString, CellParentIdsArrayName)
     Q_PROPERTY(QString CellParentIdsArrayName READ getCellParentIdsArrayName WRITE setCellParentIdsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
     Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, ActiveArrayName)
+    SIMPL_FILTER_PARAMETER(QString, ActiveArrayName)
     Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath FeatureEulerAnglesArrayPath READ getFeatureEulerAnglesArrayPath WRITE setFeatureEulerAnglesArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, FeaturePhasesArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, FeaturePhasesArrayPath)
     Q_PROPERTY(DataArrayPath FeaturePhasesArrayPath READ getFeaturePhasesArrayPath WRITE setFeaturePhasesArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, NeighborListArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, NeighborListArrayPath)
     Q_PROPERTY(DataArrayPath NeighborListArrayPath READ getNeighborListArrayPath WRITE setNeighborListArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CentroidsArrayPath)
     Q_PROPERTY(DataArrayPath CentroidsArrayPath READ getCentroidsArrayPath WRITE setCentroidsArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
     /**
