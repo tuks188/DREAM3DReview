@@ -43,15 +43,15 @@
 
 #include <boost/shared_array.hpp>
 
-#include "DREAM3DLib/DREAM3DLib.h"
-#include "DREAM3DLib/Common/AbstractFilter.h"
-#include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"
-#include "DREAM3DLib/FilterParameters/FileListInfoFilterParameter.h"
-#include "DREAM3DLib/DataArrays/IDataArray.h"
-#include "DREAM3DLib/DataArrays/StatsDataArray.h"
-#include "DREAM3DLib/DataContainers/DataContainer.h"
-#include "DREAM3DLib/StatsData/StatsData.h"
-#include "DREAM3DLib/Geometry/ShapeOps/ShapeOps.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/StatsDataArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/StatsData/StatsData.h"
+#include "SIMPLib/Geometry/ShapeOps/ShapeOps.h"
 #include "OrientationLib/SpaceGroupOps/OrthoRhombicOps.h"
 #include "HEDMAnalysis/HEDMAnalysisConstants.h"
 
@@ -67,65 +67,65 @@ class TesselateFarFieldGrains : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:
-    DREAM3D_SHARED_POINTERS(TesselateFarFieldGrains)
-    DREAM3D_STATIC_NEW_MACRO(TesselateFarFieldGrains)
-    DREAM3D_TYPE_MACRO_SUPER(TesselateFarFieldGrains, AbstractFilter)
+    SIMPL_SHARED_POINTERS(TesselateFarFieldGrains)
+    SIMPL_STATIC_NEW_MACRO(TesselateFarFieldGrains)
+    SIMPL_TYPE_MACRO_SUPER(TesselateFarFieldGrains, AbstractFilter)
 
     virtual ~TesselateFarFieldGrains();
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, OutputCellAttributeMatrixName)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, OutputCellAttributeMatrixName)
     Q_PROPERTY(DataArrayPath OutputCellAttributeMatrixName READ getOutputCellAttributeMatrixName WRITE setOutputCellAttributeMatrixName)
 
-    DREAM3D_INSTANCE_STRING_PROPERTY(OutputCellFeatureAttributeMatrixName)
+    SIMPL_INSTANCE_STRING_PROPERTY(OutputCellFeatureAttributeMatrixName)
     Q_PROPERTY(QString OutputCellFeatureAttributeMatrixName READ getOutputCellFeatureAttributeMatrixName WRITE setOutputCellFeatureAttributeMatrixName)
 
-    DREAM3D_INSTANCE_STRING_PROPERTY(OutputCellEnsembleAttributeMatrixName)
+    SIMPL_INSTANCE_STRING_PROPERTY(OutputCellEnsembleAttributeMatrixName)
     Q_PROPERTY(QString OutputCellEnsembleAttributeMatrixName READ getOutputCellEnsembleAttributeMatrixName WRITE setOutputCellEnsembleAttributeMatrixName)
 
-    DREAM3D_FILTER_PARAMETER(QString, FeatureIdsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, FeatureIdsArrayName)
     Q_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, CellPhasesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, CellPhasesArrayName)
     Q_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, SlabIdArrayName)
+    SIMPL_FILTER_PARAMETER(QString, SlabIdArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, FeaturePhasesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, FeaturePhasesArrayName)
     Q_PROPERTY(QString FeaturePhasesArrayName READ getFeaturePhasesArrayName WRITE setFeaturePhasesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, FeatureEulerAnglesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, FeatureEulerAnglesArrayName)
     Q_PROPERTY(QString FeatureEulerAnglesArrayName READ getFeatureEulerAnglesArrayName WRITE setFeatureEulerAnglesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, ElasticStrainsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, ElasticStrainsArrayName)
     Q_PROPERTY(QString ElasticStrainsArrayName READ getElasticStrainsArrayName WRITE setElasticStrainsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, CentroidsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, CentroidsArrayName)
     Q_PROPERTY(QString CentroidsArrayName READ getCentroidsArrayName WRITE setCentroidsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, VolumesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, VolumesArrayName)
     Q_PROPERTY(QString VolumesArrayName READ getVolumesArrayName WRITE setVolumesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, AxisLengthsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, AxisLengthsArrayName)
     Q_PROPERTY(QString AxisLengthsArrayName READ getAxisLengthsArrayName WRITE setAxisLengthsArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, AxisEulerAnglesArrayName)
+    SIMPL_FILTER_PARAMETER(QString, AxisEulerAnglesArrayName)
     Q_PROPERTY(QString AxisEulerAnglesArrayName READ getAxisEulerAnglesArrayName WRITE setAxisEulerAnglesArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, Omega3sArrayName)
+    SIMPL_FILTER_PARAMETER(QString, Omega3sArrayName)
     Q_PROPERTY(QString Omega3sArrayName READ getOmega3sArrayName WRITE setOmega3sArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, EquivalentDiametersArrayName)
+    SIMPL_FILTER_PARAMETER(QString, EquivalentDiametersArrayName)
     Q_PROPERTY(QString EquivalentDiametersArrayName READ getEquivalentDiametersArrayName WRITE setEquivalentDiametersArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
+    SIMPL_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
     Q_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
 
     typedef boost::shared_array<float> SharedFloatArray;
     typedef boost::shared_array<int> SharedIntArray;
 
-    DREAM3D_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
     Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
-    DREAM3D_FILTER_PARAMETER(FileListInfo_t, FeatureInputFileListInfo)
+    SIMPL_FILTER_PARAMETER(FileListInfo_t, FeatureInputFileListInfo)
     Q_PROPERTY(FileListInfo_t FeatureInputFileListInfo READ getFeatureInputFileListInfo WRITE setFeatureInputFileListInfo)
 
     virtual const QString getCompiledLibraryName();

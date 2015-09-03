@@ -38,7 +38,7 @@
 #include <algorithm>
 
 
-#ifdef DREAM3D_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range3d.h>
 #include <tbb/partitioner.h>
@@ -50,24 +50,24 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 
-#include "DREAM3DLib/Common/Constants.h"
-#include "DREAM3DLib/CoreFilters/DataContainerWriter.h"
-#include "DREAM3DLib/DataArrays/NeighborList.hpp"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "DREAM3DLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/CoreFilters/DataContainerWriter.h"
+#include "SIMPLib/DataArrays/NeighborList.hpp"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
-#include "DREAM3DLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/StringFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/FileListInfoFilterParameter.h"
-#include "DREAM3DLib/FilterParameters/SeparatorFilterParameter.h"
-#include "DREAM3DLib/Math/DREAM3DMath.h"
-#include "DREAM3DLib/Math/MatrixMath.h"
-#include "DREAM3DLib/StatsData/PrimaryStatsData.h"
-#include "DREAM3DLib/Geometry/ShapeOps/EllipsoidOps.h"
-#include "DREAM3DLib/Utilities/DREAM3DRandom.h"
-#include "DREAM3DLib/Utilities/FilePathGenerator.h"
-#include "DREAM3DLib/Utilities/TimeUtilities.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/Math/MatrixMath.h"
+#include "SIMPLib/StatsData/PrimaryStatsData.h"
+#include "SIMPLib/Geometry/ShapeOps/EllipsoidOps.h"
+#include "SIMPLib/Utilities/SIMPLibRandom.h"
+#include "SIMPLib/Utilities/FilePathGenerator.h"
+#include "SIMPLib/Utilities/TimeUtilities.h"
 #include "OrientationLib/OrientationMath/OrientationMath.h"
 
 //// Macro to determine if we are going to show the Debugging Output files
@@ -233,7 +233,7 @@ class AssignVoxelsImpl
       }
     }
 
-#ifdef DREAM3D_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
     void operator()(const tbb::blocked_range3d<int, int, int>& r) const
     {
       convert(r.pages().begin(), r.pages().end(), r.rows().begin(), r.rows().end(), r.cols().begin(), r.cols().end());
@@ -367,18 +367,18 @@ void TesselateFarFieldGrains::readFilterParameters(AbstractFilterParametersReade
 int TesselateFarFieldGrains::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
   writer->openFilterGroup(this, index);
-  DREAM3D_FILTER_WRITE_PARAMETER(FilterVersion)
-  DREAM3D_FILTER_WRITE_PARAMETER(OutputCellAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(OutputCellFeatureAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(OutputCellEnsembleAttributeMatrixName)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureInputFileListInfo)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureIdsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(CellPhasesArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeaturePhasesArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(ElasticStrainsArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(CrystalStructuresArrayName)
-  DREAM3D_FILTER_WRITE_PARAMETER(MaskArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
+  SIMPL_FILTER_WRITE_PARAMETER(OutputCellAttributeMatrixName)
+  SIMPL_FILTER_WRITE_PARAMETER(OutputCellFeatureAttributeMatrixName)
+  SIMPL_FILTER_WRITE_PARAMETER(OutputCellEnsembleAttributeMatrixName)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureInputFileListInfo)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(ElasticStrainsArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayName)
+  SIMPL_FILTER_WRITE_PARAMETER(MaskArrayPath)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -571,7 +571,7 @@ void TesselateFarFieldGrains::execute()
 {
   int err = 0;
   setErrorCondition(err);
-  DREAM3D_RANDOMNG_NEW()
+  SIMPL_RANDOMNG_NEW()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
@@ -706,9 +706,9 @@ void  TesselateFarFieldGrains::load_features()
     float flst[3][3];
     const float fourThirds = 4.0f / 3.0f;
 
-    alphaRef *= DREAM3D::Constants::k_PiOver180;
-    betaRef *= DREAM3D::Constants::k_PiOver180;
-    gammaRef *= DREAM3D::Constants::k_PiOver180;
+    alphaRef *= SIMPLib::Constants::k_PiOver180;
+    betaRef *= SIMPLib::Constants::k_PiOver180;
+    gammaRef *= SIMPLib::Constants::k_PiOver180;
     OrientationMath::RootTensorFromLatticeParameters(aRef, bRef, cRef, alphaRef, betaRef, gammaRef, rtAvg);
     MatrixMath::Identity3x3(identity);
     for(int i = 0; i < numFeatures; i++)
@@ -723,7 +723,7 @@ void  TesselateFarFieldGrains::load_features()
         m_Centroids[3 * currentFeature + 1] = yC + yShift;
         m_Centroids[3 * currentFeature + 2] = zC + (globalZPos - beamCenter);
 
-        vol = fourThirds * DREAM3D::Constants::k_Pi * eqRad * eqRad * eqRad;
+        vol = fourThirds * SIMPLib::Constants::k_Pi * eqRad * eqRad * eqRad;
         m_Volumes[currentFeature] = vol;
         m_EquivalentDiameters[currentFeature] = eqRad * 2.0;
         m_AxisLengths[3 * currentFeature + 0] = 1.0;
@@ -739,9 +739,9 @@ void  TesselateFarFieldGrains::load_features()
         FOrientArrayType eu(m_FeatureEulerAngles + (3 * i), 3);
         FOrientTransformsType::om2eu(FOrientArrayType(mat), eu);
 
-        alpha *= DREAM3D::Constants::k_PiOver180;
-        beta *= DREAM3D::Constants::k_PiOver180;
-        gamma *= DREAM3D::Constants::k_PiOver180;
+        alpha *= SIMPLib::Constants::k_PiOver180;
+        beta *= SIMPLib::Constants::k_PiOver180;
+        gamma *= SIMPLib::Constants::k_PiOver180;
         OrientationMath::RootTensorFromLatticeParameters(a, b, c, alpha, beta, gamma, rt);
         MatrixMath::Invert3x3(rt, rtInv);
         MatrixMath::Multiply3x3with3x3(rtInv, rtAvg, rtMult);
@@ -797,7 +797,7 @@ void TesselateFarFieldGrains::assign_voxels()
   };
 
 
-#ifdef DREAM3D_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
   bool doParallel = true;
 #endif
@@ -888,7 +888,7 @@ void TesselateFarFieldGrains::assign_voxels()
     float xx[3] = {xc, yc, zc };
 
     //#if 0
-#ifdef DREAM3D_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
     if (doParallel == true)
     {
       tbb::parallel_for(tbb::blocked_range3d<int, int, int>(zmin, zmax + 1, ymin, ymax + 1, xmin, xmax + 1),

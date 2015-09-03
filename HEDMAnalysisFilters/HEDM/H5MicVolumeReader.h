@@ -133,7 +133,7 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
     {
       T* buffer = NULL;
       if(numberOfElements == 0) { return buffer; }
-#if defined ( DREAM3D_USE_SSE ) && defined ( __SSE2__ )
+#if defined ( SIMPL_USE_SSE ) && defined ( __SSE2__ )
       buffer = static_cast<T*>( _mm_malloc (numberOfElements * sizeof(T), 16) );
 #else
       buffer = static_cast<T*>(malloc(sizeof(T) * numberOfElements));
@@ -151,7 +151,7 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
     {
       if (ptr != NULL && getManageMemory() == true)
       {
-#if defined ( DREAM3D_USE_SSE ) && defined ( __SSE2__ )
+#if defined ( SIMPL_USE_SSE ) && defined ( __SSE2__ )
         _mm_free(ptr );
 #else
         delete[] ptr;

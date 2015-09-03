@@ -40,12 +40,12 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QDateTime>
 
-#include "DREAM3DLib/DREAM3DLib.h"
-#include "DREAM3DLib/Common/DREAM3DSetGetMacros.h"
-#include "DREAM3DLib/DataArrays/IDataArray.h"
-#include "DREAM3DLib/DataArrays/StringDataArray.hpp"
-#include "DREAM3DLib/Common/AbstractFilter.h"
-#include "DREAM3DLib/DataContainers/DataContainer.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "HEDMAnalysisFilters/HEDM/MicPhase.h"
 
@@ -83,34 +83,34 @@ class ReadMicData : public AbstractFilter
     Q_DECLARE_PRIVATE(ReadMicData)
 
   public:
-    DREAM3D_SHARED_POINTERS(ReadMicData)
-    DREAM3D_STATIC_NEW_MACRO(ReadMicData)
-    DREAM3D_TYPE_MACRO_SUPER(ReadMicData, AbstractFilter)
+    SIMPL_SHARED_POINTERS(ReadMicData)
+    SIMPL_STATIC_NEW_MACRO(ReadMicData)
+    SIMPL_TYPE_MACRO_SUPER(ReadMicData, AbstractFilter)
 
     virtual ~ReadMicData();
 
-    DREAM3D_FILTER_PARAMETER(QString, DataContainerName)
+    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    DREAM3D_FILTER_PARAMETER(QString, CellEnsembleAttributeMatrixName)
+    SIMPL_FILTER_PARAMETER(QString, CellEnsembleAttributeMatrixName)
     Q_PROPERTY(QString CellEnsembleAttributeMatrixName READ getCellEnsembleAttributeMatrixName WRITE setCellEnsembleAttributeMatrixName)
 
-    DREAM3D_FILTER_PARAMETER(QString, CellAttributeMatrixName)
+    SIMPL_FILTER_PARAMETER(QString, CellAttributeMatrixName)
     Q_PROPERTY(QString CellAttributeMatrixName READ getCellAttributeMatrixName WRITE setCellAttributeMatrixName)
 
-    DREAM3D_FILTER_PARAMETER(bool, FileWasRead)
+    SIMPL_FILTER_PARAMETER(bool, FileWasRead)
     Q_PROPERTY(bool FileWasRead READ getFileWasRead)
 
-    DREAM3D_INSTANCE_STRING_PROPERTY(PhaseNameArrayName)
-    DREAM3D_INSTANCE_STRING_PROPERTY(MaterialNameArrayName)
+    SIMPL_INSTANCE_STRING_PROPERTY(PhaseNameArrayName)
+    SIMPL_INSTANCE_STRING_PROPERTY(MaterialNameArrayName)
 
-    DREAM3D_FILTER_PARAMETER(QString, InputFile)
+    SIMPL_FILTER_PARAMETER(QString, InputFile)
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
-    DREAM3D_INSTANCE_PROPERTY(QString, CellEulerAnglesArrayName)
-    DREAM3D_INSTANCE_PROPERTY(QString, CellPhasesArrayName)
-    DREAM3D_INSTANCE_PROPERTY(QString, CrystalStructuresArrayName)
-    DREAM3D_INSTANCE_PROPERTY(QString, LatticeConstantsArrayName)
+    SIMPL_INSTANCE_PROPERTY(QString, CellEulerAnglesArrayName)
+    SIMPL_INSTANCE_PROPERTY(QString, CellPhasesArrayName)
+    SIMPL_INSTANCE_PROPERTY(QString, CrystalStructuresArrayName)
+    SIMPL_INSTANCE_PROPERTY(QString, LatticeConstantsArrayName)
 
     /**
   * @brief This returns the group that the filter belonds to. You can select
@@ -164,12 +164,12 @@ class ReadMicData : public AbstractFilter
     virtual void preflight();
 
     /* These are non-exposed to the user through the GUI. Manual Pipelines are OK to set them */
-    DREAM3D_INSTANCE_PROPERTY(uint32_t, RefFrameZDir)
-    DREAM3D_INSTANCE_PROPERTY(int, Manufacturer)
+    SIMPL_INSTANCE_PROPERTY(uint32_t, RefFrameZDir)
+    SIMPL_INSTANCE_PROPERTY(int, Manufacturer)
 
-    DREAM3D_PIMPL_PROPERTY_DECL(QString, InputFile_Cache)
-    DREAM3D_PIMPL_PROPERTY_DECL(QDateTime, TimeStamp_Cache)
-    DREAM3D_PIMPL_PROPERTY_DECL(Mic_Private_Data, Data)
+    SIMPL_PIMPL_PROPERTY_DECL(QString, InputFile_Cache)
+    SIMPL_PIMPL_PROPERTY_DECL(QDateTime, TimeStamp_Cache)
+    SIMPL_PIMPL_PROPERTY_DECL(Mic_Private_Data, Data)
     Q_PROPERTY(Mic_Private_Data Data READ getData WRITE setData)
 
 
