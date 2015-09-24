@@ -90,6 +90,11 @@ ReadMicDataPrivate::ReadMicDataPrivate(ReadMicData* ptr) :
 
 }
 
+// Include the MOC generated file for this class
+#include "moc_ReadMicData.cpp"
+
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

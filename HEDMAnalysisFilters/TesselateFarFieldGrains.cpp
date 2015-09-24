@@ -245,6 +245,11 @@ class AssignVoxelsImpl
 };
 
 
+// Include the MOC generated file for this class
+#include "moc_TesselateFarFieldGrains.cpp"
+
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

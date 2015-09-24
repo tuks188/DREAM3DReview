@@ -14,7 +14,9 @@
 
 #include "HEDMAnalysis/HEDMAnalysisConstants.h"
 #include "HEDMAnalysis/HEDMAnalysisVersion.h"
-#include "HEDMAnalysis/moc_HEDMAnalysisPlugin.cpp"
+
+// Include the MOC generated CPP file which has all the QMetaObject methods/data
+#include "moc_HEDMAnalysisPlugin.cpp"
 
 // -----------------------------------------------------------------------------
 //
