@@ -68,6 +68,11 @@
 #include "TransformationPhase/TransformationPhaseConstants.h"
 
 
+// Include the MOC generated file for this class
+#include "moc_TiDwellFatigueCrystallographicAnalysis.cpp"
+
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

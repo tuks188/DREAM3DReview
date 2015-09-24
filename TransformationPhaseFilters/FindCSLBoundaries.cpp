@@ -191,10 +191,15 @@ class CalculateCSLBoundaryImpl
 #endif
 };
 
+// Include the MOC generated file for this class
+#include "moc_FindCSLBoundaries.cpp"
+
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FindCSLBoundaries::FindCSLBoundaries()  :
+FindCSLBoundaries::FindCSLBoundaries() :
   AbstractFilter(),
   m_CSL(3.0f),
   m_AxisTolerance(0.0f),

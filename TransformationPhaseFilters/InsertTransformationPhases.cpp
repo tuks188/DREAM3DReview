@@ -84,6 +84,11 @@ const static float m_pi = static_cast<float>(M_PI);
   boost::shared_array<m_msgType> var##Array(new m_msgType[size]);\
   m_msgType* var = var##Array.get();
 
+// Include the MOC generated file for this class
+#include "moc_InsertTransformationPhases.cpp"
+
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
