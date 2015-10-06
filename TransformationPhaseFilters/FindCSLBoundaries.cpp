@@ -50,7 +50,6 @@
 #include "SIMPLib/Math/QuaternionMath.hpp"
 #include "SIMPLib/Math/GeometryMath.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
-
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -153,7 +152,7 @@ class CalculateCSLBoundaryImpl
               m_OrientationOps[phase1]->getQuatSymOp(j, sym_q);
               //calculate crystal direction parallel to normal
               QuaternionMathF::Multiply(misq, sym_q, s1_misq);
-              QuaternionMathF::MultiplyQuatVec(sym_q, xstl_norm, s_xstl_norm);
+              QuaternionMathF::MultiplyQuatVec(sym_q, xstl_norm, s_xstl_norm, Rotations::Constants::epsijk);
               for (int k = 0; k < nsym; k++)
               {
                 //calculate the symmetric misorienation
