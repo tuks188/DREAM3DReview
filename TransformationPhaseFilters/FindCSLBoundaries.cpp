@@ -152,7 +152,7 @@ class CalculateCSLBoundaryImpl
               m_OrientationOps[phase1]->getQuatSymOp(j, sym_q);
               //calculate crystal direction parallel to normal
               QuaternionMathF::Multiply(misq, sym_q, s1_misq);
-              QuaternionMathF::MultiplyQuatVec(sym_q, xstl_norm, s_xstl_norm, Rotations::Constants::epsijk);
+              QuaternionMathF::MultiplyQuatVec(sym_q, xstl_norm, s_xstl_norm);
               for (int k = 0; k < nsym; k++)
               {
                 //calculate the symmetric misorienation
