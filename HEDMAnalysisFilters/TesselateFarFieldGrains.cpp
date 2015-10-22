@@ -933,8 +933,9 @@ void TesselateFarFieldGrains::assign_voxels()
   if (getCancel() == true)
   {
     QString ss = QObject::tr("Filter Cancelled.");
-    notifyErrorMessage(getHumanLabel(), ss, -1);
     setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+
     return;
   }
 
