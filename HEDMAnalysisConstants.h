@@ -13,7 +13,7 @@ namespace HEDMAnalysisConstants
 {
   const QString HEDMAnalysisPluginFile("HEDMAnalysisPlugin");
   const QString HEDMAnalysisPluginDisplayName("HEDMAnalysis");
-  const QString HEDMAnalysisBaseName("HEDMAnalysisPlugin");
+  const QString HEDMAnalysisBaseName("HEDMAnalysis");
 
   namespace FilterGroups
   {
