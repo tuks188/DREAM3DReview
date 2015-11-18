@@ -449,7 +449,7 @@ void ReadMicData::execute()
 void ReadMicData::readMicFile()
 {
   int err = 0;
-  boost::shared_ptr<MicReader> reader(new MicReader());
+  std::shared_ptr<MicReader> reader(new MicReader());
   reader->setFileName(m_InputFile);
   err = reader->readFile();
   if (err < 0)
