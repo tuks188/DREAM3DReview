@@ -35,6 +35,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "TesselateFarFieldGrains.h"
+
+#include <fstream>
 #include <algorithm>
 
 
