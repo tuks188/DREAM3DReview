@@ -75,6 +75,8 @@
 #include "OrientationLib/OrientationMath/OrientationMath.h"
 #include "OrientationLib/OrientationMath/OrientationTransforms.hpp"
 
+#include "HEDMAnalysis/HEDMAnalysisVersion.h"
+
 //// Macro to determine if we are going to show the Debugging Output files
 #define PPP_SHOW_DEBUG_OUTPUTS 0
 
@@ -1095,8 +1097,28 @@ AbstractFilter::Pointer TesselateFarFieldGrains::newFilterInstance(bool copyFilt
 //
 // -----------------------------------------------------------------------------
 const QString TesselateFarFieldGrains::getCompiledLibraryName()
-{ return HEDMAnalysisConstants::HEDMAnalysisBaseName; }
+{
+  return HEDMAnalysisConstants::HEDMAnalysisBaseName;
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TesselateFarFieldGrains::getBrandingString()
+{
+  return "HEDMAnalysis";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TesselateFarFieldGrains::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream <<  HEDMAnalysis::Version::Major() << "." << HEDMAnalysis::Version::Minor() << "." << HEDMAnalysis::Version::Patch();
+  return version;
+}
 
 // -----------------------------------------------------------------------------
 //
