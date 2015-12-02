@@ -66,7 +66,7 @@
 #include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
 
 #include "TransformationPhase/TransformationPhaseConstants.h"
-
+#include "TransformationPhase/TransformationPhaseVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_TiDwellFatigueCrystallographicAnalysis.cpp"
@@ -871,6 +871,25 @@ AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstanc
 const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString()
+{
+  return "TransformationPhaseConstants";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream <<  TransformationPhase::Version::Major() << "." << TransformationPhase::Version::Minor() << "." << TransformationPhase::Version::Patch();
+  return version;
 }
 
 

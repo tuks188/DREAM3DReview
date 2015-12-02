@@ -133,8 +133,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
-	
-	SIMPL_FILTER_PARAMETER(QString, CellParentIdsArrayName)
+
+  SIMPL_FILTER_PARAMETER(QString, CellParentIdsArrayName)
     Q_PROPERTY(QString CellParentIdsArrayName READ getCellParentIdsArrayName WRITE setCellParentIdsArrayName)
 
     SIMPL_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
@@ -159,49 +159,69 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
     /**
-    * @brief This returns the group that the filter belongs to. You can select
-    * a different group if you want. The string returned here will be displayed
-    * in the GUI for the filter
-    */
+     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getCompiledLibraryName();
+
+    /**
+     * @brief getBrandingString Returns the branding string for the filter, which is a tag
+     * used to denote the filter's association with specific plugins
+     * @return Branding string
+    */
+    virtual const QString getBrandingString();
+
+    /**
+     * @brief getFilterVersion Returns a version string for this filter. Default
+     * value is an empty string.
+     * @return
+     */
+    virtual const QString getFilterVersion();
+
+    /**
+     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+     */
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+
+    /**
+     * @brief getGroupName Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getGroupName();
+
+    /**
+     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getSubGroupName();
 
     /**
-    * @brief This returns a string that is displayed in the GUI. It should be readable
-    * and understandable by humans.
-    */
+     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getHumanLabel();
-    
+
     /**
-    * @brief This method will instantiate all the end user settable options/parameters
-    * for this filter
-    */
+     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+     */
     virtual void setupFilterParameters();
 
     /**
-    * @brief This method will write the options to a file
-    * @param writer The writer that is used to write the options to a file
-    */
+     * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
+     */
     virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
 
     /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    */
+     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+     */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
     /**
-    * @brief Reimplemented from @see AbstractFilter class
-    */
+     * @brief execute Reimplemented from @see AbstractFilter class
+     */
     virtual void execute();
 
     /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
+    * @brief preflight Reimplemented from @see AbstractFilter class
     */
     virtual void preflight();
+
 
   signals:
     void updateFilterParameters(AbstractFilter* filter);
@@ -215,8 +235,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     bool determine_subsurfacefeatures(int index);
     bool determine_hardfeatures(int index);
     void determine_initiators(int index);
-	void determine_softfeatures(int index);
-	void group_flaggedfeatures(int index);
+    void determine_softfeatures(int index);
+    void group_flaggedfeatures(int index);
     void assign_HardSoftGroups(int index);
     float find_angle(float g[3][3], float planeNormalU, float planeNormalV, float planeNormalW);
 
@@ -240,10 +260,10 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-	DEFINE_DATAARRAY_VARIABLE(int32_t, CellParentIds)
+  DEFINE_DATAARRAY_VARIABLE(int32_t, CellParentIds)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
     DEFINE_DATAARRAY_VARIABLE(bool, Active)
-	DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+  DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
     NeighborList<int>::WeakPointer m_ParentNeighborList;

@@ -62,6 +62,8 @@
 #include "OrientationLib/OrientationMath/OrientationTransforms.hpp"
 
 #include "TransformationPhase/TransformationPhaseConstants.h"
+#include "TransformationPhase/TransformationPhaseVersion.h"
+
 
 #include "Plugins/Statistics/StatisticsConstants.h"
 
@@ -441,6 +443,25 @@ AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterPara
 const QString FindCSLBoundaries::getCompiledLibraryName()
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString FindCSLBoundaries::getBrandingString()
+{
+  return "TransformationPhaseConstants";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString FindCSLBoundaries::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream <<  TransformationPhase::Version::Major() << "." << TransformationPhase::Version::Minor() << "." << TransformationPhase::Version::Patch();
+  return version;
 }
 
 

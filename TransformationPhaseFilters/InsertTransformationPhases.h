@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Michael A. Jackson (BlueQuartz Software)
  * Copyright (c) 2011 Dr. Michael A. Groeber (US Air Force Research Laboratories)
  * Copyright (c) 2015 Dr. Joseph C. Tucker (UES, Inc.)
- * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon 
+ * Copyright (c) 2014 Sudipto Mandal & Prof. Anthony D. Rollett (Carnegie Mellon
  * University)
  * All rights reserved.
  *
@@ -17,9 +17,9 @@
  * other materials provided with the distribution.
  *
  * Neither the name of Joseph C. Tucker, Michael A. Groeber, Michael A. Jackson,
- * Sudipto Mandal, Anthony D. Rollett, UES, Inc., the US Air Force, BlueQuartz  
- * Software, Carnegie Mellon University nor the names of its contributors may be 
- * used to endorse or promote products derived from this software without specific 
+ * Sudipto Mandal, Anthony D. Rollett, UES, Inc., the US Air Force, BlueQuartz
+ * Software, Carnegie Mellon University nor the names of its contributors may be
+ * used to endorse or promote products derived from this software without specific
  * prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -79,33 +79,33 @@ class InsertTransformationPhases : public AbstractFilter
     Q_PROPERTY(int ParentPhase READ getParentPhase WRITE setParentPhase)
     SIMPL_FILTER_PARAMETER(int, TransCrystalStruct)
     Q_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
-	SIMPL_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
+  SIMPL_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
     Q_PROPERTY(float TransformationPhaseMisorientation READ getTransformationPhaseMisorientation WRITE setTransformationPhaseMisorientation)
     SIMPL_FILTER_PARAMETER(FloatVec3_t, TransformationPhaseHabitPlane)
     SIMPL_FILTER_PARAMETER(bool, DefineHabitPlane)
     Q_PROPERTY(bool DefineHabitPlane READ getDefineHabitPlane WRITE setDefineHabitPlane)
-	Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
+  Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
     SIMPL_FILTER_PARAMETER(bool, UseAllVariants)
     Q_PROPERTY(bool UseAllVariants READ getUseAllVariants WRITE setUseAllVariants)
     SIMPL_FILTER_PARAMETER(float, CoherentFrac)
     Q_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
-	SIMPL_FILTER_PARAMETER(float, TransformationPhaseThickness)
+  SIMPL_FILTER_PARAMETER(float, TransformationPhaseThickness)
     Q_PROPERTY(float TransformationPhaseThickness READ getTransformationPhaseThickness WRITE setTransformationPhaseThickness)
     SIMPL_FILTER_PARAMETER(int, NumTransformationPhasesPerFeature)
     Q_PROPERTY(int NumTransformationPhasesPerFeature READ getNumTransformationPhasesPerFeature WRITE setNumTransformationPhasesPerFeature)
     SIMPL_FILTER_PARAMETER(float, PeninsulaFrac)
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
 
-	SIMPL_FILTER_PARAMETER(DataArrayPath, StatsGenCellEnsembleAttributeMatrixPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, StatsGenCellEnsembleAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath StatsGenCellEnsembleAttributeMatrixPath READ getStatsGenCellEnsembleAttributeMatrixPath WRITE setStatsGenCellEnsembleAttributeMatrixPath)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-	SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
-    
-	SIMPL_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
+
+  SIMPL_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath CellEulerAnglesArrayPath READ getCellEulerAnglesArrayPath WRITE setCellEulerAnglesArrayPath)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, AvgQuatsArrayPath)
@@ -125,11 +125,11 @@ class InsertTransformationPhases : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
     Q_PROPERTY(QString FeatureParentIdsArrayName READ getFeatureParentIdsArrayName WRITE setFeatureParentIdsArrayName)
-	
+
     SIMPL_FILTER_PARAMETER(DataArrayPath, NumFeaturesPerParentArrayPath)
     Q_PROPERTY(DataArrayPath NumFeaturesPerParentArrayPath READ getNumFeaturesPerParentArrayPath WRITE setNumFeaturesPerParentArrayPath)
-	
-	  SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
     Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, PhaseTypesArrayPath)
@@ -140,39 +140,71 @@ class InsertTransformationPhases : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, NumFeaturesArrayPath)
     Q_PROPERTY(DataArrayPath NumFeaturesArrayPath READ getNumFeaturesArrayPath WRITE setNumFeaturesArrayPath)
-	
+
     /**
-    * @brief This returns the group that the filter belongs to. You can select
-    * a different group if you want. The string returned here will be displayed
-    * in the GUI for the filter
-    */
+     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getCompiledLibraryName();
+
+    /**
+     * @brief getBrandingString Returns the branding string for the filter, which is a tag
+     * used to denote the filter's association with specific plugins
+     * @return Branding string
+    */
+    virtual const QString getBrandingString();
+
+    /**
+     * @brief getFilterVersion Returns a version string for this filter. Default
+     * value is an empty string.
+     * @return
+     */
+    virtual const QString getFilterVersion();
+
+    /**
+     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+     */
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+
+    /**
+     * @brief getGroupName Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getGroupName();
+
+    /**
+     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getSubGroupName();
 
     /**
-    * @brief This returns a string that is displayed in the GUI. It should be readable
-    * and understandable by humans.
-    */
+     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+     */
     virtual const QString getHumanLabel();
 
+    /**
+     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+     */
     virtual void setupFilterParameters();
+
     /**
-    * @brief This method will write the options to a file
-    * @param writer The writer that is used to write the options to a file
-    */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);  
+     * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
+
     /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    */
+     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+     */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+
     /**
-    * @brief Reimplemented from @see AbstractFilter class
-    */
+     * @brief execute Reimplemented from @see AbstractFilter class
+     */
     virtual void execute();
+
+    /**
+    * @brief preflight Reimplemented from @see AbstractFilter class
+    */
     virtual void preflight();
+
 
 signals:
     void updateFilterParameters(AbstractFilter* filter);
@@ -183,28 +215,28 @@ signals:
   protected:
     InsertTransformationPhases();
 
-	void insert_transformationphases();
-	bool place_transformationphase(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
+  void insert_transformationphases();
+  bool place_transformationphase(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
     void peninsula_transformationphase(size_t curFeature, size_t totalFeatures);
-	size_t transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature);
-	void filter_calls();
+  size_t transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature);
+  void filter_calls();
 
   private:
     QVector<SpaceGroupOps::Pointer> m_OrientationOps;
 
     // Cell Data - make sure these are all initialized to NULL in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-	DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
+  DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
-	DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
-	DEFINE_DATAARRAY_VARIABLE(bool, Active)
+  DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
+  DEFINE_DATAARRAY_VARIABLE(bool, Active)
     DEFINE_DATAARRAY_VARIABLE(float, Centroids)
     DEFINE_DATAARRAY_VARIABLE(float, EquivalentDiameters)
     DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
-	DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
+  DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)

@@ -68,6 +68,8 @@
 #include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
 
 #include "TransformationPhase/TransformationPhaseConstants.h"
+#include "TransformationPhase/TransformationPhaseVersion.h"
+
 
 #include "Plugins/Generic/GenericFilters/FindFeatureCentroids.h"
 #include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
@@ -1084,6 +1086,25 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
 const QString InsertTransformationPhases::getCompiledLibraryName()
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString InsertTransformationPhases::getBrandingString()
+{
+  return "TransformationPhaseConstants";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString InsertTransformationPhases::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream <<  TransformationPhase::Version::Major() << "." << TransformationPhase::Version::Minor() << "." << TransformationPhase::Version::Patch();
+  return version;
 }
 
 
