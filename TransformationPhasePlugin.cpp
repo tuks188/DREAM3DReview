@@ -59,7 +59,7 @@ TransformationPhasePlugin::TransformationPhasePlugin() :
   m_Vendor("Open-Source"),
   m_URL("http://www.github.com/dream3d/TransformationPhase"),
   m_Location(""),
-  m_Copyright(DREAM3D::BlueQuartz::Copyright),
+  m_Copyright(""),
   m_DidLoad(false)
 {
 
