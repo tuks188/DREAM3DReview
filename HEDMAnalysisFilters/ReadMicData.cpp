@@ -100,18 +100,18 @@ ReadMicDataPrivate::ReadMicDataPrivate(ReadMicData* ptr) :
 // -----------------------------------------------------------------------------
 ReadMicData::ReadMicData() :
   AbstractFilter(),
-  m_DataContainerName(DREAM3D::Defaults::ImageDataContainerName),
-  m_CellEnsembleAttributeMatrixName(DREAM3D::Defaults::CellEnsembleAttributeMatrixName),
-  m_CellAttributeMatrixName(DREAM3D::Defaults::CellAttributeMatrixName),
+  m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
+  m_CellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName),
+  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
   m_FileWasRead(false),
   m_PhaseNameArrayName(""),
-  m_MaterialNameArrayName(DREAM3D::EnsembleData::MaterialName),
+  m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName),
   m_InputFile(""),
-  m_CellEulerAnglesArrayName(DREAM3D::CellData::EulerAngles),
-  m_CellPhasesArrayName(DREAM3D::CellData::Phases),
-  m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
-  m_LatticeConstantsArrayName(DREAM3D::EnsembleData::LatticeConstants),
-  m_RefFrameZDir(Ebsd::RefFrameZDir::UnknownRefFrameZDirection),
+  m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles),
+  m_CellPhasesArrayName(SIMPL::CellData::Phases),
+  m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures),
+  m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants),
+  m_RefFrameZDir(SIMPL::RefFrameZDir::UnknownRefFrameZDirection),
   m_Manufacturer(Ebsd::UnknownManufacturer),
   d_ptr(new ReadMicDataPrivate(this)),
   m_CellPhases(NULL),
@@ -296,15 +296,15 @@ void ReadMicData::dataCheck()
   if (getErrorCondition() < 0) { return; }
 
   // Create the Image Geometry
-  ImageGeom::Pointer image = ImageGeom::CreateGeometry(DREAM3D::Geometry::ImageGeometry);
+  ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
   m->setGeometry(image);
 
   QVector<size_t> tDims(3, 0);
-  AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::Cell);
   if (getErrorCondition() < 0) { return; }
   tDims.resize(1);
   tDims[0] = 0;
-  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellEnsemble);
+  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::CellEnsemble);
   if (getErrorCondition() < 0) { return; }
 
   QFileInfo fi(m_InputFile);
@@ -391,8 +391,8 @@ void ReadMicData::dataCheck()
       m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumTuples(), DREAM3D::EnsembleData::MaterialName);
-    cellEnsembleAttrMat->addAttributeArray(DREAM3D::EnsembleData::MaterialName, materialNames);
+    StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumTuples(), SIMPL::EnsembleData::MaterialName);
+    cellEnsembleAttrMat->addAttributeArray(SIMPL::EnsembleData::MaterialName, materialNames);
   }
 }
 
@@ -508,9 +508,9 @@ void ReadMicData::readMicFile()
         phasePtr[i] = 1;
       }
     }
-    iArray = Int32ArrayType::CreateArray(totalPoints, DREAM3D::CellData::Phases);
+    iArray = Int32ArrayType::CreateArray(totalPoints, SIMPL::CellData::Phases);
     ::memcpy(iArray->getPointer(0), phasePtr, sizeof(int32_t) * totalPoints);
-    cellAttrMat->addAttributeArray(DREAM3D::CellData::Phases, iArray);
+    cellAttrMat->addAttributeArray(SIMPL::CellData::Phases, iArray);
   }
 
   QVector<size_t> compDims(1, 3); // Initially set this up for the Euler Angle 1x3
@@ -519,7 +519,7 @@ void ReadMicData::readMicFile()
     f1 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler1));
     f2 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler2));
     f3 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler3));
-    fArray = FloatArrayType::CreateArray(totalPoints, compDims, DREAM3D::CellData::EulerAngles);
+    fArray = FloatArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::EulerAngles);
     float* cellEulerAngles = fArray->getPointer(0);
     for (size_t i = 0; i < totalPoints; i++)
     {
@@ -527,15 +527,15 @@ void ReadMicData::readMicFile()
       cellEulerAngles[3 * i + 1] = f2[i];
       cellEulerAngles[3 * i + 2] = f3[i];
     }
-    cellAttrMat->addAttributeArray(DREAM3D::CellData::EulerAngles, fArray);
+    cellAttrMat->addAttributeArray(SIMPL::CellData::EulerAngles, fArray);
   }
 
   compDims[0] = 1; // Now reset the size of the first dimension to 1
   {
     phasePtr = reinterpret_cast<int*>(reader->getPointerByName(Mic::Phase));
-    iArray = Int32ArrayType::CreateArray(totalPoints, compDims, DREAM3D::CellData::Phases);
+    iArray = Int32ArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::Phases);
     ::memcpy(iArray->getPointer(0), phasePtr, sizeof(int32_t) * totalPoints);
-    cellAttrMat->addAttributeArray(DREAM3D::CellData::Phases, iArray);
+    cellAttrMat->addAttributeArray(SIMPL::CellData::Phases, iArray);
   }
 
   {
@@ -574,7 +574,7 @@ const QString ReadMicData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString ReadMicData::getGroupName()
 {
-  return DREAM3D::FilterGroups::Unsupported;
+  return SIMPL::FilterGroups::Unsupported;
 }
 
 
@@ -583,7 +583,7 @@ const QString ReadMicData::getGroupName()
 // -----------------------------------------------------------------------------
 const QString ReadMicData::getSubGroupName()
 {
-  return DREAM3D::FilterSubGroups::InputFilters;
+  return SIMPL::FilterSubGroups::InputFilters;
 }
 
 
@@ -648,9 +648,9 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   QVector<size_t> tDims(1, crystalStructures->getNumberOfTuples());
   attrMatrix->resizeAttributeArrays(tDims);
   // Now add the attributeArray to the AttributeMatrix
-  attrMatrix->addAttributeArray(DREAM3D::EnsembleData::CrystalStructures, crystalStructures);
-  attrMatrix->addAttributeArray(DREAM3D::EnsembleData::MaterialName, materialNames);
-  attrMatrix->addAttributeArray(DREAM3D::EnsembleData::LatticeConstants, latticeConstants);
+  attrMatrix->addAttributeArray(SIMPL::EnsembleData::CrystalStructures, crystalStructures);
+  attrMatrix->addAttributeArray(SIMPL::EnsembleData::MaterialName, materialNames);
+  attrMatrix->addAttributeArray(SIMPL::EnsembleData::LatticeConstants, latticeConstants);
 
   // Now reset the internal ensemble array references to these new arrays
   m_CrystalStructuresPtr = crystalStructures;
