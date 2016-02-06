@@ -48,7 +48,6 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Common/AbstractFilter.h"
-#include "Plugins/Statistics/StatisticsConstants.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -133,7 +132,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(QString, CellParentIdsArrayName)
+    SIMPL_FILTER_PARAMETER(QString, CellParentIdsArrayName)
     Q_PROPERTY(QString CellParentIdsArrayName READ getCellParentIdsArrayName WRITE setCellParentIdsArrayName)
 
     SIMPL_FILTER_PARAMETER(QString, FeatureParentIdsArrayName)
