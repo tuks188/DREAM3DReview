@@ -74,6 +74,8 @@
 #include "OrientationLib/OrientationMath/OrientationMath.h"
 #include "OrientationLib/OrientationMath/OrientationTransforms.hpp"
 
+#include "EbsdLib/EbsdConstants.h"
+
 #include "HEDMAnalysis/HEDMAnalysisVersion.h"
 
 //// Macro to determine if we are going to show the Debugging Output files
@@ -261,23 +263,23 @@ class AssignVoxelsImpl
 // -----------------------------------------------------------------------------
 TesselateFarFieldGrains::TesselateFarFieldGrains() :
   AbstractFilter(),
-  m_OutputCellAttributeMatrixName(DREAM3D::Defaults::SyntheticVolumeDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, ""),
-  m_OutputCellFeatureAttributeMatrixName(DREAM3D::Defaults::CellFeatureAttributeMatrixName),
-  m_OutputCellEnsembleAttributeMatrixName(DREAM3D::Defaults::CellEnsembleAttributeMatrixName),
-  m_FeatureIdsArrayName(DREAM3D::CellData::FeatureIds),
-  m_CellPhasesArrayName(DREAM3D::CellData::Phases),
+  m_OutputCellAttributeMatrixName(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, ""),
+  m_OutputCellFeatureAttributeMatrixName(SIMPL::Defaults::CellFeatureAttributeMatrixName),
+  m_OutputCellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName),
+  m_FeatureIdsArrayName(SIMPL::CellData::FeatureIds),
+  m_CellPhasesArrayName(SIMPL::CellData::Phases),
   m_SlabIdArrayName("BoxBeamID"),
-  m_FeaturePhasesArrayName(DREAM3D::FeatureData::Phases),
-  m_FeatureEulerAnglesArrayName(DREAM3D::FeatureData::EulerAngles),
-  m_ElasticStrainsArrayName(DREAM3D::FeatureData::ElasticStrains),
-  m_CentroidsArrayName(DREAM3D::FeatureData::Centroids),
-  m_VolumesArrayName(DREAM3D::FeatureData::Volumes),
-  m_AxisLengthsArrayName(DREAM3D::FeatureData::AxisLengths),
-  m_AxisEulerAnglesArrayName(DREAM3D::FeatureData::AxisEulerAngles),
-  m_Omega3sArrayName(DREAM3D::FeatureData::Omega3s),
-  m_EquivalentDiametersArrayName(DREAM3D::FeatureData::EquivalentDiameters),
-  m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
-  m_MaskArrayPath(DREAM3D::Defaults::ImageDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::Mask),
+  m_FeaturePhasesArrayName(SIMPL::FeatureData::Phases),
+  m_FeatureEulerAnglesArrayName(SIMPL::FeatureData::EulerAngles),
+  m_ElasticStrainsArrayName(SIMPL::FeatureData::ElasticStrains),
+  m_CentroidsArrayName(SIMPL::FeatureData::Centroids),
+  m_VolumesArrayName(SIMPL::FeatureData::Volumes),
+  m_AxisLengthsArrayName(SIMPL::FeatureData::AxisLengths),
+  m_AxisEulerAnglesArrayName(SIMPL::FeatureData::AxisEulerAngles),
+  m_Omega3sArrayName(SIMPL::FeatureData::Omega3s),
+  m_EquivalentDiametersArrayName(SIMPL::FeatureData::EquivalentDiameters),
+  m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures),
+  m_MaskArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask),
   m_FeatureIds(NULL),
   m_CellPhases(NULL),
   m_Mask(NULL),
@@ -326,7 +328,7 @@ void TesselateFarFieldGrains::setupFilterParameters()
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
-    AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(DREAM3D::AttributeMatrixType::Cell, DREAM3D::GeometryType::UnknownGeometry);
+    AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::UnknownGeometry);
     parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "OutputCellAttributeMatrixName", getOutputCellAttributeMatrixName(), FilterParameter::RequiredArray, req));
   }
 
@@ -469,9 +471,9 @@ void TesselateFarFieldGrains::dataCheck()
   { m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   QVector<size_t> tDims(1, 0);
-  AttributeMatrix::Pointer cellFeatureAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getOutputCellFeatureAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellFeature);
+  AttributeMatrix::Pointer cellFeatureAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getOutputCellFeatureAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::CellFeature);
   if(getErrorCondition() < 0) { return; }
-  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getOutputCellEnsembleAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellEnsemble);
+  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getOutputCellEnsembleAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::CellEnsemble);
   if(getErrorCondition() < 0) { return; }
 
   //Feature Data
@@ -1123,14 +1125,14 @@ const QString TesselateFarFieldGrains::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString TesselateFarFieldGrains::getGroupName()
-{ return DREAM3D::FilterGroups::Unsupported; }
+{ return SIMPL::FilterGroups::Unsupported; }
 
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString TesselateFarFieldGrains::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::PackingFilters; }
+{ return SIMPL::FilterSubGroups::PackingFilters; }
 
 
 // -----------------------------------------------------------------------------
