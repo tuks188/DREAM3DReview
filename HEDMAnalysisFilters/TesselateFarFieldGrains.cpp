@@ -92,11 +92,7 @@
 
 #endif
 
-#if (CMP_SIZEOF_SIZE_T == 4)
-typedef int32_t DimType;
-#else
-typedef int64_t DimType;
-#endif
+
 
 
 
@@ -106,7 +102,7 @@ typedef int64_t DimType;
  */
 class AssignVoxelsImpl
 {
-    DimType dims[3];
+    int64_t dims[3];
     float Invradcur[3];
     float res[3];
     int32_t* m_FeatureIds;
@@ -120,7 +116,7 @@ class AssignVoxelsImpl
     FloatArrayType::Pointer ellipfuncsPtr;
 
   public:
-    AssignVoxelsImpl(DimType* dimensions, float* resolution, int32_t* featureIds, float* radCur,
+    AssignVoxelsImpl(int64_t* dimensions, float* resolution, int32_t* featureIds, float* radCur,
                      float* xx, ShapeOps::Pointer ellipsoidOps, float gA[3][3], float* size, int cur_feature,
                      Int32ArrayType::Pointer newowners, FloatArrayType::Pointer ellipfuncs) :
       m_FeatureIds(featureIds),
@@ -187,21 +183,21 @@ class AssignVoxelsImpl
         }
       }
 
-      DimType dim0_dim_1 = dims[0] * dims[1];
-      for (DimType iter1 = xStart; iter1 < xEnd; iter1++)
+      int64_t dim0_dim_1 = dims[0] * dims[1];
+      for (int64_t iter1 = xStart; iter1 < xEnd; iter1++)
       {
         column = iter1;
         if (iter1 < 0) { column = iter1 + dims[0]; }
         else if (iter1 > dims[0] - 1) { column = iter1 - dims[0]; }
 
-        for (DimType iter2 = yStart; iter2 < yEnd; iter2++)
+        for (int64_t iter2 = yStart; iter2 < yEnd; iter2++)
         {
           row = iter2;
           if (iter2 < 0) { row = iter2 + dims[1]; }
           else if (iter2 > dims[1] - 1) { row = iter2 - dims[1]; }
           size_t row_dim = row * dims[0];
 
-          for (DimType iter3 = zStart; iter3 < zEnd; iter3++)
+          for (int64_t iter3 = zStart; iter3 < zEnd; iter3++)
           {
             plane = iter3;
             if (iter3 < 0) { plane = iter3 + dims[2]; }
@@ -802,11 +798,11 @@ void TesselateFarFieldGrains::assign_voxels()
   size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  DimType dims[3] =
+  int64_t dims[3] =
   {
-    static_cast<DimType>(udims[0]),
-    static_cast<DimType>(udims[1]),
-    static_cast<DimType>(udims[2]),
+    static_cast<int64_t>(udims[0]),
+    static_cast<int64_t>(udims[1]),
+    static_cast<int64_t>(udims[2]),
   };
 
 
@@ -815,11 +811,11 @@ void TesselateFarFieldGrains::assign_voxels()
   bool doParallel = true;
 #endif
 
-  DimType column, row, plane;
+  int64_t column, row, plane;
   float xc, yc, zc;
   float size[3] = {sizex, sizey, sizez};
 
-  DimType xmin, xmax, ymin, ymax, zmin, zmax;
+  int64_t xmin, xmax, ymin, ymax, zmin, zmax;
 
   float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
   float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
@@ -880,9 +876,9 @@ void TesselateFarFieldGrains::assign_voxels()
     FOrientArrayType om(9, 0.0);
     FOrientTransformsType::eu2om(FOrientArrayType(&(m_AxisEulerAngles[3 * i]), 3), om);
     om.toGMatrix(ga);
-    column = static_cast<DimType>( xc / xRes );
-    row = static_cast<DimType>( yc / yRes );
-    plane = static_cast<DimType>( zc / zRes );
+    column = static_cast<int64_t>( xc / xRes );
+    row = static_cast<int64_t>( yc / yRes );
+    plane = static_cast<int64_t>( zc / zRes );
     xmin = int(column - ((radcur1 / xRes) + 1));
     xmax = int(column + ((radcur1 / xRes) + 1));
     ymin = int(row - ((radcur1 / yRes) + 1)); // <======================
