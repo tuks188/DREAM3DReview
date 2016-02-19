@@ -34,8 +34,8 @@
  *                   FA8650-07-D-5800 and FA8650-10-D-5226
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _TiDwellFatigueCrystallographicAnalysis_H_
-#define _TiDwellFatigueCrystallographicAnalysis_H_
+#ifndef _tidwellfatiguecrystallographicanalysis_h_
+#define _tidwellfatiguecrystallographicanalysis_h_
 
 #include <QtCore/QString>
 

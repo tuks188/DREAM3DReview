@@ -1,5 +1,5 @@
-#ifndef _TransformationPhaseConstants_H_
-#define _TransformationPhaseConstants_H_
+#ifndef _transformationphaseconstants_h_
+#define _transformationphaseconstants_h_
 
 #include <QtCore/QString>
 

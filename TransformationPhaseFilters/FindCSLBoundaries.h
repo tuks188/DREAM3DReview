@@ -35,8 +35,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FindCSLBoundaries_H_
-#define _FindCSLBoundaries_H_
+#ifndef _findcslboundaries_h_
+#define _findcslboundaries_h_
 
 #include <vector>
 #include <QtCore/QString>

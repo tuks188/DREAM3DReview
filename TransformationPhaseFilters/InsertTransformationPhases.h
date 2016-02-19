@@ -38,8 +38,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef INSERTTRANSFORMATIONPHASES_H_
-#define INSERTTRANSFORMATIONPHASES_H_
+#ifndef _inserttransformationphases_h_
+#define _inserttransformationphases_h_
 
 #include <vector>
 #include <QtCore/QString>

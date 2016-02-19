@@ -35,8 +35,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _TransformationPhase_H_
-#define _TransformationPhase_H_
+#ifndef _transformationphaseplugin_h_
+#define _transformationphaseplugin_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
