@@ -33,8 +33,8 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _MicREADER_H_
-#define _MicREADER_H_
+#ifndef _micreader_h_
+#define _micreader_h_
 
 #include <QtCore/QString>
 #include <QtCore/QMap>

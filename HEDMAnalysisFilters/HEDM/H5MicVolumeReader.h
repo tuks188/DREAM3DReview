@@ -34,8 +34,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _H5MicDATALOADER_H_
-#define _H5MicDATALOADER_H_
+#ifndef _h5micvolumereader_h_
+#define _h5micvolumereader_h_
 
 #include <QtCore/QVector>
 

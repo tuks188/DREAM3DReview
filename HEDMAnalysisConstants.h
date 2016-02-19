@@ -1,8 +1,8 @@
 /*
  * Your License should go here
  */
-#ifndef _HEDMAnalysisConstants_H_
-#define _HEDMAnalysisConstants_H_
+#ifndef _hedmanalysisconstants_h_
+#define _hedmanalysisconstants_h_
 
 #include <QtCore/QString>
 

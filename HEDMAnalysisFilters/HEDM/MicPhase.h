@@ -38,8 +38,8 @@
 
 
 
-#ifndef _MicPHASE_H_
-#define _MicPHASE_H_
+#ifndef _micphase_h_
+#define _micphase_h_
 
 #include <QtCore/QString>
 #include <QtCore/QVector>

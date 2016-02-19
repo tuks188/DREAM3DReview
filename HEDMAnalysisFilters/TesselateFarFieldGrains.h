@@ -34,8 +34,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _TesselateFarFieldGrains_H_
-#define _TesselateFarFieldGrains_H_
+#ifndef _tesselatefarfieldgrains_h_
+#define _tesselatefarfieldgrains_h_
 
 #include <vector>
 #include <map>

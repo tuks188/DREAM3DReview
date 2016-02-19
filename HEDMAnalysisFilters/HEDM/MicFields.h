@@ -34,8 +34,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _MicFIELDS_H_
-#define _MicFIELDS_H_
+#ifndef _micfields_h_
+#define _micfields_h_
 
 #include <QtCore/QString>
 #include <QtCore/QVector>

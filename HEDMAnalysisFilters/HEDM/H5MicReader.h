@@ -33,8 +33,8 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _H5MicREADER_H_
-#define _H5MicREADER_H_
+#ifndef _h5micreader_h_
+#define _h5micreader_h_
 
 #include <hdf5.h>
 

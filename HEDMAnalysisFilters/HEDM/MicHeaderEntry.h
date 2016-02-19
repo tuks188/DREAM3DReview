@@ -33,8 +33,8 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _MicHeaderEntry_H_
-#define _MicHeaderEntry_H_
+#ifndef _micheaderentry_h_
+#define _micheaderentry_h_
 
 #include <string.h>
 

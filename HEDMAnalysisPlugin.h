@@ -2,8 +2,8 @@
  * Your License or Copyright Information can go here
  */
 
-#ifndef _HEDMAnalysis_H_
-#define _HEDMAnalysis_H_
+#ifndef _hedmanalysisplugin_h_
+#define _hedmanalysisplugin_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>

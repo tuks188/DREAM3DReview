@@ -37,8 +37,8 @@
 
 
 
-#ifndef _MicCONSTANTS_H_
-#define _MicCONSTANTS_H_
+#ifndef _micconstants_h_
+#define _micconstants_h_
 
 #include <QtCore/QString>
 #include <QtCore/QVector>

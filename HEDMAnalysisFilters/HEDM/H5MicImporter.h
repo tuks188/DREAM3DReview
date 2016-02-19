@@ -37,8 +37,8 @@
 
 
 
-#ifndef _H5MicIMPORTER_H_
-#define _H5MicIMPORTER_H_
+#ifndef _h5micimporter_h_
+#define _h5micimporter_h_
 
 #if defined (_MSC_VER)
 #define WIN32_LEAN_AND_MEAN   // Exclude rarely-used stuff from Windows headers

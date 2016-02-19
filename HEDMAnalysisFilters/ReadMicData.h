@@ -33,8 +33,8 @@
 *                           FA8650-07-D-5800
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _ReadMicData_H_
-#define _ReadMicData_H_
+#ifndef _readmicdata_h_
+#define _readmicdata_h_
 
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
