@@ -248,19 +248,20 @@ class TesselateFarFieldGrains : public AbstractFilter
 
     OrthoRhombicOps::Pointer m_OrthoOps;
 
-    unsigned long long int m_Seed;
+    unsigned long long int m_RandomSeed;
 
-    float sizex;
-    float sizey;
-    float sizez;
-    float totalvol;
+    float m_SizeX;
+    float m_SizeY;
+    float m_SizeZ;
+    float m_TotalVol;
 
-    std::vector<int> newnames;
-    std::vector<int> packqualities;
-    std::vector<int> gsizes;
+    std::vector<int> m_NewNames;
+    std::vector<int> m_PackQualities;
+    std::vector<int> m_GSizes;
 
 
     void updateFeatureInstancePointers();
+
     void updateEnsembleInstancePointers();
 
     TesselateFarFieldGrains(const TesselateFarFieldGrains&); // Copy Constructor Not Implemented

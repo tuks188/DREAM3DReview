@@ -302,7 +302,7 @@ TesselateFarFieldGrains::TesselateFarFieldGrains() :
   m_FeatureInputFileListInfo.FileSuffix = "";
   m_FeatureInputFileListInfo.InputPath = "";
 
-  m_Seed = QDateTime::currentMSecsSinceEpoch();
+  m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
   setupFilterParameters();
 }
 
@@ -437,6 +437,16 @@ void TesselateFarFieldGrains::updateEnsembleInstancePointers()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::initialize()
 {
+ m_Neighbors = nullptr;
+ m_BoundaryCells = nullptr;
+
+  m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
+
+  m_SizeX = m_SizeY = m_SizeZ = m_TotalVol = 0.0f;
+
+  m_NewNames.clear();
+  m_PackQualities.clear();
+  m_GSizes.clear();
 
 }
 
@@ -821,7 +831,7 @@ void TesselateFarFieldGrains::assign_voxels()
 
   int64_t column, row, plane;
   float xc, yc, zc;
-  float size[3] = {sizex, sizey, sizez};
+  float size[3] = {m_SizeX, m_SizeY, m_SizeZ};
 
   int64_t xmin, xmax, ymin, ymax, zmin, zmax;
 
