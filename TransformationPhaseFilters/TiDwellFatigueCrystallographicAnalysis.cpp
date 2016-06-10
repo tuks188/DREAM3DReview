@@ -314,6 +314,14 @@ void TiDwellFatigueCrystallographicAnalysis::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::dataCheck()
 {
   DataArrayPath tempPath;

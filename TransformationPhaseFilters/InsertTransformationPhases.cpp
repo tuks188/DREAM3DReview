@@ -374,6 +374,14 @@ void InsertTransformationPhases::updateVolEnsembleInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void InsertTransformationPhases::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void InsertTransformationPhases::dataCheck()
 {
   DataArrayPath tempPath;

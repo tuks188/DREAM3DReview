@@ -79,33 +79,33 @@ class InsertTransformationPhases : public AbstractFilter
     Q_PROPERTY(int ParentPhase READ getParentPhase WRITE setParentPhase)
     SIMPL_FILTER_PARAMETER(int, TransCrystalStruct)
     Q_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
-  SIMPL_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
+    SIMPL_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
     Q_PROPERTY(float TransformationPhaseMisorientation READ getTransformationPhaseMisorientation WRITE setTransformationPhaseMisorientation)
     SIMPL_FILTER_PARAMETER(FloatVec3_t, TransformationPhaseHabitPlane)
     SIMPL_FILTER_PARAMETER(bool, DefineHabitPlane)
     Q_PROPERTY(bool DefineHabitPlane READ getDefineHabitPlane WRITE setDefineHabitPlane)
-  Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
+    Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
     SIMPL_FILTER_PARAMETER(bool, UseAllVariants)
     Q_PROPERTY(bool UseAllVariants READ getUseAllVariants WRITE setUseAllVariants)
     SIMPL_FILTER_PARAMETER(float, CoherentFrac)
     Q_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
-  SIMPL_FILTER_PARAMETER(float, TransformationPhaseThickness)
+    SIMPL_FILTER_PARAMETER(float, TransformationPhaseThickness)
     Q_PROPERTY(float TransformationPhaseThickness READ getTransformationPhaseThickness WRITE setTransformationPhaseThickness)
     SIMPL_FILTER_PARAMETER(int, NumTransformationPhasesPerFeature)
     Q_PROPERTY(int NumTransformationPhasesPerFeature READ getNumTransformationPhasesPerFeature WRITE setNumTransformationPhasesPerFeature)
     SIMPL_FILTER_PARAMETER(float, PeninsulaFrac)
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, StatsGenCellEnsembleAttributeMatrixPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, StatsGenCellEnsembleAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath StatsGenCellEnsembleAttributeMatrixPath READ getStatsGenCellEnsembleAttributeMatrixPath WRITE setStatsGenCellEnsembleAttributeMatrixPath)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath CellEulerAnglesArrayPath READ getCellEulerAnglesArrayPath WRITE setCellEulerAnglesArrayPath)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, AvgQuatsArrayPath)
@@ -206,7 +206,7 @@ class InsertTransformationPhases : public AbstractFilter
     virtual void preflight();
 
 
-signals:
+  signals:
     void updateFilterParameters(AbstractFilter* filter);
     void parametersChanged();
     void preflightAboutToExecute();
@@ -215,28 +215,28 @@ signals:
   protected:
     InsertTransformationPhases();
 
-  void insert_transformationphases();
-  bool place_transformationphase(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
+    void insert_transformationphases();
+    bool place_transformationphase(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
     void peninsula_transformationphase(size_t curFeature, size_t totalFeatures);
-  size_t transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature);
-  void filter_calls();
+    size_t transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature);
+    void filter_calls();
 
   private:
     QVector<SpaceGroupOps::Pointer> m_OrientationOps;
 
     // Cell Data - make sure these are all initialized to NULL in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-  DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
+    DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
-  DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
-  DEFINE_DATAARRAY_VARIABLE(bool, Active)
+    DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
+    DEFINE_DATAARRAY_VARIABLE(bool, Active)
     DEFINE_DATAARRAY_VARIABLE(float, Centroids)
     DEFINE_DATAARRAY_VARIABLE(float, EquivalentDiameters)
     DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
 
     // Ensemble Data - make sure these are all initialized to NULL in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
@@ -244,10 +244,29 @@ signals:
     DEFINE_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
-    // All other private variables
+    /**
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+    /**
+     * @brief updateFeatureInstancePointers
+     */
     void updateFeatureInstancePointers();
+
+    /**
+     * @brief updateStatsGenEnsembleInstancePointers
+     */
     void updateStatsGenEnsembleInstancePointers();
+
+    /**
+     * @brief updateVolEnsembleInstancePointers
+     */
     void updateVolEnsembleInstancePointers();
 
     InsertTransformationPhases(const InsertTransformationPhases&); // Copy Constructor Not Implemented
