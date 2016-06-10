@@ -259,10 +259,10 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 
     // Feature Data - make sure these are all initialized to NULL in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, CellParentIds)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, CellParentIds)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
     DEFINE_DATAARRAY_VARIABLE(bool, Active)
-  DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
+    DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
     NeighborList<int>::WeakPointer m_NeighborList;
     NeighborList<int>::WeakPointer m_ParentNeighborList;

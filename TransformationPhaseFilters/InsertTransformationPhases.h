@@ -215,6 +215,16 @@ class InsertTransformationPhases : public AbstractFilter
   protected:
     InsertTransformationPhases();
 
+    /**
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
+    void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
     void insert_transformationphases();
     bool place_transformationphase(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
     void peninsula_transformationphase(size_t curFeature, size_t totalFeatures);
@@ -244,15 +254,6 @@ class InsertTransformationPhases : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
-
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
 
     /**
      * @brief updateFeatureInstancePointers

@@ -72,7 +72,7 @@ class FindCSLBoundaries : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(float, CSL)
     Q_PROPERTY(float CSL READ getCSL WRITE setCSL)
-  SIMPL_FILTER_PARAMETER(float, AxisTolerance)
+    SIMPL_FILTER_PARAMETER(float, AxisTolerance)
     Q_PROPERTY(float AxisTolerance READ getAxisTolerance WRITE setAxisTolerance)
     SIMPL_FILTER_PARAMETER(float, AngleTolerance)
     Q_PROPERTY(float AngleTolerance READ getAngleTolerance WRITE setAngleTolerance)
