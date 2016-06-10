@@ -184,6 +184,9 @@ class TesselateFarFieldGrains : public AbstractFilter
     */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
+    /**
+     * @brief preflight
+     */
     virtual void preflight();
 
     /**
@@ -199,6 +202,16 @@ class TesselateFarFieldGrains : public AbstractFilter
 
   protected:
     TesselateFarFieldGrains();
+
+    /**
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
+    void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
 
     void load_features();
     void merge_twins();
@@ -246,7 +259,7 @@ class TesselateFarFieldGrains : public AbstractFilter
     std::vector<int> packqualities;
     std::vector<int> gsizes;
 
-    void dataCheck();
+
     void updateFeatureInstancePointers();
     void updateEnsembleInstancePointers();
 

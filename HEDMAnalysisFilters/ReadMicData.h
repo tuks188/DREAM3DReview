@@ -187,18 +187,18 @@ class ReadMicData : public AbstractFilter
     ReadMicData();
 
     /**
-  * @brief Checks for the appropriate parameter values and availability of
-  * arrays in the data container
-  * @param preflight
-  * @param voxels The number of voxels
-  * @param features The number of features
-  * @param ensembles The number of ensembles
-  */
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
     void dataCheck();
 
     /**
-  * @brief readMicFile This reads the HEDM .mic file and puts the data into the Voxel Data container
-  */
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+    /**
+    * @brief readMicFile This reads the HEDM .mic file and puts the data into the Voxel Data container
+    */
     void readMicFile();
 
     /**
