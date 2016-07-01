@@ -154,6 +154,8 @@ void InsertTransformationPhases::setupFilterParameters()
     ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();
     option->setHumanLabel("Transformation Phase Crystal Structure");
     option->setPropertyName("TransCrystalStruct");
+    option->setSetterCallback(SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransCrystalStruct));
+    option->setGetterCallback(SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransCrystalStruct));
     QVector<QString> choices;
     // The choices here are IN ORDER of the enumerations from the EBSDLib. DO NOT CHANGE THE ORDER.
     choices.push_back("Hexagonal-High 6/mmm");
