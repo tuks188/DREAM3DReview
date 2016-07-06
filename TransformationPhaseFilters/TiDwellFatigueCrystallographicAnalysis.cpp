@@ -260,50 +260,6 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(AlphaGlobPhasePresent)
-  SIMPL_FILTER_WRITE_PARAMETER(AlphaGlobPhase)
-  SIMPL_FILTER_WRITE_PARAMETER(MTRPhase)
-  SIMPL_FILTER_WRITE_PARAMETER(LatticeParameterA)
-  SIMPL_FILTER_WRITE_PARAMETER(LatticeParameterC)
-  SIMPL_FILTER_WRITE_PARAMETER(StressAxis)
-  SIMPL_FILTER_WRITE_PARAMETER(SubsurfaceDistance)
-  SIMPL_FILTER_WRITE_PARAMETER(ConsiderationFraction)
-  SIMPL_FILTER_WRITE_PARAMETER(DoNotAssumeInitiatorPresence)
-  SIMPL_FILTER_WRITE_PARAMETER(InitiatorLowerThreshold)
-  SIMPL_FILTER_WRITE_PARAMETER(InitiatorUpperThreshold)
-  SIMPL_FILTER_WRITE_PARAMETER(HardFeatureLowerThreshold)
-  SIMPL_FILTER_WRITE_PARAMETER(HardFeatureUpperThreshold)
-  SIMPL_FILTER_WRITE_PARAMETER(SoftFeatureLowerThreshold)
-  SIMPL_FILTER_WRITE_PARAMETER(SoftFeatureUpperThreshold)
-  SIMPL_FILTER_WRITE_PARAMETER(NewCellFeatureAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedFeaturesArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(InitiatorsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(HardFeaturesArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(SoftFeaturesArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(HardSoftGroupsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
-  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(CellParentIdsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(ActiveArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(NeighborListArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::updateFeatureInstancePointers()
 {
   setErrorCondition(0);

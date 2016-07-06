@@ -292,42 +292,6 @@ void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersRe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int InsertTransformationPhases::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(ParentPhase)
-  SIMPL_FILTER_WRITE_PARAMETER(TransCrystalStruct)
-  SIMPL_FILTER_WRITE_PARAMETER(TransformationPhaseMisorientation)
-  SIMPL_FILTER_WRITE_PARAMETER(DefineHabitPlane)
-  SIMPL_FILTER_WRITE_PARAMETER(TransformationPhaseHabitPlane)
-  SIMPL_FILTER_WRITE_PARAMETER(TransformationPhaseThickness)
-  SIMPL_FILTER_WRITE_PARAMETER(UseAllVariants)
-  SIMPL_FILTER_WRITE_PARAMETER(CoherentFrac)
-  SIMPL_FILTER_WRITE_PARAMETER(NumTransformationPhasesPerFeature)
-  SIMPL_FILTER_WRITE_PARAMETER(PeninsulaFrac)
-
-  SIMPL_FILTER_WRITE_PARAMETER(StatsGenCellEnsembleAttributeMatrixPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CentroidsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(EquivalentDiametersArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureParentIdsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(NumFeaturesPerParentArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(PhaseTypesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(ShapeTypesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(NumFeaturesArrayPath)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void InsertTransformationPhases::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
