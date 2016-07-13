@@ -260,6 +260,28 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::readFilterParameters(obj);
+  setCellFeatureAttributeMatrixName(obj["CellFeatureAttributeMatrixName"].toString());
+  setActiveArrayName(obj["ActiveArrayName"].toString());
+}
+
+// FP: Check why these values are not connected to a filter parameter!
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::writeFilterParameters(obj);
+  obj["CellFeatureAttributeMatrixName"] = getCellFeatureAttributeMatrixName();
+  obj["ActiveArrayName"] = getActiveArrayName();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
