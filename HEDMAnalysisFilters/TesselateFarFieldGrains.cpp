@@ -320,32 +320,32 @@ void TesselateFarFieldGrains::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(FileListInfoFilterParameter::New("Feature Input File List", "FeatureInputFileListInfo", getFeatureInputFileListInfo(), FilterParameter::Parameter));
+  parameters.push_back(FileListInfoFilterParameter::New("Feature Input File List", "FeatureInputFileListInfo", getFeatureInputFileListInfo(), FilterParameter::Parameter, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, FeatureInputFileListInfo), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, FeatureInputFileListInfo)));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::UnknownGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "OutputCellAttributeMatrixName", getOutputCellAttributeMatrixName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "OutputCellAttributeMatrixName", getOutputCellAttributeMatrixName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, OutputCellAttributeMatrixName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, OutputCellAttributeMatrixName)));
   }
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, MaskArrayPath), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, MaskArrayPath)));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Feature Ids", "FeatureIdsArrayName", getFeatureIdsArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Phases", "CellPhasesArrayName", getCellPhasesArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Feature Ids", "FeatureIdsArrayName", getFeatureIdsArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, FeatureIdsArrayName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, FeatureIdsArrayName)));
+  parameters.push_back(StringFilterParameter::New("Phases", "CellPhasesArrayName", getCellPhasesArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, CellPhasesArrayName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, CellPhasesArrayName)));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Cell Feature Attribute Matrix", "OutputCellFeatureAttributeMatrixName", getOutputCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Phases", "FeaturePhasesArrayName", getFeaturePhasesArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Average Euler Angles", "FeatureEulerAnglesArrayName", getFeatureEulerAnglesArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Elastic Strains", "ElasticStrainsArrayName", getElasticStrainsArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Cell Feature Attribute Matrix", "OutputCellFeatureAttributeMatrixName", getOutputCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, OutputCellFeatureAttributeMatrixName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, OutputCellFeatureAttributeMatrixName)));
+  parameters.push_back(StringFilterParameter::New("Phases", "FeaturePhasesArrayName", getFeaturePhasesArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, FeaturePhasesArrayName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, FeaturePhasesArrayName)));
+  parameters.push_back(StringFilterParameter::New("Average Euler Angles", "FeatureEulerAnglesArrayName", getFeatureEulerAnglesArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, FeatureEulerAnglesArrayName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, FeatureEulerAnglesArrayName)));
+  parameters.push_back(StringFilterParameter::New("Elastic Strains", "ElasticStrainsArrayName", getElasticStrainsArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, ElasticStrainsArrayName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, ElasticStrainsArrayName)));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Cell Ensemble Attribute Matrix", "OutputCellEnsembleAttributeMatrixName", getOutputCellEnsembleAttributeMatrixName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Crystal Structures", "CrystalStructuresArrayName", getCrystalStructuresArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Cell Ensemble Attribute Matrix", "OutputCellEnsembleAttributeMatrixName", getOutputCellEnsembleAttributeMatrixName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, OutputCellEnsembleAttributeMatrixName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, OutputCellEnsembleAttributeMatrixName)));
+  parameters.push_back(StringFilterParameter::New("Crystal Structures", "CrystalStructuresArrayName", getCrystalStructuresArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, CrystalStructuresArrayName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, CrystalStructuresArrayName)));
 
   setFilterParameters(parameters);
 }
@@ -368,28 +368,6 @@ void TesselateFarFieldGrains::readFilterParameters(AbstractFilterParametersReade
   setCrystalStructuresArrayName( reader->readString("CrystalStructuresArrayName", getCrystalStructuresArrayName() ) );
   setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int TesselateFarFieldGrains::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputCellAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputCellFeatureAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputCellEnsembleAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureInputFileListInfo)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureEulerAnglesArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(ElasticStrainsArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(MaskArrayPath)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------
