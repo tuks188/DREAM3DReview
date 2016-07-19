@@ -238,39 +238,39 @@ FindCSLBoundaries::~FindCSLBoundaries()
 void FindCSLBoundaries::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(DoubleFilterParameter::New("CSL (Sigma)", "CSL", getCSL(), FilterParameter::Parameter));
-  parameters.push_back(DoubleFilterParameter::New("Axis Tolerance (Degrees)", "AxisTolerance", getAxisTolerance(), FilterParameter::Parameter));
-  parameters.push_back(DoubleFilterParameter::New("Angle Tolerance (Degrees)", "AngleTolerance", getAngleTolerance(), FilterParameter::Parameter));
+  parameters.push_back(DoubleFilterParameter::New("CSL (Sigma)", "CSL", getCSL(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FindCSLBoundaries, this, CSL), SIMPL_BIND_GETTER(FindCSLBoundaries, this, CSL)));
+  parameters.push_back(DoubleFilterParameter::New("Axis Tolerance (Degrees)", "AxisTolerance", getAxisTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FindCSLBoundaries, this, AxisTolerance), SIMPL_BIND_GETTER(FindCSLBoundaries, this, AxisTolerance)));
+  parameters.push_back(DoubleFilterParameter::New("Angle Tolerance (Degrees)", "AngleTolerance", getAngleTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FindCSLBoundaries, this, AngleTolerance), SIMPL_BIND_GETTER(FindCSLBoundaries, this, AngleTolerance)));
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 4, SIMPL::AttributeMatrixObjectType::Feature);
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Average Quaternions", "AvgQuatsArrayPath", getAvgQuatsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Average Quaternions", "AvgQuatsArrayPath", getAvgQuatsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FindCSLBoundaries, this, AvgQuatsArrayPath), SIMPL_BIND_GETTER(FindCSLBoundaries, this, AvgQuatsArrayPath)));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixObjectType::Feature);
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "FeaturePhasesArrayPath", getFeaturePhasesArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "FeaturePhasesArrayPath", getFeaturePhasesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FindCSLBoundaries, this, FeaturePhasesArrayPath), SIMPL_BIND_GETTER(FindCSLBoundaries, this, FeaturePhasesArrayPath)));
   }
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Ensemble);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FindCSLBoundaries, this, CrystalStructuresArrayPath), SIMPL_BIND_GETTER(FindCSLBoundaries, this, CrystalStructuresArrayPath)));
   }
   parameters.push_back(SeparatorFilterParameter::New("Face Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 2, SIMPL::AttributeMatrixType::Face, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Face Labels", "SurfaceMeshFaceLabelsArrayPath", getSurfaceMeshFaceLabelsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Face Labels", "SurfaceMeshFaceLabelsArrayPath", getSurfaceMeshFaceLabelsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FindCSLBoundaries, this, SurfaceMeshFaceLabelsArrayPath), SIMPL_BIND_GETTER(FindCSLBoundaries, this, SurfaceMeshFaceLabelsArrayPath)));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 3, SIMPL::AttributeMatrixType::Face, SIMPL::Defaults::AnyGeometry);
 
-    parameters.push_back(DataArraySelectionFilterParameter::New("Face Normals", "SurfaceMeshFaceNormalsArrayPath", getSurfaceMeshFaceNormalsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Face Normals", "SurfaceMeshFaceNormalsArrayPath", getSurfaceMeshFaceNormalsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FindCSLBoundaries, this, SurfaceMeshFaceNormalsArrayPath), SIMPL_BIND_GETTER(FindCSLBoundaries, this, SurfaceMeshFaceNormalsArrayPath)));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Face Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("CSL Boundary", "SurfaceMeshCSLBoundaryArrayName", getSurfaceMeshCSLBoundaryArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("CSL Boundary Incoherence", "SurfaceMeshCSLBoundaryIncoherenceArrayName", getSurfaceMeshCSLBoundaryIncoherenceArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("CSL Boundary", "SurfaceMeshCSLBoundaryArrayName", getSurfaceMeshCSLBoundaryArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryArrayName), SIMPL_BIND_GETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryArrayName)));
+  parameters.push_back(StringFilterParameter::New("CSL Boundary Incoherence", "SurfaceMeshCSLBoundaryIncoherenceArrayName", getSurfaceMeshCSLBoundaryIncoherenceArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryIncoherenceArrayName), SIMPL_BIND_GETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryIncoherenceArrayName)));
   setFilterParameters(parameters);
 }
 // -----------------------------------------------------------------------------
@@ -288,27 +288,6 @@ void FindCSLBoundaries::readFilterParameters(AbstractFilterParametersReader* rea
   setAxisTolerance( reader->readValue("AxisTolerance", getAxisTolerance() ) );
   setAngleTolerance( reader->readValue("AngleTolerance", getAngleTolerance()) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int FindCSLBoundaries::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(SurfaceMeshCSLBoundaryIncoherenceArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(SurfaceMeshCSLBoundaryArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(SurfaceMeshFaceNormalsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SurfaceMeshFaceLabelsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(FeaturePhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(AvgQuatsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CSL)
-  SIMPL_FILTER_WRITE_PARAMETER(AxisTolerance)
-  SIMPL_FILTER_WRITE_PARAMETER(AngleTolerance)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------
