@@ -1,0 +1,7 @@
+ <!DOCTYPE RCC>
+ <RCC version="1.0">
+ <qresource>
+ <file>MASSIFUtilities/MASSIFUtilitiesLicense.txt</file>
+ <file>MASSIFUtilities/MASSIFUtilitiesDescription.txt</file>
+ </qresource>
+ </RCC>
