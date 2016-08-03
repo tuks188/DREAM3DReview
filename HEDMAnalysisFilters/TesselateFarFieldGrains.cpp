@@ -329,7 +329,7 @@ void TesselateFarFieldGrains::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, MaskArrayPath), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, MaskArrayPath)));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, MaskArrayPath), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, MaskArrayPath), req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
