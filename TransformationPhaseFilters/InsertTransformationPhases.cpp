@@ -248,7 +248,7 @@ void InsertTransformationPhases::setupFilterParameters()
   parameters.push_back(StringFilterParameter::New("Parent Ids", "FeatureParentIdsArrayName", getFeatureParentIdsArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(InsertTransformationPhases, this, FeatureParentIdsArrayName), SIMPL_BIND_GETTER(InsertTransformationPhases, this, FeatureParentIdsArrayName)));
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArrayCreationFilterParameter::New("Number of Features Per Parent", "NumFeaturesPerParentArrayPath", getNumFeaturesPerParentArrayPath(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, NumFeaturesPerParentArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, NumFeaturesPerParentArrayPath)));
+    parameters.push_back(DataArrayCreationFilterParameter::New("Number of Features Per Parent", "NumFeaturesPerParentArrayPath", getNumFeaturesPerParentArrayPath(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(InsertTransformationPhases, this, NumFeaturesPerParentArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, NumFeaturesPerParentArrayPath), req));
   }
 
   setFilterParameters(parameters);
