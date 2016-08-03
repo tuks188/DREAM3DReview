@@ -173,7 +173,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellFeature, SIMPL::GeometryType::UnknownGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Feature Attribute Matrix", "CellFeatureAttributeMatrixPath", getCellFeatureAttributeMatrixPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, CellFeatureAttributeMatrixPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, CellFeatureAttributeMatrixPath)));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Feature Attribute Matrix", "CellFeatureAttributeMatrixPath", getCellFeatureAttributeMatrixPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, CellFeatureAttributeMatrixPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, CellFeatureAttributeMatrixPath), req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 3, SIMPL::AttributeMatrixObjectType::Feature);
