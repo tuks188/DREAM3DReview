@@ -237,9 +237,9 @@ FindCSLBoundaries::~FindCSLBoundaries()
 void FindCSLBoundaries::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(DoubleFilterParameter::New("CSL (Sigma)", "CSL", getCSL(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FindCSLBoundaries, this, CSL), SIMPL_BIND_GETTER(FindCSLBoundaries, this, CSL)));
-  parameters.push_back(DoubleFilterParameter::New("Axis Tolerance (Degrees)", "AxisTolerance", getAxisTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FindCSLBoundaries, this, AxisTolerance), SIMPL_BIND_GETTER(FindCSLBoundaries, this, AxisTolerance)));
-  parameters.push_back(DoubleFilterParameter::New("Angle Tolerance (Degrees)", "AngleTolerance", getAngleTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FindCSLBoundaries, this, AngleTolerance), SIMPL_BIND_GETTER(FindCSLBoundaries, this, AngleTolerance)));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("CSL (Sigma)", CSL, FilterParameter::Parameter, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Axis Tolerance (Degrees)", AxisTolerance, FilterParameter::Parameter, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Angle Tolerance (Degrees)", AngleTolerance, FilterParameter::Parameter, FindCSLBoundaries));
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 4, SIMPL::AttributeMatrixObjectType::Feature);
