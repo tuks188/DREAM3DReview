@@ -148,7 +148,7 @@ InsertTransformationPhases::~InsertTransformationPhases()
 void InsertTransformationPhases::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(IntFilterParameter::New("Parent Phase", "ParentPhase", getParentPhase(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, ParentPhase), SIMPL_BIND_GETTER(InsertTransformationPhases, this, ParentPhase)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Parent Phase", ParentPhase, FilterParameter::Parameter, InsertTransformationPhases));
   {
     ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();
     option->setHumanLabel("Transformation Phase Crystal Structure");
@@ -182,7 +182,7 @@ void InsertTransformationPhases::setupFilterParameters()
   parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, UseAllVariants), SIMPL_BIND_GETTER(InsertTransformationPhases, this, UseAllVariants), linkedProps2));
   parameters.push_back(DoubleFilterParameter::New("Coherent Fraction", "CoherentFrac", getCoherentFrac(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, CoherentFrac), SIMPL_BIND_GETTER(InsertTransformationPhases, this, CoherentFrac)));
   parameters.push_back(DoubleFilterParameter::New("Transformation Phase Thickness", "TransformationPhaseThickness", getTransformationPhaseThickness(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransformationPhaseThickness), SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransformationPhaseThickness)));
-  parameters.push_back(IntFilterParameter::New("Average Number Of Transformation Phases Per Feature", "NumTransformationPhasesPerFeature", getNumTransformationPhasesPerFeature(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, NumTransformationPhasesPerFeature), SIMPL_BIND_GETTER(InsertTransformationPhases, this, NumTransformationPhasesPerFeature)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Average Number Of Transformation Phases Per Feature", NumTransformationPhasesPerFeature, FilterParameter::Parameter, InsertTransformationPhases));
   parameters.push_back(DoubleFilterParameter::New("Peninsula Transformation Phase Fraction", "PeninsulaFrac", getPeninsulaFrac(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, PeninsulaFrac), SIMPL_BIND_GETTER(InsertTransformationPhases, this, PeninsulaFrac)));
 
 
