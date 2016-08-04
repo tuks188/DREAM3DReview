@@ -324,7 +324,7 @@ void TesselateFarFieldGrains::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::UnknownGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "OutputCellAttributeMatrixName", getOutputCellAttributeMatrixName(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, OutputCellAttributeMatrixName), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, OutputCellAttributeMatrixName), req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Attribute Matrix", OutputCellAttributeMatrixName, FilterParameter::RequiredArray, TesselateFarFieldGrains, req));
   }
 
   {
