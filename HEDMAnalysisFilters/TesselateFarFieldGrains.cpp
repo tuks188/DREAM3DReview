@@ -319,7 +319,7 @@ void TesselateFarFieldGrains::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(FileListInfoFilterParameter::New("Feature Input File List", "FeatureInputFileListInfo", getFeatureInputFileListInfo(), FilterParameter::Parameter, SIMPL_BIND_SETTER(TesselateFarFieldGrains, this, FeatureInputFileListInfo), SIMPL_BIND_GETTER(TesselateFarFieldGrains, this, FeatureInputFileListInfo)));
+  parameters.push_back(SIMPL_NEW_FILELISTINFO_FP("Feature Input File List", FeatureInputFileListInfo, FilterParameter::Parameter, TesselateFarFieldGrains));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
