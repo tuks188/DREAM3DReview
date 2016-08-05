@@ -161,7 +161,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, DataContainerName), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, DataContainerName), req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container", DataContainerName, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
 
