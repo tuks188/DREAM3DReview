@@ -167,7 +167,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("FeatureIds", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, FeatureIdsArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("FeatureIds", FeatureIdsArrayPath, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
@@ -177,25 +177,25 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 3, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Average Euler Angles", "FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, FeatureEulerAnglesArrayPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, FeatureEulerAnglesArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Average Euler Angles", FeatureEulerAnglesArrayPath, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "FeaturePhasesArrayPath", getFeaturePhasesArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, FeaturePhasesArrayPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, FeaturePhasesArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Phases", FeaturePhasesArrayPath, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Neighbor List", "NeighborListArrayPath", getNeighborListArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, NeighborListArrayPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, NeighborListArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Neighbor List", NeighborListArrayPath, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 3, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Centroids", "CentroidsArrayPath", getCentroidsArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, CentroidsArrayPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, CentroidsArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Centroids", CentroidsArrayPath, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Ensemble);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, CrystalStructuresArrayPath), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, CrystalStructuresArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Crystal Structures", CrystalStructuresArrayPath, FilterParameter::RequiredArray, TiDwellFatigueCrystallographicAnalysis, req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
