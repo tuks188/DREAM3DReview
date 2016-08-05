@@ -140,7 +140,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
   QStringList linkedProps1("AlphaGlobPhase");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Alpha Glob Phase Present", "AlphaGlobPhasePresent", getAlphaGlobPhasePresent(), FilterParameter::Parameter, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, AlphaGlobPhasePresent), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, AlphaGlobPhasePresent), linkedProps1));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Alpha Glob Phase Present", AlphaGlobPhasePresent, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis, linkedProps1));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Alpha Glob Phase Number", AlphaGlobPhase, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Microtextured Region Phase Number", MTRPhase, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Lattice Parameter A", LatticeParameterA, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
@@ -151,7 +151,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Fraction of Features to Consider", ConsiderationFraction, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   QStringList linkedProps2;
   linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Do Not Assume Initiator Presence", "DoNotAssumeInitiatorPresence", getDoNotAssumeInitiatorPresence(), FilterParameter::Parameter, SIMPL_BIND_SETTER(TiDwellFatigueCrystallographicAnalysis, this, DoNotAssumeInitiatorPresence), SIMPL_BIND_GETTER(TiDwellFatigueCrystallographicAnalysis, this, DoNotAssumeInitiatorPresence), linkedProps2));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Do Not Assume Initiator Presence", DoNotAssumeInitiatorPresence, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis, linkedProps2));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initiator Lower Threshold (Degrees)", InitiatorLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initiator Upper Threshold (Degrees)", InitiatorUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Hard Feature Lower Threshold (Degrees)", HardFeatureLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));

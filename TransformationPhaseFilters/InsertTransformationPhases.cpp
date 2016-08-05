@@ -175,11 +175,11 @@ void InsertTransformationPhases::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Transformation Phase Misorientation", TransformationPhaseMisorientation, FilterParameter::Parameter, InsertTransformationPhases));
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, DefineHabitPlane), SIMPL_BIND_GETTER(InsertTransformationPhases, this, DefineHabitPlane), linkedProps1));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Define Habit Plane", DefineHabitPlane, FilterParameter::Parameter, InsertTransformationPhases, linkedProps1));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Transformation Phase Habit Plane", TransformationPhaseHabitPlane, FilterParameter::Parameter, InsertTransformationPhases));
 
   QStringList linkedProps2("CoherentFrac");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, UseAllVariants), SIMPL_BIND_GETTER(InsertTransformationPhases, this, UseAllVariants), linkedProps2));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use All Variants", UseAllVariants, FilterParameter::Parameter, InsertTransformationPhases, linkedProps2));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Coherent Fraction", CoherentFrac, FilterParameter::Parameter, InsertTransformationPhases));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Transformation Phase Thickness", TransformationPhaseThickness, FilterParameter::Parameter, InsertTransformationPhases));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Average Number Of Transformation Phases Per Feature", NumTransformationPhasesPerFeature, FilterParameter::Parameter, InsertTransformationPhases));
