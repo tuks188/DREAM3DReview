@@ -176,7 +176,7 @@ void InsertTransformationPhases::setupFilterParameters()
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
   parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, DefineHabitPlane), SIMPL_BIND_GETTER(InsertTransformationPhases, this, DefineHabitPlane), linkedProps1));
-  parameters.push_back(FloatVec3FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", getTransformationPhaseHabitPlane(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransformationPhaseHabitPlane), SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransformationPhaseHabitPlane)));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Transformation Phase Habit Plane", TransformationPhaseHabitPlane, FilterParameter::Parameter, InsertTransformationPhases));
 
   QStringList linkedProps2("CoherentFrac");
   parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, UseAllVariants), SIMPL_BIND_GETTER(InsertTransformationPhases, this, UseAllVariants), linkedProps2));
