@@ -268,8 +268,8 @@ void FindCSLBoundaries::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Face Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("CSL Boundary", "SurfaceMeshCSLBoundaryArrayName", getSurfaceMeshCSLBoundaryArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryArrayName), SIMPL_BIND_GETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryArrayName)));
-  parameters.push_back(StringFilterParameter::New("CSL Boundary Incoherence", "SurfaceMeshCSLBoundaryIncoherenceArrayName", getSurfaceMeshCSLBoundaryIncoherenceArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryIncoherenceArrayName), SIMPL_BIND_GETTER(FindCSLBoundaries, this, SurfaceMeshCSLBoundaryIncoherenceArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("CSL Boundary", SurfaceMeshCSLBoundaryArrayName, FilterParameter::CreatedArray, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_STRING_FP("CSL Boundary Incoherence", SurfaceMeshCSLBoundaryIncoherenceArrayName, FilterParameter::CreatedArray, FindCSLBoundaries));
   setFilterParameters(parameters);
 }
 // -----------------------------------------------------------------------------
