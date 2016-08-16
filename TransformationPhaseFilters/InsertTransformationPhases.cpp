@@ -148,7 +148,7 @@ InsertTransformationPhases::~InsertTransformationPhases()
 void InsertTransformationPhases::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(IntFilterParameter::New("Parent Phase", "ParentPhase", getParentPhase(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, ParentPhase), SIMPL_BIND_GETTER(InsertTransformationPhases, this, ParentPhase)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Parent Phase", ParentPhase, FilterParameter::Parameter, InsertTransformationPhases));
   {
     ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();
     option->setHumanLabel("Transformation Phase Crystal Structure");
@@ -172,83 +172,83 @@ void InsertTransformationPhases::setupFilterParameters()
     option->setChoices(choices);
     parameters.push_back(option);
   }
-  parameters.push_back(DoubleFilterParameter::New("Transformation Phase Misorientation", "TransformationPhaseMisorientation", getTransformationPhaseMisorientation(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransformationPhaseMisorientation), SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransformationPhaseMisorientation)));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Transformation Phase Misorientation", TransformationPhaseMisorientation, FilterParameter::Parameter, InsertTransformationPhases));
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Define Habit Plane", "DefineHabitPlane", getDefineHabitPlane(), linkedProps1, FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, DefineHabitPlane), SIMPL_BIND_GETTER(InsertTransformationPhases, this, DefineHabitPlane)));
-  parameters.push_back(FloatVec3FilterParameter::New("Transformation Phase Habit Plane", "TransformationPhaseHabitPlane", getTransformationPhaseHabitPlane(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransformationPhaseHabitPlane), SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransformationPhaseHabitPlane)));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Define Habit Plane", DefineHabitPlane, FilterParameter::Parameter, InsertTransformationPhases, linkedProps1));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Transformation Phase Habit Plane", TransformationPhaseHabitPlane, FilterParameter::Parameter, InsertTransformationPhases));
 
   QStringList linkedProps2("CoherentFrac");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use All Variants", "UseAllVariants", getUseAllVariants(), linkedProps2, FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, UseAllVariants), SIMPL_BIND_GETTER(InsertTransformationPhases, this, UseAllVariants)));
-  parameters.push_back(DoubleFilterParameter::New("Coherent Fraction", "CoherentFrac", getCoherentFrac(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, CoherentFrac), SIMPL_BIND_GETTER(InsertTransformationPhases, this, CoherentFrac)));
-  parameters.push_back(DoubleFilterParameter::New("Transformation Phase Thickness", "TransformationPhaseThickness", getTransformationPhaseThickness(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransformationPhaseThickness), SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransformationPhaseThickness)));
-  parameters.push_back(IntFilterParameter::New("Average Number Of Transformation Phases Per Feature", "NumTransformationPhasesPerFeature", getNumTransformationPhasesPerFeature(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, NumTransformationPhasesPerFeature), SIMPL_BIND_GETTER(InsertTransformationPhases, this, NumTransformationPhasesPerFeature)));
-  parameters.push_back(DoubleFilterParameter::New("Peninsula Transformation Phase Fraction", "PeninsulaFrac", getPeninsulaFrac(), FilterParameter::Parameter, SIMPL_BIND_SETTER(InsertTransformationPhases, this, PeninsulaFrac), SIMPL_BIND_GETTER(InsertTransformationPhases, this, PeninsulaFrac)));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use All Variants", UseAllVariants, FilterParameter::Parameter, InsertTransformationPhases, linkedProps2));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Coherent Fraction", CoherentFrac, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Transformation Phase Thickness", TransformationPhaseThickness, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Average Number Of Transformation Phases Per Feature", NumTransformationPhasesPerFeature, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Peninsula Transformation Phase Fraction", PeninsulaFrac, FilterParameter::Parameter, InsertTransformationPhases));
 
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::Cell, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, FeatureIdsArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Float, 3, SIMPL::AttributeMatrixType::Cell, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Euler Angles", "CellEulerAnglesArrayPath", getCellEulerAnglesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, CellEulerAnglesArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, CellEulerAnglesArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Euler Angles", CellEulerAnglesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellFeature, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, CellFeatureAttributeMatrixName), SIMPL_BIND_GETTER(InsertTransformationPhases, this, CellFeatureAttributeMatrixName)));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 3, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Average Euler Angles", "FeatureEulerAnglesArrayPath", getFeatureEulerAnglesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, FeatureEulerAnglesArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, FeatureEulerAnglesArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Average Euler Angles", FeatureEulerAnglesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 4, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Average Quaternions", "AvgQuatsArrayPath", getAvgQuatsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, AvgQuatsArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, AvgQuatsArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Average Quaternions", AvgQuatsArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 3, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Centroids", "CentroidsArrayPath", getCentroidsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, CentroidsArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, CentroidsArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Centroids", CentroidsArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Equivalent Diameters", "EquivalentDiametersArrayPath", getEquivalentDiametersArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, EquivalentDiametersArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, EquivalentDiametersArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Equivalent Diameters", EquivalentDiametersArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "FeaturePhasesArrayPath", getFeaturePhasesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, FeaturePhasesArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, FeaturePhasesArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Phases", FeaturePhasesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Ensemble Attribute Matrix", "StatsGenCellEnsembleAttributeMatrixPath", getStatsGenCellEnsembleAttributeMatrixPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, StatsGenCellEnsembleAttributeMatrixPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, StatsGenCellEnsembleAttributeMatrixPath)));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Ensemble Attribute Matrix", StatsGenCellEnsembleAttributeMatrixPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Ensemble);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, CrystalStructuresArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, CrystalStructuresArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Crystal Structures", CrystalStructuresArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Ensemble);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Phase Types", "PhaseTypesArrayPath", getPhaseTypesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, PhaseTypesArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, PhaseTypesArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Phase Types", PhaseTypesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Ensemble);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Shape Types", "ShapeTypesArrayPath", getShapeTypesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, ShapeTypesArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, ShapeTypesArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shape Types", ShapeTypesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Ensemble);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Number of Features", "NumFeaturesArrayPath", getNumFeaturesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, NumFeaturesArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, NumFeaturesArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Number of Features", NumFeaturesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Parent Ids", "FeatureParentIdsArrayName", getFeatureParentIdsArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(InsertTransformationPhases, this, FeatureParentIdsArrayName), SIMPL_BIND_GETTER(InsertTransformationPhases, this, FeatureParentIdsArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Parent Ids", FeatureParentIdsArrayName, FilterParameter::CreatedArray, InsertTransformationPhases));
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::AttributeMatrixObjectType::Feature);
-    parameters.push_back(DataArrayCreationFilterParameter::New("Number of Features Per Parent", "NumFeaturesPerParentArrayPath", getNumFeaturesPerParentArrayPath(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(InsertTransformationPhases, this, NumFeaturesPerParentArrayPath), SIMPL_BIND_GETTER(InsertTransformationPhases, this, NumFeaturesPerParentArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Number of Features Per Parent", NumFeaturesPerParentArrayPath, FilterParameter::CreatedArray, InsertTransformationPhases, req));
   }
 
   setFilterParameters(parameters);
