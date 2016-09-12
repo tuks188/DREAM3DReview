@@ -86,7 +86,7 @@ using namespace H5Support_NAMESPACE;
 #define WRITE_Mic_DATA_ARRAY(reader, m_msgType, gid, prpty, key)\
   {\
     m_msgType* dataPtr = reader.get##prpty##Pointer();\
-    if (NULL != dataPtr) {\
+    if (nullptr != dataPtr) {\
       err = QH5Lite::writePointerDataset(gid, key, rank, dims, dataPtr);\
       if (err < 0) {\
         QString ss = \
@@ -128,7 +128,7 @@ using namespace H5Support_NAMESPACE;
 #define WRITE_Mic_DATA_ARRAY(reader, m_msgType, gid, prpty, key)\
   {\
     m_msgType* dataPtr = reader.get##prpty##Pointer();\
-    if (NULL != dataPtr) {\
+    if (nullptr != dataPtr) {\
       err = QH5Lite::writePointerDataset(gid, key, rank, dims, dataPtr);\
       if (err < 0) {\
         std::ostringstream ss;\
@@ -405,7 +405,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
     QVector<m_msgType> tempVar = reader->get##prpty();\
     dims[0] = tempVar.size();\
     m_msgType* dataPtr = &(tempVar.front());\
-    if (NULL != dataPtr) {\
+    if (nullptr != dataPtr) {\
       err = QH5Lite::writePointerDataset(pid, key, rank, dims, dataPtr);\
       if (err < 0) {\
         QString ss = \

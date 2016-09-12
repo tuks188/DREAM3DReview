@@ -67,16 +67,16 @@ MicReader::MicReader() :
   EbsdReader()
 {
 
-  // Init all the arrays to NULL
-  m_Euler1 = NULL;
-  m_Euler2 = NULL;
-  m_Euler3 = NULL;
-  m_Conf = NULL;
-  m_Phase = NULL;
-  m_Level = NULL;
-  m_Up = NULL;
-  m_X = NULL;
-  m_Y = NULL;
+  // Init all the arrays to nullptr
+  m_Euler1 = nullptr;
+  m_Euler2 = nullptr;
+  m_Euler3 = nullptr;
+  m_Conf = nullptr;
+  m_Phase = nullptr;
+  m_Level = nullptr;
+  m_Up = nullptr;
+  m_X = nullptr;
+  m_Y = nullptr;
 
   m_HeaderMap[Mic::InfileBasename] = MicStringHeaderEntry::NewEbsdHeaderEntry(Mic::InfileBasename);
   m_HeaderMap[Mic::InfileSerialLength] = MicHeaderEntry<int>::NewEbsdHeaderEntry(Mic::InfileSerialLength);
@@ -219,7 +219,7 @@ void* MicReader::getPointerByName(const QString& featureName)
   if (featureName.compare(Mic::Up) == 0) { return static_cast<void*>(m_Up);}
   if (featureName.compare(Mic::X) == 0) { return static_cast<void*>(m_X);}
   if (featureName.compare(Mic::Y) == 0) { return static_cast<void*>(m_Y);}
-  return NULL;
+  return nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -392,10 +392,10 @@ int MicReader::readMicFile()
 
   // Initialize our pointers to 1 element
   initPointers(1);
-  if (NULL == m_Euler1 || NULL == m_Euler2 || NULL == m_Euler3
-      || NULL == m_Conf || NULL == m_Phase || NULL == m_Level  || m_X == NULL || m_Y == NULL)
+  if (nullptr == m_Euler1 || nullptr == m_Euler2 || nullptr == m_Euler3
+      || nullptr == m_Conf || nullptr == m_Phase || nullptr == m_Level  || m_X == nullptr || m_Y == nullptr)
   {
-    qDebug() << "Internal pointers were NULL at " __FILE__ << "(" << __LINE__ << ")";
+    qDebug() << "Internal pointers were nullptr at " __FILE__ << "(" << __LINE__ << ")";
     return -1;
   }
 
@@ -555,7 +555,7 @@ void MicReader::parseHeaderLine(QByteArray& line)
   QString key(tokens[0]);
 
   EbsdHeaderEntry::Pointer p = m_HeaderMap[key];
-  if (NULL == p.get())
+  if (nullptr == p.get())
   {
     /*
       std::cout << "---------------------------" << std::endl;

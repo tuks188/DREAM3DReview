@@ -219,7 +219,7 @@ int H5MicReader::readHeader(hid_t parId)
 #define MIC_READER_ALLOCATE_AND_READ(name, type)\
   if (m_ReadAllArrays == true || m_ArrayNames.find(Mic::name) != m_ArrayNames.end()) {\
     type* _##name = allocateArray<type>(totalDataRows);\
-    if (NULL != _##name) {\
+    if (nullptr != _##name) {\
       ::memset(_##name, 0, numBytes);\
       err = QH5Lite::readPointerDataset(gid, Mic::name, _##name);\
     }\

@@ -113,10 +113,10 @@ ReadMicData::ReadMicData() :
   m_RefFrameZDir(SIMPL::RefFrameZDir::UnknownRefFrameZDirection),
   m_Manufacturer(Ebsd::UnknownManufacturer),
   d_ptr(new ReadMicDataPrivate(this)),
-  m_CellPhases(NULL),
-  m_CellEulerAngles(NULL),
-  m_CrystalStructures(NULL),
-  m_LatticeConstants(NULL)
+  m_CellPhases(nullptr),
+  m_CellEulerAngles(nullptr),
+  m_CrystalStructures(nullptr),
+  m_LatticeConstants(nullptr)
 {
   setupFilterParameters();
 }
@@ -357,14 +357,14 @@ void ReadMicData::dataCheck()
     QVector<size_t> dim(1, 3);
     tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), getCellEulerAnglesArrayName());
     m_CellEulerAnglesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, tempPath, 0, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (NULL != m_CellEulerAnglesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+    if (nullptr != m_CellEulerAnglesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
     dim[0] = 1;
     tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), getCellPhasesArrayName());
     m_CellPhasesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (NULL != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+    if (nullptr != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -372,14 +372,14 @@ void ReadMicData::dataCheck()
     //typedef DataArray<unsigned int> XTalStructArrayType;
     tempPath.update(getDataContainerName(), getCellEnsembleAttributeMatrixName(), getCrystalStructuresArrayName());
     m_CrystalStructuresPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(this, tempPath, Ebsd::CrystalStructure::UnknownCrystalStructure, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (NULL != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+    if (nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
     dim[0] = 6;
     tempPath.update(getDataContainerName(), getCellEnsembleAttributeMatrixName(), getLatticeConstantsArrayName());
     m_LatticeConstantsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, tempPath, 0.0, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (NULL != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+    if (nullptr != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -463,10 +463,10 @@ void ReadMicData::readMicFile()
 
   err = loadMaterialInfo(reader.get());
 
-  float* f1 = NULL;
-  float* f2 = NULL;
-  float* f3 = NULL;
-  int* phasePtr = NULL;
+  float* f1 = nullptr;
+  float* f2 = nullptr;
+  float* f3 = nullptr;
+  int* phasePtr = nullptr;
 
   FloatArrayType::Pointer fArray = FloatArrayType::NullPointer();
   Int32ArrayType::Pointer iArray = Int32ArrayType::NullPointer();
@@ -633,9 +633,9 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
 
   }
   DataContainer::Pointer vdc = getDataContainerArray()->getDataContainer(getDataContainerName());
-  if (NULL == vdc) { return -1; }
+  if (nullptr == vdc) { return -1; }
   AttributeMatrix::Pointer attrMatrix = vdc->getAttributeMatrix(getCellEnsembleAttributeMatrixName());
-  if (NULL == attrMatrix.get()) { return -2; }
+  if (nullptr == attrMatrix.get()) { return -2; }
 
   // Resize the AttributeMatrix based on the size of the crystal structures array
   QVector<size_t> tDims(1, crystalStructures->getNumberOfTuples());
@@ -647,13 +647,13 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
 
   // Now reset the internal ensemble array references to these new arrays
   m_CrystalStructuresPtr = crystalStructures;
-  if (NULL != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_LatticeConstantsPtr = latticeConstants;
-  if (NULL != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
