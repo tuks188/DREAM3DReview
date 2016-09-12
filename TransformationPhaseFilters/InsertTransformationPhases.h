@@ -229,11 +229,11 @@ class InsertTransformationPhases : public AbstractFilter
   private:
     QVector<SpaceGroupOps::Pointer> m_OrientationOps;
 
-    // Cell Data - make sure these are all initialized to NULL in the constructor
+    // Cell Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
     DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
 
-    // Feature Data - make sure these are all initialized to NULL in the constructor
+    // Feature Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
     DEFINE_DATAARRAY_VARIABLE(bool, Active)
     DEFINE_DATAARRAY_VARIABLE(float, Centroids)
@@ -243,7 +243,7 @@ class InsertTransformationPhases : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeaturesPerParent)
 
-    // Ensemble Data - make sure these are all initialized to NULL in the constructor
+    // Ensemble Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
     DEFINE_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)

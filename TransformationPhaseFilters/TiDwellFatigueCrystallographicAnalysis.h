@@ -264,7 +264,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(bool, SoftFeatures)
     DEFINE_DATAARRAY_VARIABLE(bool, HardSoftGroups)
 
-    // Feature Data - make sure these are all initialized to NULL in the constructor
+    // Feature Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
     DEFINE_DATAARRAY_VARIABLE(int32_t, CellParentIds)
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureParentIds)
@@ -275,7 +275,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     NeighborList<int>::WeakPointer m_ParentNeighborList;
     DEFINE_DATAARRAY_VARIABLE(float, Centroids)
 
-    // Ensemble Data - make sure these are all initialized to NULL in the constructor
+    // Ensemble Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
     TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&); // Copy Constructor Not Implemented
