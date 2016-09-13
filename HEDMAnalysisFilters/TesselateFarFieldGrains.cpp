@@ -788,7 +788,7 @@ void TesselateFarFieldGrains::assign_voxels()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName().getDataContainerName());
 
-  int64_t totalPoints = m->getAttributeMatrix(m_OutputCellAttributeMatrixName.getAttributeMatrixName())->getNumTuples();
+  int64_t totalPoints = m->getAttributeMatrix(m_OutputCellAttributeMatrixName.getAttributeMatrixName())->getNumberOfTuples();
 
   size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
@@ -830,7 +830,7 @@ void TesselateFarFieldGrains::assign_voxels()
   uint64_t currentMillis = millis;
 
   FOrientArrayType om(9, 0.0);
-  int64_t totalFeatures = m->getAttributeMatrix(m_OutputCellFeatureAttributeMatrixName)->getNumTuples();
+  int64_t totalFeatures = m->getAttributeMatrix(m_OutputCellFeatureAttributeMatrixName)->getNumberOfTuples();
   for (int64_t i = 1; i < totalFeatures; i++)
   {
     featuresPerTime++;
@@ -968,8 +968,8 @@ void TesselateFarFieldGrains::assign_gaps_only()
   int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
   int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
   int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
-  size_t totalPoints = m->getAttributeMatrix(m_OutputCellAttributeMatrixName.getAttributeMatrixName())->getNumTuples();
-  size_t totalFeatures = m->getAttributeMatrix(m_OutputCellFeatureAttributeMatrixName)->getNumTuples();
+  size_t totalPoints = m->getAttributeMatrix(m_OutputCellAttributeMatrixName.getAttributeMatrixName())->getNumberOfTuples();
+  size_t totalFeatures = m->getAttributeMatrix(m_OutputCellFeatureAttributeMatrixName)->getNumberOfTuples();
 
   int neighpoints[6];
   neighpoints[0] = -xPoints * yPoints;
