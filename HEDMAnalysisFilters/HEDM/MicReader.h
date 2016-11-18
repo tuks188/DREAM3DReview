@@ -38,7 +38,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QMap>
-#include <QtCore/QFile>
 
 #include "EbsdLib/EbsdLib.h"
 #include "EbsdLib/EbsdSetGetMacros.h"
