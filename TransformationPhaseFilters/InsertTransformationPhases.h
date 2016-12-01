@@ -247,7 +247,7 @@ class InsertTransformationPhases : public AbstractFilter
     // Ensemble Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
-    DEFINE_DATAARRAY_VARIABLE(ShapeType::Type, ShapeTypes)
+    DEFINE_DATAARRAY_VARIABLE(ShapeType::EnumType, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
 

@@ -429,7 +429,7 @@ void InsertTransformationPhases::dataCheck()
   if( nullptr != m_PhaseTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_PhaseTypes = m_PhaseTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  m_ShapeTypesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<ShapeType::Type>, AbstractFilter>(this, getShapeTypesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_ShapeTypesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<ShapeType::EnumType>, AbstractFilter>(this, getShapeTypesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( nullptr != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
@@ -482,7 +482,7 @@ void InsertTransformationPhases::execute()
   // hard-coded to the below stats for now
   m_CrystalStructures[numensembles] = m_TransCrystalStruct;
   m_PhaseTypes[numensembles] = SIMPL::PhaseType::TransformationPhase;
-  m_ShapeTypes[numensembles] = ShapeType::Type::Ellipsoid;
+  m_ShapeTypes[numensembles] = static_cast<ShapeType::EnumType>(ShapeType::Type::Ellipsoid);
 
   // start insert transformation phases routine
   insert_transformationphases();
