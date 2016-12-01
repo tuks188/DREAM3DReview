@@ -70,6 +70,7 @@
 
 #include "EbsdLib/EbsdConstants.h"
 
+#include "Plugins/SyntheticBuilding/SyntheticBuildingConstants.h"
 
 #define ERROR_TXT_OUT 1
 #define ERROR_TXT_OUT1 1
@@ -82,6 +83,14 @@ const static float m_pi = static_cast<float>(M_PI);
 
 // Include the MOC generated file for this class
 #include "moc_InsertTransformationPhases.cpp"
+
+
+
+
+QTextStream& operator<< (QTextStream& os, const ShapeType::Type& value) {
+  os << static_cast<ShapeType::EnumType>(value);
+  return os;
+}
 
 
 
@@ -420,7 +429,7 @@ void InsertTransformationPhases::dataCheck()
   if( nullptr != m_PhaseTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_PhaseTypes = m_PhaseTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  m_ShapeTypesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<unsigned int>, AbstractFilter>(this, getShapeTypesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_ShapeTypesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<ShapeType::Type>, AbstractFilter>(this, getShapeTypesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( nullptr != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
@@ -473,7 +482,7 @@ void InsertTransformationPhases::execute()
   // hard-coded to the below stats for now
   m_CrystalStructures[numensembles] = m_TransCrystalStruct;
   m_PhaseTypes[numensembles] = SIMPL::PhaseType::TransformationPhase;
-  m_ShapeTypes[numensembles] = SIMPL::ShapeType::EllipsoidShape;
+  m_ShapeTypes[numensembles] = ShapeType::Type::Ellipsoid;
 
   // start insert transformation phases routine
   insert_transformationphases();

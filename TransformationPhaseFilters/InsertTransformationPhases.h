@@ -50,12 +50,13 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 
 #include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
-#include "SIMPLib/DataArrays/NeighborList.hpp"
-#include "Plugins/SyntheticBuilding/SyntheticBuildingConstants.h"
+
+
 
 /**
  * @class InsertTransformationPhases InsertTransformationPhases.h DREAM3DLib/SyntheticBuildingFilters/InsertTransformationPhases.h
@@ -246,7 +247,7 @@ class InsertTransformationPhases : public AbstractFilter
     // Ensemble Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
-    DEFINE_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
+    DEFINE_DATAARRAY_VARIABLE(ShapeType::Type, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
 
