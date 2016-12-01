@@ -481,7 +481,7 @@ void InsertTransformationPhases::execute()
 
   // hard-coded to the below stats for now
   m_CrystalStructures[numensembles] = m_TransCrystalStruct;
-  m_PhaseTypes[numensembles] = SIMPL::PhaseType::TransformationPhase;
+  m_PhaseTypes[numensembles] = static_cast<PhaseType::EnumType>(PhaseType::Type::TransformationPhase);
   m_ShapeTypes[numensembles] = static_cast<ShapeType::EnumType>(ShapeType::Type::Ellipsoid);
 
   // start insert transformation phases routine

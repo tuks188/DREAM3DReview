@@ -48,6 +48,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/ShapeType.h"
@@ -246,7 +247,7 @@ class InsertTransformationPhases : public AbstractFilter
 
     // Ensemble Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
-    DEFINE_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
+    DEFINE_DATAARRAY_VARIABLE(PhaseType::EnumType, PhaseTypes)
     DEFINE_DATAARRAY_VARIABLE(ShapeType::EnumType, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
