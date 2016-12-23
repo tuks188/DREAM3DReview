@@ -40,9 +40,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MicPhase::MicPhase() :
-  m_PhaseName(""),
-  m_PhaseIndex(1)
+MicPhase::MicPhase()
+: m_PhaseName("")
+, m_PhaseIndex(1)
 {
 }
 
@@ -58,8 +58,6 @@ MicPhase::~MicPhase()
 // -----------------------------------------------------------------------------
 void MicPhase::printSelf(std::ostream& stream)
 {
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -108,11 +106,26 @@ void MicPhase::parseZandCoordinates(QByteArray& data)
 unsigned int MicPhase::determineCrystalStructure()
 {
   unsigned int crystal_structure;
-  if(m_Symmetry.compare(Mic::Cubic) == 0) { crystal_structure = Ebsd::CrystalStructure::Cubic_High; }
-  else if(m_Symmetry.compare(Mic::Hexagonal) == 0) { crystal_structure = Ebsd::CrystalStructure::Hexagonal_High; }
-  else if(m_Symmetry.compare(Mic::OrthoRhombic) == 0) { crystal_structure = Ebsd::CrystalStructure::OrthoRhombic; }
-  else if(m_Symmetry.compare(Mic::Tetragonal) == 0) { crystal_structure = Ebsd::CrystalStructure::UnknownCrystalStructure; }
-  else { crystal_structure = Ebsd::CrystalStructure::UnknownCrystalStructure; }
+  if(m_Symmetry.compare(Mic::Cubic) == 0)
+  {
+    crystal_structure = Ebsd::CrystalStructure::Cubic_High;
+  }
+  else if(m_Symmetry.compare(Mic::Hexagonal) == 0)
+  {
+    crystal_structure = Ebsd::CrystalStructure::Hexagonal_High;
+  }
+  else if(m_Symmetry.compare(Mic::OrthoRhombic) == 0)
+  {
+    crystal_structure = Ebsd::CrystalStructure::OrthoRhombic;
+  }
+  else if(m_Symmetry.compare(Mic::Tetragonal) == 0)
+  {
+    crystal_structure = Ebsd::CrystalStructure::UnknownCrystalStructure;
+  }
+  else
+  {
+    crystal_structure = Ebsd::CrystalStructure::UnknownCrystalStructure;
+  }
 
   return crystal_structure;
 }

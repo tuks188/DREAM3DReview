@@ -47,15 +47,15 @@
 
 #include "HEDMAnalysisFilters/HEDM/H5MicReader.h"
 
-#if defined (H5Support_NAMESPACE)
+#if defined(H5Support_NAMESPACE)
 using namespace H5Support_NAMESPACE;
 #endif
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5MicVolumeReader::H5MicVolumeReader() :
-  H5EbsdVolumeReader()
+H5MicVolumeReader::H5MicVolumeReader()
+: H5EbsdVolumeReader()
 {
   // Init all the arrays to nullptr
   m_Euler1 = nullptr;
@@ -75,16 +75,16 @@ H5MicVolumeReader::~H5MicVolumeReader()
   deletePointers();
 }
 
-
-#define H5MICREADER_ALLOCATE_ARRAY(name, type)\
-  if (readAllArrays == true || arrayNames.find(Mic::name) != arrayNames.end()) {\
-    type* _##name = allocateArray<type>(numElements);\
-    if (nullptr != _##name) {\
-      ::memset(_##name, 0, numBytes);\
-    }\
-    set##name##Pointer(_##name);\
+#define H5MICREADER_ALLOCATE_ARRAY(name, type)                                                                                                                                                         \
+  if(readAllArrays == true || arrayNames.find(Mic::name) != arrayNames.end())                                                                                                                          \
+  {                                                                                                                                                                                                    \
+    type* _##name = allocateArray<type>(numElements);                                                                                                                                                  \
+    if(nullptr != _##name)                                                                                                                                                                             \
+    {                                                                                                                                                                                                  \
+      ::memset(_##name, 0, numBytes);                                                                                                                                                                  \
+    }                                                                                                                                                                                                  \
+    set##name##Pointer(_##name);                                                                                                                                                                       \
   }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -95,7 +95,6 @@ void H5MicVolumeReader::initPointers(size_t numElements)
   size_t numBytes = numElements * sizeof(float);
   bool readAllArrays = getReadAllArrays();
   QSet<QString> arrayNames = getArraysToRead();
-
 
   H5MICREADER_ALLOCATE_ARRAY(Euler1, float)
   H5MICREADER_ALLOCATE_ARRAY(Euler2, float)
@@ -111,13 +110,13 @@ void H5MicVolumeReader::initPointers(size_t numElements)
 // -----------------------------------------------------------------------------
 void H5MicVolumeReader::deletePointers()
 {
-  this->deallocateArrayData<float > (m_Euler1);
-  this->deallocateArrayData<float > (m_Euler2);
-  this->deallocateArrayData<float > (m_Euler3);
-  this->deallocateArrayData<float > (m_Conf);
-  this->deallocateArrayData<int > (m_Phase);
-  this->deallocateArrayData<float > (m_X);
-  this->deallocateArrayData<float > (m_Y);
+  this->deallocateArrayData<float>(m_Euler1);
+  this->deallocateArrayData<float>(m_Euler2);
+  this->deallocateArrayData<float>(m_Euler3);
+  this->deallocateArrayData<float>(m_Conf);
+  this->deallocateArrayData<int>(m_Phase);
+  this->deallocateArrayData<float>(m_X);
+  this->deallocateArrayData<float>(m_Y);
 }
 
 // -----------------------------------------------------------------------------
@@ -125,13 +124,34 @@ void H5MicVolumeReader::deletePointers()
 // -----------------------------------------------------------------------------
 void* H5MicVolumeReader::getPointerByName(const QString& featureName)
 {
-  if (featureName.compare(Mic::Euler1) == 0) { return static_cast<void*>(m_Euler1);}
-  if (featureName.compare(Mic::Euler2) == 0) { return static_cast<void*>(m_Euler2);}
-  if (featureName.compare(Mic::Euler3) == 0) { return static_cast<void*>(m_Euler3);}
-  if (featureName.compare(Mic::Confidence) == 0) { return static_cast<void*>(m_Conf);}
-  if (featureName.compare(Mic::Phase) == 0) { return static_cast<void*>(m_Phase);}
-  if (featureName.compare(Mic::X) == 0) { return static_cast<void*>(m_X);}
-  if (featureName.compare(Mic::Y) == 0) { return static_cast<void*>(m_Y);}
+  if(featureName.compare(Mic::Euler1) == 0)
+  {
+    return static_cast<void*>(m_Euler1);
+  }
+  if(featureName.compare(Mic::Euler2) == 0)
+  {
+    return static_cast<void*>(m_Euler2);
+  }
+  if(featureName.compare(Mic::Euler3) == 0)
+  {
+    return static_cast<void*>(m_Euler3);
+  }
+  if(featureName.compare(Mic::Confidence) == 0)
+  {
+    return static_cast<void*>(m_Conf);
+  }
+  if(featureName.compare(Mic::Phase) == 0)
+  {
+    return static_cast<void*>(m_Phase);
+  }
+  if(featureName.compare(Mic::X) == 0)
+  {
+    return static_cast<void*>(m_X);
+  }
+  if(featureName.compare(Mic::Y) == 0)
+  {
+    return static_cast<void*>(m_Y);
+  }
   return nullptr;
 }
 
@@ -140,16 +160,36 @@ void* H5MicVolumeReader::getPointerByName(const QString& featureName)
 // -----------------------------------------------------------------------------
 Ebsd::NumType H5MicVolumeReader::getPointerType(const QString& featureName)
 {
-  if (featureName.compare(Mic::Euler1) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Euler2) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Euler3) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Confidence) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Phase) == 0) { return Ebsd::Int32;}
-  if (featureName.compare(Mic::X) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Y) == 0) { return Ebsd::Float;}
+  if(featureName.compare(Mic::Euler1) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Euler2) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Euler3) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Confidence) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Phase) == 0)
+  {
+    return Ebsd::Int32;
+  }
+  if(featureName.compare(Mic::X) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Y) == 0)
+  {
+    return Ebsd::Float;
+  }
   return Ebsd::UnknownNumType;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -190,10 +230,7 @@ QVector<MicPhase::Pointer> H5MicVolumeReader::getPhases()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5MicVolumeReader::loadData(int64_t xpoints,
-                                int64_t ypoints,
-                                int64_t zpoints,
-                                uint32_t ZDir )
+int H5MicVolumeReader::loadData(int64_t xpoints, int64_t ypoints, int64_t zpoints, uint32_t ZDir)
 {
   int index = 0;
   int err = -1;
@@ -213,7 +250,7 @@ int H5MicVolumeReader::loadData(int64_t xpoints,
   int ystartspot = 0;
 
   err = readVolumeInfo();
-  for (int slice = 0; slice < zpoints; ++slice)
+  for(int slice = 0; slice < zpoints; ++slice)
   {
     H5MicReader::Pointer reader = H5MicReader::New();
     reader->setFileName(getFileName());
@@ -242,7 +279,6 @@ int H5MicVolumeReader::loadData(int64_t xpoints,
     float* confPtr = reader->getConfidencePointer();
     int* phasePtr = reader->getPhasePointer();
 
-
     xpointstemp = static_cast<int>(xpoints);
     ypointstemp = static_cast<int>(ypoints);
     xstartspot = (xpointstemp - xpointsslice) / 2;
@@ -255,22 +291,49 @@ int H5MicVolumeReader::loadData(int64_t xpoints,
     {
       ZDir = getStackingOrder();
     }
-    if(ZDir == SIMPL::RefFrameZDir::LowtoHigh) { zval = slice; }
-    if(ZDir == SIMPL::RefFrameZDir::HightoLow) { zval = static_cast<int>( (zpoints - 1) - slice ); }
+    if(ZDir == SIMPL::RefFrameZDir::LowtoHigh)
+    {
+      zval = slice;
+    }
+    if(ZDir == SIMPL::RefFrameZDir::HightoLow)
+    {
+      zval = static_cast<int>((zpoints - 1) - slice);
+    }
 
     // Copy the data from the current storage into the ReconstructionFunc Storage Location
-    for (int j = 0; j < ystop; j++)
+    for(int j = 0; j < ystop; j++)
     {
-      for (int i = 0; i < xstop; i++)
+      for(int i = 0; i < xstop; i++)
       {
         index = (zval * xpointstemp * ypointstemp) + ((j + ystartspot) * xpointstemp) + (i + xstartspot);
-        if (nullptr != euler1Ptr) {m_Euler1[index] = euler1Ptr[readerIndex];}
-        if (nullptr != euler2Ptr) {m_Euler2[index] = euler2Ptr[readerIndex];}
-        if (nullptr != euler3Ptr) {m_Euler3[index] = euler3Ptr[readerIndex];}
-        if (nullptr != xPtr) {m_X[index] = xPtr[readerIndex];}
-        if (nullptr != yPtr) {m_Y[index] = yPtr[readerIndex];}
-        if (nullptr != confPtr) {m_Conf[index] = confPtr[readerIndex];}
-        if (nullptr != phasePtr) {m_Phase[index] = phasePtr[readerIndex];} // Phase
+        if(nullptr != euler1Ptr)
+        {
+          m_Euler1[index] = euler1Ptr[readerIndex];
+        }
+        if(nullptr != euler2Ptr)
+        {
+          m_Euler2[index] = euler2Ptr[readerIndex];
+        }
+        if(nullptr != euler3Ptr)
+        {
+          m_Euler3[index] = euler3Ptr[readerIndex];
+        }
+        if(nullptr != xPtr)
+        {
+          m_X[index] = xPtr[readerIndex];
+        }
+        if(nullptr != yPtr)
+        {
+          m_Y[index] = yPtr[readerIndex];
+        }
+        if(nullptr != confPtr)
+        {
+          m_Conf[index] = confPtr[readerIndex];
+        }
+        if(nullptr != phasePtr)
+        {
+          m_Phase[index] = phasePtr[readerIndex];
+        } // Phase
 
         /* For HEDM OIM Files if there is a single phase then the value of the phase
          * data is zero (0). If there are 2 or more phases then the lowest value
@@ -290,4 +353,3 @@ int H5MicVolumeReader::loadData(int64_t xpoints,
   }
   return err;
 }
-

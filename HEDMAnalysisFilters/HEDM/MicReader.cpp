@@ -35,15 +35,14 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MicReader.h"
 
-
 #include <algorithm>
 
-#include <QtCore/QObject>
-#include <QtCore/QFile>
-#include <QtCore/QtDebug>
-#include <QtCore/QTextStream>
-#include <QtCore/QFileInfo>
 #include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QObject>
+#include <QtCore/QTextStream>
+#include <QtCore/QtDebug>
 
 #include "EbsdLib/EbsdMacros.h"
 #include "EbsdLib/EbsdMath.h"
@@ -59,12 +58,11 @@
 #endif
 #endif
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MicReader::MicReader() :
-  EbsdReader()
+MicReader::MicReader()
+: EbsdReader()
 {
 
   // Init all the arrays to nullptr
@@ -167,15 +165,15 @@ void MicReader::initPointers(size_t numElements)
 {
   setNumberOfElements(numElements);
   size_t numBytes = numElements * sizeof(float);
-  m_Euler1 = allocateArray<float > (numElements);
-  m_Euler2 = allocateArray<float > (numElements);
-  m_Euler3 = allocateArray<float > (numElements);
-  m_Conf = allocateArray<float > (numElements);
-  m_Phase = allocateArray<int> (numElements);
-  m_Level = allocateArray<int> (numElements);
-  m_Up = allocateArray<int> (numElements);
-  m_X = allocateArray<float > (numElements);
-  m_Y = allocateArray<float > (numElements);
+  m_Euler1 = allocateArray<float>(numElements);
+  m_Euler2 = allocateArray<float>(numElements);
+  m_Euler3 = allocateArray<float>(numElements);
+  m_Conf = allocateArray<float>(numElements);
+  m_Phase = allocateArray<int>(numElements);
+  m_Level = allocateArray<int>(numElements);
+  m_Up = allocateArray<int>(numElements);
+  m_X = allocateArray<float>(numElements);
+  m_Y = allocateArray<float>(numElements);
 
   ::memset(m_Euler1, 0, numBytes);
   ::memset(m_Euler2, 0, numBytes);
@@ -186,7 +184,6 @@ void MicReader::initPointers(size_t numElements)
   ::memset(m_Up, 0, numBytes);
   ::memset(m_X, 0, numBytes);
   ::memset(m_Y, 0, numBytes);
-
 }
 
 // -----------------------------------------------------------------------------
@@ -194,15 +191,15 @@ void MicReader::initPointers(size_t numElements)
 // -----------------------------------------------------------------------------
 void MicReader::deletePointers()
 {
-  this->deallocateArrayData<float > (m_Euler1);
-  this->deallocateArrayData<float > (m_Euler2);
-  this->deallocateArrayData<float > (m_Euler3);
-  this->deallocateArrayData<float > (m_Conf);
-  this->deallocateArrayData<int > (m_Phase);
-  this->deallocateArrayData<int > (m_Level);
-  this->deallocateArrayData<int > (m_Up);
-  this->deallocateArrayData<float > (m_X);
-  this->deallocateArrayData<float > (m_Y);
+  this->deallocateArrayData<float>(m_Euler1);
+  this->deallocateArrayData<float>(m_Euler2);
+  this->deallocateArrayData<float>(m_Euler3);
+  this->deallocateArrayData<float>(m_Conf);
+  this->deallocateArrayData<int>(m_Phase);
+  this->deallocateArrayData<int>(m_Level);
+  this->deallocateArrayData<int>(m_Up);
+  this->deallocateArrayData<float>(m_X);
+  this->deallocateArrayData<float>(m_Y);
 }
 
 // -----------------------------------------------------------------------------
@@ -210,15 +207,42 @@ void MicReader::deletePointers()
 // -----------------------------------------------------------------------------
 void* MicReader::getPointerByName(const QString& featureName)
 {
-  if (featureName.compare(Mic::Euler1) == 0) { return static_cast<void*>(m_Euler1);}
-  if (featureName.compare(Mic::Euler2) == 0) { return static_cast<void*>(m_Euler2);}
-  if (featureName.compare(Mic::Euler3) == 0) { return static_cast<void*>(m_Euler3);}
-  if (featureName.compare(Mic::Confidence) == 0) { return static_cast<void*>(m_Conf);}
-  if (featureName.compare(Mic::Phase) == 0) { return static_cast<void*>(m_Phase);}
-  if (featureName.compare(Mic::Level) == 0) { return static_cast<void*>(m_Level);}
-  if (featureName.compare(Mic::Up) == 0) { return static_cast<void*>(m_Up);}
-  if (featureName.compare(Mic::X) == 0) { return static_cast<void*>(m_X);}
-  if (featureName.compare(Mic::Y) == 0) { return static_cast<void*>(m_Y);}
+  if(featureName.compare(Mic::Euler1) == 0)
+  {
+    return static_cast<void*>(m_Euler1);
+  }
+  if(featureName.compare(Mic::Euler2) == 0)
+  {
+    return static_cast<void*>(m_Euler2);
+  }
+  if(featureName.compare(Mic::Euler3) == 0)
+  {
+    return static_cast<void*>(m_Euler3);
+  }
+  if(featureName.compare(Mic::Confidence) == 0)
+  {
+    return static_cast<void*>(m_Conf);
+  }
+  if(featureName.compare(Mic::Phase) == 0)
+  {
+    return static_cast<void*>(m_Phase);
+  }
+  if(featureName.compare(Mic::Level) == 0)
+  {
+    return static_cast<void*>(m_Level);
+  }
+  if(featureName.compare(Mic::Up) == 0)
+  {
+    return static_cast<void*>(m_Up);
+  }
+  if(featureName.compare(Mic::X) == 0)
+  {
+    return static_cast<void*>(m_X);
+  }
+  if(featureName.compare(Mic::Y) == 0)
+  {
+    return static_cast<void*>(m_Y);
+  }
   return nullptr;
 }
 
@@ -227,15 +251,42 @@ void* MicReader::getPointerByName(const QString& featureName)
 // -----------------------------------------------------------------------------
 Ebsd::NumType MicReader::getPointerType(const QString& featureName)
 {
-  if (featureName.compare(Mic::Euler1) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Euler2) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Euler3) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Confidence) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Phase) == 0) { return Ebsd::Int32;}
-  if (featureName.compare(Mic::Level) == 0) { return Ebsd::Int32;}
-  if (featureName.compare(Mic::Up) == 0) { return Ebsd::Int32;}
-  if (featureName.compare(Mic::X) == 0) { return Ebsd::Float;}
-  if (featureName.compare(Mic::Y) == 0) { return Ebsd::Float;}
+  if(featureName.compare(Mic::Euler1) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Euler2) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Euler3) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Confidence) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Phase) == 0)
+  {
+    return Ebsd::Int32;
+  }
+  if(featureName.compare(Mic::Level) == 0)
+  {
+    return Ebsd::Int32;
+  }
+  if(featureName.compare(Mic::Up) == 0)
+  {
+    return Ebsd::Int32;
+  }
+  if(featureName.compare(Mic::X) == 0)
+  {
+    return Ebsd::Float;
+  }
+  if(featureName.compare(Mic::Y) == 0)
+  {
+    return Ebsd::Float;
+  }
   return Ebsd::UnknownNumType;
 }
 
@@ -258,11 +309,17 @@ int MicReader::readHeaderOnly()
 
   QString parentPath(fi.path());
   QString name = fi.baseName();
-  if(QDir::toNativeSeparators(parentPath).isEmpty() == true) { name = name + ".config"; }
-  else { name = parentPath + QDir::separator() + name + ".config"; }
+  if(QDir::toNativeSeparators(parentPath).isEmpty() == true)
+  {
+    name = name + ".config";
+  }
+  else
+  {
+    name = parentPath + QDir::separator() + name + ".config";
+  }
 
   QFile inHeader(getFileName());
-  if (!inHeader.open(QIODevice::ReadOnly | QIODevice::Text))
+  if(!inHeader.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     QString msg = QString("HEDM .config file could not be opened: ") + name;
     setErrorCode(-100);
@@ -272,7 +329,7 @@ int MicReader::readHeaderOnly()
 
   // 'name' now contains the complete path to the file with the new extension
 
-  while (!inHeader.atEnd())
+  while(!inHeader.atEnd())
   {
     buf = inHeader.readLine();
     origHeader.append(buf); // Append the line NOW to the header as we are going to modify it next
@@ -294,11 +351,17 @@ int MicReader::readDatFile()
   QFileInfo fi(getFileName());
   QString parentPath(fi.path());
   QString name = fi.baseName();
-  if(QDir::toNativeSeparators(parentPath).isEmpty() == true) { name = name + ".dat"; }
-  else { name = parentPath + QDir::separator() + name + ".dat"; }
+  if(QDir::toNativeSeparators(parentPath).isEmpty() == true)
+  {
+    name = name + ".dat";
+  }
+  else
+  {
+    name = parentPath + QDir::separator() + name + ".dat";
+  }
 
   QFile inHeader(name);
-  if (!inHeader.open(QIODevice::ReadOnly | QIODevice::Text))
+  if(!inHeader.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     QString msg = QString("HEDM .dat file could not be opened: ") + name;
     setErrorCode(-111);
@@ -309,7 +372,7 @@ int MicReader::readDatFile()
   QByteArray buf;
   m_CurrentPhase = MicPhase::New();
 
-  //hard-coded dat file read
+  // hard-coded dat file read
   buf = inHeader.readLine();
   m_CurrentPhase->parseLatticeConstants(buf);
   buf = inHeader.readLine();
@@ -345,11 +408,17 @@ int MicReader::readFile()
 
   // Read the .config file
   err = readHeaderOnly();
-  if (err < 0) { return err; }
+  if(err < 0)
+  {
+    return err;
+  }
 
   // Read the .dat file
   err = readDatFile();
-  if (err < 0) { return err; }
+  if(err < 0)
+  {
+    return err;
+  }
 
   // We need to pass in the buffer because it has the first line of data
   err = readMicFile();
@@ -363,7 +432,7 @@ int MicReader::readMicFile()
 {
 
   QFile in(getFileName());
-  if (!in.open(QIODevice::ReadOnly | QIODevice::Text))
+  if(!in.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     QString msg = QObject::tr("Mic file could not be opened: %1").arg(getFileName());
     setErrorMessage(msg);
@@ -376,7 +445,7 @@ int MicReader::readMicFile()
   // Initialize new pointers
   size_t totalDataRows = 0;
   size_t totalPossibleDataRows = 0;
-//  size_t featuresRead = 0;
+  //  size_t featuresRead = 0;
   float origEdgeLength;
   float xMax = 0, yMax = 0;
   float xMin = 1000000000, yMin = 1000000000;
@@ -389,11 +458,9 @@ int MicReader::readMicFile()
   buf = in.readLine();
   origEdgeLength = buf.toFloat(&ok);
 
-
   // Initialize our pointers to 1 element
   initPointers(1);
-  if (nullptr == m_Euler1 || nullptr == m_Euler2 || nullptr == m_Euler3
-      || nullptr == m_Conf || nullptr == m_Phase || nullptr == m_Level  || m_X == nullptr || m_Y == nullptr)
+  if(nullptr == m_Euler1 || nullptr == m_Euler2 || nullptr == m_Euler3 || nullptr == m_Conf || nullptr == m_Phase || nullptr == m_Level || m_X == nullptr || m_Y == nullptr)
   {
     qDebug() << "Internal pointers were nullptr at " __FILE__ << "(" << __LINE__ << ")";
     return -1;
@@ -420,7 +487,10 @@ int MicReader::readMicFile()
     buf = in.readLine();
 
     ++counter;
-    if (in.atEnd() == true) { break; }
+    if(in.atEnd() == true)
+    {
+      break;
+    }
   }
   totalDataRows = counter;
 
@@ -446,10 +516,22 @@ int MicReader::readMicFile()
       x = m_X[i] + (newEdgeLength / 2.0f);
       y = m_Y[i] - (constant * newEdgeLength);
     }
-    if(x > xMax) { xMax = x; }
-    if(y > yMax) { yMax = y; }
-    if(x < xMin) { xMin = x; }
-    if(y < yMin) { yMin = y; }
+    if(x > xMax)
+    {
+      xMax = x;
+    }
+    if(y > yMax)
+    {
+      yMax = y;
+    }
+    if(x < xMin)
+    {
+      xMin = x;
+    }
+    if(y < yMin)
+    {
+      yMin = y;
+    }
     EA1[i] = m_Euler1[i];
     EA2[i] = m_Euler2[i];
     EA3[i] = m_Euler3[i];
@@ -482,12 +564,10 @@ int MicReader::readMicFile()
   EbsdHeaderEntry::Pointer yResHeader = MicHeaderEntry<float>::NewEbsdHeaderEntry(Mic::YRes, yRes);
   m_HeaderMap[Mic::YRes] = yResHeader;
 
-
   // Delete any currently existing pointers
   deletePointers();
   // Resize pointers
   initPointers(xDim * yDim);
-
 
   float xA = 0.0f, xB = 0.0f, xC = 0.0f, yA = 0.0f, yB = 0.0f, yC = 0.0f;
   int point = 0;
@@ -534,7 +614,6 @@ int MicReader::readMicFile()
     }
   }
 
-
   return 0;
 }
 
@@ -543,7 +622,7 @@ int MicReader::readMicFile()
 // -----------------------------------------------------------------------------
 void MicReader::parseHeaderLine(QByteArray& line)
 {
-  if (line[0] == '#')
+  if(line[0] == '#')
   {
     return;
   }
@@ -555,19 +634,19 @@ void MicReader::parseHeaderLine(QByteArray& line)
   QString key(tokens[0]);
 
   EbsdHeaderEntry::Pointer p = m_HeaderMap[key];
-  if (nullptr == p.get())
+  if(nullptr == p.get())
   {
-    /*
-      std::cout << "---------------------------" << std::endl;
-      std::cout << "Could not find header entry for key'" << word << "'" << std::endl;
-      QString upper(word);
-      std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
-      std::cout << "#define ANG_" << upper << "     \"" << word << "\"" << std::endl;
-      std::cout << "const QString " << word << "(ANG_" << upper << ");" << std::endl;
+/*
+  std::cout << "---------------------------" << std::endl;
+  std::cout << "Could not find header entry for key'" << word << "'" << std::endl;
+  QString upper(word);
+  std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
+  std::cout << "#define ANG_" << upper << "     \"" << word << "\"" << std::endl;
+  std::cout << "const QString " << word << "(ANG_" << upper << ");" << std::endl;
 
-      std::cout << "angInstanceProperty(AngHeaderEntry<float>. float, " << word << "Ebsd::Ang::" << word << std::endl;
-      std::cout << "m_Headermap[Ebsd::Ang::" << word << "] = AngHeaderEntry<float>::NewEbsdHeaderEntry(Ebsd::Ang::" << word << ");" << std::endl;
-      */
+  std::cout << "angInstanceProperty(AngHeaderEntry<float>. float, " << word << "Ebsd::Ang::" << word << std::endl;
+  std::cout << "m_Headermap[Ebsd::Ang::" << word << "] = AngHeaderEntry<float>::NewEbsdHeaderEntry(Ebsd::Ang::" << word << ");" << std::endl;
+  */
 #if 0
     std::cout << "<tr>\n    <td>" << word << "</td>\n    <td>" << "H5T_STRING" << "</td>\n";
     std::cout << "    <td colspan=\"2\"> Contains value for the header entry " << word << "</td>\n</tr>" << std::endl;
@@ -583,7 +662,6 @@ void MicReader::parseHeaderLine(QByteArray& line)
     std::cout << "<tr>\n    <td>" << p->getKey() << "</td>\n    <td>" << p->getHDFType() << "</td>\n";
     std::cout << "    <td colspan=\"2\"> Contains value for the header entry " << p->getKey() << "</td>\n</tr>" << std::endl;
 #endif
-
   }
 }
 
@@ -612,15 +690,22 @@ void MicReader::parseDataLine(QByteArray& line, size_t i)
   int up = 0, level = 0, good = 0, junk4, junk5, junk6, junk7, junk8, junk9;
   size_t offset = 0;
   size_t featuresRead = 0;
-  featuresRead = sscanf(line.data(), "%f %f %f %d %d %d %f %f %f %f %f %f %f %d %d %d %d %d %d", &x, &y, &z, &up, &level, &good, &p1, &p, &p2, &conf, &junk1, &junk2, &junk3, &junk4, &junk5, &junk6, &junk7, &junk8, &junk9);
+  featuresRead = sscanf(line.data(), "%f %f %f %d %d %d %f %f %f %f %f %f %f %d %d %d %d %d %d", &x, &y, &z, &up, &level, &good, &p1, &p, &p2, &conf, &junk1, &junk2, &junk3, &junk4, &junk5, &junk6,
+                        &junk7, &junk8, &junk9);
   if(featuresRead != 19)
   {
     qDebug() << "MicReader Error: Not enough columns were read for row " << i;
   }
   offset = i;
 
-  if(good > 0) { good = 1; }
-  else { good = 0; }
+  if(good > 0)
+  {
+    good = 1;
+  }
+  else
+  {
+    good = 0;
+  }
 
   m_Euler1[offset] = p1;
   m_Euler2[offset] = p;
@@ -632,7 +717,6 @@ void MicReader::parseDataLine(QByteArray& line, size_t i)
   m_X[offset] = x;
   m_Y[offset] = y;
 }
-
 
 // -----------------------------------------------------------------------------
 //

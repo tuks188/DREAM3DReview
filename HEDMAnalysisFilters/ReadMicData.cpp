@@ -35,10 +35,9 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ReadMicData.h"
 
-
 #include <limits>
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #include <QtCore/QFileInfo>
 
@@ -46,20 +45,17 @@
 #include "HEDMAnalysisFilters/HEDM/MicFields.h"
 #include "HEDMAnalysisFilters/HEDM/MicReader.h"
 
-
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
 #include "HEDMAnalysis/HEDMAnalysisConstants.h"
 
-
-#define NEW_SHARED_ARRAY(var, m_msgType, size)\
-  boost::shared_array<m_msgType> var##Array(new m_msgType[size]);\
+#define NEW_SHARED_ARRAY(var, m_msgType, size)                                                                                                                                                         \
+  boost::shared_array<m_msgType> var##Array(new m_msgType[size]);                                                                                                                                      \
   m_msgType* var = var##Array.get();
-
 
 /* ############## Start Private Implementation ############################### */
 // -----------------------------------------------------------------------------
@@ -67,56 +63,53 @@
 // -----------------------------------------------------------------------------
 class ReadMicDataPrivate
 {
-    Q_DISABLE_COPY(ReadMicDataPrivate)
-    Q_DECLARE_PUBLIC(ReadMicData)
-    ReadMicData* const q_ptr;
-    ReadMicDataPrivate(ReadMicData* ptr);
+  Q_DISABLE_COPY(ReadMicDataPrivate)
+  Q_DECLARE_PUBLIC(ReadMicData)
+  ReadMicData* const q_ptr;
+  ReadMicDataPrivate(ReadMicData* ptr);
 
-    Mic_Private_Data m_Data;
+  Mic_Private_Data m_Data;
 
-    QString m_InputFile_Cache;
-    QDateTime m_TimeStamp_Cache;
+  QString m_InputFile_Cache;
+  QDateTime m_TimeStamp_Cache;
 };
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadMicDataPrivate::ReadMicDataPrivate(ReadMicData* ptr) :
-  q_ptr(ptr),
-  m_InputFile_Cache(""),
-  m_TimeStamp_Cache(QDateTime())
+ReadMicDataPrivate::ReadMicDataPrivate(ReadMicData* ptr)
+: q_ptr(ptr)
+, m_InputFile_Cache("")
+, m_TimeStamp_Cache(QDateTime())
 {
-
 }
 
 // Include the MOC generated file for this class
 #include "moc_ReadMicData.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadMicData::ReadMicData() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
-  m_CellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName),
-  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
-  m_FileWasRead(false),
-  m_PhaseNameArrayName(""),
-  m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName),
-  m_InputFile(""),
-  m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles),
-  m_CellPhasesArrayName(SIMPL::CellData::Phases),
-  m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures),
-  m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants),
-  m_RefFrameZDir(SIMPL::RefFrameZDir::UnknownRefFrameZDirection),
-  m_Manufacturer(Ebsd::UnknownManufacturer),
-  d_ptr(new ReadMicDataPrivate(this)),
-  m_CellPhases(nullptr),
-  m_CellEulerAngles(nullptr),
-  m_CrystalStructures(nullptr),
-  m_LatticeConstants(nullptr)
+ReadMicData::ReadMicData()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::ImageDataContainerName)
+, m_CellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName)
+, m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_FileWasRead(false)
+, m_PhaseNameArrayName("")
+, m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName)
+, m_InputFile("")
+, m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles)
+, m_CellPhasesArrayName(SIMPL::CellData::Phases)
+, m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures)
+, m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants)
+, m_RefFrameZDir(SIMPL::RefFrameZDir::UnknownRefFrameZDirection)
+, m_Manufacturer(Ebsd::UnknownManufacturer)
+, d_ptr(new ReadMicDataPrivate(this))
+, m_CellPhases(nullptr)
+, m_CellEulerAngles(nullptr)
+, m_CrystalStructures(nullptr)
+, m_LatticeConstants(nullptr)
 {
   setupFilterParameters();
 }
@@ -126,7 +119,6 @@ ReadMicData::ReadMicData() :
 // -----------------------------------------------------------------------------
 ReadMicData::~ReadMicData()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -181,22 +173,22 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
 {
   QFileInfo fi(m_InputFile);
   QDateTime timeStamp(fi.lastModified());
-  if (flag == MIC_FULL_FILE)
+  if(flag == MIC_FULL_FILE)
   {
     setInputFile_Cache(""); // We need something to trigger the file read below
   }
   // Drop into this if statement if we need to read from a file
-  if (m_InputFile != getInputFile_Cache() || getTimeStamp_Cache().isValid() == false || getTimeStamp_Cache() < timeStamp)
+  if(m_InputFile != getInputFile_Cache() || getTimeStamp_Cache().isValid() == false || getTimeStamp_Cache() < timeStamp)
   {
     int zDim = 1;
     float zStep = 1.0, xOrigin = 0.0f, yOrigin = 0.0f, zOrigin = 0.0f;
 
     reader->setFileName(m_InputFile);
 
-    if (flag == MIC_HEADER_ONLY)
+    if(flag == MIC_HEADER_ONLY)
     {
       int err = reader->readHeaderOnly();
-      if (err < 0)
+      if(err < 0)
       {
         setErrorCondition(err);
         notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), err);
@@ -212,7 +204,7 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
     else
     {
       int err = reader->readFile();
-      if (err < 0)
+      if(err < 0)
       {
         setErrorCondition(err);
         notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), err);
@@ -260,7 +252,7 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
     m->getGeometryAs<ImageGeom>()->setOrigin(getData().origin[0], getData().origin[1], getData().origin[2]);
   }
 
-  if (flag == MIC_FULL_FILE)
+  if(flag == MIC_FULL_FILE)
   {
     loadMaterialInfo(reader);
   }
@@ -271,7 +263,6 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
 // -----------------------------------------------------------------------------
 void ReadMicData::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -286,7 +277,10 @@ void ReadMicData::dataCheck()
   setErrorCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   // Create the Image Geometry
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
@@ -294,51 +288,57 @@ void ReadMicData::dataCheck()
 
   QVector<size_t> tDims(3, 0);
   AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
   tDims.resize(1);
   tDims[0] = 0;
   AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QFileInfo fi(m_InputFile);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     QString ss = QObject::tr("The input file does not exist: '%1'").arg(getInputFile());
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (m_InputFile.isEmpty() == true && m_Manufacturer == Ebsd::UnknownManufacturer)
+  if(m_InputFile.isEmpty() == true && m_Manufacturer == Ebsd::UnknownManufacturer)
   {
     QString ss = QObject::tr("%1: The InputFile must be set. It is empty.").arg(getHumanLabel());
     setErrorCondition(-1);
     notifyErrorMessage(getHumanLabel(), ss, -1);
   }
 
-  if (m_InputFile.isEmpty() == false) // User set a filename, so lets check it
+  if(m_InputFile.isEmpty() == false) // User set a filename, so lets check it
   {
     QVector<size_t> dims(3, 0);
 
     QString ext = fi.suffix();
     QVector<QString> names;
-    if (ext.compare(Mic::FileExt) == 0)
+    if(ext.compare(Mic::FileExt) == 0)
     {
       MicReader* reader = new MicReader();
 
       populateMicData(reader, m, dims, MIC_HEADER_ONLY);
 
-      //Update the size of the Cell Attribute Matrix now that the dimensions of the volume are known
+      // Update the size of the Cell Attribute Matrix now that the dimensions of the volume are known
       cellAttrMat->resizeAttributeArrays(dims);
       MicFields micfeatures;
-      names = micfeatures.getFilterFeatures<QVector<QString> >();
+      names = micfeatures.getFilterFeatures<QVector<QString>>();
       QVector<size_t> dims(1, 1);
-      for (qint32 i = 0; i < names.size(); ++i)
+      for(qint32 i = 0; i < names.size(); ++i)
       {
-        if (reader->getPointerType(names[i]) == Ebsd::Int32)
+        if(reader->getPointerType(names[i]) == Ebsd::Int32)
         {
           cellAttrMat->createAndAddAttributeArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, names[i], 0, dims);
         }
-        else if (reader->getPointerType(names[i]) == Ebsd::Float)
+        else if(reader->getPointerType(names[i]) == Ebsd::Float)
         {
           cellAttrMat->createAndAddAttributeArray<DataArray<float>, AbstractFilter, float>(this, names[i], 0, dims);
         }
@@ -356,30 +356,34 @@ void ReadMicData::dataCheck()
 
     QVector<size_t> dim(1, 3);
     tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), getCellEulerAnglesArrayName());
-    m_CellEulerAnglesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, tempPath, 0, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (nullptr != m_CellEulerAnglesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    m_CellEulerAnglesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
+        this, tempPath, 0, dim);                     /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_CellEulerAnglesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
     dim[0] = 1;
     tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), getCellPhasesArrayName());
-    m_CellPhasesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (nullptr != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    m_CellPhasesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(
+        this, tempPath, 0, dim);                /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    //typedef DataArray<unsigned int> XTalStructArrayType;
+    // typedef DataArray<unsigned int> XTalStructArrayType;
     tempPath.update(getDataContainerName(), getCellEnsembleAttributeMatrixName(), getCrystalStructuresArrayName());
-    m_CrystalStructuresPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(this, tempPath, Ebsd::CrystalStructure::UnknownCrystalStructure, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    m_CrystalStructuresPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(
+        this, tempPath, Ebsd::CrystalStructure::UnknownCrystalStructure, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_CrystalStructuresPtr.lock().get())                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
     dim[0] = 6;
     tempPath.update(getDataContainerName(), getCellEnsembleAttributeMatrixName(), getLatticeConstantsArrayName());
-    m_LatticeConstantsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, tempPath, 0.0, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (nullptr != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    m_LatticeConstantsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
+        this, tempPath, 0.0, dim);                    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -412,7 +416,10 @@ void ReadMicData::execute()
   setErrorCondition(err);
 
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QFileInfo fi(getInputFile());
   QString ext = fi.suffix();
@@ -424,7 +431,7 @@ void ReadMicData::execute()
     QFileInfo newFi(m_InputFile);
     QDateTime timeStamp(newFi.lastModified());
 
-    if (m_InputFile == getInputFile_Cache() && getTimeStamp_Cache().isValid() && getTimeStamp_Cache() >= timeStamp)
+    if(m_InputFile == getInputFile_Cache() && getTimeStamp_Cache().isValid() && getTimeStamp_Cache() >= timeStamp)
     {
       setTimeStamp_Cache(timeStamp);
       setInputFile_Cache(m_InputFile);
@@ -444,7 +451,7 @@ void ReadMicData::readMicFile()
   std::shared_ptr<MicReader> reader(new MicReader());
   reader->setFileName(m_InputFile);
   err = reader->readFile();
-  if (err < 0)
+  if(err < 0)
   {
     setErrorCondition(err);
     notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), getErrorCondition());
@@ -483,20 +490,26 @@ void ReadMicData::readMicFile()
   float yMin = 10000000;
   f1 = reinterpret_cast<float*>(reader->getPointerByName(Mic::X));
   f2 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Y));
-  for (size_t i = 0; i < totalPoints; i++)
+  for(size_t i = 0; i < totalPoints; i++)
   {
     x = f1[i];
     y = f2[i];
-    if (x < xMin) { xMin = x; }
-    if (y < yMin) { yMin = y; }
+    if(x < xMin)
+    {
+      xMin = x;
+    }
+    if(y < yMin)
+    {
+      yMin = y;
+    }
   }
   m->getGeometryAs<ImageGeom>()->setOrigin(xMin, yMin, 0.0);
 
   {
     phasePtr = reinterpret_cast<int*>(reader->getPointerByName(Mic::Phase));
-    for (size_t i = 0; i < totalPoints; i++)
+    for(size_t i = 0; i < totalPoints; i++)
     {
-      if (phasePtr[i] < 1)
+      if(phasePtr[i] < 1)
       {
         phasePtr[i] = 1;
       }
@@ -514,7 +527,7 @@ void ReadMicData::readMicFile()
     f3 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler3));
     fArray = FloatArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::EulerAngles);
     float* cellEulerAngles = fArray->getPointer(0);
-    for (size_t i = 0; i < totalPoints; i++)
+    for(size_t i = 0; i < totalPoints; i++)
     {
       cellEulerAngles[3 * i] = f1[i];
       cellEulerAngles[3 * i + 1] = f2[i];
@@ -545,7 +558,7 @@ void ReadMicData::readMicFile()
 AbstractFilter::Pointer ReadMicData::newFilterInstance(bool copyFilterParameters)
 {
   ReadMicData::Pointer filter = ReadMicData::New();
-  if (true == copyFilterParameters)
+  if(true == copyFilterParameters)
   {
     filter->setFilterParameters(getFilterParameters());
     copyFilterParameterInstanceVariables(filter.get());
@@ -561,7 +574,6 @@ const QString ReadMicData::getCompiledLibraryName()
   return HEDMAnalysisConstants::HEDMAnalysisBaseName;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -570,7 +582,6 @@ const QString ReadMicData::getGroupName()
   return SIMPL::FilterGroups::Unsupported;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -578,7 +589,6 @@ const QString ReadMicData::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -594,7 +604,7 @@ const QString ReadMicData::getHumanLabel()
 int ReadMicData::loadMaterialInfo(MicReader* reader)
 {
   QVector<MicPhase::Pointer> phases = getData().phases;
-  if (phases.size() == 0)
+  if(phases.size() == 0)
   {
     setErrorCondition(reader->getErrorCode());
     notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), getErrorCondition());
@@ -617,7 +627,7 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   latticeConstants->setComponent(0, 4, 0.0f);
   latticeConstants->setComponent(0, 5, 0.0f);
 
-  for (size_t i = 0; i < phases.size(); i++)
+  for(size_t i = 0; i < phases.size(); i++)
   {
     int phaseID = phases[i]->getPhaseIndex();
     crystalStructures->setValue(phaseID, phases[i]->determineCrystalStructure());
@@ -630,12 +640,17 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
     latticeConstants->setComponent(phaseID, 3, lc[3]);
     latticeConstants->setComponent(phaseID, 4, lc[4]);
     latticeConstants->setComponent(phaseID, 5, lc[5]);
-
   }
   DataContainer::Pointer vdc = getDataContainerArray()->getDataContainer(getDataContainerName());
-  if (nullptr == vdc) { return -1; }
+  if(nullptr == vdc)
+  {
+    return -1;
+  }
   AttributeMatrix::Pointer attrMatrix = vdc->getAttributeMatrix(getCellEnsembleAttributeMatrixName());
-  if (nullptr == attrMatrix.get()) { return -2; }
+  if(nullptr == attrMatrix.get())
+  {
+    return -2;
+  }
 
   // Resize the AttributeMatrix based on the size of the crystal structures array
   QVector<size_t> tDims(1, crystalStructures->getNumberOfTuples());
@@ -647,13 +662,13 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
 
   // Now reset the internal ensemble array references to these new arrays
   m_CrystalStructuresPtr = crystalStructures;
-  if (nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_LatticeConstantsPtr = latticeConstants;
-  if (nullptr != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_LatticeConstantsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
