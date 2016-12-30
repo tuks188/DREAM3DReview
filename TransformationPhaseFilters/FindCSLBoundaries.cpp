@@ -49,7 +49,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Math/QuaternionMath.hpp"
 #include "SIMPLib/Math/GeometryMath.h"
-#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -237,9 +237,9 @@ FindCSLBoundaries::~FindCSLBoundaries()
 void FindCSLBoundaries::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("CSL (Sigma)", CSL, FilterParameter::Parameter, FindCSLBoundaries));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Axis Tolerance (Degrees)", AxisTolerance, FilterParameter::Parameter, FindCSLBoundaries));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Angle Tolerance (Degrees)", AngleTolerance, FilterParameter::Parameter, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("CSL (Sigma)", CSL, FilterParameter::Parameter, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Axis Tolerance (Degrees)", AxisTolerance, FilterParameter::Parameter, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Angle Tolerance (Degrees)", AngleTolerance, FilterParameter::Parameter, FindCSLBoundaries));
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 4, AttributeMatrix::Category::Feature);

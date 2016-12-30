@@ -38,7 +38,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -143,21 +143,21 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Alpha Glob Phase Present", AlphaGlobPhasePresent, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis, linkedProps1));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Alpha Glob Phase Number", AlphaGlobPhase, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Microtextured Region Phase Number", MTRPhase, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Lattice Parameter A", LatticeParameterA, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Lattice Parameter C", LatticeParameterC, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Lattice Parameter A", LatticeParameterA, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Lattice Parameter C", LatticeParameterC, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Stress Axis", StressAxis, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Subsurface Feature Distance to Consider (Microns)", SubsurfaceDistance, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Fraction of Features to Consider", ConsiderationFraction, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Fraction of Features to Consider", ConsiderationFraction, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
   QStringList linkedProps2;
   linkedProps2 << "InitiatorLowerThreshold" << "InitiatorUpperThreshold";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Do Not Assume Initiator Presence", DoNotAssumeInitiatorPresence, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis, linkedProps2));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initiator Lower Threshold (Degrees)", InitiatorLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initiator Upper Threshold (Degrees)", InitiatorUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Hard Feature Lower Threshold (Degrees)", HardFeatureLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Hard Feature Upper Threshold (Degrees)", HardFeatureUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Soft Feature Lower Threshold (Degrees)", SoftFeatureLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Soft Feature Upper Threshold (Degrees)", SoftFeatureUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Initiator Lower Threshold (Degrees)", InitiatorLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Initiator Upper Threshold (Degrees)", InitiatorUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Hard Feature Lower Threshold (Degrees)", HardFeatureLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Hard Feature Upper Threshold (Degrees)", HardFeatureUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Soft Feature Lower Threshold (Degrees)", SoftFeatureLowerThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Soft Feature Upper Threshold (Degrees)", SoftFeatureUpperThreshold, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;

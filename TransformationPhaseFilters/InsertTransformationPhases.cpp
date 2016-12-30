@@ -49,7 +49,7 @@
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Utilities/SIMPLibRandom.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -181,7 +181,7 @@ void InsertTransformationPhases::setupFilterParameters()
     option->setChoices(choices);
     parameters.push_back(option);
   }
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Transformation Phase Misorientation", TransformationPhaseMisorientation, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Transformation Phase Misorientation", TransformationPhaseMisorientation, FilterParameter::Parameter, InsertTransformationPhases));
   QStringList linkedProps1;
   linkedProps1 << "TransformationPhaseHabitPlane" << "UseAllVariants";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Define Habit Plane", DefineHabitPlane, FilterParameter::Parameter, InsertTransformationPhases, linkedProps1));
@@ -189,10 +189,10 @@ void InsertTransformationPhases::setupFilterParameters()
 
   QStringList linkedProps2("CoherentFrac");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use All Variants", UseAllVariants, FilterParameter::Parameter, InsertTransformationPhases, linkedProps2));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Coherent Fraction", CoherentFrac, FilterParameter::Parameter, InsertTransformationPhases));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Transformation Phase Thickness", TransformationPhaseThickness, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Coherent Fraction", CoherentFrac, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Transformation Phase Thickness", TransformationPhaseThickness, FilterParameter::Parameter, InsertTransformationPhases));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Average Number Of Transformation Phases Per Feature", NumTransformationPhasesPerFeature, FilterParameter::Parameter, InsertTransformationPhases));
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Peninsula Transformation Phase Fraction", PeninsulaFrac, FilterParameter::Parameter, InsertTransformationPhases));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Peninsula Transformation Phase Fraction", PeninsulaFrac, FilterParameter::Parameter, InsertTransformationPhases));
 
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
