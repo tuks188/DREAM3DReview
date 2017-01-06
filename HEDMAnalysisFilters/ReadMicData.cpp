@@ -97,7 +97,7 @@ ReadMicData::ReadMicData()
 , m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 , m_FileWasRead(false)
 , m_PhaseNameArrayName("")
-, m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName)
+, m_MaterialNameArrayName(SIMPL::EnsembleData::PhaseName)
 , m_InputFile("")
 , m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles)
 , m_CellPhasesArrayName(SIMPL::CellData::Phases)
@@ -388,8 +388,8 @@ void ReadMicData::dataCheck()
       m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumberOfTuples(), SIMPL::EnsembleData::MaterialName);
-    cellEnsembleAttrMat->addAttributeArray(SIMPL::EnsembleData::MaterialName, materialNames);
+    StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumberOfTuples(), SIMPL::EnsembleData::PhaseName);
+    cellEnsembleAttrMat->addAttributeArray(SIMPL::EnsembleData::PhaseName, materialNames);
   }
 }
 
@@ -657,7 +657,7 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   attrMatrix->resizeAttributeArrays(tDims);
   // Now add the attributeArray to the AttributeMatrix
   attrMatrix->addAttributeArray(SIMPL::EnsembleData::CrystalStructures, crystalStructures);
-  attrMatrix->addAttributeArray(SIMPL::EnsembleData::MaterialName, materialNames);
+  attrMatrix->addAttributeArray(SIMPL::EnsembleData::PhaseName, materialNames);
   attrMatrix->addAttributeArray(SIMPL::EnsembleData::LatticeConstants, latticeConstants);
 
   // Now reset the internal ensemble array references to these new arrays
