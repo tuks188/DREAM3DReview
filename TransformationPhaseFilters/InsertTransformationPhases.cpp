@@ -170,9 +170,9 @@ void InsertTransformationPhases::setupFilterParameters()
     choices.push_back("Cubic-High m-3m");
     choices.push_back("Hexagonal-Low 6/m");
     choices.push_back("Cubic-Low m-3 (Tetrahedral)");
-    choices.push_back("TriClinic -1");
+    choices.push_back("Triclinic -1");
     choices.push_back("Monoclinic 2/m");
-    choices.push_back("OrthoRhombic mmm");
+    choices.push_back("Orthorhombic mmm");
     choices.push_back("Tetragonal-Low 4/m");
     choices.push_back("Tetragonal-High 4/mmm");
     choices.push_back("Trigonal-Low -3");
