@@ -52,7 +52,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/StatsData/StatsData.h"
 #include "SIMPLib/Geometry/ShapeOps/ShapeOps.h"
-#include "OrientationLib/SpaceGroupOps/OrthoRhombicOps.h"
+#include "OrientationLib/LaueOps/OrthoRhombicOps.h"
 #include "HEDMAnalysis/HEDMAnalysisConstants.h"
 
 
