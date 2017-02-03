@@ -55,7 +55,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 
-#include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
+#include "OrientationLib/LaueOps/LaueOps.h"
 
 
 
@@ -229,7 +229,7 @@ class InsertTransformationPhases : public AbstractFilter
     void filter_calls();
 
   private:
-    QVector<SpaceGroupOps::Pointer> m_OrientationOps;
+    QVector<LaueOps::Pointer> m_OrientationOps;
 
     // Cell Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)

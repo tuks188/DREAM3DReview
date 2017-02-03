@@ -63,7 +63,7 @@
 
 #include "OrientationLib/OrientationMath/OrientationArray.hpp"
 #include "OrientationLib/OrientationMath/OrientationTransforms.hpp"
-#include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
+#include "OrientationLib/LaueOps/LaueOps.h"
 
 #include "TransformationPhase/TransformationPhaseConstants.h"
 #include "TransformationPhase/TransformationPhaseVersion.h"
@@ -137,7 +137,7 @@ InsertTransformationPhases::InsertTransformationPhases() :
   m_ShapeTypes(nullptr),
   m_NumFeatures(nullptr)
 {
-  m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
+  m_OrientationOps = LaueOps::getOrientationOpsQVector();
   m_TransformationPhaseHabitPlane.x = 1.0f;
   m_TransformationPhaseHabitPlane.y = 1.0f;
   m_TransformationPhaseHabitPlane.z = 1.0f;
@@ -641,8 +641,8 @@ void InsertTransformationPhases::insert_transformationphases()
 
       // find the minimum angle
       MatrixMath::Copy3x3(newMat, newMatCopy);
-      // Get our SpaceGroupOps pointer for the selected crystal structure
-      SpaceGroupOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
+      // Get our LaueOps pointer for the selected crystal structure
+      LaueOps::Pointer orientOps = m_OrientationOps[m_TransCrystalStruct];
 
       //get number of symmetry operators
       traceMin = -1.0f;

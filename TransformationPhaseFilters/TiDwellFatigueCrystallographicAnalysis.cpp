@@ -59,7 +59,7 @@
 
 #include "OrientationLib/OrientationMath/OrientationArray.hpp"
 #include "OrientationLib/OrientationMath/OrientationTransforms.hpp"
-#include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
+#include "OrientationLib/LaueOps/LaueOps.h"
 
 #include "Plugins/Statistics/StatisticsFilters/FindNeighbors.h"
 

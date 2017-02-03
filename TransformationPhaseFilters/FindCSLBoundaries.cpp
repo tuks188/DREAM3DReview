@@ -78,7 +78,7 @@ class CalculateCSLBoundaryImpl
     bool* m_CSLBoundary;
     float* m_CSLBoundaryIncoherence;
     unsigned int* m_CrystalStructures;
-    QVector<SpaceGroupOps::Pointer> m_OrientationOps;
+    QVector<LaueOps::Pointer> m_OrientationOps;
 
   public:
     CalculateCSLBoundaryImpl(int cslindex, float angtol, float axistol, int32_t* Labels, double* Normals, float* Quats, int32_t* Phases, unsigned int* CrystalStructures, bool* CSLBoundary, float* CSLBoundaryIncoherence) :
@@ -93,7 +93,7 @@ class CalculateCSLBoundaryImpl
       m_CSLBoundaryIncoherence(CSLBoundaryIncoherence),
       m_CrystalStructures(CrystalStructures)
     {
-      m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
+      m_OrientationOps = LaueOps::getOrientationOpsQVector();
     }
 
     virtual ~CalculateCSLBoundaryImpl() {}
@@ -221,7 +221,7 @@ FindCSLBoundaries::FindCSLBoundaries() :
   m_SurfaceMeshCSLBoundary(nullptr),
   m_SurfaceMeshCSLBoundaryIncoherence(nullptr)
 {
-  m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
+  m_OrientationOps = LaueOps::getOrientationOpsQVector();
   setupFilterParameters();
 }
 

@@ -48,10 +48,10 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 
 
-#include "OrientationLib/SpaceGroupOps/SpaceGroupOps.h"
-#include "OrientationLib/SpaceGroupOps/CubicOps.h"
-#include "OrientationLib/SpaceGroupOps/HexagonalOps.h"
-#include "OrientationLib/SpaceGroupOps/OrthoRhombicOps.h"
+#include "OrientationLib/LaueOps/LaueOps.h"
+#include "OrientationLib/LaueOps/CubicOps.h"
+#include "OrientationLib/LaueOps/HexagonalOps.h"
+#include "OrientationLib/LaueOps/OrthoRhombicOps.h"
 
 /**
  * @class FindCSLBoundaries FindCSLBoundaries.h /TransformationPhase/FindCSLBoundaries.h
@@ -168,7 +168,7 @@ class FindCSLBoundaries : public AbstractFilter
     FindCSLBoundaries();
 
   private:
-    QVector<SpaceGroupOps::Pointer> m_OrientationOps;
+    QVector<LaueOps::Pointer> m_OrientationOps;
     CubicOps::Pointer m_CubicOps;
     HexagonalOps::Pointer m_HexOps;
     OrthoRhombicOps::Pointer m_OrthoOps;
