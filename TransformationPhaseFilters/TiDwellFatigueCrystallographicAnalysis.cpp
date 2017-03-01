@@ -602,6 +602,10 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
 {
   // using feature euler angles simply because it's available
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_FeatureEulerAnglesArrayPath.getDataContainerName());
+  float xOrigin = 0.0f;
+  float yOrigin = 0.0f;
+  float zOrigin = 0.0f;
+  m->getGeometryAs<ImageGeom>()->getOrigin(xOrigin, yOrigin, zOrigin);
 
   bool subsurfaceFlag = false;
 
@@ -611,7 +615,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
   float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
   float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
-  float xyzScaledDimension[3] = {xPoints * xRes, yPoints * yRes, zPoints * zRes};
+  float xyzScaledDimension[3] = {xOrigin + xPoints * xRes, yOrigin + yPoints * yRes, zOrigin + zPoints * zRes};
 
   // check if current feature centroid is within the subsurface defined centroid
   if ( m_Centroids[3 * index + 0] >= m_SubsurfaceDistance && m_Centroids[3 * index + 0] <= (xyzScaledDimension[0] - m_SubsurfaceDistance)
