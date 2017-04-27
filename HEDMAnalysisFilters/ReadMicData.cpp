@@ -53,9 +53,6 @@
 
 #include "HEDMAnalysis/HEDMAnalysisConstants.h"
 
-#define NEW_SHARED_ARRAY(var, m_msgType, size)                                                                                                                                                         \
-  boost::shared_array<m_msgType> var##Array(new m_msgType[size]);                                                                                                                                      \
-  m_msgType* var = var##Array.get();
 
 /* ############## Start Private Implementation ############################### */
 // -----------------------------------------------------------------------------

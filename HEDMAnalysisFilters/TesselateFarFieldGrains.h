@@ -41,11 +41,10 @@
 #include <map>
 #include <QtCore/QString>
 
-#include <boost/shared_array.hpp>
-
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/StatsDataArray.h"
@@ -119,8 +118,8 @@ class TesselateFarFieldGrains : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
     Q_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
 
-    typedef boost::shared_array<float> SharedFloatArray;
-    typedef boost::shared_array<int> SharedIntArray;
+    typedef DataArray<float>::Pointer SharedFloatArray;
+    typedef DataArray<int>::Pointer SharedIntArray;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
     Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
