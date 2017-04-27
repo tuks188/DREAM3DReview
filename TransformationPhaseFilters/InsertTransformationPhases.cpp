@@ -77,15 +77,8 @@
 
 const static float m_pi = static_cast<float>(M_PI);
 
-#define NEW_SHARED_ARRAY(var, m_msgType, size)\
-  boost::shared_array<m_msgType> var##Array(new m_msgType[size]);\
-  m_msgType* var = var##Array.get();
-
 // Include the MOC generated file for this class
 #include "moc_InsertTransformationPhases.cpp"
-
-
-
 
 QTextStream& operator<< (QTextStream& os, const ShapeType::Type& value) {
   os << static_cast<ShapeType::EnumType>(value);

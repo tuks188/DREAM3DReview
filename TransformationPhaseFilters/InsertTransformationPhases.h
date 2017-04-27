@@ -42,9 +42,8 @@
 #define _inserttransformationphases_h_
 
 #include <vector>
-#include <QtCore/QString>
 
-#include <boost/shared_array.hpp>
+#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

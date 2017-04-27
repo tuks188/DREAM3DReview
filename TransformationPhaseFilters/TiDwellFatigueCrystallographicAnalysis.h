@@ -39,8 +39,6 @@
 
 #include <QtCore/QString>
 
-#include <boost/shared_array.hpp>
-
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
