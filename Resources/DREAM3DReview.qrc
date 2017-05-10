@@ -1,0 +1,7 @@
+ <!DOCTYPE RCC>
+ <RCC version="1.0">
+ <qresource>
+ <file>DREAM3DReview/DREAM3DReviewLicense.txt</file>
+ <file>DREAM3DReview/DREAM3DReviewDescription.txt</file>
+ </qresource>
+ </RCC>
