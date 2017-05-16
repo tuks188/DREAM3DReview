@@ -592,7 +592,7 @@ const QString ReadMicData::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString ReadMicData::getHumanLabel()
 {
-  return "Read HEDM Data (.mic)";
+  return "Import HEDM Data (.mic)";
 }
 
 // -----------------------------------------------------------------------------
