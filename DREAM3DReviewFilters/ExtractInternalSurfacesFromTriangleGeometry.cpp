@@ -264,7 +264,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
 
   struct ArrayHasher
   {
-    size_t operator()(const Vertex& vert)
+    size_t operator()(const Vertex& vert) const
     {
       size_t hash = std::hash<float>()(vert[0]);
       hashCombine(hash, vert[1]);
@@ -305,9 +305,9 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
        (m_NodeTypes[triangles[3 * i + 1]] == 2 || m_NodeTypes[triangles[3 * i + 1]] == 3 || m_NodeTypes[triangles[3 * i + 1]] == 4) &&
        (m_NodeTypes[triangles[3 * i + 2]] == 2 || m_NodeTypes[triangles[3 * i + 2]] == 3 || m_NodeTypes[triangles[3 * i + 2]] == 4))
     {
-      Vertex tmpCoords1 = {vertices[3 * triangles[3 * i + 0] + 0], vertices[3 * triangles[3 * i + 0] + 1], vertices[3 * triangles[3 * i + 0] + 2]};
-      Vertex tmpCoords2 = {vertices[3 * triangles[3 * i + 1] + 0], vertices[3 * triangles[3 * i + 1] + 1], vertices[3 * triangles[3 * i + 1] + 2]};
-      Vertex tmpCoords3 = {vertices[3 * triangles[3 * i + 2] + 0], vertices[3 * triangles[3 * i + 2] + 1], vertices[3 * triangles[3 * i + 2] + 2]};
+      Vertex tmpCoords1 = {{vertices[3 * triangles[3 * i + 0] + 0], vertices[3 * triangles[3 * i + 0] + 1], vertices[3 * triangles[3 * i + 0] + 2]}};
+      Vertex tmpCoords2 = {{vertices[3 * triangles[3 * i + 1] + 0], vertices[3 * triangles[3 * i + 1] + 1], vertices[3 * triangles[3 * i + 1] + 2]}};
+      Vertex tmpCoords3 = {{vertices[3 * triangles[3 * i + 2] + 0], vertices[3 * triangles[3 * i + 2] + 1], vertices[3 * triangles[3 * i + 2] + 2]}};
 
       VertexMap::iterator iter = vertexMap.find(tmpCoords1);
       if(iter == vertexMap.end())
@@ -354,7 +354,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
         tmpVert2 = vertexMap[tmpCoords3];
       }
 
-      Triangle tmpTri = {tmpVert0, tmpVert1, tmpVert2};
+      Triangle tmpTri = { { tmpVert0, tmpVert1, tmpVert2} };
       tmpTris.push_back(tmpTri);
       internalTriMap[triCounter] = i;
       triCounter++;

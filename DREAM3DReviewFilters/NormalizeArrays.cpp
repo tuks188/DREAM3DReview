@@ -36,6 +36,7 @@
 #include "NormalizeArrays.h"
 
 #include <cassert>
+#include <cmath>
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range.h>

@@ -35,6 +35,8 @@
 
 #include "FindNorm.h"
 
+#include <cmath>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -166,7 +168,7 @@ template <typename T> void findPthNorm(IDataArray::Pointer inDataPtr, FloatArray
   for(size_t i = 0; i < nTuples; i++)
   {
     float normTmp = 0.0f;
-    float valTmp = 0.0f;
+//    float valTmp = 0.0f;
     for(int32_t j = 0; j < nDims; j++)
     {
       normTmp += std::pow(static_cast<float>(inData[nDims * i + j]), p);
