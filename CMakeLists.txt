@@ -44,12 +44,22 @@ file(APPEND ${RegisterKnownFiltersFile} "#include \"${PLUGIN_NAME}Filters.h\"\n\
 file(APPEND ${RegisterKnownFiltersFile} "\n//----------------------------------------------------------\n")
 file(APPEND ${RegisterKnownFiltersFile} "\nvoid ${PLUGIN_NAME}Plugin::registerFilters(FilterManager* fm)\n{\n")
 
+# --------------------------------------------------------------------
+# Generate a file with all of our MOC'ed sources and  headers
+set(FilterWidget_GEN_HDRS_File ${${PLUGIN_NAME}_BINARY_DIR}/FilterWidget_GEN_HDRS_File.cmake)
+set(FilterWidget_GEN_SRCS_File ${${PLUGIN_NAME}_BINARY_DIR}/FilterWidget_GEN_SRCS_File.cmake)
+file(WRITE ${FilterWidget_GEN_HDRS_File})
+file(WRITE ${FilterWidget_GEN_SRCS_File})
+
 set(Project_SRCS "")
 
 # Add in our Filter classes
 include(${${PLUGIN_NAME}_SOURCE_DIR}/${PLUGIN_NAME}Filters/SourceList.cmake)
 # Add in our Plugin Specific FilterParameterWidgets
 include(${${PLUGIN_NAME}_SOURCE_DIR}/FilterParameterWidgets/SourceList.cmake)
+# Add in our Plugin Specific FilterParameter
+include(${${PLUGIN_NAME}_SOURCE_DIR}/FilterParameters/SourceList.cmake)
+
 #-----------------------------------------------------
 # Include any extra Widgets that this plugin needs
 include(${${PLUGIN_NAME}_SOURCE_DIR}/Widgets/SourceList.cmake)
@@ -85,7 +95,6 @@ include_directories( ${PROJECT_CODE_DIR} )
 include_directories( ${QtSupportLib_BINARY_DIR} )
 include_directories( ${QtSupportLib_SOURCE_DIR} )
 
-
 get_filename_component(PLUGINS_SOURCE_DIR  ${${PLUGIN_NAME}_SOURCE_DIR} DIRECTORY)
 get_filename_component(PLUGINS_BINARY_DIR  ${${PLUGIN_NAME}_BINARY_DIR} DIRECTORY)
 
@@ -105,6 +114,10 @@ include_directories( ${SIMPLProj_BINARY_DIR}/SVWidgetsLib/QtSupport)
 
 include_directories( ${SIMPLViewProj_SOURCE_DIR}/Source)
 include_directories( ${SIMPLViewProj_BINARY_DIR})
+
+# Remove the temp files that we no longer need
+file(REMOVE ${FilterWidget_GEN_HDRS_File})
+file(REMOVE ${FilterWidget_GEN_SRCS_File})
 
 set(FILTER_HEADERS "#include \"${AllFiltersHeaderFile}\"")
 set(FILTER_WIDGETS_TEMP_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Temp)
@@ -182,10 +195,13 @@ set(${PLUGIN_NAME}_MODULE_SRCS
   ${${PLUGIN_NAME}_Generated_MOC_SRCS}
   # -- Add in the Filter Parameter Widgets
   ${${PLUGIN_NAME}_ParameterWidgets_HDRS}
+  ${${PLUGIN_NAME}_ParameterWidgets_MOC_HDRS}
   ${${PLUGIN_NAME}_ParameterWidgets_SRCS}
   ${${PLUGIN_NAME}_ParameterWidgets_UIS}
   ${${PLUGIN_NAME}_ParameterWidgets_Generated_MOC_SRCS}
   ${${PLUGIN_NAME}_ParameterWidgets_Generated_UI_HDRS}
+  ${${PLUGIN_NAME}_FilterParameters_SRCS}
+  ${${PLUGIN_NAME}_FilterParameters_HDRS}
   # -- Add in the plain Widgets
   ${${PLUGIN_NAME}_Widgets_HDRS}
   ${${PLUGIN_NAME}_Widgets_SRCS}
@@ -206,11 +222,10 @@ if(NOT MSVC)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${DREAM3DProj_BINARY_DIR}/Bin/Plugins  )
 endif()
 
-
-
 add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_MODULE_SRCS})
 target_link_libraries(${PLUGIN_NAME}
                     SIMPLib
+                    OrientationLib
                     Qt5::Gui 
                     Qt5::Widgets
                     SVWidgetsLib

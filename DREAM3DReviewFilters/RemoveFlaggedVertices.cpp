@@ -1,0 +1,334 @@
+/* ============================================================================
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*
+* Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+*
+* Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or
+* other materials provided with the distribution.
+*
+* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* contributors may be used to endorse or promote products derived from this software
+* without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The code contained herein was partially funded by the followig contracts:
+*    United States Air Force Prime Contract FA8650-07-D-5800
+*    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Prime Contract Navy N00173-07-C-2068
+*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#include "RemoveFlaggedVertices.h"
+
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Geometry/VertexGeom.h"
+
+#include "DREAM3DReview/DREAM3DReviewConstants.h"
+#include "DREAM3DReview/DREAM3DReviewVersion.h"
+
+// Include the MOC generated file for this class
+#include "moc_RemoveFlaggedVertices.cpp"
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RemoveFlaggedVertices::RemoveFlaggedVertices() 
+  : AbstractFilter()
+  , m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
+  , m_MaskArrayPath(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::CellData::Mask)
+  , m_ReducedVertexGeometry("ReducedVertexDataContainer")
+{
+  initialize();
+  setupFilterParameters();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RemoveFlaggedVertices::~RemoveFlaggedVertices()
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::initialize()
+{
+  setErrorCondition(0);
+  setCancel(false);
+  m_AttrMatList.clear();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::setupFilterParameters()
+{
+  FilterParameterVector parameters;
+  DataContainerSelectionFilterParameter::RequirementType dcsReq;
+  IGeometry::Types geomTypes = { IGeometry::Type::Vertex };
+  dcsReq.dcGeometryTypes = geomTypes;
+  parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Vertex Geometry", VertexGeometry, FilterParameter::RequiredArray, RemoveFlaggedVertices, dcsReq));
+  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Vertex, IGeometry::Type::Vertex);
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, RemoveFlaggedVertices, dasReq));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Reduced Vertex Data Container", ReducedVertexGeometry, FilterParameter::CreatedArray, RemoveFlaggedVertices));
+  setFilterParameters(parameters);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+{
+  reader->openFilterGroup(this, index);
+  setVertexGeometry(reader->readString("VertexGeometry", getVertexGeometry()));
+  setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));
+  setReducedVertexGeometry(reader->readString("ReducedVertexGeometry", getReducedVertexGeometry()));
+  reader->closeFilterGroup();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::dataCheck()
+{
+  setErrorCondition(0);
+  initialize();
+
+  QVector<IDataArray::Pointer> dataArrays;
+
+  VertexGeom::Pointer vertex = getDataContainerArray()->getPrereqGeometryFromDataContainer<VertexGeom, AbstractFilter>(this, getVertexGeometry());
+
+  if(getErrorCondition() < 0) { return; }
+
+  dataArrays.push_back(vertex->getVertices());
+
+  QVector<size_t> cDims(1, 1);
+
+  m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims); 
+  if(m_MaskPtr.lock()) { m_Mask = m_MaskPtr.lock()->getPointer(0); } 
+  if(getErrorCondition() >= 0) { dataArrays.push_back(m_MaskPtr.lock()); }
+
+  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getReducedVertexGeometry());
+
+  if(getErrorCondition() < 0) { return; }
+
+  VertexGeom::Pointer reduced = VertexGeom::CreateGeometry(0, SIMPL::Geometry::VertexGeometry, !getInPreflight());
+  dc->setGeometry(reduced);
+
+  getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrays);
+
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getVertexGeometry());
+  m_AttrMatList = m->getAttributeMatrixNames();
+  QVector<size_t> tDims(1, 0);
+  QList<QString> tempDataArrayList;
+  DataArrayPath tempPath;
+  AttributeMatrix::Type tempAttrMatType = AttributeMatrix::Type::Vertex;
+
+  if(getErrorCondition() < 0) { return; }
+
+  for(auto&& attr_mat : m_AttrMatList)
+  {
+    AttributeMatrix::Pointer tmpAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
+    if(getErrorCondition() >= 0)
+    {
+      tempAttrMatType = tmpAttrMat->getType();
+      if(tempAttrMatType != AttributeMatrix::Type::Vertex)
+      {
+        AttributeMatrix::Pointer attrMat = tmpAttrMat->deepCopy(getInPreflight());
+        dc->addAttributeMatrix(attr_mat, attrMat);
+      }
+      else
+      {
+        dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, tmpAttrMat->getName(), tDims, AttributeMatrix::Type::Vertex);
+        tempDataArrayList = tmpAttrMat->getAttributeArrayNames();
+        for(auto&& data_array : tempDataArrayList)
+        {
+          tempPath.update(getReducedVertexGeometry(), tmpAttrMat->getName(), data_array);
+          IDataArray::Pointer tmpDataArray = tmpAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, data_array, -90002);
+          if(getErrorCondition() >= 0)
+          {
+            QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
+            TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
+          }
+        }
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::preflight()
+{
+  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
+  setInPreflight(true); // Set the fact that we are preflighting.
+  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
+  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted(); // We are done preflighting this filter
+  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template<typename T>
+void copyDataToMaskedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t> maskPoints)
+{
+  typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
+  typename DataArray<T>::Pointer maskedDataPtr = std::dynamic_pointer_cast<DataArray<T>>(outDataPtr);
+  T* inputData = static_cast<T*>(inputDataPtr->getPointer(0));
+  T* maskedData = static_cast<T*>(maskedDataPtr->getPointer(0));
+
+  size_t nComps = inDataPtr->getNumberOfComponents();
+  size_t tmpIndex = 0;
+  size_t ptrIndex = 0;
+
+  for(std::vector<int64_t>::size_type i = 0; i < maskPoints.size(); i++)
+  {
+    for(size_t d = 0; d < nComps; d++)
+    {
+      tmpIndex = nComps * i + d;
+      ptrIndex = nComps * maskPoints[i] + d;
+      maskedData[tmpIndex] = inputData[ptrIndex];
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::execute()
+{
+  initialize();
+  dataCheck();
+  if(getErrorCondition() < 0) { return; }
+
+  VertexGeom::Pointer vertex = getDataContainerArray()->getDataContainer(getVertexGeometry())->getGeometryAs<VertexGeom>();
+  int64_t numVerts = vertex->getNumberOfVertices();
+  std::vector<int64_t> maskPoints;
+  maskPoints.reserve(m_MaskPtr.lock()->getNumberOfTuples());
+
+  for(int64_t i = 0; i < numVerts; i++)
+  {
+    if(!m_Mask[i]) { maskPoints.push_back(i); }
+  }
+
+  maskPoints.shrink_to_fit();
+
+  DataContainer::Pointer reduced = getDataContainerArray()->getDataContainer(getReducedVertexGeometry());
+  VertexGeom::Pointer reducedVertex = reduced->getGeometryAs<VertexGeom>();
+  reducedVertex->resizeVertexList(maskPoints.size());
+  float coords[3] = { 0.0f, 0.0f, 0.0f };
+
+  for(std::vector<int64_t>::size_type i = 0; i < maskPoints.size(); i++)
+  {
+    vertex->getCoords(maskPoints[i], coords);
+    reducedVertex->setCoords(i, coords);
+  }
+
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getVertexGeometry());
+  AttributeMatrix::Type tempAttrMatType = AttributeMatrix::Type::Vertex;
+  QVector<size_t> tDims(1, maskPoints.size());
+
+  for(auto&& attr_mat : m_AttrMatList)
+  {
+    AttributeMatrix::Pointer tmpAttrMat = reduced->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
+    if(getErrorCondition() >= 0)
+    {
+      tempAttrMatType = tmpAttrMat->getType();
+      if(tempAttrMatType == AttributeMatrix::Type::Vertex)
+      {
+        tmpAttrMat->resizeAttributeArrays(tDims);
+        QList<QString> srcDataArrays = tmpAttrMat->getAttributeArrayNames();
+        AttributeMatrix::Pointer srcAttrMat = m->getAttributeMatrix(tmpAttrMat->getName());
+        for(auto&& data_array : srcDataArrays)
+        {
+          IDataArray::Pointer src = srcAttrMat->getAttributeArray(data_array);
+          IDataArray::Pointer dest = tmpAttrMat->getAttributeArray(data_array);
+
+          EXECUTE_FUNCTION_TEMPLATE(this, copyDataToMaskedGeometry, src, src, dest, maskPoints)
+        }
+      }
+    }
+  }
+
+  notifyStatusMessage(getHumanLabel(), "Complete");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilterParameters)
+{
+  RemoveFlaggedVertices::Pointer filter = RemoveFlaggedVertices::New();
+  if(true == copyFilterParameters)
+  {
+    copyFilterParameterInstanceVariables(filter.get());
+  }
+  return filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveFlaggedVertices::getCompiledLibraryName()
+{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveFlaggedVertices::getBrandingString()
+{ return "DREAM3DReview"; }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveFlaggedVertices::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  return version;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveFlaggedVertices::getGroupName()
+{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveFlaggedVertices::getSubGroupName()
+{ return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters; }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveFlaggedVertices::getHumanLabel()
+{ return "Remove Flagged Vertices"; }

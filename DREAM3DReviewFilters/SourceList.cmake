@@ -1,7 +1,3 @@
-#--////////////////////////////////////////////////////////////////////////////
-#-- Your License or copyright can go here
-#--////////////////////////////////////////////////////////////////////////////
-
 set(_filterGroupName DREAM3DReviewFilters)
 set(${_filterGroupName}_FILTERS_HDRS "")
 
@@ -17,6 +13,29 @@ SIMPL_START_FILTER_GROUP(
 #---------
 # List your public filters here
 set(_PublicFilters
+  ApplyTransformationToGeometry
+  AverageEdgeFaceCellArrayToVertexArray
+  AverageVertexArrayToEdgeFaceCellArray
+  ComputeUmeyamaTransform
+  CopyObject
+  CreateGeometry
+  CropVertexGeometry
+  DBSCAN
+  ExtractAttributeArraysFromGeometry
+  ExtractInternalSurfacesFromTriangleGeometry
+  FindArrayStatistics
+  FindElementCentroids
+  FindNorm
+  KDistanceGraph
+  KMeans
+  KMedoids
+  NormalizeArrays
+  PointSampleTriangleGeometry
+  PrincipalComponentAnalysis
+  RemoveFlaggedVertices
+  RobustAutomaticThreshold
+  Silhouette
+  SplitAttributeArray
 )
 
 
@@ -47,7 +66,14 @@ foreach(f ${_PrivateFilters} )
                         ${${PLUGIN_NAME}_SOURCE_DIR}/Documentation/${_filterGroupName}/${f}.md FALSE ${${PLUGIN_NAME}_BINARY_DIR})
 endforeach()
 
-
+#-------------
+# These are files that need to be compiled but are NOT filters
+ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} KMeansTemplate.hpp util/ClusteringAlgorithms)
+ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} KMedoidsTemplate.hpp util/ClusteringAlgorithms)
+ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} DBSCANTemplate.hpp util/ClusteringAlgorithms)
+ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} SilhouetteTemplate.hpp util/EvaluationAlgorithms)
+ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} KDistanceTemplate.hpp util/EvaluationAlgorithms)
+ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} DistanceTemplate.hpp util)
 
 #---------------------
 # This macro must come last after we are done adding all the filters and support files.
