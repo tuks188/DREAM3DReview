@@ -57,12 +57,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ExtractInternalSurfacesFromTriangleGeometry::ExtractInternalSurfacesFromTriangleGeometry() 
-  : AbstractFilter()
-  , m_TriangleDataContainerName(SIMPL::Defaults::TriangleDataContainerName)
-  , m_NodeTypesArrayPath(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::VertexData::SurfaceMeshNodeType)
-  , m_InternalTrianglesName("InternalTrianglesDataContainer")
-  , m_NodeTypes(nullptr)
+ExtractInternalSurfacesFromTriangleGeometry::ExtractInternalSurfacesFromTriangleGeometry()
+: AbstractFilter()
+, m_TriangleDataContainerName(SIMPL::Defaults::TriangleDataContainerName)
+, m_NodeTypesArrayPath(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::VertexData::SurfaceMeshNodeType)
+, m_InternalTrianglesName("InternalTrianglesDataContainer")
+, m_NodeTypes(nullptr)
 {
   initialize();
   setupFilterParameters();
@@ -92,7 +92,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::setupFilterParameters()
 {
   FilterParameterVector parameters;
   DataContainerSelectionFilterParameter::RequirementType dcsReq;
-  IGeometry::Types geomTypes = { IGeometry::Type::Triangle };
+  IGeometry::Types geomTypes = {IGeometry::Type::Triangle};
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Triangle Data Container", TriangleDataContainerName, FilterParameter::RequiredArray, ExtractInternalSurfacesFromTriangleGeometry, dcsReq));
   parameters.push_back(SeparatorFilterParameter::New("Vertex Data", FilterParameter::RequiredArray));
   DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int8, 1, AttributeMatrix::Type::Vertex, IGeometry::Type::Triangle);
@@ -124,21 +124,33 @@ void ExtractInternalSurfacesFromTriangleGeometry::dataCheck()
 
   TriangleGeom::Pointer tris = getDataContainerArray()->getPrereqGeometryFromDataContainer<TriangleGeom, AbstractFilter>(this, getTriangleDataContainerName());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   arrays.push_back(tris->getVertices());
 
   QVector<size_t> cDims(1, 1);
 
-  m_NodeTypesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter>(this, getNodeTypesArrayPath(), cDims); 
-  if(m_NodeTypesPtr.lock()) { m_NodeTypes = m_NodeTypesPtr.lock()->getPointer(0); } 
-  if(getErrorCondition() >= 0) { arrays.push_back(m_NodeTypesPtr.lock()); }
+  m_NodeTypesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter>(this, getNodeTypesArrayPath(), cDims);
+  if(m_NodeTypesPtr.lock())
+  {
+    m_NodeTypes = m_NodeTypesPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    arrays.push_back(m_NodeTypesPtr.lock());
+  }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, arrays);
 
   DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getInternalTrianglesName());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   SharedVertexList::Pointer vertices = TriangleGeom::CreateSharedVertexList(0, !getInPreflight());
   TriangleGeom::Pointer internalTris = TriangleGeom::CreateGeometry(0, vertices, SIMPL::Geometry::TriangleGeometry, !getInPreflight());
@@ -187,19 +199,18 @@ void ExtractInternalSurfacesFromTriangleGeometry::dataCheck()
 void ExtractInternalSurfacesFromTriangleGeometry::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<class T>
-inline void hashCombine(size_t& seed, const T& obj)
+template <class T> inline void hashCombine(size_t& seed, const T& obj)
 {
   std::hash<T> hasher;
   seed ^= hasher(obj) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -208,8 +219,7 @@ inline void hashCombine(size_t& seed, const T& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void copyData(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::unordered_map<int64_t, int64_t>& elementMap)
+template <typename T> void copyData(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::unordered_map<int64_t, int64_t>& elementMap)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   T* inputData = static_cast<T*>(inputDataPtr->getPointer(0));
@@ -239,7 +249,10 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   TriangleGeom::Pointer tris = getDataContainerArray()->getDataContainer(m_TriangleDataContainerName)->getGeometryAs<TriangleGeom>();
   float* vertices = tris->getVertexPointer(0);
@@ -284,20 +297,17 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
 
   for(int64_t i = 0; i < numTris; i++)
   {
-    if(getCancel()) { return; }
+    if(getCancel())
+    {
+      return;
+    }
     if((m_NodeTypes[triangles[3 * i + 0]] == 2 || m_NodeTypes[triangles[3 * i + 0]] == 3 || m_NodeTypes[triangles[3 * i + 0]] == 4) &&
        (m_NodeTypes[triangles[3 * i + 1]] == 2 || m_NodeTypes[triangles[3 * i + 1]] == 3 || m_NodeTypes[triangles[3 * i + 1]] == 4) &&
        (m_NodeTypes[triangles[3 * i + 2]] == 2 || m_NodeTypes[triangles[3 * i + 2]] == 3 || m_NodeTypes[triangles[3 * i + 2]] == 4))
     {
-      Vertex tmpCoords1 = {vertices[3 * triangles[3 * i + 0] + 0],
-                           vertices[3 * triangles[3 * i + 0] + 1],
-                           vertices[3 * triangles[3 * i + 0] + 2]};
-      Vertex tmpCoords2 = {vertices[3 * triangles[3 * i + 1] + 0],
-                           vertices[3 * triangles[3 * i + 1] + 1],
-                           vertices[3 * triangles[3 * i + 1] + 2]};
-      Vertex tmpCoords3 = {vertices[3 * triangles[3 * i + 2] + 0],
-                           vertices[3 * triangles[3 * i + 2] + 1],
-                           vertices[3 * triangles[3 * i + 2] + 2]};
+      Vertex tmpCoords1 = {vertices[3 * triangles[3 * i + 0] + 0], vertices[3 * triangles[3 * i + 0] + 1], vertices[3 * triangles[3 * i + 0] + 2]};
+      Vertex tmpCoords2 = {vertices[3 * triangles[3 * i + 1] + 0], vertices[3 * triangles[3 * i + 1] + 1], vertices[3 * triangles[3 * i + 1] + 2]};
+      Vertex tmpCoords3 = {vertices[3 * triangles[3 * i + 2] + 0], vertices[3 * triangles[3 * i + 2] + 1], vertices[3 * triangles[3 * i + 2] + 2]};
 
       VertexMap::iterator iter = vertexMap.find(tmpCoords1);
       if(iter == vertexMap.end())
@@ -370,7 +380,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
   QVector<size_t> triDims(1, tmpTris.size());
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_TriangleDataContainerName);
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(m_InternalTrianglesName);
-  
+
   for(auto&& attr_mat : m_AttrMatList)
   {
     AttributeMatrix::Pointer tmpAttrMat = dc->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
@@ -383,12 +393,12 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
         QList<QString> srcDataArrays = tmpAttrMat->getAttributeArrayNames();
         AttributeMatrix::Pointer srcAttrMat = m->getAttributeMatrix(tmpAttrMat->getName());
         assert(srcAttrMat);
-        
+
         for(auto&& data_array : srcDataArrays)
         {
           IDataArray::Pointer src = srcAttrMat->getAttributeArray(data_array);
           IDataArray::Pointer dest = tmpAttrMat->getAttributeArray(data_array);
-    
+
           assert(src);
           assert(dest);
           assert(src->getNumberOfComponents() == dest->getNumberOfComponents());
@@ -400,9 +410,9 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
       {
         tmpAttrMat->resizeAttributeArrays(triDims);
         QList<QString> srcDataArrays = tmpAttrMat->getAttributeArrayNames();
-        AttributeMatrix::Pointer srcAttrMat = m->getAttributeMatrix(tmpAttrMat->getName());      
+        AttributeMatrix::Pointer srcAttrMat = m->getAttributeMatrix(tmpAttrMat->getName());
         assert(srcAttrMat);
-        
+
         for(auto&& data_array : srcDataArrays)
         {
           IDataArray::Pointer src = srcAttrMat->getAttributeArray(data_array);
@@ -417,7 +427,6 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
       }
     }
   }
-
 
   TriangleGeom::Pointer internalTris = getDataContainerArray()->getDataContainer(m_InternalTrianglesName)->getGeometryAs<TriangleGeom>();
   internalTris->resizeVertexList(tmpVerts.size());
@@ -461,13 +470,17 @@ AbstractFilter::Pointer ExtractInternalSurfacesFromTriangleGeometry::newFilterIn
 //
 // -----------------------------------------------------------------------------
 const QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -476,7 +489,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -484,17 +497,22 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ExtractInternalSurfacesFromTriangleGeometry::getHumanLabel()
-{ return "Extract Internal Surfaces from Triangle Geometry"; }
-
+{
+  return "Extract Internal Surfaces from Triangle Geometry";
+}

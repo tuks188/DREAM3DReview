@@ -49,10 +49,10 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/Geometry/IGeometryGrid.h"
+#include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
-#include "SIMPLib/Geometry/EdgeGeom.h"
+#include "SIMPLib/Geometry/IGeometryGrid.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
@@ -64,21 +64,21 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PointSampleTriangleGeometry::PointSampleTriangleGeometry() 
-  : AbstractFilter()
-  , m_SamplesNumberType(0)
-  , m_TriangleGeometry(SIMPL::Defaults::TriangleDataContainerName)
-  , m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
-  , m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_NumberOfSamples(100000)
-  , m_ParentGeometry("")
-  , m_TriangleAreasArrayPath(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::FaceAttributeMatrixName, SIMPL::FaceData::SurfaceMeshFaceAreas)
-  , m_UseMask(false)
-  , m_MaskArrayPath("", "", "")
-  , m_SelectedDataArrayPaths(QVector<DataArrayPath>())
-  , m_TriangleAreas(nullptr)
-  , m_Mask(nullptr)
-  , m_NumSamples(0)
+PointSampleTriangleGeometry::PointSampleTriangleGeometry()
+: AbstractFilter()
+, m_SamplesNumberType(0)
+, m_TriangleGeometry(SIMPL::Defaults::TriangleDataContainerName)
+, m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
+, m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_NumberOfSamples(100000)
+, m_ParentGeometry("")
+, m_TriangleAreasArrayPath(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::FaceAttributeMatrixName, SIMPL::FaceData::SurfaceMeshFaceAreas)
+, m_UseMask(false)
+, m_MaskArrayPath("", "", "")
+, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+, m_TriangleAreas(nullptr)
+, m_Mask(nullptr)
+, m_NumSamples(0)
 {
   setupFilterParameters();
 }
@@ -128,8 +128,8 @@ void PointSampleTriangleGeometry::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Face Areas", TriangleAreasArrayPath, FilterParameter::RequiredArray, PointSampleTriangleGeometry, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Face, IGeometry::Type::Triangle);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, PointSampleTriangleGeometry, dasReq));
-  MultiDataArraySelectionFilterParameter::RequirementType mdaReq = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize,
-                                                                                                                             AttributeMatrix::Type::Face, IGeometry::Type::Any);
+  MultiDataArraySelectionFilterParameter::RequirementType mdaReq =
+      MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Face, IGeometry::Type::Any);
   geomTypes = {IGeometry::Type::Triangle};
   mdaReq.dcGeometryTypes = geomTypes;
   parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Transfer", SelectedDataArrayPaths, FilterParameter::RequiredArray, PointSampleTriangleGeometry, mdaReq));
@@ -175,54 +175,61 @@ void PointSampleTriangleGeometry::dataCheck()
 
   switch(getSamplesNumberType())
   {
-    case 0: // Manual
+  case 0: // Manual
+  {
+    m_NumSamples = getNumberOfSamples();
+    break;
+  }
+  case 1: // From other Geometry
+  {
+    IGeometry::Pointer igeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getParentGeometry());
+    if(getErrorCondition() < 0)
     {
-      m_NumSamples = getNumberOfSamples();
-      break;
+      return;
     }
-    case 1: // From other Geometry
-    {
-      IGeometry::Pointer igeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getParentGeometry());
-      if(getErrorCondition() < 0) { return; }
 
-      if(VertexGeom::Pointer vertex = std::dynamic_pointer_cast<VertexGeom>(igeom))
-      {
-        m_NumSamples = vertex->getNumberOfVertices();
-      }
-      else if(EdgeGeom::Pointer edge = std::dynamic_pointer_cast<EdgeGeom>(igeom))
-      {
-        m_NumSamples = edge->getNumberOfVertices();
-      }
-      else if(IGeometryGrid::Pointer grid = std::dynamic_pointer_cast<IGeometryGrid>(igeom))
-      {
-        m_NumSamples = grid->getNumberOfElements();
-      }
-      else if(IGeometry2D::Pointer igeom2D = std::dynamic_pointer_cast<IGeometry2D>(igeom))
-      {
-        m_NumSamples = igeom2D->getNumberOfVertices();
-      }
-      else if(IGeometry3D::Pointer igeom3D = std::dynamic_pointer_cast<IGeometry3D>(igeom))
-      {
-        m_NumSamples = igeom3D->getNumberOfVertices();
-      }
-      else
-      {
-        QString ss = QObject::tr("Source Geometry must be of type Image, RectilinearGrid, Vertex, Edge, Triangle, Quadrilateral, or Tetrahedral, but the type is %1").arg(igeom->getGeometryTypeAsString());
-        setErrorCondition(-701);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      }
-      break;
-    }
-    default:
+    if(VertexGeom::Pointer vertex = std::dynamic_pointer_cast<VertexGeom>(igeom))
     {
-      QString ss = QObject::tr("Invalid selection for determining the number of samples");
+      m_NumSamples = vertex->getNumberOfVertices();
+    }
+    else if(EdgeGeom::Pointer edge = std::dynamic_pointer_cast<EdgeGeom>(igeom))
+    {
+      m_NumSamples = edge->getNumberOfVertices();
+    }
+    else if(IGeometryGrid::Pointer grid = std::dynamic_pointer_cast<IGeometryGrid>(igeom))
+    {
+      m_NumSamples = grid->getNumberOfElements();
+    }
+    else if(IGeometry2D::Pointer igeom2D = std::dynamic_pointer_cast<IGeometry2D>(igeom))
+    {
+      m_NumSamples = igeom2D->getNumberOfVertices();
+    }
+    else if(IGeometry3D::Pointer igeom3D = std::dynamic_pointer_cast<IGeometry3D>(igeom))
+    {
+      m_NumSamples = igeom3D->getNumberOfVertices();
+    }
+    else
+    {
+      QString ss =
+          QObject::tr("Source Geometry must be of type Image, RectilinearGrid, Vertex, Edge, Triangle, Quadrilateral, or Tetrahedral, but the type is %1").arg(igeom->getGeometryTypeAsString());
       setErrorCondition(-701);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      break;
     }
+    break;
+  }
+  default:
+  {
+    QString ss = QObject::tr("Invalid selection for determining the number of samples");
+    setErrorCondition(-701);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    break;
+  }
   }
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(getSamplesNumberType() == 0 && getNumberOfSamples() <= 0)
   {
@@ -236,7 +243,10 @@ void PointSampleTriangleGeometry::dataCheck()
   TriangleGeom::Pointer triangle = getDataContainerArray()->getPrereqGeometryFromDataContainer<TriangleGeom, AbstractFilter>(this, getTriangleGeometry());
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexGeometry());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   dataArrays.push_back(triangle->getTriangles());
 
@@ -248,18 +258,33 @@ void PointSampleTriangleGeometry::dataCheck()
 
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex);
 
-  m_TriangleAreasPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, getTriangleAreasArrayPath(), cDims); 
-  if(m_TriangleAreasPtr.lock()) { m_TriangleAreas = m_TriangleAreasPtr.lock()->getPointer(0); }
-  if(getErrorCondition() >= 0) { dataArrays.push_back(m_TriangleAreasPtr.lock()); }
+  m_TriangleAreasPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, getTriangleAreasArrayPath(), cDims);
+  if(m_TriangleAreasPtr.lock())
+  {
+    m_TriangleAreas = m_TriangleAreasPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrays.push_back(m_TriangleAreasPtr.lock());
+  }
 
   if(getUseMask())
   {
     m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims);
-    if(m_MaskPtr.lock()) { m_Mask = m_MaskPtr.lock()->getPointer(0); } 
-    if(getErrorCondition() >= 0) { dataArrays.push_back(m_MaskPtr.lock()); }
+    if(m_MaskPtr.lock())
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+    }
+    if(getErrorCondition() >= 0)
+    {
+      dataArrays.push_back(m_MaskPtr.lock());
+    }
   }
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
 
@@ -293,39 +318,34 @@ void PointSampleTriangleGeometry::dataCheck()
 void PointSampleTriangleGeometry::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void copyDataToPoints(IDataArray::Pointer source, IDataArray::Pointer dest,
-                      int64_t sourceIdx, int64_t destIdx)
+template <typename T> void copyDataToPoints(IDataArray::Pointer source, IDataArray::Pointer dest, int64_t sourceIdx, int64_t destIdx)
 {
   typename DataArray<T>::Pointer sourcePtr = std::dynamic_pointer_cast<DataArray<T>>(source);
   typename DataArray<T>::Pointer destPtr = std::dynamic_pointer_cast<DataArray<T>>(dest);
   T* sPtr = sourcePtr->getPointer(0);
   T* dPtr = destPtr->getPointer(0);
-  
+
   assert(sourcePtr->getNumberOfComponents() == destPtr->getNumberOfComponents());
-  
-  std::memcpy(dPtr + (destIdx * destPtr->getNumberOfComponents()),
-              sPtr + (sourceIdx * sourcePtr->getNumberOfComponents()),
-              sizeof(T) * sourcePtr->getNumberOfComponents());
+
+  std::memcpy(dPtr + (destIdx * destPtr->getNumberOfComponents()), sPtr + (sourceIdx * sourcePtr->getNumberOfComponents()), sizeof(T) * sourcePtr->getNumberOfComponents());
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PointSampleTriangleGeometry::sampleTriangle(float a[3], float b[3], float c[3],
-                                                 int64_t curVertex, VertexGeom::Pointer vertex, int64_t tri,
-                                                 std::mt19937_64& gen, std::uniform_real_distribution<>& dist)
+void PointSampleTriangleGeometry::sampleTriangle(float a[3], float b[3], float c[3], int64_t curVertex, VertexGeom::Pointer vertex, int64_t tri, std::mt19937_64& gen,
+                                                 std::uniform_real_distribution<>& dist)
 {
   float* vertices = vertex->getVertexPointer(curVertex);
 
@@ -342,9 +362,7 @@ void PointSampleTriangleGeometry::sampleTriangle(float a[3], float b[3], float c
 
   for(std::vector<IDataArray::WeakPointer>::size_type i = 0; i < m_SelectedWeakPtrVector.size(); i++)
   {
-    EXECUTE_FUNCTION_TEMPLATE(this, copyDataToPoints, m_SelectedWeakPtrVector[i].lock(),
-                              m_SelectedWeakPtrVector[i].lock(), m_CreatedWeakPtrVector[i].lock(),
-                              tri, curVertex);
+    EXECUTE_FUNCTION_TEMPLATE(this, copyDataToPoints, m_SelectedWeakPtrVector[i].lock(), m_SelectedWeakPtrVector[i].lock(), m_CreatedWeakPtrVector[i].lock(), tri, curVertex);
   }
 }
 
@@ -355,7 +373,10 @@ void PointSampleTriangleGeometry::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   TriangleGeom::Pointer triangle = getDataContainerArray()->getDataContainer(m_TriangleGeometry)->getGeometryAs<TriangleGeom>();
   int64_t numTris = triangle->getNumberOfTris();
@@ -373,18 +394,14 @@ void PointSampleTriangleGeometry::execute()
 
   std::vector<int64_t> triangleIds(numTris);
   std::iota(std::begin(triangleIds), std::end(triangleIds), 0);
-  
+
   std::vector<double> triangleWeights(numTris);
   std::memcpy(triangleWeights.data(), m_TriangleAreas, sizeof(double) * numTris);
 
   // VS2013 does not implement the iterator contructor for std::discrete_distribution<>, which
   // really is a massively idiotic oversight; hack the equivalent using the unary_op constructor
-  std::discrete_distribution<size_t> triangle_distribution(triangleWeights.size(),
-                                                           -0.5,
-                                                           -0.5 + triangleWeights.size(),
-                                                           [&triangleWeights](double index) {
-    return triangleWeights[static_cast<size_t>(index)];
-  });
+  std::discrete_distribution<size_t> triangle_distribution(triangleWeights.size(), -0.5, -0.5 + triangleWeights.size(),
+                                                           [&triangleWeights](double index) { return triangleWeights[static_cast<size_t>(index)]; });
 
   int64_t progIncrement = m_NumSamples / 100;
   int64_t prog = 1;
@@ -399,7 +416,10 @@ void PointSampleTriangleGeometry::execute()
 
   for(int64_t i = 0; i < m_NumSamples; i++)
   {
-    if(getCancel()) { return; }
+    if(getCancel())
+    {
+      return;
+    }
 
     int64_t randomTri = 0;
 
@@ -409,7 +429,10 @@ void PointSampleTriangleGeometry::execute()
       {
         randomTri = triangle_distribution(generator);
         assert(randomTri < numTris && randomTri >= 0);
-        if(m_Mask[randomTri]) { break; }
+        if(m_Mask[randomTri])
+        {
+          break;
+        }
       }
     }
     else
@@ -419,8 +442,7 @@ void PointSampleTriangleGeometry::execute()
     }
 
     triangle->getVertCoordsAtTri(randomTri, a, b, c);
-    sampleTriangle(a, b, c, i, vertex, randomTri, 
-                   generator, distribution);
+    sampleTriangle(a, b, c, i, vertex, randomTri, generator, distribution);
 
     if(counter > prog)
     {
@@ -452,13 +474,17 @@ AbstractFilter::Pointer PointSampleTriangleGeometry::newFilterInstance(bool copy
 //
 // -----------------------------------------------------------------------------
 const QString PointSampleTriangleGeometry::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString PointSampleTriangleGeometry::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -467,7 +493,7 @@ const QString PointSampleTriangleGeometry::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -475,16 +501,22 @@ const QString PointSampleTriangleGeometry::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString PointSampleTriangleGeometry::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString PointSampleTriangleGeometry::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString PointSampleTriangleGeometry::getHumanLabel()
-{ return "Point Sample Triangle Geometry"; }
+{
+  return "Point Sample Triangle Geometry";
+}

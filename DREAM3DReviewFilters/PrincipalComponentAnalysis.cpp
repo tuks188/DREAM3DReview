@@ -42,8 +42,8 @@
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
@@ -59,18 +59,18 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PrincipalComponentAnalysis::PrincipalComponentAnalysis() 
-  : AbstractFilter()
-  , m_SelectedDataArrayPaths(QVector<DataArrayPath>())
-  , m_PCAttributeMatrixName("PrincipalComponentAnalysis")
-  , m_PCEigenvaluesName("PrincipalComponentEigenvalues")
-  , m_PCEigenvectorsName("PrincipalComponentEigenvectors")
-  , m_MatrixApproach(0)
-  , m_ProjectDataSpace(false)
-  , m_NumberOfDimensionsForProjection(0)
-  , m_ProjectedDataSpaceArrayPath("", "", "ProjectedDataSpace")
-  , m_PCEigenvalues(nullptr)
-  , m_PCEigenvectors(nullptr)
+PrincipalComponentAnalysis::PrincipalComponentAnalysis()
+: AbstractFilter()
+, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+, m_PCAttributeMatrixName("PrincipalComponentAnalysis")
+, m_PCEigenvaluesName("PrincipalComponentEigenvalues")
+, m_PCEigenvectorsName("PrincipalComponentEigenvectors")
+, m_MatrixApproach(0)
+, m_ProjectDataSpace(false)
+, m_NumberOfDimensionsForProjection(0)
+, m_ProjectedDataSpaceArrayPath("", "", "ProjectedDataSpace")
+, m_PCEigenvalues(nullptr)
+, m_PCEigenvectors(nullptr)
 {
   setupFilterParameters();
 }
@@ -88,7 +88,8 @@ PrincipalComponentAnalysis::~PrincipalComponentAnalysis()
 void PrincipalComponentAnalysis::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  MultiDataArraySelectionFilterParameter::RequirementType mdaReq = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  MultiDataArraySelectionFilterParameter::RequirementType mdaReq =
+      MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays for Computing Principal Components", SelectedDataArrayPaths, FilterParameter::RequiredArray, PrincipalComponentAnalysis, mdaReq));
   {
     ChoiceFilterParameter::Pointer choices = ChoiceFilterParameter::New();
@@ -179,7 +180,10 @@ void PrincipalComponentAnalysis::dataCheck()
     }
   }
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QVector<size_t> tDims(1, paths.size());
 
@@ -190,14 +194,20 @@ void PrincipalComponentAnalysis::dataCheck()
   QVector<size_t> cDims(1, 1);
 
   tempPath.update(getSelectedDataArrayPaths()[0].getDataContainerName(), getPCAttributeMatrixName(), getPCEigenvaluesName());
-  m_PCEigenvaluesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims); 
-  if(m_PCEigenvaluesPtr.lock()) { m_PCEigenvalues = m_PCEigenvaluesPtr.lock()->getPointer(0); } 
+  m_PCEigenvaluesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims);
+  if(m_PCEigenvaluesPtr.lock())
+  {
+    m_PCEigenvalues = m_PCEigenvaluesPtr.lock()->getPointer(0);
+  }
 
   cDims[0] = paths.size();
 
   tempPath.update(getSelectedDataArrayPaths()[0].getDataContainerName(), getPCAttributeMatrixName(), getPCEigenvectorsName());
-  m_PCEigenvectorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims); 
-  if(m_PCEigenvectorsPtr.lock()) { m_PCEigenvectors = m_PCEigenvectorsPtr.lock()->getPointer(0); } 
+  m_PCEigenvectorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims);
+  if(m_PCEigenvectorsPtr.lock())
+  {
+    m_PCEigenvectors = m_PCEigenvectorsPtr.lock()->getPointer(0);
+  }
 
   if(getProjectDataSpace())
   {
@@ -211,15 +221,23 @@ void PrincipalComponentAnalysis::dataCheck()
     if(getNumberOfDimensionsForProjection() > paths.size())
     {
       setErrorCondition(-11005);
-      QString ss = QObject::tr("Number of dimensions for the projected space (%1) must be less than or equal to the number of selected Attribute Arrays (%2)").arg(getNumberOfDimensionsForProjection()).arg(paths.size());
+      QString ss = QObject::tr("Number of dimensions for the projected space (%1) must be less than or equal to the number of selected Attribute Arrays (%2)")
+                       .arg(getNumberOfDimensionsForProjection())
+                       .arg(paths.size());
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
     cDims[0] = getNumberOfDimensionsForProjection();
 
-    m_ProjectedDataSpacePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getProjectedDataSpaceArrayPath(), 0, cDims); 
-    if(m_ProjectedDataSpacePtr.lock()) { m_ProjectedDataSpace = m_ProjectedDataSpacePtr.lock()->getPointer(0); } 
-    if(getErrorCondition() >= 0) { paths.push_back(getProjectedDataSpaceArrayPath()); }
+    m_ProjectedDataSpacePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getProjectedDataSpaceArrayPath(), 0, cDims);
+    if(m_ProjectedDataSpacePtr.lock())
+    {
+      m_ProjectedDataSpace = m_ProjectedDataSpacePtr.lock()->getPointer(0);
+    }
+    if(getErrorCondition() >= 0)
+    {
+      paths.push_back(getProjectedDataSpaceArrayPath());
+    }
   }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, paths);
@@ -241,8 +259,7 @@ void PrincipalComponentAnalysis::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void copyDataArrays(IDataArray::Pointer dataPtr, std::vector<double>& copy, int32_t arrayIndex)
+template <typename T> void copyDataArrays(IDataArray::Pointer dataPtr, std::vector<double>& copy, int32_t arrayIndex)
 {
   typename DataArray<T>::Pointer inDataPtr = std::dynamic_pointer_cast<DataArray<T>>(dataPtr);
   T* dPtr = inDataPtr->getPointer(0);
@@ -261,7 +278,10 @@ void PrincipalComponentAnalysis::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(m_SelectedDataArrayPaths.size() != m_SelectedWeakPtrVector.size())
   {
@@ -283,10 +303,9 @@ void PrincipalComponentAnalysis::execute()
   // Copy the incoming data into a contiguous chunk of memory, casting everything to doubles
   std::vector<double> inDataVector(numTuples * numArrays, 0);
 
-  for (auto i = 0; i < numArrays; i++)
+  for(auto i = 0; i < numArrays; i++)
   {
-    EXECUTE_FUNCTION_TEMPLATE(this, copyDataArrays, m_SelectedWeakPtrVector[i].lock(), m_SelectedWeakPtrVector[i].lock(), 
-                              inDataVector, i);
+    EXECUTE_FUNCTION_TEMPLATE(this, copyDataArrays, m_SelectedWeakPtrVector[i].lock(), m_SelectedWeakPtrVector[i].lock(), inDataVector, i);
   }
 
   // Interface our CovarianceMatrix typedef with our contiguous array in memory
@@ -304,8 +323,8 @@ void PrincipalComponentAnalysis::execute()
     Eigen::RowVectorXd stdDev = dataMat.colwise().squaredNorm();
     for(auto i = 0; i < stdDev.cols(); i++)
     {
-       stdDev(i) /= dataMat.rows();
-       stdDev(i) = sqrt(stdDev(i));
+      stdDev(i) /= dataMat.rows();
+      stdDev(i) = sqrt(stdDev(i));
     }
     dataMat = dataMat.array().rowwise() / stdDev.array();
   }
@@ -383,13 +402,17 @@ AbstractFilter::Pointer PrincipalComponentAnalysis::newFilterInstance(bool copyF
 //
 // -----------------------------------------------------------------------------
 const QString PrincipalComponentAnalysis::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString PrincipalComponentAnalysis::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -398,7 +421,7 @@ const QString PrincipalComponentAnalysis::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -406,16 +429,22 @@ const QString PrincipalComponentAnalysis::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString PrincipalComponentAnalysis::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString PrincipalComponentAnalysis::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::DimensionalityReductionFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::DimensionalityReductionFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString PrincipalComponentAnalysis::getHumanLabel()
-{ return "Principal Component Analysis"; }
+{
+  return "Principal Component Analysis";
+}

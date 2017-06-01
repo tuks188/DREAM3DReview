@@ -42,13 +42,13 @@
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/Geometry/ImageGeom.h"
-#include "SIMPLib/Geometry/RectGridGeom.h"
-#include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
-#include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
+#include "SIMPLib/Geometry/RectGridGeom.h"
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
+#include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Geometry/VertexGeom.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -59,42 +59,42 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateGeometry::CreateGeometry() 
-  : AbstractFilter()
-  , m_GeometryType(0)
-  , m_DataContainerName("")
-  , m_SharedVertexListArrayPath0("", "", "")
-  , m_SharedVertexListArrayPath1("", "", "")
-  , m_SharedVertexListArrayPath2("", "", "")
-  , m_SharedVertexListArrayPath3("", "", "")
-  , m_SharedVertexListArrayPath4("", "", "")
-  , m_SharedEdgeListArrayPath("", "", "")
-  , m_SharedTriListArrayPath("", "", "")
-  , m_SharedQuadListArrayPath("", "", "")
-  , m_SharedTetListArrayPath("", "", "")
-  , m_XBoundsArrayPath("", "", "")
-  , m_YBoundsArrayPath("", "", "")
-  , m_ZBoundsArrayPath("", "", "")
-  , m_ImageCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-  , m_RectGridCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-  , m_VertexAttributeMatrixName0(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_VertexAttributeMatrixName1(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_VertexAttributeMatrixName2(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_VertexAttributeMatrixName3(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_VertexAttributeMatrixName4(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_EdgeAttributeMatrixName(SIMPL::Defaults::EdgeAttributeMatrixName)
-  , m_FaceAttributeMatrixName0(SIMPL::Defaults::FaceAttributeMatrixName)
-  , m_FaceAttributeMatrixName1(SIMPL::Defaults::FaceAttributeMatrixName)
-  , m_TetCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-  , m_TreatWarningsAsErrors(false)
-  , m_XBounds(nullptr)
-  , m_YBounds(nullptr)
-  , m_ZBounds(nullptr)
-  , m_Edges(nullptr)
-  , m_Tris(nullptr)
-  , m_Quads(nullptr)
-  , m_Tets(nullptr)
-  , m_NumVerts(0)
+CreateGeometry::CreateGeometry()
+: AbstractFilter()
+, m_GeometryType(0)
+, m_DataContainerName("")
+, m_SharedVertexListArrayPath0("", "", "")
+, m_SharedVertexListArrayPath1("", "", "")
+, m_SharedVertexListArrayPath2("", "", "")
+, m_SharedVertexListArrayPath3("", "", "")
+, m_SharedVertexListArrayPath4("", "", "")
+, m_SharedEdgeListArrayPath("", "", "")
+, m_SharedTriListArrayPath("", "", "")
+, m_SharedQuadListArrayPath("", "", "")
+, m_SharedTetListArrayPath("", "", "")
+, m_XBoundsArrayPath("", "", "")
+, m_YBoundsArrayPath("", "", "")
+, m_ZBoundsArrayPath("", "", "")
+, m_ImageCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_RectGridCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_VertexAttributeMatrixName0(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_VertexAttributeMatrixName1(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_VertexAttributeMatrixName2(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_VertexAttributeMatrixName3(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_VertexAttributeMatrixName4(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_EdgeAttributeMatrixName(SIMPL::Defaults::EdgeAttributeMatrixName)
+, m_FaceAttributeMatrixName0(SIMPL::Defaults::FaceAttributeMatrixName)
+, m_FaceAttributeMatrixName1(SIMPL::Defaults::FaceAttributeMatrixName)
+, m_TetCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_TreatWarningsAsErrors(false)
+, m_XBounds(nullptr)
+, m_YBounds(nullptr)
+, m_ZBounds(nullptr)
+, m_Edges(nullptr)
+, m_Tris(nullptr)
+, m_Quads(nullptr)
+, m_Tets(nullptr)
+, m_NumVerts(0)
 {
   m_Dimensions.x = 0;
   m_Dimensions.y = 0;
@@ -139,13 +139,32 @@ void CreateGeometry::setupFilterParameters()
     choices.push_back("Quadrilateral");
     choices.push_back("Tetrahedral");
     parameter->setChoices(choices);
-    QStringList linkedProps = {"Dimensions", "Origin", "Resolution", "ImageCellAttributeMatrixName",                                                // ImageGeom
-                               "XBoundsArrayPath", "YBoundsArrayPath", "ZBoundsArrayPath", "RectGridCellAttributeMatrixName",                       // RectGridGeom
-                               "SharedVertexListArrayPath0", "VertexAttributeMatrixName0",                                                          // VertexGeom
-                               "SharedVertexListArrayPath1", "SharedEdgeListArrayPath", "VertexAttributeMatrixName1", "EdgeAttributeMatrixName",    // EdgeGeom
-                               "SharedVertexListArrayPath2", "SharedTriListArrayPath", "VertexAttributeMatrixName2", "FaceAttributeMatrixName0",    // TriangleGeom
-                               "SharedVertexListArrayPath3", "SharedQuadListArrayPath", "VertexAttributeMatrixName3", "FaceAttributeMatrixName1",   // QuadGeom
-                               "SharedVertexListArrayPath4", "SharedTetListArrayPath", "VertexAttributeMatrixName4", "TetCellAttributeMatrixName"}; // TetrahedralGeom
+    QStringList linkedProps = {"Dimensions",
+                               "Origin",
+                               "Resolution",
+                               "ImageCellAttributeMatrixName", // ImageGeom
+                               "XBoundsArrayPath",
+                               "YBoundsArrayPath",
+                               "ZBoundsArrayPath",
+                               "RectGridCellAttributeMatrixName", // RectGridGeom
+                               "SharedVertexListArrayPath0",
+                               "VertexAttributeMatrixName0", // VertexGeom
+                               "SharedVertexListArrayPath1",
+                               "SharedEdgeListArrayPath",
+                               "VertexAttributeMatrixName1",
+                               "EdgeAttributeMatrixName", // EdgeGeom
+                               "SharedVertexListArrayPath2",
+                               "SharedTriListArrayPath",
+                               "VertexAttributeMatrixName2",
+                               "FaceAttributeMatrixName0", // TriangleGeom
+                               "SharedVertexListArrayPath3",
+                               "SharedQuadListArrayPath",
+                               "VertexAttributeMatrixName3",
+                               "FaceAttributeMatrixName1", // QuadGeom
+                               "SharedVertexListArrayPath4",
+                               "SharedTetListArrayPath",
+                               "VertexAttributeMatrixName4",
+                               "TetCellAttributeMatrixName"}; // TetrahedralGeom
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
@@ -262,7 +281,10 @@ void CreateGeometry::dataCheck()
 
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(dc->getGeometry())
   {
@@ -274,190 +296,229 @@ void CreateGeometry::dataCheck()
 
   switch(getGeometryType())
   {
-    case 0: // ImageGeom
+  case 0: // ImageGeom
+  {
+    if(getDimensions().x <= 0 || getDimensions().y <= 0 || getDimensions().z <= 0)
     {
-      if(getDimensions().x <= 0 || getDimensions().y <= 0 || getDimensions().z <= 0)
-      {
-        QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero; all dimensions must be positive\n"
-                                 "X Dimension: %1\n"
-                                 "Y Dimension: %2\n"
-                                 "Z Dimension: %3\n").arg(getDimensions().x).arg(getDimensions().y).arg(getDimensions().z);
-        setErrorCondition(-390);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return;
-      }
-
-      ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
-      image->setDimensions(getDimensions().x, getDimensions().y, getDimensions().z);
-      image->setOrigin(getOrigin().x, getOrigin().y, getOrigin().z);
-      image->setResolution(getResolution().x, getResolution().y, getResolution().z);
-      dc->setGeometry(image);
-
-      QVector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
-      DataArrayPath path(getDataContainerName(), getImageCellAttributeMatrixName(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
-      break;
-    }
-    case 1: // RectGridGeom
-    {
-      QVector<size_t> cDims(1, 1);
-
-      m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getXBoundsArrayPath(), cDims); 
-      if(m_XBoundsPtr.lock()) { m_XBounds = m_XBoundsPtr.lock()->getPointer(0); }
-      m_YBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getYBoundsArrayPath(), cDims);
-      if(m_YBoundsPtr.lock()) { m_YBounds = m_YBoundsPtr.lock()->getPointer(0); }
-      m_ZBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getZBoundsArrayPath(), cDims);
-      if(m_ZBoundsPtr.lock()) { m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0); }
-
-      if(getErrorCondition() < 0) { return; }
-
-      if(m_XBoundsPtr.lock()->getNumberOfTuples() < 2 || m_YBoundsPtr.lock()->getNumberOfTuples() < 2 || m_ZBoundsPtr.lock()->getNumberOfTuples() < 2)
-      {
-        QString ss = QObject::tr("One of the bounds arrays has a size less than two; all sizes must be at least two\n"
-                                 "X Bounds Size: %1\n"
-                                 "Y Bounds Size: %2\n"
-                                 "Z Bounds Size: %3\n").arg(m_XBoundsPtr.lock()->getNumberOfTuples()).arg(m_YBoundsPtr.lock()->getNumberOfTuples()).arg(m_ZBoundsPtr.lock()->getNumberOfTuples());
-        setErrorCondition(-390);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return;
-      }
-
-      RectGridGeom::Pointer rectgrid = RectGridGeom::CreateGeometry(SIMPL::Geometry::RectGridGeometry);
-      rectgrid->setXBounds(std::static_pointer_cast<FloatArrayType>(m_XBoundsPtr.lock()->deepCopy(getInPreflight())));
-      rectgrid->setYBounds(std::static_pointer_cast<FloatArrayType>(m_YBoundsPtr.lock()->deepCopy(getInPreflight())));
-      rectgrid->setZBounds(std::static_pointer_cast<FloatArrayType>(m_ZBoundsPtr.lock()->deepCopy(getInPreflight())));
-      rectgrid->setDimensions(m_XBoundsPtr.lock()->getNumberOfTuples() - 1,
-                              m_YBoundsPtr.lock()->getNumberOfTuples() - 1,
-                              m_ZBoundsPtr.lock()->getNumberOfTuples() - 1);
-      dc->setGeometry(rectgrid);
-
-      QVector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
-      DataArrayPath path(getDataContainerName(), getRectGridCellAttributeMatrixName(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
-      break;
-    }
-    case 2: // VertexGeom
-    {
-      QVector<size_t> cDims(1, 3);
-
-      FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath0(), cDims);
-
-      if(getErrorCondition() < 0) { return; }
-
-      VertexGeom::Pointer vertex = VertexGeom::CreateGeometry(std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::VertexGeometry);
-      dc->setGeometry(vertex);
-
-      QVector<size_t> tDims(1, vertex->getNumberOfVertices());
-      DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName0(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
-      break;
-    }
-    case 3: // EdgeGeom
-    {
-      QVector<size_t> cDims(1, 3);
-
-      FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath1(), cDims);
-      cDims[0] = 2;
-      m_EdgesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedEdgeListArrayPath(), cDims);
-      if(m_EdgesPtr.lock()) { m_Edges = m_EdgesPtr.lock()->getPointer(0); }
-
-      if(getErrorCondition() < 0) { return; }
-
-      EdgeGeom::Pointer edge = EdgeGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_EdgesPtr.lock()->deepCopy(getInPreflight())),
-                                                        std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())),
-                                                        SIMPL::Geometry::EdgeGeometry);
-      dc->setGeometry(edge);
-
-      m_NumVerts = edge->getNumberOfVertices();
-      QVector<size_t> tDims(1, edge->getNumberOfVertices());
-      DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName1(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
-      tDims[0] = edge->getNumberOfEdges();
-      path.update(getDataContainerName(), getEdgeAttributeMatrixName(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Edge);
-      break;
-    }
-    case 4: // TriangleGeom
-    {
-      QVector<size_t> cDims(1, 3);
-
-      FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath2(), cDims);
-      m_TrisPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedTriListArrayPath(), cDims);
-      if(m_TrisPtr.lock()) { m_Tris = m_TrisPtr.lock()->getPointer(0); }
-      
-      if(getErrorCondition() < 0) { return; }
-
-      TriangleGeom::Pointer triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
-                                                                    std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())),
-                                                                    SIMPL::Geometry::TriangleGeometry);
-      dc->setGeometry(triangle);
-
-      m_NumVerts = triangle->getNumberOfVertices();
-      QVector<size_t> tDims(1, triangle->getNumberOfVertices());
-      DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName2(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
-      tDims[0] = triangle->getNumberOfTris();
-      path.update(getDataContainerName(), getFaceAttributeMatrixName0(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Face);
-      break;
-    }
-    case 5: // QuadGeom
-    {
-      QVector<size_t> cDims(1, 3);
-
-      FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath3(), cDims);
-      cDims[0] = 4;
-      m_QuadsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedQuadListArrayPath(), cDims);
-      if(m_QuadsPtr.lock()) { m_Quads = m_QuadsPtr.lock()->getPointer(0); }
-
-      if(getErrorCondition() < 0) { return; }
-
-      QuadGeom::Pointer quadrilateral = QuadGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_QuadsPtr.lock()->deepCopy(getInPreflight())),
-                                                                 std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())),
-                                                                 SIMPL::Geometry::QuadGeometry);
-      dc->setGeometry(quadrilateral);
-
-      m_NumVerts = quadrilateral->getNumberOfVertices();
-      QVector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
-      DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName3(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
-      tDims[0] = quadrilateral->getNumberOfQuads();
-      path.update(getDataContainerName(), getFaceAttributeMatrixName1(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Face);
-      break;
-    }
-    case 6: // TetrahedralGeom
-    {
-      QVector<size_t> cDims(1, 3);
-
-      FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath4(), cDims);
-      cDims[0] = 4;
-      m_TetsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedTetListArrayPath(), cDims);
-      if(m_TetsPtr.lock()) { m_Tets = m_TetsPtr.lock()->getPointer(0); }
-
-      if(getErrorCondition() < 0) { return; }
-
-      TetrahedralGeom::Pointer tetrahedral = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TetsPtr.lock()->deepCopy(getInPreflight())),
-                                                                             std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())),
-                                                                             SIMPL::Geometry::QuadGeometry);
-      dc->setGeometry(tetrahedral);
-
-      m_NumVerts = tetrahedral->getNumberOfVertices();
-      QVector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
-      DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName4(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
-      tDims[0] = tetrahedral->getNumberOfTets();
-      path.update(getDataContainerName(), getTetCellAttributeMatrixName(), "");
-      dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
-      break;
-    }
-    default:
-    {
-      QString ss = QObject::tr("Invalid selection for Geometry type");
-      setErrorCondition(-701);
+      QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero; all dimensions must be positive\n"
+                               "X Dimension: %1\n"
+                               "Y Dimension: %2\n"
+                               "Z Dimension: %3\n")
+                       .arg(getDimensions().x)
+                       .arg(getDimensions().y)
+                       .arg(getDimensions().z);
+      setErrorCondition(-390);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      break;
+      return;
     }
+
+    ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
+    image->setDimensions(getDimensions().x, getDimensions().y, getDimensions().z);
+    image->setOrigin(getOrigin().x, getOrigin().y, getOrigin().z);
+    image->setResolution(getResolution().x, getResolution().y, getResolution().z);
+    dc->setGeometry(image);
+
+    QVector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
+    DataArrayPath path(getDataContainerName(), getImageCellAttributeMatrixName(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
+    break;
+  }
+  case 1: // RectGridGeom
+  {
+    QVector<size_t> cDims(1, 1);
+
+    m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getXBoundsArrayPath(), cDims);
+    if(m_XBoundsPtr.lock())
+    {
+      m_XBounds = m_XBoundsPtr.lock()->getPointer(0);
+    }
+    m_YBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getYBoundsArrayPath(), cDims);
+    if(m_YBoundsPtr.lock())
+    {
+      m_YBounds = m_YBoundsPtr.lock()->getPointer(0);
+    }
+    m_ZBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getZBoundsArrayPath(), cDims);
+    if(m_ZBoundsPtr.lock())
+    {
+      m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
+    }
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    if(m_XBoundsPtr.lock()->getNumberOfTuples() < 2 || m_YBoundsPtr.lock()->getNumberOfTuples() < 2 || m_ZBoundsPtr.lock()->getNumberOfTuples() < 2)
+    {
+      QString ss = QObject::tr("One of the bounds arrays has a size less than two; all sizes must be at least two\n"
+                               "X Bounds Size: %1\n"
+                               "Y Bounds Size: %2\n"
+                               "Z Bounds Size: %3\n")
+                       .arg(m_XBoundsPtr.lock()->getNumberOfTuples())
+                       .arg(m_YBoundsPtr.lock()->getNumberOfTuples())
+                       .arg(m_ZBoundsPtr.lock()->getNumberOfTuples());
+      setErrorCondition(-390);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+
+    RectGridGeom::Pointer rectgrid = RectGridGeom::CreateGeometry(SIMPL::Geometry::RectGridGeometry);
+    rectgrid->setXBounds(std::static_pointer_cast<FloatArrayType>(m_XBoundsPtr.lock()->deepCopy(getInPreflight())));
+    rectgrid->setYBounds(std::static_pointer_cast<FloatArrayType>(m_YBoundsPtr.lock()->deepCopy(getInPreflight())));
+    rectgrid->setZBounds(std::static_pointer_cast<FloatArrayType>(m_ZBoundsPtr.lock()->deepCopy(getInPreflight())));
+    rectgrid->setDimensions(m_XBoundsPtr.lock()->getNumberOfTuples() - 1, m_YBoundsPtr.lock()->getNumberOfTuples() - 1, m_ZBoundsPtr.lock()->getNumberOfTuples() - 1);
+    dc->setGeometry(rectgrid);
+
+    QVector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
+    DataArrayPath path(getDataContainerName(), getRectGridCellAttributeMatrixName(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
+    break;
+  }
+  case 2: // VertexGeom
+  {
+    QVector<size_t> cDims(1, 3);
+
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath0(), cDims);
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    VertexGeom::Pointer vertex = VertexGeom::CreateGeometry(std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::VertexGeometry);
+    dc->setGeometry(vertex);
+
+    QVector<size_t> tDims(1, vertex->getNumberOfVertices());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName0(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    break;
+  }
+  case 3: // EdgeGeom
+  {
+    QVector<size_t> cDims(1, 3);
+
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath1(), cDims);
+    cDims[0] = 2;
+    m_EdgesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedEdgeListArrayPath(), cDims);
+    if(m_EdgesPtr.lock())
+    {
+      m_Edges = m_EdgesPtr.lock()->getPointer(0);
+    }
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    EdgeGeom::Pointer edge = EdgeGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_EdgesPtr.lock()->deepCopy(getInPreflight())),
+                                                      std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::EdgeGeometry);
+    dc->setGeometry(edge);
+
+    m_NumVerts = edge->getNumberOfVertices();
+    QVector<size_t> tDims(1, edge->getNumberOfVertices());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName1(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    tDims[0] = edge->getNumberOfEdges();
+    path.update(getDataContainerName(), getEdgeAttributeMatrixName(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Edge);
+    break;
+  }
+  case 4: // TriangleGeom
+  {
+    QVector<size_t> cDims(1, 3);
+
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath2(), cDims);
+    m_TrisPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedTriListArrayPath(), cDims);
+    if(m_TrisPtr.lock())
+    {
+      m_Tris = m_TrisPtr.lock()->getPointer(0);
+    }
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    TriangleGeom::Pointer triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
+                                                                  std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TriangleGeometry);
+    dc->setGeometry(triangle);
+
+    m_NumVerts = triangle->getNumberOfVertices();
+    QVector<size_t> tDims(1, triangle->getNumberOfVertices());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName2(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    tDims[0] = triangle->getNumberOfTris();
+    path.update(getDataContainerName(), getFaceAttributeMatrixName0(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Face);
+    break;
+  }
+  case 5: // QuadGeom
+  {
+    QVector<size_t> cDims(1, 3);
+
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath3(), cDims);
+    cDims[0] = 4;
+    m_QuadsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedQuadListArrayPath(), cDims);
+    if(m_QuadsPtr.lock())
+    {
+      m_Quads = m_QuadsPtr.lock()->getPointer(0);
+    }
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    QuadGeom::Pointer quadrilateral = QuadGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_QuadsPtr.lock()->deepCopy(getInPreflight())),
+                                                               std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+    dc->setGeometry(quadrilateral);
+
+    m_NumVerts = quadrilateral->getNumberOfVertices();
+    QVector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName3(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    tDims[0] = quadrilateral->getNumberOfQuads();
+    path.update(getDataContainerName(), getFaceAttributeMatrixName1(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Face);
+    break;
+  }
+  case 6: // TetrahedralGeom
+  {
+    QVector<size_t> cDims(1, 3);
+
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath4(), cDims);
+    cDims[0] = 4;
+    m_TetsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedTetListArrayPath(), cDims);
+    if(m_TetsPtr.lock())
+    {
+      m_Tets = m_TetsPtr.lock()->getPointer(0);
+    }
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    TetrahedralGeom::Pointer tetrahedral = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TetsPtr.lock()->deepCopy(getInPreflight())),
+                                                                           std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+    dc->setGeometry(tetrahedral);
+
+    m_NumVerts = tetrahedral->getNumberOfVertices();
+    QVector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName4(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    tDims[0] = tetrahedral->getNumberOfTets();
+    path.update(getDataContainerName(), getTetCellAttributeMatrixName(), "");
+    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
+    break;
+  }
+  default:
+  {
+    QString ss = QObject::tr("Invalid selection for Geometry type");
+    setErrorCondition(-701);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    break;
+  }
   }
 }
 
@@ -467,12 +528,12 @@ void CreateGeometry::dataCheck()
 void CreateGeometry::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
@@ -482,106 +543,32 @@ void CreateGeometry::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   switch(m_GeometryType)
   {
-    case 0: // ImageGeom
+  case 0: // ImageGeom
+  {
+    // Checked during preflight()
+    break;
+  }
+  case 1: // RectGridGeom
+  {
+    float xval = m_XBounds[0];
+    for(size_t i = 1; i < m_XBoundsPtr.lock()->getNumberOfTuples(); i++)
     {
-      // Checked during preflight()
-      break;
-    }
-    case 1: // RectGridGeom
-    {
-      float xval = m_XBounds[0];
-      for(size_t i = 1; i < m_XBoundsPtr.lock()->getNumberOfTuples(); i++)
+      if(xval > m_XBounds[i])
       {
-        if(xval > m_XBounds[i])
-        {
-          QString ss = QObject::tr("Supplied X Bounds array is not strictly increasing; this results in negative resolutions\n"
-                                   "Index %1 Value: %2\n"
-                                   "Index %3 Value: %4").arg(i - 1).arg(xval).arg(i).arg(m_XBounds[i]);
-          if(m_TreatWarningsAsErrors)
-          {
-            setErrorCondition(-1);
-            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          }
-          else
-          {
-            setWarningCondition(-1);
-            notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
-          }
-          return;
-        }
-        xval = m_XBounds[i];
-      }
-
-      float yval = m_YBounds[0];
-      for(size_t i = 1; i < m_YBoundsPtr.lock()->getNumberOfTuples(); i++)
-      {
-        if(yval > m_YBounds[i])
-        {
-          QString ss = QObject::tr("Supplied Y Bounds array is not strictly increasing; this results in negative resolutions\n"
-                                   "Index %1 Value: %2\n"
-                                   "Index %3 Value: %4").arg(i - 1).arg(yval).arg(i).arg(m_YBounds[i]);
-          if(m_TreatWarningsAsErrors)
-          {
-            setErrorCondition(-1);
-            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          }
-          else
-          {
-            setWarningCondition(-1);
-            notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
-          }
-          return;
-        }
-        yval = m_YBounds[i];
-      }
-
-      float zval = m_ZBounds[0];
-      for(size_t i = 1; i < m_ZBoundsPtr.lock()->getNumberOfTuples(); i++)
-      {
-        if(zval > m_ZBounds[i])
-        {
-          QString ss = QObject::tr("Supplied Z Bounds array is not strictly increasing; this results in negative resolutions\n"
-                                   "Index %1 Value: %2\n"
-                                   "Index %3 Value: %4").arg(i - 1).arg(zval).arg(i).arg(m_ZBounds[i]);
-          if(m_TreatWarningsAsErrors)
-          {
-            setErrorCondition(-1);
-            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          }
-          else
-          {
-            setWarningCondition(-1);
-            notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
-          }
-          return;
-        }
-        zval = m_ZBounds[i];
-      }
-
-      break;
-    }
-    case 2: // VertexGeom
-    {
-      // Checked during preflight()
-      break;
-    }
-    case 3: // EdgeGeom
-    {
-      int64_t idx = 0;
-      for(size_t i = 0; i < m_EdgesPtr.lock()->getSize(); i++)
-      {
-        if(m_Edges[i] > idx) { idx = m_Edges[i]; }
-      }
-
-      if((idx + 1) > m_NumVerts)
-      {
-        QString ss = QObject::tr("Supplied edge list contains a vertex index larger than the total length of the supplied shared vertex list\n"
-                                 "Index Value: %1\n"
-                                 "Number of Vertices: %2").arg(idx).arg(m_NumVerts);
+        QString ss = QObject::tr("Supplied X Bounds array is not strictly increasing; this results in negative resolutions\n"
+                                 "Index %1 Value: %2\n"
+                                 "Index %3 Value: %4")
+                         .arg(i - 1)
+                         .arg(xval)
+                         .arg(i)
+                         .arg(m_XBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
           setErrorCondition(-1);
@@ -594,22 +581,21 @@ void CreateGeometry::execute()
         }
         return;
       }
-      
-      break;
+      xval = m_XBounds[i];
     }
-    case 4: // TriangleGeom
-    {
-      int64_t idx = 0;
-      for(size_t i = 0; i < m_TrisPtr.lock()->getSize(); i++)
-      {
-        if(m_Tris[i] > idx) { idx = m_Tris[i]; }
-      }
 
-      if((idx + 1) > m_NumVerts)
+    float yval = m_YBounds[0];
+    for(size_t i = 1; i < m_YBoundsPtr.lock()->getNumberOfTuples(); i++)
+    {
+      if(yval > m_YBounds[i])
       {
-        QString ss = QObject::tr("Supplied triangle list contains a vertex index larger than the total length of the supplied shared vertex list\n"
-                                 "Index Value: %1\n"
-                                 "Number of Vertices: %2").arg(idx).arg(m_NumVerts);
+        QString ss = QObject::tr("Supplied Y Bounds array is not strictly increasing; this results in negative resolutions\n"
+                                 "Index %1 Value: %2\n"
+                                 "Index %3 Value: %4")
+                         .arg(i - 1)
+                         .arg(yval)
+                         .arg(i)
+                         .arg(m_YBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
           setErrorCondition(-1);
@@ -622,22 +608,21 @@ void CreateGeometry::execute()
         }
         return;
       }
-      
-      break;
+      yval = m_YBounds[i];
     }
-    case 5: // QuadGeom
-    {
-      int64_t idx = 0;
-      for(size_t i = 0; i < m_QuadsPtr.lock()->getSize(); i++)
-      {
-        if(m_Quads[i] > idx) { idx = m_Quads[i]; }
-      }
 
-      if((idx + 1) > m_NumVerts)
+    float zval = m_ZBounds[0];
+    for(size_t i = 1; i < m_ZBoundsPtr.lock()->getNumberOfTuples(); i++)
+    {
+      if(zval > m_ZBounds[i])
       {
-        QString ss = QObject::tr("Supplied quadrilateral list contains a vertex index larger than the total length of the supplied shared vertex list\n"
-                                 "Index Value: %1\n"
-                                 "Number of Vertices: %2").arg(idx).arg(m_NumVerts);
+        QString ss = QObject::tr("Supplied Z Bounds array is not strictly increasing; this results in negative resolutions\n"
+                                 "Index %1 Value: %2\n"
+                                 "Index %3 Value: %4")
+                         .arg(i - 1)
+                         .arg(zval)
+                         .arg(i)
+                         .arg(m_ZBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
           setErrorCondition(-1);
@@ -650,41 +635,152 @@ void CreateGeometry::execute()
         }
         return;
       }
-      
-      break;
+      zval = m_ZBounds[i];
     }
-    case 6: // TetrahedralGeom
-    {
-      int64_t idx = 0;
-      for(size_t i = 0; i < m_TetsPtr.lock()->getSize(); i++)
-      {
-        if(m_Tets[i] > idx) { idx = m_Tets[i]; }
-      }
 
-      if((idx + 1) > m_NumVerts)
-      {
-        QString ss = QObject::tr("Supplied tetrahedra list contains a vertex index larger than the total length of the supplied shared vertex list\n"
-                                 "Index Value: %1\n"
-                                 "Number of Vertices: %2").arg(idx).arg(m_NumVerts);
-        if(m_TreatWarningsAsErrors)
-        {
-          setErrorCondition(-1);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        }
-        else
-        {
-          setWarningCondition(-1);
-          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
-        }
-        return;
-      }
-      
-      break;
-    }
-    default:
+    break;
+  }
+  case 2: // VertexGeom
+  {
+    // Checked during preflight()
+    break;
+  }
+  case 3: // EdgeGeom
+  {
+    int64_t idx = 0;
+    for(size_t i = 0; i < m_EdgesPtr.lock()->getSize(); i++)
     {
-      break;
+      if(m_Edges[i] > idx)
+      {
+        idx = m_Edges[i];
+      }
     }
+
+    if((idx + 1) > m_NumVerts)
+    {
+      QString ss = QObject::tr("Supplied edge list contains a vertex index larger than the total length of the supplied shared vertex list\n"
+                               "Index Value: %1\n"
+                               "Number of Vertices: %2")
+                       .arg(idx)
+                       .arg(m_NumVerts);
+      if(m_TreatWarningsAsErrors)
+      {
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
+      else
+      {
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      }
+      return;
+    }
+
+    break;
+  }
+  case 4: // TriangleGeom
+  {
+    int64_t idx = 0;
+    for(size_t i = 0; i < m_TrisPtr.lock()->getSize(); i++)
+    {
+      if(m_Tris[i] > idx)
+      {
+        idx = m_Tris[i];
+      }
+    }
+
+    if((idx + 1) > m_NumVerts)
+    {
+      QString ss = QObject::tr("Supplied triangle list contains a vertex index larger than the total length of the supplied shared vertex list\n"
+                               "Index Value: %1\n"
+                               "Number of Vertices: %2")
+                       .arg(idx)
+                       .arg(m_NumVerts);
+      if(m_TreatWarningsAsErrors)
+      {
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
+      else
+      {
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      }
+      return;
+    }
+
+    break;
+  }
+  case 5: // QuadGeom
+  {
+    int64_t idx = 0;
+    for(size_t i = 0; i < m_QuadsPtr.lock()->getSize(); i++)
+    {
+      if(m_Quads[i] > idx)
+      {
+        idx = m_Quads[i];
+      }
+    }
+
+    if((idx + 1) > m_NumVerts)
+    {
+      QString ss = QObject::tr("Supplied quadrilateral list contains a vertex index larger than the total length of the supplied shared vertex list\n"
+                               "Index Value: %1\n"
+                               "Number of Vertices: %2")
+                       .arg(idx)
+                       .arg(m_NumVerts);
+      if(m_TreatWarningsAsErrors)
+      {
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
+      else
+      {
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      }
+      return;
+    }
+
+    break;
+  }
+  case 6: // TetrahedralGeom
+  {
+    int64_t idx = 0;
+    for(size_t i = 0; i < m_TetsPtr.lock()->getSize(); i++)
+    {
+      if(m_Tets[i] > idx)
+      {
+        idx = m_Tets[i];
+      }
+    }
+
+    if((idx + 1) > m_NumVerts)
+    {
+      QString ss = QObject::tr("Supplied tetrahedra list contains a vertex index larger than the total length of the supplied shared vertex list\n"
+                               "Index Value: %1\n"
+                               "Number of Vertices: %2")
+                       .arg(idx)
+                       .arg(m_NumVerts);
+      if(m_TreatWarningsAsErrors)
+      {
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
+      else
+      {
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      }
+      return;
+    }
+
+    break;
+  }
+  default:
+  {
+    break;
+  }
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
@@ -707,13 +803,17 @@ AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParamet
 //
 // -----------------------------------------------------------------------------
 const QString CreateGeometry::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateGeometry::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -722,7 +822,7 @@ const QString CreateGeometry::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -730,16 +830,22 @@ const QString CreateGeometry::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CreateGeometry::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateGeometry::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateGeometry::getHumanLabel()
-{ return "Create Geometry"; }
+{
+  return "Create Geometry";
+}

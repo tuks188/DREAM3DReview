@@ -36,9 +36,9 @@
 #ifndef _copyobject_h_
 #define _copyobject_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CopyObject class. See [Filter documentation](@ref copyobject) for details.
@@ -47,126 +47,125 @@ class CopyObject : public AbstractFilter
 {
   Q_OBJECT
 
-  public:
-    SIMPL_SHARED_POINTERS(CopyObject)
-    SIMPL_STATIC_NEW_MACRO(CopyObject)
-    SIMPL_TYPE_MACRO_SUPER(CopyObject, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(CopyObject)
+  SIMPL_STATIC_NEW_MACRO(CopyObject)
+  SIMPL_TYPE_MACRO_SUPER(CopyObject, AbstractFilter)
 
-    virtual ~CopyObject();
+  virtual ~CopyObject();
 
-    SIMPL_FILTER_PARAMETER(int, ObjectToCopy)
-    Q_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
-  
-    SIMPL_FILTER_PARAMETER(QString, DataContainerToCopy)
-    Q_PROPERTY(QString DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
-  
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
-    Q_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
-  
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
-    Q_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
-  
-    SIMPL_FILTER_PARAMETER(QString, CopiedObjectName)
-    Q_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
+  SIMPL_FILTER_PARAMETER(int, ObjectToCopy)
+  Q_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getCompiledLibraryName();
+  SIMPL_FILTER_PARAMETER(QString, DataContainerToCopy)
+  Q_PROPERTY(QString DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    virtual const QString getBrandingString();
+  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
+  Q_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    virtual const QString getFilterVersion();
+  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
+  Q_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  SIMPL_FILTER_PARAMETER(QString, CopiedObjectName)
+  Q_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getGroupName();
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getCompiledLibraryName();
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getSubGroupName();
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+  */
+  virtual const QString getBrandingString();
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getHumanLabel();
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  virtual const QString getFilterVersion();
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void setupFilterParameters();
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getGroupName();
 
-   /**
-    * @brief execute Reimplemented from @see AbstractFilter class
-    */
-    virtual void execute();
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getSubGroupName();
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    virtual void preflight();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getHumanLabel();
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer 
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void setupFilterParameters();
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+  * @brief preflight Reimplemented from @see AbstractFilter class
+  */
+  virtual void preflight();
 
-  protected:
-    CopyObject();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-  private:
-    CopyObject(const CopyObject&); // Copy Constructor Not Implemented
-    void operator=(const CopyObject&); // Operator '=' Not Implemented
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
+
+protected:
+  CopyObject();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
+
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
+
+private:
+  CopyObject(const CopyObject&);     // Copy Constructor Not Implemented
+  void operator=(const CopyObject&); // Operator '=' Not Implemented
 };
 
 #endif /* _CopyObject_H_ */

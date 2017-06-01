@@ -38,13 +38,13 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
-#include "SIMPLib/Geometry/IGeometry2D.h"
-#include "SIMPLib/Geometry/IGeometry3D.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/GeometryHelpers.hpp"
+#include "SIMPLib/Geometry/IGeometry2D.h"
+#include "SIMPLib/Geometry/IGeometry3D.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -55,12 +55,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AverageEdgeFaceCellArrayToVertexArray::AverageEdgeFaceCellArrayToVertexArray() 
-  : AbstractFilter()
-  , m_SelectedArrayPath("", "", "")
-  , m_AverageVertexArrayPath(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "")
-  , m_InCellArray(nullptr)
-  , m_AverageVertexArray(nullptr)
+AverageEdgeFaceCellArrayToVertexArray::AverageEdgeFaceCellArrayToVertexArray()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_AverageVertexArrayPath(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "")
+, m_InCellArray(nullptr)
+, m_AverageVertexArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -80,7 +80,8 @@ void AverageEdgeFaceCellArrayToVertexArray::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(SeparatorFilterParameter::New("Edge/Face/Cell Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+    DataArraySelectionFilterParameter::RequirementType req =
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
     AttributeMatrix::Types amTypes = {AttributeMatrix::Type::Cell, AttributeMatrix::Type::Face, AttributeMatrix::Type::Edge};
     IGeometry::Types geomTypes = {IGeometry::Type::Edge, IGeometry::Type::Triangle, IGeometry::Type::Quad, IGeometry::Type::Tetrahedral};
     req.amTypes = amTypes;
@@ -111,8 +112,7 @@ void AverageEdgeFaceCellArrayToVertexArray::readFilterParameters(AbstractFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void findCellAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, DataContainer::Pointer m)
+template <typename T> void findCellAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, DataContainer::Pointer m)
 {
   IGeometry::Pointer igeom = m->getGeometry();
 
@@ -170,14 +170,14 @@ void AverageEdgeFaceCellArrayToVertexArray::dataCheck()
 
   IGeometry::Pointer igeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getSelectedArrayPath().getDataContainerName());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   IGeometry::Type geomType = igeom->getGeometryType();
 
-  if(geomType != IGeometry::Type::Edge &&
-     geomType != IGeometry::Type::Triangle &&
-     geomType != IGeometry::Type::Quad &&
-     geomType != IGeometry::Type::Tetrahedral)
+  if(geomType != IGeometry::Type::Edge && geomType != IGeometry::Type::Triangle && geomType != IGeometry::Type::Quad && geomType != IGeometry::Type::Tetrahedral)
   {
     setErrorCondition(-11000);
     QString ss = QObject::tr("The Geometry type must be either Edge, Triangle, Quadrilateral or Tetrahedral, but the type is %1").arg(igeom->getGeometryTypeAsString());
@@ -192,15 +192,17 @@ void AverageEdgeFaceCellArrayToVertexArray::dataCheck()
   }
 
   AttributeMatrix::Pointer cellAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
-  AttributeMatrix::Pointer vertAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAverageVertexArrayPath(), -301);\
+  AttributeMatrix::Pointer vertAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAverageVertexArrayPath(), -301);
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AttributeMatrix::Type vertAttrMatType = vertAttrMat->getType();
   AttributeMatrix::Type cellAttrMatType = cellAttrMat->getType();
 
-  if(geomType == IGeometry::Type::Triangle ||
-     geomType == IGeometry::Type::Quad)
+  if(geomType == IGeometry::Type::Triangle || geomType == IGeometry::Type::Quad)
   {
     if(cellAttrMatType != AttributeMatrix::Type::Face)
     {
@@ -236,8 +238,11 @@ void AverageEdgeFaceCellArrayToVertexArray::dataCheck()
   }
 
   m_InCellArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numVertices = 0;
   size_t numElements = 0;
@@ -261,25 +266,35 @@ void AverageEdgeFaceCellArrayToVertexArray::dataCheck()
   QVector<size_t> cDims = m_InCellArrayPtr.lock()->getComponentDimensions();
   size_t numElemTuples = m_InCellArrayPtr.lock()->getNumberOfTuples();
 
-  m_AverageVertexArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getAverageVertexArrayPath(), 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_AverageVertexArrayPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_AverageVertexArray = m_AverageVertexArrayPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_AverageVertexArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
+      this, getAverageVertexArrayPath(), 0, cDims);   /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_AverageVertexArrayPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_AverageVertexArray = m_AverageVertexArrayPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numVertexTuples = m_AverageVertexArrayPtr.lock()->getNumberOfTuples();
 
   if(numVertexTuples != numVertices)
   {
     setErrorCondition(-11002);
-    QString ss = QObject::tr("The number of Vertices in the selected Geometry is %1 and the number of tuples in the destination Attribute Matrix is %2; the Vertices and tuples must match").arg(numVertices).arg(numVertexTuples);
+    QString ss = QObject::tr("The number of Vertices in the selected Geometry is %1 and the number of tuples in the destination Attribute Matrix is %2; the Vertices and tuples must match")
+                     .arg(numVertices)
+                     .arg(numVertexTuples);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(numElemTuples != numElements)
   {
     setErrorCondition(-11003);
-    QString ss = QObject::tr("The number of Elements in the selected Geometry is %1 and the number of tuples in the source Attribute Matrix is %2; the Elements and tuples must match").arg(numElements).arg(numElemTuples);
+    QString ss = QObject::tr("The number of Elements in the selected Geometry is %1 and the number of tuples in the source Attribute Matrix is %2; the Elements and tuples must match")
+                     .arg(numElements)
+                     .arg(numElemTuples);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
@@ -304,7 +319,10 @@ void AverageEdgeFaceCellArrayToVertexArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedArrayPath.getDataContainerName());
 
@@ -338,7 +356,9 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getCompiledLibraryName()
 //
 // -----------------------------------------------------------------------------
 const QString AverageEdgeFaceCellArrayToVertexArray::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -347,7 +367,7 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -355,16 +375,22 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString AverageEdgeFaceCellArrayToVertexArray::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AverageEdgeFaceCellArrayToVertexArray::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AverageEdgeFaceCellArrayToVertexArray::getHumanLabel()
-{ return "Average Edge/Face/Cell Array to Vertex Array"; }
+{
+  return "Average Edge/Face/Cell Array to Vertex Array";
+}

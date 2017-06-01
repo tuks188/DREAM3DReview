@@ -57,18 +57,18 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Silhouette::Silhouette() 
-  : AbstractFilter()
-  , m_SelectedArrayPath("", "", "")
-  , m_UseMask(false)
-  , m_MaskArrayPath("", "", "Mask")
-  , m_FeatureIdsArrayPath("", "", "ClusterIds")
-  , m_SilhouetteArrayPath("", "", "Silhouette")
-  , m_DistanceMetric(0)
-  , m_InData(nullptr)
-  , m_Mask(nullptr)
-  , m_FeatureIds(nullptr)
-  , m_SilhouetteArray(nullptr)
+Silhouette::Silhouette()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_UseMask(false)
+, m_MaskArrayPath("", "", "Mask")
+, m_FeatureIdsArrayPath("", "", "ClusterIds")
+, m_SilhouetteArrayPath("", "", "Silhouette")
+, m_DistanceMetric(0)
+, m_InData(nullptr)
+, m_Mask(nullptr)
+, m_FeatureIds(nullptr)
+, m_SilhouetteArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -100,7 +100,8 @@ void Silhouette::setupFilterParameters()
   }
   QStringList linkedProps("MaskArrayPath");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask", UseMask, FilterParameter::Parameter, Silhouette, linkedProps));
-  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataArraySelectionFilterParameter::RequirementType dasReq =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Silhouette", SelectedArrayPath, FilterParameter::RequiredArray, Silhouette, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, Silhouette, dasReq));
@@ -127,7 +128,7 @@ void Silhouette::setupFilterParameters()
 void Silhouette::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedArrayPath(reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath()));
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
   setUseMask(reader->readValue("UseMask", getUseMask()));
   setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath()));
@@ -154,21 +155,42 @@ void Silhouette::dataCheck()
   QVector<size_t> cDims(1, 1);
 
   m_SilhouetteArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, getSilhouetteArrayPath(), 0, cDims);
-  if(m_SilhouetteArrayPtr.lock()) { m_SilhouetteArray = m_SilhouetteArrayPtr.lock()->getPointer(0); }
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getSilhouetteArrayPath()); }
+  if(m_SilhouetteArrayPtr.lock())
+  {
+    m_SilhouetteArray = m_SilhouetteArrayPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getSilhouetteArrayPath());
+  }
 
-  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); 
-  if(m_FeatureIdsPtr.lock()) { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } 
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getFeatureIdsArrayPath()); }
+  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims);
+  if(m_FeatureIdsPtr.lock())
+  {
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getFeatureIdsArrayPath());
+  }
 
-  m_InDataPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath()); 
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getSelectedArrayPath()); }
+  m_InDataPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getSelectedArrayPath());
+  }
 
   if(m_UseMask == true)
   {
-    m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims); 
-    if(m_MaskPtr.lock().get()) { m_Mask = m_MaskPtr.lock()->getPointer(0); } 
-    if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getMaskArrayPath()); }
+    m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims);
+    if(m_MaskPtr.lock().get())
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+    }
+    if(getErrorCondition() >= 0)
+    {
+      dataArrayPaths.push_back(getMaskArrayPath());
+    }
   }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
@@ -194,7 +216,10 @@ void Silhouette::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numTuples = m_FeatureIdsPtr.lock()->getNumberOfTuples();
   std::unordered_set<int32_t> uniqueIds;
@@ -206,17 +231,13 @@ void Silhouette::execute()
 
   if(m_UseMask)
   {
-    EXECUTE_TEMPLATE(this, SilhouetteTemplate, m_InDataPtr.lock(), 
-                     this, m_InDataPtr.lock(), m_SilhouetteArrayPtr.lock(), m_MaskPtr.lock(), 
-                     uniqueIds.size(), m_FeatureIdsPtr.lock(), m_DistanceMetric)
+    EXECUTE_TEMPLATE(this, SilhouetteTemplate, m_InDataPtr.lock(), this, m_InDataPtr.lock(), m_SilhouetteArrayPtr.lock(), m_MaskPtr.lock(), uniqueIds.size(), m_FeatureIdsPtr.lock(), m_DistanceMetric)
   }
   else
   {
     BoolArrayType::Pointer tmpMask = BoolArrayType::CreateArray(numTuples, "_INTERNAL_USE_ONLY_tmpMask");
     tmpMask->initializeWithValue(true);
-    EXECUTE_TEMPLATE(this, SilhouetteTemplate, m_InDataPtr.lock(), 
-                     this, m_InDataPtr.lock(), m_SilhouetteArrayPtr.lock(), tmpMask, 
-                     uniqueIds.size(), m_FeatureIdsPtr.lock(), m_DistanceMetric)
+    EXECUTE_TEMPLATE(this, SilhouetteTemplate, m_InDataPtr.lock(), this, m_InDataPtr.lock(), m_SilhouetteArrayPtr.lock(), tmpMask, uniqueIds.size(), m_FeatureIdsPtr.lock(), m_DistanceMetric)
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
@@ -239,13 +260,17 @@ AbstractFilter::Pointer Silhouette::newFilterInstance(bool copyFilterParameters)
 //
 // -----------------------------------------------------------------------------
 const QString Silhouette::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString Silhouette::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -254,7 +279,7 @@ const QString Silhouette::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -262,16 +287,22 @@ const QString Silhouette::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString Silhouette::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString Silhouette::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString Silhouette::getHumanLabel()
-{ return "Silhouette"; }
+{
+  return "Silhouette";
+}

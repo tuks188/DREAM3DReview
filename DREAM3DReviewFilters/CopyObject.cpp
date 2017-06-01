@@ -37,9 +37,9 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
@@ -52,13 +52,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CopyObject::CopyObject() 
-  : AbstractFilter()
-  , m_ObjectToCopy(0)
-  , m_DataContainerToCopy("")
-  , m_AttributeMatrixToCopy("", "", "")
-  , m_AttributeArrayToCopy("", "", "")
-  , m_CopiedObjectName("")
+CopyObject::CopyObject()
+: AbstractFilter()
+, m_ObjectToCopy(0)
+, m_DataContainerToCopy("")
+, m_AttributeMatrixToCopy("", "", "")
+, m_AttributeArrayToCopy("", "", "")
+, m_CopiedObjectName("")
 {
   setupFilterParameters();
 }
@@ -88,7 +88,9 @@ void CopyObject::setupFilterParameters()
     choices.push_back("Attribute Array");
     parameter->setChoices(choices);
     QStringList linkedProps;
-    linkedProps << "DataContainerToCopy" << "AttributeMatrixToCopy" << "AttributeArrayToCopy";
+    linkedProps << "DataContainerToCopy"
+                << "AttributeMatrixToCopy"
+                << "AttributeArrayToCopy";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
@@ -147,74 +149,85 @@ void CopyObject::dataCheck()
 
   switch(getObjectToCopy())
   {
-    // Copy Data Container
-    case 0:
+  // Copy Data Container
+  case 0:
+  {
+    if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
     {
-      if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
-      {
-        setErrorCondition(-11001);
-        QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      }
-
-      DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerToCopy());
-
-      if(getErrorCondition() < 0 ) { return; }
-
-      DataContainer::Pointer dcCopy = m->deepCopy(getInPreflight());
-      dcCopy->setName(getCopiedObjectName());
-      getDataContainerArray()->addDataContainer(dcCopy);
-
-      break;
+      setErrorCondition(-11001);
+      QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
-    // Copy Attribute Matrix
-    case 1:
+
+    DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerToCopy());
+
+    if(getErrorCondition() < 0)
     {
-      DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
-      if(getDataContainerArray()->doesAttributeMatrixExist(path))
-      {
-        setErrorCondition(-11001);
-        QString ss = QObject::tr("An Attribute Matrix already exists with the name %1").arg(getCopiedObjectName());
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      }
-
-      AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
-
-      if (getErrorCondition() < 0 ) { return; }
-
-      AttributeMatrix::Pointer attrMatCopy = attrMat->deepCopy(getInPreflight());
-      attrMatCopy->setName(getCopiedObjectName());
-      getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addAttributeMatrix(getCopiedObjectName(), attrMatCopy);
-
-      break;
+      return;
     }
-    // Copy Attribute Array
-    case 2:
-    {
-      DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
-      if(getDataContainerArray()->doesAttributeArrayExist(path))
-      {
-        setErrorCondition(-11001);
-        QString ss = QObject::tr("An Attribute Array already exists with the name %1").arg(getCopiedObjectName());
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      }
 
-      IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());
+    DataContainer::Pointer dcCopy = m->deepCopy(getInPreflight());
+    dcCopy->setName(getCopiedObjectName());
+    getDataContainerArray()->addDataContainer(dcCopy);
 
-      if(getErrorCondition() < 0 ) { return; }
-
-      IDataArray::Pointer arrayCopy = array->deepCopy(getInPreflight());
-      arrayCopy->setName(getCopiedObjectName());
-      getDataContainerArray()->getDataContainer(getAttributeArrayToCopy().getDataContainerName())->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())->addAttributeArray(getCopiedObjectName(), arrayCopy);
-
-      break;
-    }
-    default:
-    {
-      break;
-    }
+    break;
   }
+  // Copy Attribute Matrix
+  case 1:
+  {
+    DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
+    if(getDataContainerArray()->doesAttributeMatrixExist(path))
+    {
+      setErrorCondition(-11001);
+      QString ss = QObject::tr("An Attribute Matrix already exists with the name %1").arg(getCopiedObjectName());
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    }
 
+    AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    AttributeMatrix::Pointer attrMatCopy = attrMat->deepCopy(getInPreflight());
+    attrMatCopy->setName(getCopiedObjectName());
+    getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addAttributeMatrix(getCopiedObjectName(), attrMatCopy);
+
+    break;
+  }
+  // Copy Attribute Array
+  case 2:
+  {
+    DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
+    if(getDataContainerArray()->doesAttributeArrayExist(path))
+    {
+      setErrorCondition(-11001);
+      QString ss = QObject::tr("An Attribute Array already exists with the name %1").arg(getCopiedObjectName());
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    }
+
+    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());
+
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
+    IDataArray::Pointer arrayCopy = array->deepCopy(getInPreflight());
+    arrayCopy->setName(getCopiedObjectName());
+    getDataContainerArray()
+        ->getDataContainer(getAttributeArrayToCopy().getDataContainerName())
+        ->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())
+        ->addAttributeArray(getCopiedObjectName(), arrayCopy);
+
+    break;
+  }
+  default:
+  {
+    break;
+  }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -223,12 +236,12 @@ void CopyObject::dataCheck()
 void CopyObject::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
@@ -238,7 +251,10 @@ void CopyObject::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -279,24 +295,29 @@ const QString CopyObject::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyObject::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyObject::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyObject::getHumanLabel()
-{ return "Copy Object"; }
-
+{
+  return "Copy Object";
+}

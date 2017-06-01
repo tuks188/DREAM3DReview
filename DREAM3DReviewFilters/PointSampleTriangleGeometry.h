@@ -38,9 +38,9 @@
 
 #include <random>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/Geometry/VertexGeom.h"
 
@@ -51,151 +51,150 @@ class PointSampleTriangleGeometry : public AbstractFilter
 {
   Q_OBJECT
 
-  public:
-    SIMPL_SHARED_POINTERS(PointSampleTriangleGeometry)
-    SIMPL_STATIC_NEW_MACRO(PointSampleTriangleGeometry)
-    SIMPL_TYPE_MACRO_SUPER(PointSampleTriangleGeometry, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(PointSampleTriangleGeometry)
+  SIMPL_STATIC_NEW_MACRO(PointSampleTriangleGeometry)
+  SIMPL_TYPE_MACRO_SUPER(PointSampleTriangleGeometry, AbstractFilter)
 
-    virtual ~PointSampleTriangleGeometry();
+  virtual ~PointSampleTriangleGeometry();
 
-    SIMPL_FILTER_PARAMETER(int, SamplesNumberType)
-    Q_PROPERTY(int SamplesNumberType READ getSamplesNumberType WRITE setSamplesNumberType)
+  SIMPL_FILTER_PARAMETER(int, SamplesNumberType)
+  Q_PROPERTY(int SamplesNumberType READ getSamplesNumberType WRITE setSamplesNumberType)
 
-    SIMPL_FILTER_PARAMETER(QString, TriangleGeometry)
-    Q_PROPERTY(QString TriangleGeometry READ getTriangleGeometry WRITE setTriangleGeometry)
+  SIMPL_FILTER_PARAMETER(QString, TriangleGeometry)
+  Q_PROPERTY(QString TriangleGeometry READ getTriangleGeometry WRITE setTriangleGeometry)
 
-    SIMPL_FILTER_PARAMETER(QString, VertexGeometry)
-    Q_PROPERTY(QString VertexGeometry READ getVertexGeometry WRITE setVertexGeometry)
+  SIMPL_FILTER_PARAMETER(QString, VertexGeometry)
+  Q_PROPERTY(QString VertexGeometry READ getVertexGeometry WRITE setVertexGeometry)
 
-    SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName)
-    Q_PROPERTY(QString VertexAttributeMatrixName READ getVertexAttributeMatrixName WRITE setVertexAttributeMatrixName)
+  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName)
+  Q_PROPERTY(QString VertexAttributeMatrixName READ getVertexAttributeMatrixName WRITE setVertexAttributeMatrixName)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfSamples)
-    Q_PROPERTY(int NumberOfSamples READ getNumberOfSamples WRITE setNumberOfSamples)
+  SIMPL_FILTER_PARAMETER(int, NumberOfSamples)
+  Q_PROPERTY(int NumberOfSamples READ getNumberOfSamples WRITE setNumberOfSamples)
 
-    SIMPL_FILTER_PARAMETER(QString, ParentGeometry)
-    Q_PROPERTY(QString ParentGeometry READ getParentGeometry WRITE setParentGeometry)
+  SIMPL_FILTER_PARAMETER(QString, ParentGeometry)
+  Q_PROPERTY(QString ParentGeometry READ getParentGeometry WRITE setParentGeometry)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, TriangleAreasArrayPath)
-    Q_PROPERTY(DataArrayPath TriangleAreasArrayPath READ getTriangleAreasArrayPath WRITE setTriangleAreasArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, TriangleAreasArrayPath)
+  Q_PROPERTY(DataArrayPath TriangleAreasArrayPath READ getTriangleAreasArrayPath WRITE setTriangleAreasArrayPath)
 
-    SIMPL_FILTER_PARAMETER(bool, UseMask)
-    Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  SIMPL_FILTER_PARAMETER(bool, UseMask)
+  Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
-    Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+  Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
-    Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
+  Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getCompiledLibraryName();
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getCompiledLibraryName();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    virtual const QString getBrandingString();
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+  */
+  virtual const QString getBrandingString();
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    virtual const QString getFilterVersion();
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  virtual const QString getFilterVersion();
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getGroupName();
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getGroupName();
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getSubGroupName();
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getSubGroupName();
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getHumanLabel();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getHumanLabel();
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void setupFilterParameters();
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void setupFilterParameters();
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    virtual void preflight();
+  /**
+  * @brief preflight Reimplemented from @see AbstractFilter class
+  */
+  virtual void preflight();
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-  protected:
-    PointSampleTriangleGeometry();
+protected:
+  PointSampleTriangleGeometry();
 
-    void sampleTriangle(float a[3], float b[3], float c[3], int64_t curVertex, VertexGeom::Pointer vertex, int64_t tri,
-                        std::mt19937_64& gen, std::uniform_real_distribution<>& dist);
+  void sampleTriangle(float a[3], float b[3], float c[3], int64_t curVertex, VertexGeom::Pointer vertex, int64_t tri, std::mt19937_64& gen, std::uniform_real_distribution<>& dist);
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-    * @brief Initializes all the private instance variables.
-    */
-    void initialize();
+  /**
+  * @brief Initializes all the private instance variables.
+  */
+  void initialize();
 
-  private:
-    DEFINE_DATAARRAY_VARIABLE(double, TriangleAreas)
-    DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+private:
+  DEFINE_DATAARRAY_VARIABLE(double, TriangleAreas)
+  DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
-    std::vector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
-    std::vector<IDataArray::WeakPointer> m_CreatedWeakPtrVector;
-    int32_t m_NumSamples;
+  std::vector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
+  std::vector<IDataArray::WeakPointer> m_CreatedWeakPtrVector;
+  int32_t m_NumSamples;
 
-    PointSampleTriangleGeometry(const PointSampleTriangleGeometry&); // Copy Constructor Not Implemented
-    void operator=(const PointSampleTriangleGeometry&); // Operator '=' Not Implemented
+  PointSampleTriangleGeometry(const PointSampleTriangleGeometry&); // Copy Constructor Not Implemented
+  void operator=(const PointSampleTriangleGeometry&);              // Operator '=' Not Implemented
 };
 
 #endif /* _pointsampletrianglegeometry_h_ */

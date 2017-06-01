@@ -63,17 +63,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-NormalizeArrays::NormalizeArrays() 
-  : AbstractFilter()
-  , m_SelectedDataArrayPaths(QVector<DataArrayPath>())
-  , m_NormalizeType(0)
-  , m_RangeMin(0.0)
-  , m_RangeMax(1.0)
-  , m_Postfix("_Normalized")
-  , m_UseMask(false)
-  , m_MaskArrayPath("", "", "")
-  , m_DefaultValue(0.0)
-  , m_Mask(nullptr)
+NormalizeArrays::NormalizeArrays()
+: AbstractFilter()
+, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+, m_NormalizeType(0)
+, m_RangeMin(0.0)
+, m_RangeMax(1.0)
+, m_Postfix("_Normalized")
+, m_UseMask(false)
+, m_MaskArrayPath("", "", "")
+, m_DefaultValue(0.0)
+, m_Mask(nullptr)
 {
   setupFilterParameters();
 }
@@ -113,7 +113,8 @@ void NormalizeArrays::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Default Masked Value", DefaultValue, FilterParameter::Parameter, NormalizeArrays));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Range Minimum", RangeMin, FilterParameter::Parameter, NormalizeArrays, 0));
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Range Maximum", RangeMax, FilterParameter::Parameter, NormalizeArrays, 0));
-  MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  MultiDataArraySelectionFilterParameter::RequirementType req =
+      MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Normalize", SelectedDataArrayPaths, FilterParameter::RequiredArray, NormalizeArrays, req));
   DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, NormalizeArrays, dasReq));
@@ -154,8 +155,7 @@ void NormalizeArrays::dataCheck()
   setErrorCondition(0);
   initialize();
 
-  if(getNormalizeType() != 0 &&
-     getNormalizeType() != 1)
+  if(getNormalizeType() != 0 && getNormalizeType() != 1)
   {
     QString ss = QObject::tr("Invalid selection for operation type");
     setErrorCondition(-701);
@@ -187,12 +187,15 @@ void NormalizeArrays::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QVector<size_t> cDims(1, 1);
   QString dcName = paths[0].getDataContainerName();
   QString amName = paths[0].getAttributeMatrixName();
-  
+
   for(auto&& path : paths)
   {
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
@@ -212,7 +215,10 @@ void NormalizeArrays::dataCheck()
         DataArrayPath tempPath(dcName, amName, arrayName);
         double defaultValue = m_UseMask ? getDefaultValue() : 0.0;
         DoubleArrayType::WeakPointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, tempPath, defaultValue, cDims);
-        if(getErrorCondition() >= 0) { m_NormalizedArraysPtrVector.push_back(ptr.lock()); }
+        if(getErrorCondition() >= 0)
+        {
+          m_NormalizedArraysPtrVector.push_back(ptr.lock());
+        }
       }
     }
   }
@@ -220,8 +226,14 @@ void NormalizeArrays::dataCheck()
   if(getUseMask())
   {
     m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims);
-    if(m_MaskPtr.lock()) { m_Mask = m_MaskPtr.lock()->getPointer(0); }
-    if(getErrorCondition() >= 0) { paths.push_back(getMaskArrayPath()); }
+    if(m_MaskPtr.lock())
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+    }
+    if(getErrorCondition() >= 0)
+    {
+      paths.push_back(getMaskArrayPath());
+    }
   }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, paths);
@@ -243,9 +255,7 @@ void NormalizeArrays::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void copyDataArrays(IDataArray::Pointer dataPtr, std::vector<double>& copy,
-                    bool useMask, bool* mask)
+template <typename T> void copyDataArrays(IDataArray::Pointer dataPtr, std::vector<double>& copy, bool useMask, bool* mask)
 {
   typename DataArray<T>::Pointer inDataPtr = std::dynamic_pointer_cast<DataArray<T>>(dataPtr);
   T* dPtr = inDataPtr->getPointer(0);
@@ -255,7 +265,10 @@ void copyDataArrays(IDataArray::Pointer dataPtr, std::vector<double>& copy,
   {
     if(useMask)
     {
-      if(mask[i]) { copy.push_back(dPtr[i]); }
+      if(mask[i])
+      {
+        copy.push_back(dPtr[i]);
+      }
     }
     else
     {
@@ -269,17 +282,18 @@ void copyDataArrays(IDataArray::Pointer dataPtr, std::vector<double>& copy,
 // -----------------------------------------------------------------------------
 class NormalizeArraysImpl
 {
-  public:
+public:
+  NormalizeArraysImpl(std::vector<std::vector<double>>& arrays, int32_t normalizeType, double rangeMin, double rangeMax)
+  : m_Arrays(arrays)
+  , m_NormalizeType(normalizeType)
+  , m_RangeMin(rangeMin)
+  , m_RangeMax(rangeMax)
+  {
+  }
 
-  NormalizeArraysImpl(std::vector<std::vector<double>>& arrays, int32_t normalizeType, 
-                      double rangeMin, double rangeMax)
-    : m_Arrays(arrays)
-    , m_NormalizeType(normalizeType)
-    , m_RangeMin(rangeMin)
-    , m_RangeMax(rangeMax)
-  {}
-
-  virtual ~NormalizeArraysImpl() {}
+  virtual ~NormalizeArraysImpl()
+  {
+  }
 
   void compute(size_t start, size_t end) const
   {
@@ -289,24 +303,17 @@ class NormalizeArraysImpl
       {
         double min = *std::min_element(std::begin(m_Arrays[i]), std::end(m_Arrays[i]));
         double max = *std::max_element(std::begin(m_Arrays[i]), std::end(m_Arrays[i]));
-        std::for_each(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), [&](double& val) {
-          val = m_RangeMin + 
-            (((val - min) * (m_RangeMax - m_RangeMin)) / (max - min));
-        });
+        std::for_each(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), [&](double& val) { val = m_RangeMin + (((val - min) * (m_RangeMax - m_RangeMin)) / (max - min)); });
       }
       else if(m_NormalizeType == 1)
       {
         double sum = std::accumulate(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), 0.0);
         double mean = sum / m_Arrays[i].size();
         std::vector<double> difference(m_Arrays[i].size());
-        std::transform(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), std::begin(difference), [&](double val) {
-          return val - mean;
-        });
+        std::transform(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), std::begin(difference), [&](double val) { return val - mean; });
         double squaredSum = std::inner_product(std::begin(difference), std::end(difference), std::begin(difference), 0.0f);
         double stdDev = std::sqrt(squaredSum / m_Arrays[i].size());
-        std::for_each(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), [&](double& val) {
-          val = (val - mean) / stdDev;
-        });
+        std::for_each(std::begin(m_Arrays[i]), std::end(m_Arrays[i]), [&](double& val) { val = (val - mean) / stdDev; });
       }
     }
   }
@@ -318,7 +325,7 @@ class NormalizeArraysImpl
   }
 #endif
 
-  private:
+private:
   std::vector<std::vector<double>>& m_Arrays;
   int32_t m_NormalizeType;
   double m_RangeMin;
@@ -332,7 +339,10 @@ void NormalizeArrays::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(m_SelectedDataArrayPaths.size() != m_SelectedWeakPtrVector.size())
   {
@@ -345,12 +355,14 @@ void NormalizeArrays::execute()
   size_t numTuples = m_SelectedWeakPtrVector[0].lock()->getNumberOfTuples();
 
   std::vector<std::vector<double>> arrays(m_SelectedWeakPtrVector.size());
-  for(auto&& vec : arrays) { vec.reserve(numTuples); }
+  for(auto&& vec : arrays)
+  {
+    vec.reserve(numTuples);
+  }
 
   for(std::vector<double>::size_type i = 0; i < arrays.size(); i++)
   {
-    EXECUTE_FUNCTION_TEMPLATE(this, copyDataArrays, m_SelectedWeakPtrVector[i].lock(), m_SelectedWeakPtrVector[i].lock(),
-                              arrays[i], m_UseMask, m_Mask);
+    EXECUTE_FUNCTION_TEMPLATE(this, copyDataArrays, m_SelectedWeakPtrVector[i].lock(), m_SelectedWeakPtrVector[i].lock(), arrays[i], m_UseMask, m_Mask);
   }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
@@ -361,8 +373,7 @@ void NormalizeArrays::execute()
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, arrays.size()), NormalizeArraysImpl(arrays, m_NormalizeType, m_RangeMin, m_RangeMax),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, arrays.size()), NormalizeArraysImpl(arrays, m_NormalizeType, m_RangeMin, m_RangeMax), tbb::auto_partitioner());
   }
   else
 #endif
@@ -370,7 +381,7 @@ void NormalizeArrays::execute()
     NormalizeArraysImpl serial(arrays, m_NormalizeType, m_RangeMin, m_RangeMax);
     serial.compute(0, arrays.size());
   }
-  
+
   size_t index = 0;
 
   assert(m_NormalizedArraysPtrVector.size() == arrays.size());
@@ -414,13 +425,17 @@ AbstractFilter::Pointer NormalizeArrays::newFilterInstance(bool copyFilterParame
 //
 // -----------------------------------------------------------------------------
 const QString NormalizeArrays::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString NormalizeArrays::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -437,16 +452,22 @@ const QString NormalizeArrays::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString NormalizeArrays::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString NormalizeArrays::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString NormalizeArrays::getHumanLabel()
-{ return "Normalize Attribute Arrays"; }
+{
+  return "Normalize Attribute Arrays";
+}

@@ -36,9 +36,9 @@
 #ifndef _extractinternalsurfacesfromtrianglegeometry_h_
 #define _extractinternalsurfacesfromtrianglegeometry_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ExtractInternalSurfacesFromTriangleGeometry class. See [Filter documentation](@ref extractinternalsurfacesfromtrianglegeometry) for details.
@@ -47,124 +47,124 @@ class ExtractInternalSurfacesFromTriangleGeometry : public AbstractFilter
 {
   Q_OBJECT
 
-  public:
-    SIMPL_SHARED_POINTERS(ExtractInternalSurfacesFromTriangleGeometry)
-    SIMPL_STATIC_NEW_MACRO(ExtractInternalSurfacesFromTriangleGeometry)
-    SIMPL_TYPE_MACRO_SUPER(ExtractInternalSurfacesFromTriangleGeometry, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(ExtractInternalSurfacesFromTriangleGeometry)
+  SIMPL_STATIC_NEW_MACRO(ExtractInternalSurfacesFromTriangleGeometry)
+  SIMPL_TYPE_MACRO_SUPER(ExtractInternalSurfacesFromTriangleGeometry, AbstractFilter)
 
-    virtual ~ExtractInternalSurfacesFromTriangleGeometry();
+  virtual ~ExtractInternalSurfacesFromTriangleGeometry();
 
-    SIMPL_FILTER_PARAMETER(QString, TriangleDataContainerName)
-    Q_PROPERTY(QString TriangleDataContainerName READ getTriangleDataContainerName WRITE setTriangleDataContainerName)
+  SIMPL_FILTER_PARAMETER(QString, TriangleDataContainerName)
+  Q_PROPERTY(QString TriangleDataContainerName READ getTriangleDataContainerName WRITE setTriangleDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, NodeTypesArrayPath)
-    Q_PROPERTY(DataArrayPath NodeTypesArrayPath READ getNodeTypesArrayPath WRITE setNodeTypesArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, NodeTypesArrayPath)
+  Q_PROPERTY(DataArrayPath NodeTypesArrayPath READ getNodeTypesArrayPath WRITE setNodeTypesArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, InternalTrianglesName)
-    Q_PROPERTY(QString InternalTrianglesName READ getInternalTrianglesName WRITE setInternalTrianglesName)
+  SIMPL_FILTER_PARAMETER(QString, InternalTrianglesName)
+  Q_PROPERTY(QString InternalTrianglesName READ getInternalTrianglesName WRITE setInternalTrianglesName)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getCompiledLibraryName();
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getCompiledLibraryName();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    virtual const QString getBrandingString();
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+  */
+  virtual const QString getBrandingString();
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    virtual const QString getFilterVersion();
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  virtual const QString getFilterVersion();
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getGroupName();
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getGroupName();
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getSubGroupName();
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getSubGroupName();
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getHumanLabel();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getHumanLabel();
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void setupFilterParameters();
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void setupFilterParameters();
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    virtual void preflight();
+  /**
+  * @brief preflight Reimplemented from @see AbstractFilter class
+  */
+  virtual void preflight();
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-  protected:
-    ExtractInternalSurfacesFromTriangleGeometry();
+protected:
+  ExtractInternalSurfacesFromTriangleGeometry();
 
-    /**
-    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-    */
-    void dataCheck();
+  /**
+  * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+  */
+  void dataCheck();
 
-    /**
-    * @brief Initializes all the private instance variables.
-    */
-    void initialize();
+  /**
+  * @brief Initializes all the private instance variables.
+  */
+  void initialize();
 
-  private:
-    DEFINE_DATAARRAY_VARIABLE(int8_t, NodeTypes)
+private:
+  DEFINE_DATAARRAY_VARIABLE(int8_t, NodeTypes)
 
-    QList<QString> m_AttrMatList;
+  QList<QString> m_AttrMatList;
 
-    ExtractInternalSurfacesFromTriangleGeometry(const ExtractInternalSurfacesFromTriangleGeometry&); // Copy Constructor Not Implemented
-    void operator=(const ExtractInternalSurfacesFromTriangleGeometry&); // Operator '=' Not Implemented
+  ExtractInternalSurfacesFromTriangleGeometry(const ExtractInternalSurfacesFromTriangleGeometry&); // Copy Constructor Not Implemented
+  void operator=(const ExtractInternalSurfacesFromTriangleGeometry&);                              // Operator '=' Not Implemented
 };
 
 #endif /* _ExtractInternalSurfacesFromTriangleGeometry_H_ */

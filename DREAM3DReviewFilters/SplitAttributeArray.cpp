@@ -50,10 +50,10 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SplitAttributeArray::SplitAttributeArray() :
-  AbstractFilter(),
-  m_InputArrayPath("", "", ""),
-  m_SplitArraysSuffix("Component")
+SplitAttributeArray::SplitAttributeArray()
+: AbstractFilter()
+, m_InputArrayPath("", "", "")
+, m_SplitArraysSuffix("Component")
 {
   setupFilterParameters();
 }
@@ -71,7 +71,8 @@ SplitAttributeArray::~SplitAttributeArray()
 void SplitAttributeArray::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataArraySelectionFilterParameter::RequirementType dasReq =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", InputArrayPath, FilterParameter::RequiredArray, SplitAttributeArray, dasReq));
   parameters.push_back(SIMPL_NEW_STRING_FP("Postfix", SplitArraysSuffix, FilterParameter::Parameter, SplitAttributeArray));
   setFilterParameters(parameters);
@@ -105,8 +106,11 @@ void SplitAttributeArray::dataCheck()
   initialize();
 
   m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getInputArrayPath());
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(m_InputArrayPtr.lock())
   {
@@ -126,7 +130,10 @@ void SplitAttributeArray::dataCheck()
       QString arrayName = getInputArrayPath().getDataArrayName() + getSplitArraysSuffix() + QString::number(i);
       DataArrayPath path(getInputArrayPath().getDataContainerName(), getInputArrayPath().getAttributeMatrixName(), arrayName);
       IDataArray::WeakPointer ptr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, path, cDims, m_InputArrayPtr.lock());
-      if(getErrorCondition() >= 0) { m_SplitArraysPtrVector.push_back(ptr.lock()); }
+      if(getErrorCondition() >= 0)
+      {
+        m_SplitArraysPtrVector.push_back(ptr.lock());
+      }
     }
 
     if(numComps != m_SplitArraysPtrVector.size())
@@ -144,19 +151,18 @@ void SplitAttributeArray::dataCheck()
 void SplitAttributeArray::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void splitMulticomponentArray(IDataArray::Pointer inputArray, std::vector<IDataArray::Pointer>& splitArrays)
+template <typename T> void splitMulticomponentArray(IDataArray::Pointer inputArray, std::vector<IDataArray::Pointer>& splitArrays)
 {
   typename DataArray<T>::Pointer inputPtr = std::dynamic_pointer_cast<DataArray<T>>(inputArray);
   T* iPtr = inputPtr->getPointer(0);
@@ -188,10 +194,12 @@ void SplitAttributeArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  EXECUTE_FUNCTION_TEMPLATE(this, splitMulticomponentArray, m_InputArrayPtr.lock(), 
-                            m_InputArrayPtr.lock(), m_SplitArraysPtrVector)
+  EXECUTE_FUNCTION_TEMPLATE(this, splitMulticomponentArray, m_InputArrayPtr.lock(), m_InputArrayPtr.lock(), m_SplitArraysPtrVector)
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -213,13 +221,17 @@ AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString SplitAttributeArray::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SplitAttributeArray::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -228,7 +240,7 @@ const QString SplitAttributeArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -236,16 +248,22 @@ const QString SplitAttributeArray::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString SplitAttributeArray::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SplitAttributeArray::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SplitAttributeArray::getHumanLabel()
-{ return "Split Multicomponent Attribute Array"; }
+{
+  return "Split Multicomponent Attribute Array";
+}

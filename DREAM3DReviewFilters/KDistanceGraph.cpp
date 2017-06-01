@@ -37,10 +37,10 @@
 
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 
 #include "util/EvaluationAlgorithms/KDistanceTemplate.hpp"
@@ -54,17 +54,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-KDistanceGraph::KDistanceGraph() 
-  : AbstractFilter()
-  , m_SelectedArrayPath("", "", "")
-  , m_UseMask(false)
-  , m_MaskArrayPath("", "", "")
-  , m_KDistanceArrayPath("", "", "KDistance")
-  , m_MinDist(1)
-  , m_DistanceMetric(0)
-  , m_InData(nullptr)
-  , m_Mask(nullptr)
-  , m_KDistanceArray(nullptr)
+KDistanceGraph::KDistanceGraph()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_UseMask(false)
+, m_MaskArrayPath("", "", "")
+, m_KDistanceArrayPath("", "", "KDistance")
+, m_MinDist(1)
+, m_DistanceMetric(0)
+, m_InData(nullptr)
+, m_Mask(nullptr)
+, m_KDistanceArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -96,7 +96,8 @@ void KDistanceGraph::setupFilterParameters()
   }
   QStringList linkedProps("MaskArrayPath");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask", UseMask, FilterParameter::Parameter, KDistanceGraph, linkedProps));
-  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataArraySelectionFilterParameter::RequirementType dasReq =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Input Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, KDistanceGraph, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   DataArrayCreationFilterParameter::RequirementType dacReq = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Category::Unknown);
@@ -110,7 +111,7 @@ void KDistanceGraph::setupFilterParameters()
 void KDistanceGraph::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedArrayPath(reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath()));
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
   setUseMask(reader->readValue("UseMask", getUseMask()));
   setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));
   setMinDist(reader->readValue("MinDist", getMinDist()));
@@ -145,17 +146,32 @@ void KDistanceGraph::dataCheck()
   QVector<DataArrayPath> dataArrayPaths;
 
   m_InDataPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getSelectedArrayPath()); }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getSelectedArrayPath());
+  }
 
-  m_KDistanceArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getKDistanceArrayPath(), 0, cDims); 
-  if(m_KDistanceArrayPtr.lock()) { m_KDistanceArray = m_KDistanceArrayPtr.lock()->getPointer(0); } 
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getKDistanceArrayPath()); }
+  m_KDistanceArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getKDistanceArrayPath(), 0, cDims);
+  if(m_KDistanceArrayPtr.lock())
+  {
+    m_KDistanceArray = m_KDistanceArrayPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getKDistanceArrayPath());
+  }
 
   if(getUseMask())
   {
-    m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims); 
-    if(m_MaskPtr.lock()) { m_Mask = m_MaskPtr.lock()->getPointer(0); } 
-    if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getMaskArrayPath()); }
+    m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims);
+    if(m_MaskPtr.lock())
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+    }
+    if(getErrorCondition() >= 0)
+    {
+      dataArrayPaths.push_back(getMaskArrayPath());
+    }
   }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
@@ -181,7 +197,10 @@ void KDistanceGraph::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(m_UseMask)
   {
@@ -215,13 +234,17 @@ AbstractFilter::Pointer KDistanceGraph::newFilterInstance(bool copyFilterParamet
 //
 // -----------------------------------------------------------------------------
 const QString KDistanceGraph::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString KDistanceGraph::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -230,7 +253,7 @@ const QString KDistanceGraph::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -238,16 +261,22 @@ const QString KDistanceGraph::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString KDistanceGraph::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString KDistanceGraph::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString KDistanceGraph::getHumanLabel()
-{ return "K Distance Graph"; }
+{
+  return "K Distance Graph";
+}

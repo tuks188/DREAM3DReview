@@ -54,16 +54,16 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CropVertexGeometry::CropVertexGeometry() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::VertexDataContainerName),
-  m_CroppedDataContainerName("CroppedDataContainer"),
-  m_XMin(0),
-  m_YMin(0),
-  m_ZMin(0),
-  m_XMax(0),
-  m_YMax(0),
-  m_ZMax(0)
+CropVertexGeometry::CropVertexGeometry()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::VertexDataContainerName)
+, m_CroppedDataContainerName("CroppedDataContainer")
+, m_XMin(0)
+, m_YMin(0)
+, m_ZMin(0)
+, m_XMax(0)
+, m_YMax(0)
+, m_ZMax(0)
 {
   setupFilterParameters();
 }
@@ -82,7 +82,7 @@ void CropVertexGeometry::setupFilterParameters()
 {
   FilterParameterVector parameters;
   DataContainerSelectionFilterParameter::RequirementType req;
-  IGeometry::Types reqGeom = { IGeometry::Type::Vertex };
+  IGeometry::Types reqGeom = {IGeometry::Type::Vertex};
   req.dcGeometryTypes = reqGeom;
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Vertex Geometry to Crop", DataContainerName, FilterParameter::RequiredArray, CropVertexGeometry, req));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("X Min", XMin, FilterParameter::Parameter, CropVertexGeometry));
@@ -150,10 +150,13 @@ void CropVertexGeometry::dataCheck()
     setErrorCondition(-5550);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  
+
   DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   VertexGeom::Pointer crop = VertexGeom::CreateGeometry(0, SIMPL::Geometry::VertexGeometry, !getInPreflight());
   dc->setGeometry(crop);
@@ -165,7 +168,10 @@ void CropVertexGeometry::dataCheck()
   DataArrayPath tempPath;
   AttributeMatrix::Type tempAttrMatType = AttributeMatrix::Type::Vertex;
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   for(auto&& attr_mat : m_AttrMatList)
   {
@@ -203,23 +209,22 @@ void CropVertexGeometry::dataCheck()
 void CropVertexGeometry::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void copyDataToCroppedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t>& croppedPoints)
+template <typename T> void copyDataToCroppedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t>& croppedPoints)
 {
-  typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T> >(inDataPtr);
+  typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   T* inputData = static_cast<T*>(inputDataPtr->getPointer(0));
-  typename DataArray<T>::Pointer croppedDataPtr = std::dynamic_pointer_cast<DataArray<T> >(outDataPtr);
+  typename DataArray<T>::Pointer croppedDataPtr = std::dynamic_pointer_cast<DataArray<T>>(outDataPtr);
   T* croppedData = static_cast<T*>(croppedDataPtr->getPointer(0));
 
   size_t nComps = inDataPtr->getNumberOfComponents();
@@ -244,7 +249,10 @@ void CropVertexGeometry::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(getCroppedDataContainerName());
@@ -256,10 +264,12 @@ void CropVertexGeometry::execute()
 
   for(int64_t i = 0; i < numVerts; i++)
   {
-    if(getCancel()) { return; }
-    if(allVerts[3 * i + 0] >= m_XMin && allVerts[3 * i + 0] <= m_XMax &&
-       allVerts[3 * i + 1] >= m_YMin && allVerts[3 * i + 1] <= m_YMax &&
-       allVerts[3 * i + 2] >= m_ZMin && allVerts[3 * i + 2] <= m_ZMax)
+    if(getCancel())
+    {
+      return;
+    }
+    if(allVerts[3 * i + 0] >= m_XMin && allVerts[3 * i + 0] <= m_XMax && allVerts[3 * i + 1] >= m_YMin && allVerts[3 * i + 1] <= m_YMax && allVerts[3 * i + 2] >= m_ZMin &&
+       allVerts[3 * i + 2] <= m_ZMax)
     {
       croppedPoints.push_back(i);
     }
@@ -269,11 +279,14 @@ void CropVertexGeometry::execute()
 
   VertexGeom::Pointer crop = dc->getGeometryAs<VertexGeom>();
   crop->resizeVertexList(croppedPoints.size());
-  float coords[3] = { 0.0f, 0.0f, 0.0f };
+  float coords[3] = {0.0f, 0.0f, 0.0f};
 
   for(std::list<int64_t>::size_type i = 0; i < croppedPoints.size(); i++)
   {
-    if(getCancel()) { return; }
+    if(getCancel())
+    {
+      return;
+    }
     vertices->getCoords(croppedPoints[i], coords);
     crop->setCoords(i, coords);
   }
@@ -328,13 +341,17 @@ AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterPar
 //
 // -----------------------------------------------------------------------------
 const QString CropVertexGeometry::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CropVertexGeometry::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -343,7 +360,7 @@ const QString CropVertexGeometry::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -351,17 +368,22 @@ const QString CropVertexGeometry::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CropVertexGeometry::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CropVertexGeometry::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::CropCutFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::CropCutFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CropVertexGeometry::getHumanLabel()
-{ return "Crop Geometry (Vertex)"; }
-
+{
+  return "Crop Geometry (Vertex)";
+}

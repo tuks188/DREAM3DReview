@@ -36,9 +36,9 @@
 #ifndef _FindArrayStatistics_h_
 #define _FindArrayStatistics_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The FindArrayStatistics class. See [Filter documentation](@ref findarraystatistics) for details.
@@ -47,232 +47,229 @@ class FindArrayStatistics : public AbstractFilter
 {
   Q_OBJECT
 
-  public:
-    SIMPL_SHARED_POINTERS(FindArrayStatistics)
-    SIMPL_STATIC_NEW_MACRO(FindArrayStatistics)
-    SIMPL_TYPE_MACRO_SUPER(FindArrayStatistics, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(FindArrayStatistics)
+  SIMPL_STATIC_NEW_MACRO(FindArrayStatistics)
+  SIMPL_TYPE_MACRO_SUPER(FindArrayStatistics, AbstractFilter)
 
-    virtual ~FindArrayStatistics();
+  virtual ~FindArrayStatistics();
 
-    SIMPL_FILTER_PARAMETER(bool, FindLength)
-    Q_PROPERTY(bool FindLength READ getFindLength WRITE setFindLength)
+  SIMPL_FILTER_PARAMETER(bool, FindLength)
+  Q_PROPERTY(bool FindLength READ getFindLength WRITE setFindLength)
 
-    SIMPL_FILTER_PARAMETER(bool, FindMin)
-    Q_PROPERTY(bool FindMin READ getFindMin WRITE setFindMin)
+  SIMPL_FILTER_PARAMETER(bool, FindMin)
+  Q_PROPERTY(bool FindMin READ getFindMin WRITE setFindMin)
 
-    SIMPL_FILTER_PARAMETER(bool, FindMax)
-    Q_PROPERTY(bool FindMax READ getFindMax WRITE setFindMax)
+  SIMPL_FILTER_PARAMETER(bool, FindMax)
+  Q_PROPERTY(bool FindMax READ getFindMax WRITE setFindMax)
 
-    SIMPL_FILTER_PARAMETER(bool, FindMean)
-    Q_PROPERTY(bool FindMean READ getFindMean WRITE setFindMean)
+  SIMPL_FILTER_PARAMETER(bool, FindMean)
+  Q_PROPERTY(bool FindMean READ getFindMean WRITE setFindMean)
 
-    SIMPL_FILTER_PARAMETER(bool, FindMedian)
-    Q_PROPERTY(bool FindMedian READ getFindMedian WRITE setFindMedian)
+  SIMPL_FILTER_PARAMETER(bool, FindMedian)
+  Q_PROPERTY(bool FindMedian READ getFindMedian WRITE setFindMedian)
 
-    SIMPL_FILTER_PARAMETER(bool, FindStdDeviation)
-    Q_PROPERTY(bool FindStdDeviation READ getFindStdDeviation WRITE setFindStdDeviation)
+  SIMPL_FILTER_PARAMETER(bool, FindStdDeviation)
+  Q_PROPERTY(bool FindStdDeviation READ getFindStdDeviation WRITE setFindStdDeviation)
 
-    SIMPL_FILTER_PARAMETER(bool, FindSummation)
-    Q_PROPERTY(bool FindSummation READ getFindSummation WRITE setFindSummation)
+  SIMPL_FILTER_PARAMETER(bool, FindSummation)
+  Q_PROPERTY(bool FindSummation READ getFindSummation WRITE setFindSummation)
 
-	  SIMPL_FILTER_PARAMETER(bool, UseMask)
-	  Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  SIMPL_FILTER_PARAMETER(bool, UseMask)
+  Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
 
-	  SIMPL_FILTER_PARAMETER(bool, StandardizeData)
-	  Q_PROPERTY(bool StandardizeData READ getStandardizeData WRITE setStandardizeData)
+  SIMPL_FILTER_PARAMETER(bool, StandardizeData)
+  Q_PROPERTY(bool StandardizeData READ getStandardizeData WRITE setStandardizeData)
 
-    SIMPL_FILTER_PARAMETER(bool, ComputeByIndex)
-    Q_PROPERTY(bool ComputeByIndex READ getComputeByIndex WRITE setComputeByIndex)
+  SIMPL_FILTER_PARAMETER(bool, ComputeByIndex)
+  Q_PROPERTY(bool ComputeByIndex READ getComputeByIndex WRITE setComputeByIndex)
 
-	  SIMPL_FILTER_PARAMETER(DataArrayPath, DestinationAttributeMatrix)
-    Q_PROPERTY(DataArrayPath DestinationAttributeMatrix READ getDestinationAttributeMatrix WRITE setDestinationAttributeMatrix)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, DestinationAttributeMatrix)
+  Q_PROPERTY(DataArrayPath DestinationAttributeMatrix READ getDestinationAttributeMatrix WRITE setDestinationAttributeMatrix)
 
-	  SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
-	  Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+  Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
-	  SIMPL_FILTER_PARAMETER(QString, LengthArrayName)
-    Q_PROPERTY(QString LengthArrayName READ getLengthArrayName WRITE setLengthArrayName)
+  SIMPL_FILTER_PARAMETER(QString, LengthArrayName)
+  Q_PROPERTY(QString LengthArrayName READ getLengthArrayName WRITE setLengthArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, MinimumArrayName)
-    Q_PROPERTY(QString MinimumArrayName READ getMinimumArrayName WRITE setMinimumArrayName)
+  SIMPL_FILTER_PARAMETER(QString, MinimumArrayName)
+  Q_PROPERTY(QString MinimumArrayName READ getMinimumArrayName WRITE setMinimumArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, MaximumArrayName)
-    Q_PROPERTY(QString MaximumArrayName READ getMaximumArrayName WRITE setMaximumArrayName)
+  SIMPL_FILTER_PARAMETER(QString, MaximumArrayName)
+  Q_PROPERTY(QString MaximumArrayName READ getMaximumArrayName WRITE setMaximumArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, MeanArrayName)
-    Q_PROPERTY(QString MeanArrayName READ getMeanArrayName WRITE setMeanArrayName)
+  SIMPL_FILTER_PARAMETER(QString, MeanArrayName)
+  Q_PROPERTY(QString MeanArrayName READ getMeanArrayName WRITE setMeanArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, MedianArrayName)
-    Q_PROPERTY(QString MedianArrayName READ getMedianArrayName WRITE setMedianArrayName)
+  SIMPL_FILTER_PARAMETER(QString, MedianArrayName)
+  Q_PROPERTY(QString MedianArrayName READ getMedianArrayName WRITE setMedianArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, StdDeviationArrayName)
-    Q_PROPERTY(QString StdDeviationArrayName READ getStdDeviationArrayName WRITE setStdDeviationArrayName)
+  SIMPL_FILTER_PARAMETER(QString, StdDeviationArrayName)
+  Q_PROPERTY(QString StdDeviationArrayName READ getStdDeviationArrayName WRITE setStdDeviationArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, SummationArrayName)
-    Q_PROPERTY(QString SummationArrayName READ getSummationArrayName WRITE setSummationArrayName)
+  SIMPL_FILTER_PARAMETER(QString, SummationArrayName)
+  Q_PROPERTY(QString SummationArrayName READ getSummationArrayName WRITE setSummationArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, StandardizedArrayName)
-    Q_PROPERTY(QString StandardizedArrayName READ getStandardizedArrayName WRITE setStandardizedArrayName)
+  SIMPL_FILTER_PARAMETER(QString, StandardizedArrayName)
+  Q_PROPERTY(QString StandardizedArrayName READ getStandardizedArrayName WRITE setStandardizedArrayName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
-    Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+  Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
-    Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+  Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getCompiledLibraryName();
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getCompiledLibraryName();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    virtual const QString getBrandingString();
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+  */
+  virtual const QString getBrandingString();
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    virtual const QString getFilterVersion();
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  virtual const QString getFilterVersion();
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getGroupName();
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getGroupName();
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getSubGroupName();
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getSubGroupName();
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getHumanLabel();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getHumanLabel();
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void setupFilterParameters();
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void setupFilterParameters();
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    virtual void preflight();
+  /**
+  * @brief preflight Reimplemented from @see AbstractFilter class
+  */
+  virtual void preflight();
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-  protected:
+protected:
+  /**
+   * @brief createCompatibleArrays Creates the output statistics arrays with compatible types based on the
+   * user options and incoming DataArray type
+   */
+  template <typename T> void createCompatibleArrays()
+  {
+    QVector<size_t> cDims(1, 1);
+    DataArrayPath path(getDestinationAttributeMatrix().getDataContainerName(), getDestinationAttributeMatrix().getAttributeMatrixName(), "");
 
-    /**
-     * @brief createCompatibleArrays Creates the output statistics arrays with compatible types based on the 
-     * user options and incoming DataArray type
-     */
-    template<typename T>
-    void createCompatibleArrays()
+    if(m_FindMin)
     {
-      QVector<size_t> cDims(1, 1);
-      DataArrayPath path(getDestinationAttributeMatrix().getDataContainerName(), getDestinationAttributeMatrix().getAttributeMatrixName(), ""); 
-
-      if(m_FindMin)
-      {
-        path.setDataArrayName(getMinimumArrayName());
-        m_MinimumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims); 
-      }
-
-      if(m_FindMax)
-      {
-        path.setDataArrayName(getMaximumArrayName());
-        m_MaximumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims);
-      }
-
-      if(m_FindMean)
-      {
-        path.setDataArrayName(getMeanArrayName());
-        m_MeanPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
-      }
-
-      if(m_FindMedian)
-      {
-        path.setDataArrayName(getMedianArrayName());
-        m_MedianPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
-      }
-
-      if(m_FindStdDeviation)
-      {
-        path.setDataArrayName(getStdDeviationArrayName());
-        m_StandardDeviationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
-      }
-
-      if(m_FindSummation)
-      {
-        path.setDataArrayName(getSummationArrayName());
-        m_SummationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
-      }
+      path.setDataArrayName(getMinimumArrayName());
+      m_MinimumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims);
     }
 
-    FindArrayStatistics();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+    if(m_FindMax)
+    {
+      path.setDataArrayName(getMaximumArrayName());
+      m_MaximumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims);
+    }
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+    if(m_FindMean)
+    {
+      path.setDataArrayName(getMeanArrayName());
+      m_MeanPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+    }
 
+    if(m_FindMedian)
+    {
+      path.setDataArrayName(getMedianArrayName());
+      m_MedianPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+    }
 
-  private:
-    DEFINE_DATAARRAY_VARIABLE(int64_t, Length)
-    DEFINE_IDATAARRAY_VARIABLE(Minimum)
-    DEFINE_IDATAARRAY_VARIABLE(Maximum)
-    DEFINE_DATAARRAY_VARIABLE(float, Mean)
-    DEFINE_DATAARRAY_VARIABLE(float, Median)
-    DEFINE_DATAARRAY_VARIABLE(float, StandardDeviation)
-    DEFINE_DATAARRAY_VARIABLE(float, Summation)
-    DEFINE_DATAARRAY_VARIABLE(float, Standardized)
-    DEFINE_IDATAARRAY_VARIABLE(InputArray)
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-	  DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+    if(m_FindStdDeviation)
+    {
+      path.setDataArrayName(getStdDeviationArrayName());
+      m_StandardDeviationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+    }
 
-    FindArrayStatistics(const FindArrayStatistics&); // Copy Constructor Not Implemented
-    void operator=(const FindArrayStatistics&); // Operator '=' Not Implemented
+    if(m_FindSummation)
+    {
+      path.setDataArrayName(getSummationArrayName());
+      m_SummationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+    }
+  }
+
+  FindArrayStatistics();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
+
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
+
+private:
+  DEFINE_DATAARRAY_VARIABLE(int64_t, Length)
+  DEFINE_IDATAARRAY_VARIABLE(Minimum)
+  DEFINE_IDATAARRAY_VARIABLE(Maximum)
+  DEFINE_DATAARRAY_VARIABLE(float, Mean)
+  DEFINE_DATAARRAY_VARIABLE(float, Median)
+  DEFINE_DATAARRAY_VARIABLE(float, StandardDeviation)
+  DEFINE_DATAARRAY_VARIABLE(float, Summation)
+  DEFINE_DATAARRAY_VARIABLE(float, Standardized)
+  DEFINE_IDATAARRAY_VARIABLE(InputArray)
+  DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+  DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+
+  FindArrayStatistics(const FindArrayStatistics&); // Copy Constructor Not Implemented
+  void operator=(const FindArrayStatistics&);      // Operator '=' Not Implemented
 };
 
 #endif /* _FindArrayStatistics_H_ */

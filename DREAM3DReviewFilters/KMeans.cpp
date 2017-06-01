@@ -38,11 +38,11 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 #include "util/ClusteringAlgorithms/KMeansTemplate.hpp"
 
@@ -55,20 +55,20 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-KMeans::KMeans() 
-  : AbstractFilter()
-  , m_SelectedArrayPath("", "", "")
-  , m_UseMask(false)
-  , m_MaskArrayPath("", "", "")
-  , m_FeatureIdsArrayName("ClusterIds")
-  , m_MeansArrayName("ClusterMeans")
-  , m_InitClusters(1)
-  , m_FeatureAttributeMatrixName("ClusterData")
-  , m_DistanceMetric(0)
-  , m_InData(nullptr)
-  , m_Mask(nullptr)
-  , m_FeatureIds(nullptr)
-  , m_MeansArray(nullptr)
+KMeans::KMeans()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_UseMask(false)
+, m_MaskArrayPath("", "", "")
+, m_FeatureIdsArrayName("ClusterIds")
+, m_MeansArrayName("ClusterMeans")
+, m_InitClusters(1)
+, m_FeatureAttributeMatrixName("ClusterData")
+, m_DistanceMetric(0)
+, m_InData(nullptr)
+, m_Mask(nullptr)
+, m_FeatureIds(nullptr)
+, m_MeansArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -100,7 +100,8 @@ void KMeans::setupFilterParameters()
   }
   QStringList linkedProps("MaskArrayPath");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask", UseMask, FilterParameter::Parameter, KMeans, linkedProps));
-  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataArraySelectionFilterParameter::RequirementType dasReq =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Cluster", SelectedArrayPath, FilterParameter::RequiredArray, KMeans, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, KMeans, dasReq));
@@ -116,9 +117,9 @@ void KMeans::setupFilterParameters()
 void KMeans::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedArrayPath(reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath()));
-  setUseMask(reader->readValue( "UseMask", getUseMask()));
-  setMaskArrayPath(reader->readDataArrayPath( "MaskArrayPath", getMaskArrayPath()));
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
+  setUseMask(reader->readValue("UseMask", getUseMask()));
+  setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));
   setInitClusters(reader->readValue("InitClusters", getInitClusters()));
   setFeatureIdsArrayName(reader->readString("FeatureIdsArrayName", getFeatureIdsArrayName()));
   setFeatureAttributeMatrixName(reader->readString("FeatureAttributeMatrixName", getFeatureAttributeMatrixName()));
@@ -150,79 +151,82 @@ void KMeans::dataCheck()
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedArrayPath().getDataContainerName(), false);
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AttributeMatrix::Type attrMatType = attrMat->getType();
   AttributeMatrix::Type destAttrMatType = AttributeMatrix::Type::Unknown;
 
-  switch (attrMatType)
+  switch(attrMatType)
   {
-    case AttributeMatrix::Type::Vertex:
-    {
-      destAttrMatType = AttributeMatrix::Type::VertexFeature;
-      break;
-    }
-    case AttributeMatrix::Type::Edge:
-    {
-      destAttrMatType = AttributeMatrix::Type::EdgeFeature;
-      break;
-    }
-    case AttributeMatrix::Type::Face:
-    {
-      destAttrMatType = AttributeMatrix::Type::FaceFeature;
-      break;
-    }
-    case AttributeMatrix::Type::Cell:
-    {
-      destAttrMatType = AttributeMatrix::Type::CellFeature;
-      break;
-    }
-    case AttributeMatrix::Type::VertexFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::EdgeFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::FaceFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::CellFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::CellEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::VertexEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::EdgeEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::FaceEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::CellEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::CellEnsemble;
-      break;
-    }
-    default:
-    {
-      destAttrMatType = AttributeMatrix::Type::Generic;
-      break;
-    }
+  case AttributeMatrix::Type::Vertex:
+  {
+    destAttrMatType = AttributeMatrix::Type::VertexFeature;
+    break;
+  }
+  case AttributeMatrix::Type::Edge:
+  {
+    destAttrMatType = AttributeMatrix::Type::EdgeFeature;
+    break;
+  }
+  case AttributeMatrix::Type::Face:
+  {
+    destAttrMatType = AttributeMatrix::Type::FaceFeature;
+    break;
+  }
+  case AttributeMatrix::Type::Cell:
+  {
+    destAttrMatType = AttributeMatrix::Type::CellFeature;
+    break;
+  }
+  case AttributeMatrix::Type::VertexFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::EdgeFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::FaceFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::CellFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::CellEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::VertexEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::EdgeEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::FaceEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::CellEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::CellEnsemble;
+    break;
+  }
+  default:
+  {
+    destAttrMatType = AttributeMatrix::Type::Generic;
+    break;
+  }
   }
 
   QVector<size_t> tDims(1, m_InitClusters + 1);
@@ -232,28 +236,46 @@ void KMeans::dataCheck()
   QVector<size_t> cDims;
   QVector<DataArrayPath> dataArrayPaths;
 
-  m_InDataPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath()); 
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getSelectedArrayPath()); }
-  if(m_InDataPtr.lock()) 
+  m_InDataPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getSelectedArrayPath());
+  }
+  if(m_InDataPtr.lock())
   {
     cDims = m_InDataPtr.lock()->getComponentDimensions();
     tempPath.update(getSelectedArrayPath().getDataContainerName(), getFeatureAttributeMatrixName(), getMeansArrayName());
-    m_MeansArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims); 
-    if(m_MeansArrayPtr.lock()) { m_MeansArray = m_MeansArrayPtr.lock()->getPointer(0); } 
+    m_MeansArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims);
+    if(m_MeansArrayPtr.lock())
+    {
+      m_MeansArray = m_MeansArrayPtr.lock()->getPointer(0);
+    }
   }
 
   cDims[0] = 1;
   tempPath.update(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getFeatureIdsArrayName());
-  
-  m_FeatureIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, cDims); 
-  if(m_FeatureIdsPtr.lock()) { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } 
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(tempPath); }
+
+  m_FeatureIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, cDims);
+  if(m_FeatureIdsPtr.lock())
+  {
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(tempPath);
+  }
 
   if(m_UseMask)
   {
     m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims);
-    if(m_MaskPtr.lock()) { m_Mask = m_MaskPtr.lock()->getPointer(0); }
-    if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getMaskArrayPath()); }
+    if(m_MaskPtr.lock())
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+    }
+    if(getErrorCondition() >= 0)
+    {
+      dataArrayPaths.push_back(getMaskArrayPath());
+    }
   }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
@@ -279,7 +301,10 @@ void KMeans::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if(m_UseMask)
   {
@@ -321,7 +346,9 @@ const QString KMeans::getCompiledLibraryName()
 //
 // -----------------------------------------------------------------------------
 const QString KMeans::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -330,7 +357,7 @@ const QString KMeans::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -338,16 +365,22 @@ const QString KMeans::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString KMeans::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString KMeans::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString KMeans::getHumanLabel()
-{ return "K Means"; }
+{
+  return "K Means";
+}

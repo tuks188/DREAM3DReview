@@ -38,8 +38,8 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
@@ -51,13 +51,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FindNorm::FindNorm() 
-  : AbstractFilter()
-  , m_SelectedArrayPath("", "", "")
-  , m_NormArrayPath("", "", "Norm")
-  , m_PSpace(2.0f)
-  , m_InArray(nullptr)
-  , m_Norm(nullptr)
+FindNorm::FindNorm()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_NormArrayPath("", "", "Norm")
+, m_PSpace(2.0f)
+, m_InArray(nullptr)
+, m_Norm(nullptr)
 {
   setupFilterParameters();
 }
@@ -76,7 +76,8 @@ void FindNorm::setupFilterParameters()
 {
   FilterParameterVector parameters;
   parameters.push_back(SIMPL_NEW_FLOAT_FP("p-Space Value", PSpace, FilterParameter::Parameter, FindNorm));
-  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataArraySelectionFilterParameter::RequirementType dasReq =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Input Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, FindNorm, dasReq));
   DataArrayCreationFilterParameter::RequirementType dacReq = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Norm", NormArrayPath, FilterParameter::CreatedArray, FindNorm, dacReq));
@@ -89,7 +90,7 @@ void FindNorm::setupFilterParameters()
 void FindNorm::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedArrayPath(reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath()));
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
   setNormArrayPath(reader->readDataArrayPath("NormArrayPath", getNormArrayPath()));
   setPSpace(reader->readValue("PSpace", getPSpace()));
   reader->closeFilterGroup();
@@ -119,13 +120,22 @@ void FindNorm::dataCheck()
   QVector<DataArrayPath> dataArrayPaths;
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getSelectedArrayPath()); }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getSelectedArrayPath());
+  }
 
   QVector<size_t> cDims(1, 1);
 
-  m_NormPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getNormArrayPath(), 0, cDims); 
-  if(m_NormPtr.lock()) { m_Norm = m_NormPtr.lock()->getPointer(0); } 
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getNormArrayPath()); }
+  m_NormPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getNormArrayPath(), 0, cDims);
+  if(m_NormPtr.lock())
+  {
+    m_Norm = m_NormPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getNormArrayPath());
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -144,8 +154,7 @@ void FindNorm::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void findPthNorm(IDataArray::Pointer inDataPtr, FloatArrayType::Pointer normPtr, float p)
+template <typename T> void findPthNorm(IDataArray::Pointer inDataPtr, FloatArrayType::Pointer normPtr, float p)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   T* inData = inputDataPtr->getPointer(0);
@@ -173,7 +182,10 @@ void FindNorm::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   EXECUTE_FUNCTION_TEMPLATE(this, findPthNorm, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_NormPtr.lock(), m_PSpace);
 
@@ -197,13 +209,17 @@ AbstractFilter::Pointer FindNorm::newFilterInstance(bool copyFilterParameters)
 //
 // -----------------------------------------------------------------------------
 const QString FindNorm::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindNorm::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -212,7 +228,7 @@ const QString FindNorm::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -220,16 +236,22 @@ const QString FindNorm::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString FindNorm::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindNorm::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindNorm::getHumanLabel()
-{ return "Find Norm"; }
+{
+  return "Find Norm";
+}

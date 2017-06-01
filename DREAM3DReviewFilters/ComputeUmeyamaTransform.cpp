@@ -37,13 +37,13 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
-#include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 #include <Eigen/Dense>
@@ -58,13 +58,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComputeUmeyamaTransform::ComputeUmeyamaTransform() 
-  : AbstractFilter()
-  , m_SourcePointSet("")
-  , m_DestPointSet("")
-  , m_UseScaling(false)
-  , m_TransformationAttributeMatrixName("TransformationData")
-  , m_TransformationMatrixName("TransformationMatrix")
+ComputeUmeyamaTransform::ComputeUmeyamaTransform()
+: AbstractFilter()
+, m_SourcePointSet("")
+, m_DestPointSet("")
+, m_UseScaling(false)
+, m_TransformationAttributeMatrixName("TransformationData")
+, m_TransformationMatrixName("TransformationMatrix")
 {
   setupFilterParameters();
 }
@@ -124,11 +124,12 @@ void ComputeUmeyamaTransform::dataCheck()
   IGeometry::Pointer movingGeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getSourcePointSet());
   IGeometry::Pointer fixedGeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getDestPointSet());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if(!std::dynamic_pointer_cast<IGeometry2D>(movingGeom) &&
-     !std::dynamic_pointer_cast<IGeometry3D>(movingGeom) &&
-     !std::dynamic_pointer_cast<VertexGeom>(movingGeom) &&
+  if(!std::dynamic_pointer_cast<IGeometry2D>(movingGeom) && !std::dynamic_pointer_cast<IGeometry3D>(movingGeom) && !std::dynamic_pointer_cast<VertexGeom>(movingGeom) &&
      !std::dynamic_pointer_cast<EdgeGeom>(movingGeom))
   {
     setErrorCondition(-702);
@@ -136,9 +137,7 @@ void ComputeUmeyamaTransform::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if(!std::dynamic_pointer_cast<IGeometry2D>(fixedGeom) &&
-     !std::dynamic_pointer_cast<IGeometry3D>(fixedGeom) &&
-     !std::dynamic_pointer_cast<VertexGeom>(fixedGeom) &&
+  if(!std::dynamic_pointer_cast<IGeometry2D>(fixedGeom) && !std::dynamic_pointer_cast<IGeometry3D>(fixedGeom) && !std::dynamic_pointer_cast<VertexGeom>(fixedGeom) &&
      !std::dynamic_pointer_cast<EdgeGeom>(fixedGeom))
   {
     setErrorCondition(-702);
@@ -186,13 +185,18 @@ void ComputeUmeyamaTransform::dataCheck()
   if(numMovingVertices != numFixedVertices)
   {
     setErrorCondition(-11000);
-    QString ss = QObject::tr("The moving and fixed Geometries must have the same number of Vertices; the number of moving Vertices is %1 and the number of fixed Vertices is %2").arg(numMovingVertices).arg(numFixedVertices);
+    QString ss = QObject::tr("The moving and fixed Geometries must have the same number of Vertices; the number of moving Vertices is %1 and the number of fixed Vertices is %2")
+                     .arg(numMovingVertices)
+                     .arg(numFixedVertices);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSourcePointSet());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QVector<size_t> tDims(1, 1);
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getTransformationAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
@@ -200,9 +204,12 @@ void ComputeUmeyamaTransform::dataCheck()
   QVector<size_t> cDims(2, 4);
   DataArrayPath path(getSourcePointSet(), getTransformationAttributeMatrixName(), getTransformationMatrixName());
 
-  m_TransformationMatrixPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_TransformationMatrixPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_TransformationMatrix = m_TransformationMatrixPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_TransformationMatrixPtr =
+      getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_TransformationMatrixPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_TransformationMatrix = m_TransformationMatrixPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 
 // -----------------------------------------------------------------------------
@@ -211,12 +218,12 @@ void ComputeUmeyamaTransform::dataCheck()
 void ComputeUmeyamaTransform::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
@@ -226,7 +233,10 @@ void ComputeUmeyamaTransform::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   IGeometry::Pointer movingGeom = getDataContainerArray()->getDataContainer(m_SourcePointSet)->getGeometry();
   IGeometry::Pointer fixedGeom = getDataContainerArray()->getDataContainer(m_DestPointSet)->getGeometry();
@@ -289,14 +299,17 @@ void ComputeUmeyamaTransform::execute()
   Eigen::Map<PointCloud> fixed(fixedPointsPtr, 3, numFixedVertices);
 
   UmeyamaTransform transformMatrix = Eigen::umeyama(moving, fixed, m_UseScaling);
-  
+
   // The matrix is in column major, transpose it in place to make it row major
   transformMatrix.transposeInPlace();
   float* umeyamaArray = &transformMatrix(0);
 
   // Copy the transformation matrix over to our DataArray
   // We know the size will be exactly sixteen...
-  for (size_t i = 0; i < 16; i++) { m_TransformationMatrix[i] = umeyamaArray[i]; }
+  for(size_t i = 0; i < 16; i++)
+  {
+    m_TransformationMatrix[i] = umeyamaArray[i];
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -318,13 +331,17 @@ AbstractFilter::Pointer ComputeUmeyamaTransform::newFilterInstance(bool copyFilt
 //
 // -----------------------------------------------------------------------------
 const QString ComputeUmeyamaTransform::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ComputeUmeyamaTransform::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -333,24 +350,29 @@ const QString ComputeUmeyamaTransform::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ComputeUmeyamaTransform::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ComputeUmeyamaTransform::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::RegistrationFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::RegistrationFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ComputeUmeyamaTransform::getHumanLabel()
-{ return "Compute Umeyama Transform"; }
-
+{
+  return "Compute Umeyama Transform";
+}

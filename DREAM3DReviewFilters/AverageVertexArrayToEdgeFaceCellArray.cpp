@@ -39,14 +39,14 @@
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
-#include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Geometry/GeometryHelpers.hpp"
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
-#include "SIMPLib/Geometry/GeometryHelpers.hpp"
+#include "SIMPLib/Geometry/TriangleGeom.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -57,13 +57,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AverageVertexArrayToEdgeFaceCellArray::AverageVertexArrayToEdgeFaceCellArray() 
-  : AbstractFilter()
-  , m_SelectedArrayPath("", "", "")
-  , m_AverageCellArrayPath("", "", "")
-  , m_WeightedAverage(false)
-  , m_InVertexArray(nullptr)
-  , m_AverageCellArray(nullptr)
+AverageVertexArrayToEdgeFaceCellArray::AverageVertexArrayToEdgeFaceCellArray()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_AverageCellArrayPath("", "", "")
+, m_WeightedAverage(false)
+, m_InVertexArray(nullptr)
+, m_AverageCellArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -84,7 +84,8 @@ void AverageVertexArrayToEdgeFaceCellArray::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_BOOL_FP("Perform Weighted Average", WeightedAverage, FilterParameter::Parameter, AverageVertexArrayToEdgeFaceCellArray));
   parameters.push_back(SeparatorFilterParameter::New("Vertex Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Vertex, IGeometry::Type::Any);
+    DataArraySelectionFilterParameter::RequirementType req =
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Vertex, IGeometry::Type::Any);
     IGeometry::Types geomTypes = {IGeometry::Type::Edge, IGeometry::Type::Triangle, IGeometry::Type::Quad, IGeometry::Type::Tetrahedral};
     req.dcGeometryTypes = geomTypes;
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Vertex Array to Average", SelectedArrayPath, FilterParameter::RequiredArray, AverageVertexArrayToEdgeFaceCellArray, req));
@@ -116,8 +117,7 @@ void AverageVertexArrayToEdgeFaceCellArray::readFilterParameters(AbstractFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void findVertexAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, DataContainer::Pointer m, bool weightAverage)
+template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, DataContainer::Pointer m, bool weightAverage)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   IGeometry::Pointer geom = m->getGeometry();
@@ -140,84 +140,84 @@ void findVertexAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, Da
     }
     switch(geomType)
     {
-      case IGeometry::Type::Edge:
-      {
-        EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
-        SharedVertexList::Pointer vertices = edgeGeom->getVertices();
-        SharedEdgeList::Pointer edges = edgeGeom->getEdges();
-        FloatArrayType::Pointer centroids = edgeGeom->getElementCentroids();
-        GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(edges, vertices, centroids, inputDataPtr, outDataPtr);
-        break;
-      }
-      case IGeometry::Type::Triangle:
-      {
-        TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
-        SharedVertexList::Pointer vertices = triGeom->getVertices();
-        SharedTriList::Pointer triangles = triGeom->getTriangles();
-        FloatArrayType::Pointer centroids = triGeom->getElementCentroids();
-        GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(triangles, vertices, centroids, inputDataPtr, outDataPtr);
-        break;
-      }
-      case IGeometry::Type::Quad:
-      {
-        QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
-        SharedVertexList::Pointer vertices = quadGeom->getVertices();
-        SharedQuadList::Pointer quads = quadGeom->getQuads();
-        FloatArrayType::Pointer centroids = quadGeom->getElementCentroids();
-        GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(quads, vertices, centroids, inputDataPtr, outDataPtr);
-        break;
-      }
-      case IGeometry::Type::Tetrahedral:
-      {
-        TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
-        SharedVertexList::Pointer vertices = tets->getVertices();
-        SharedTetList::Pointer tet = tets->getTetrahedra();
-        FloatArrayType::Pointer centroids = tets->getElementCentroids();
-        GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(tet, vertices, centroids, inputDataPtr, outDataPtr);
-        break;
-      }
-      default:
-      {
-        break;
-      }
+    case IGeometry::Type::Edge:
+    {
+      EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
+      SharedVertexList::Pointer vertices = edgeGeom->getVertices();
+      SharedEdgeList::Pointer edges = edgeGeom->getEdges();
+      FloatArrayType::Pointer centroids = edgeGeom->getElementCentroids();
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(edges, vertices, centroids, inputDataPtr, outDataPtr);
+      break;
+    }
+    case IGeometry::Type::Triangle:
+    {
+      TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
+      SharedVertexList::Pointer vertices = triGeom->getVertices();
+      SharedTriList::Pointer triangles = triGeom->getTriangles();
+      FloatArrayType::Pointer centroids = triGeom->getElementCentroids();
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(triangles, vertices, centroids, inputDataPtr, outDataPtr);
+      break;
+    }
+    case IGeometry::Type::Quad:
+    {
+      QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
+      SharedVertexList::Pointer vertices = quadGeom->getVertices();
+      SharedQuadList::Pointer quads = quadGeom->getQuads();
+      FloatArrayType::Pointer centroids = quadGeom->getElementCentroids();
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(quads, vertices, centroids, inputDataPtr, outDataPtr);
+      break;
+    }
+    case IGeometry::Type::Tetrahedral:
+    {
+      TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
+      SharedVertexList::Pointer vertices = tets->getVertices();
+      SharedTetList::Pointer tet = tets->getTetrahedra();
+      FloatArrayType::Pointer centroids = tets->getElementCentroids();
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(tet, vertices, centroids, inputDataPtr, outDataPtr);
+      break;
+    }
+    default:
+    {
+      break;
+    }
     }
   }
   else
   {
     switch(geomType)
     {
-      case IGeometry::Type::Edge:
-      {
-        EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
-        SharedEdgeList::Pointer edges = edgeGeom->getEdges();
-        GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(edges, inputDataPtr, outDataPtr);
-        break;
-      }
-      case IGeometry::Type::Triangle:
-      {
-        TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
-        SharedTriList::Pointer triangles = triGeom->getTriangles();
-        GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(triangles, inputDataPtr, outDataPtr);
-        break;
-      }
-      case IGeometry::Type::Quad:
-      {
-        QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
-        SharedQuadList::Pointer quads = quadGeom->getQuads();
-        GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(quads, inputDataPtr, outDataPtr);
-        break;
-      }
-      case IGeometry::Type::Tetrahedral:
-      {
-        TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
-        SharedTetList::Pointer tet = tets->getTetrahedra();
-        GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(tet, inputDataPtr, outDataPtr);
-        break;
-      }
-      default:
-      {
-        break;
-      }
+    case IGeometry::Type::Edge:
+    {
+      EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
+      SharedEdgeList::Pointer edges = edgeGeom->getEdges();
+      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(edges, inputDataPtr, outDataPtr);
+      break;
+    }
+    case IGeometry::Type::Triangle:
+    {
+      TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
+      SharedTriList::Pointer triangles = triGeom->getTriangles();
+      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(triangles, inputDataPtr, outDataPtr);
+      break;
+    }
+    case IGeometry::Type::Quad:
+    {
+      QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
+      SharedQuadList::Pointer quads = quadGeom->getQuads();
+      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(quads, inputDataPtr, outDataPtr);
+      break;
+    }
+    case IGeometry::Type::Tetrahedral:
+    {
+      TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
+      SharedTetList::Pointer tet = tets->getTetrahedra();
+      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(tet, inputDataPtr, outDataPtr);
+      break;
+    }
+    default:
+    {
+      break;
+    }
     }
   }
 }
@@ -237,15 +237,15 @@ void AverageVertexArrayToEdgeFaceCellArray::dataCheck()
   setErrorCondition(0);
 
   IGeometry::Pointer igeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getSelectedArrayPath().getDataContainerName());
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   IGeometry::Type geomType = igeom->getGeometryType();
 
-  if (geomType != IGeometry::Type::Edge &&
-      geomType != IGeometry::Type::Triangle &&
-      geomType != IGeometry::Type::Quad &&
-      geomType != IGeometry::Type::Tetrahedral)
+  if(geomType != IGeometry::Type::Edge && geomType != IGeometry::Type::Triangle && geomType != IGeometry::Type::Quad && geomType != IGeometry::Type::Tetrahedral)
   {
     setErrorCondition(-11000);
     QString ss = QObject::tr("The Geometry type must be either Edge, Triangle, Quadrialteral or Tetrahedral, but the type is %1").arg(igeom->getGeometryTypeAsString());
@@ -263,13 +263,15 @@ void AverageVertexArrayToEdgeFaceCellArray::dataCheck()
   AttributeMatrix::Pointer vertAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
   AttributeMatrix::Pointer cellAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAverageCellArrayPath(), -301);
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AttributeMatrix::Type vertAttrMatType = vertAttrMat->getType();
   AttributeMatrix::Type cellAttrMatType = cellAttrMat->getType();
 
-  if(geomType == IGeometry::Type::Triangle ||
-     geomType == IGeometry::Type::Quad)
+  if(geomType == IGeometry::Type::Triangle || geomType == IGeometry::Type::Quad)
   {
     if(cellAttrMatType != AttributeMatrix::Type::Face)
     {
@@ -305,8 +307,11 @@ void AverageVertexArrayToEdgeFaceCellArray::dataCheck()
   }
 
   m_InVertexArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numVertices = 0;
   size_t numElements = 0;
@@ -330,25 +335,35 @@ void AverageVertexArrayToEdgeFaceCellArray::dataCheck()
   QVector<size_t> cDims = m_InVertexArrayPtr.lock()->getComponentDimensions();
   size_t numVertexTuples = m_InVertexArrayPtr.lock()->getNumberOfTuples();
 
-  m_AverageCellArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getAverageCellArrayPath(), 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_AverageCellArrayPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_AverageCellArray = m_AverageCellArrayPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_AverageCellArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
+      this, getAverageCellArrayPath(), 0, cDims);   /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_AverageCellArrayPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_AverageCellArray = m_AverageCellArrayPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numElemTuples = m_AverageCellArrayPtr.lock()->getNumberOfTuples();
 
   if(numVertexTuples != numVertices)
   {
     setErrorCondition(-11002);
-    QString ss = QObject::tr("The number of Vertices in the selected Geometry is %1 and the number of tuples in the source Attribute Matrix is %2; the Vertices and tuples must match").arg(numVertices).arg(numVertexTuples);
+    QString ss = QObject::tr("The number of Vertices in the selected Geometry is %1 and the number of tuples in the source Attribute Matrix is %2; the Vertices and tuples must match")
+                     .arg(numVertices)
+                     .arg(numVertexTuples);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(numElemTuples != numElements)
   {
     setErrorCondition(-11003);
-    QString ss = QObject::tr("The number of Elements in the selected Geometry is %1 and the number of tuples in the destination Attribute Matrix is %2; the Elements and tuples must match").arg(numElements).arg(numElemTuples);
+    QString ss = QObject::tr("The number of Elements in the selected Geometry is %1 and the number of tuples in the destination Attribute Matrix is %2; the Elements and tuples must match")
+                     .arg(numElements)
+                     .arg(numElemTuples);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
@@ -373,7 +388,10 @@ void AverageVertexArrayToEdgeFaceCellArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedArrayPath.getDataContainerName());
 
@@ -399,13 +417,17 @@ AbstractFilter::Pointer AverageVertexArrayToEdgeFaceCellArray::newFilterInstance
 //
 // -----------------------------------------------------------------------------
 const QString AverageVertexArrayToEdgeFaceCellArray::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AverageVertexArrayToEdgeFaceCellArray::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -414,7 +436,7 @@ const QString AverageVertexArrayToEdgeFaceCellArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -422,16 +444,22 @@ const QString AverageVertexArrayToEdgeFaceCellArray::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString AverageVertexArrayToEdgeFaceCellArray::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AverageVertexArrayToEdgeFaceCellArray::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AverageVertexArrayToEdgeFaceCellArray::getHumanLabel()
-{ return "Average Vertex Array to Edge/Face/Cell Array"; }
+{
+  return "Average Vertex Array to Edge/Face/Cell Array";
+}

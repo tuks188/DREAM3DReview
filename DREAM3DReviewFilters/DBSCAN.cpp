@@ -38,12 +38,12 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 #include "util/ClusteringAlgorithms/DBSCANTemplate.hpp"
 
@@ -56,19 +56,19 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DBSCAN::DBSCAN() :
-  AbstractFilter(),
-  m_SelectedArrayPath("", "", ""),
-  m_UseMask(false),
-  m_MaskArrayPath("", "", ""),
-  m_FeatureIdsArrayName("ClusterIds"),
-  m_FeatureAttributeMatrixName("ClusterData"),
-  m_Epsilon(0.01f),
-  m_MinPnts(50),
-  m_DistanceMetric(0),
-  m_InData(nullptr),
-  m_Mask(nullptr),
-  m_FeatureIds(nullptr)
+DBSCAN::DBSCAN()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_UseMask(false)
+, m_MaskArrayPath("", "", "")
+, m_FeatureIdsArrayName("ClusterIds")
+, m_FeatureAttributeMatrixName("ClusterData")
+, m_Epsilon(0.01f)
+, m_MinPnts(50)
+, m_DistanceMetric(0)
+, m_InData(nullptr)
+, m_Mask(nullptr)
+, m_FeatureIds(nullptr)
 {
   setupFilterParameters();
 }
@@ -101,7 +101,8 @@ void DBSCAN::setupFilterParameters()
   }
   QStringList linkedProps("MaskArrayPath");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask", UseMask, FilterParameter::Parameter, DBSCAN, linkedProps));
-  DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataArraySelectionFilterParameter::RequirementType dasReq =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Cluster", SelectedArrayPath, FilterParameter::RequiredArray, DBSCAN, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, DBSCAN, dasReq));
@@ -141,82 +142,85 @@ void DBSCAN::dataCheck()
 {
   setErrorCondition(0);
   initialize();
-  
+
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedArrayPath().getDataContainerName(), false);
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AttributeMatrix::Type attrMatType = attrMat->getType();
   AttributeMatrix::Type destAttrMatType = AttributeMatrix::Type::Unknown;
 
   switch(attrMatType)
   {
-    case AttributeMatrix::Type::Vertex:
-    {
-      destAttrMatType = AttributeMatrix::Type::VertexFeature;
-      break;
-    }
-    case AttributeMatrix::Type::Edge:
-    {
-      destAttrMatType = AttributeMatrix::Type::EdgeFeature;
-      break;
-    }
-    case AttributeMatrix::Type::Face:
-    {
-      destAttrMatType = AttributeMatrix::Type::FaceFeature;
-      break;
-    }
-    case AttributeMatrix::Type::Cell:
-    {
-      destAttrMatType = AttributeMatrix::Type::CellFeature;
-      break;
-    }
-    case AttributeMatrix::Type::VertexFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::EdgeFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::FaceFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::CellFeature:
-    {
-      destAttrMatType = AttributeMatrix::Type::CellEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::VertexEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::EdgeEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::FaceEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
-      break;
-    }
-    case AttributeMatrix::Type::CellEnsemble:
-    {
-      destAttrMatType = AttributeMatrix::Type::CellEnsemble;
-      break;
-    }
-    default:
-    {
-      destAttrMatType = AttributeMatrix::Type::Generic;
-      break;
-    }
+  case AttributeMatrix::Type::Vertex:
+  {
+    destAttrMatType = AttributeMatrix::Type::VertexFeature;
+    break;
+  }
+  case AttributeMatrix::Type::Edge:
+  {
+    destAttrMatType = AttributeMatrix::Type::EdgeFeature;
+    break;
+  }
+  case AttributeMatrix::Type::Face:
+  {
+    destAttrMatType = AttributeMatrix::Type::FaceFeature;
+    break;
+  }
+  case AttributeMatrix::Type::Cell:
+  {
+    destAttrMatType = AttributeMatrix::Type::CellFeature;
+    break;
+  }
+  case AttributeMatrix::Type::VertexFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::EdgeFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::FaceFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::CellFeature:
+  {
+    destAttrMatType = AttributeMatrix::Type::CellEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::VertexEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::VertexEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::EdgeEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::EdgeEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::FaceEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::FaceEnsemble;
+    break;
+  }
+  case AttributeMatrix::Type::CellEnsemble:
+  {
+    destAttrMatType = AttributeMatrix::Type::CellEnsemble;
+    break;
+  }
+  default:
+  {
+    destAttrMatType = AttributeMatrix::Type::Generic;
+    break;
+  }
   }
 
   QVector<size_t> tDims(1, 0);
@@ -238,20 +242,33 @@ void DBSCAN::dataCheck()
   QVector<size_t> cDims(1, 1);
   QVector<DataArrayPath> dataArrayPaths;
 
-  m_InDataPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getSelectedArrayPath()); }
+  m_InDataPtr =
+      getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getSelectedArrayPath());
+  }
 
   DataArrayPath path(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getFeatureIdsArrayName());
-  m_FeatureIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, path, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_FeatureIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(
+      this, path, 0, cDims);                  /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_FeatureIdsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  {
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   if(m_UseMask == true)
   {
-    m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    m_MaskPtr =
+        getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
     if(nullptr != m_MaskPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-    { m_Mask = m_MaskPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
-    if(getErrorCondition() >= 0) { dataArrayPaths.push_back(getMaskArrayPath()); }
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+    } /* Now assign the raw pointer to data from the DataArray<T> object */
+    if(getErrorCondition() >= 0)
+    {
+      dataArrayPaths.push_back(getMaskArrayPath());
+    }
   }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
@@ -277,7 +294,10 @@ void DBSCAN::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedArrayPath.getDataContainerName());
   AttributeMatrix::Pointer featAttrMat = m->getAttributeMatrix(m_FeatureAttributeMatrixName);
@@ -327,13 +347,17 @@ AbstractFilter::Pointer DBSCAN::newFilterInstance(bool copyFilterParameters)
 //
 // -----------------------------------------------------------------------------
 const QString DBSCAN::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DBSCAN::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -342,7 +366,7 @@ const QString DBSCAN::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -350,16 +374,22 @@ const QString DBSCAN::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString DBSCAN::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DBSCAN::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DBSCAN::getHumanLabel()
-{ return "DBSCAN"; }
+{
+  return "DBSCAN";
+}

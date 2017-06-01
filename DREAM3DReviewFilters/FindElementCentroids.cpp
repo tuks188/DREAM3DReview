@@ -38,9 +38,9 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
@@ -52,13 +52,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FindElementCentroids::FindElementCentroids() 
-  : AbstractFilter()
-  , m_CellCentroidsArrayPath("", "", "Centroids")
-  , m_CreateVertexDataContainer(false)
-  , m_NewDataContainerName(SIMPL::Defaults::VertexDataContainerName)
-  , m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
-  , m_CellCentroidsArray(nullptr)
+FindElementCentroids::FindElementCentroids()
+: AbstractFilter()
+, m_CellCentroidsArrayPath("", "", "Centroids")
+, m_CreateVertexDataContainer(false)
+, m_NewDataContainerName(SIMPL::Defaults::VertexDataContainerName)
+, m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_CellCentroidsArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -77,7 +77,8 @@ void FindElementCentroids::setupFilterParameters()
 {
   FilterParameterVector parameters;
   QStringList linkedProps;
-  linkedProps << "NewDataContainerName" << "VertexAttributeMatrixName";
+  linkedProps << "NewDataContainerName"
+              << "VertexAttributeMatrixName";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Create Vertex Geometry from Centroids", CreateVertexDataContainer, FilterParameter::Parameter, FindElementCentroids, linkedProps));
   parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Data Container", NewDataContainerName, FilterParameter::CreatedArray, FindElementCentroids));
   parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName, FilterParameter::CreatedArray, FindElementCentroids));
@@ -116,14 +117,20 @@ void FindElementCentroids::dataCheck()
   setErrorCondition(0);
 
   IGeometry::Pointer geom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getCellCentroidsArrayPath().getDataContainerName());
-  
-  if(getErrorCondition() < 0) { return; }
+
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   IGeometry::Type geomType = geom->getGeometryType();
   size_t numElements = geom->getNumberOfElements();
 
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCellCentroidsArrayPath(), -301);
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AttributeMatrix::Type attrMatType = attrMat->getType();
 
@@ -136,8 +143,7 @@ void FindElementCentroids::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
-  else if(geomType == IGeometry::Type::Triangle ||
-          geomType == IGeometry::Type::Quad)
+  else if(geomType == IGeometry::Type::Triangle || geomType == IGeometry::Type::Quad)
   {
     if(attrMatType != AttributeMatrix::Type::Face)
     {
@@ -165,7 +171,10 @@ void FindElementCentroids::dataCheck()
   if(getCreateVertexDataContainer())
   {
     DataContainer::Pointer vm = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getNewDataContainerName());
-    if(getErrorCondition() < 0) { return; }
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
     VertexGeom::Pointer vertices = VertexGeom::CreateGeometry(static_cast<int64_t>(numElements), SIMPL::Geometry::VertexGeometry, !getInPreflight());
     vm->setGeometry(vertices);
 
@@ -176,16 +185,24 @@ void FindElementCentroids::dataCheck()
   QVector<size_t> cDims(1, 3);
 
   m_CellCentroidsArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getCellCentroidsArrayPath(), 0, cDims);
-  if(m_CellCentroidsArrayPtr.lock()) { m_CellCentroidsArray = m_CellCentroidsArrayPtr.lock()->getPointer(0); } 
+  if(m_CellCentroidsArrayPtr.lock())
+  {
+    m_CellCentroidsArray = m_CellCentroidsArrayPtr.lock()->getPointer(0);
+  }
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numTuples = m_CellCentroidsArrayPtr.lock()->getNumberOfTuples();
 
   if(numTuples != numElements)
   {
     setErrorCondition(-11002);
-    QString ss = QObject::tr("The number of Elements in the selected Geometry is %1 and the number of tuples in the destination Attribute Matrix is %2; the Elements and tuples must match").arg(numElements).arg(numTuples);
+    QString ss = QObject::tr("The number of Elements in the selected Geometry is %1 and the number of tuples in the destination Attribute Matrix is %2; the Elements and tuples must match")
+                     .arg(numElements)
+                     .arg(numTuples);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
@@ -210,7 +227,10 @@ void FindElementCentroids::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   int32_t err = 0;
   IGeometry::Pointer geom = getDataContainerArray()->getDataContainer(getCellCentroidsArrayPath().getDataContainerName())->getGeometry();
@@ -270,7 +290,9 @@ const QString FindElementCentroids::getCompiledLibraryName()
 //
 // -----------------------------------------------------------------------------
 const QString FindElementCentroids::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -279,7 +301,7 @@ const QString FindElementCentroids::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -287,16 +309,22 @@ const QString FindElementCentroids::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString FindElementCentroids::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindElementCentroids::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FindElementCentroids::getHumanLabel()
-{ return "Find Element Centroids"; }
+{
+  return "Find Element Centroids";
+}

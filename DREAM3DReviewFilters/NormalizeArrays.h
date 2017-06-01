@@ -36,9 +36,9 @@
 #ifndef _normalizearrays_h_
 #define _normalizearrays_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The NormalizeArrays class. See [Filter documentation](@ref normalizearrays) for details.
@@ -47,141 +47,141 @@ class NormalizeArrays : public AbstractFilter
 {
   Q_OBJECT
 
-  public:
-    SIMPL_SHARED_POINTERS(NormalizeArrays)
-    SIMPL_STATIC_NEW_MACRO(NormalizeArrays)
-    SIMPL_TYPE_MACRO_SUPER(NormalizeArrays, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(NormalizeArrays)
+  SIMPL_STATIC_NEW_MACRO(NormalizeArrays)
+  SIMPL_TYPE_MACRO_SUPER(NormalizeArrays, AbstractFilter)
 
-    virtual ~NormalizeArrays();
+  virtual ~NormalizeArrays();
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
-    Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
+  Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
-    SIMPL_FILTER_PARAMETER(int, NormalizeType)
-    Q_PROPERTY(int NormalizeType READ getNormalizeType WRITE setNormalizeType)
+  SIMPL_FILTER_PARAMETER(int, NormalizeType)
+  Q_PROPERTY(int NormalizeType READ getNormalizeType WRITE setNormalizeType)
 
-    SIMPL_FILTER_PARAMETER(double, RangeMin)
-    Q_PROPERTY(double RangeMin READ getRangeMin WRITE setRangeMin)
+  SIMPL_FILTER_PARAMETER(double, RangeMin)
+  Q_PROPERTY(double RangeMin READ getRangeMin WRITE setRangeMin)
 
-    SIMPL_FILTER_PARAMETER(double, RangeMax)
-    Q_PROPERTY(double RangeMax READ getRangeMax WRITE setRangeMax)
+  SIMPL_FILTER_PARAMETER(double, RangeMax)
+  Q_PROPERTY(double RangeMax READ getRangeMax WRITE setRangeMax)
 
-    SIMPL_FILTER_PARAMETER(QString, Postfix)
-    Q_PROPERTY(QString Postfix READ getPostfix WRITE setPostfix)
+  SIMPL_FILTER_PARAMETER(QString, Postfix)
+  Q_PROPERTY(QString Postfix READ getPostfix WRITE setPostfix)
 
-    SIMPL_FILTER_PARAMETER(bool, UseMask)
-    Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  SIMPL_FILTER_PARAMETER(bool, UseMask)
+  Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
-    Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+  Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
-    SIMPL_FILTER_PARAMETER(double, DefaultValue)
-    Q_PROPERTY(double DefaultValue READ getDefaultValue WRITE setDefaultValue)
+  SIMPL_FILTER_PARAMETER(double, DefaultValue)
+  Q_PROPERTY(double DefaultValue READ getDefaultValue WRITE setDefaultValue)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getCompiledLibraryName();
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getCompiledLibraryName();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    virtual const QString getBrandingString();
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+  */
+  virtual const QString getBrandingString();
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    virtual const QString getFilterVersion();
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  virtual const QString getFilterVersion();
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getGroupName();
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getGroupName();
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getSubGroupName();
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getSubGroupName();
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getHumanLabel();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getHumanLabel();
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void setupFilterParameters();
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void setupFilterParameters();
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    virtual void preflight();
+  /**
+  * @brief preflight Reimplemented from @see AbstractFilter class
+  */
+  virtual void preflight();
 
-  signals:
-    /**
-      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+    * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-  protected:
-    NormalizeArrays();
+protected:
+  NormalizeArrays();
 
-    void updateDataArrays(double* copyPtr, DoubleArrayType::Pointer newArray, int32_t arrayIndex);
-    
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  void updateDataArrays(double* copyPtr, DoubleArrayType::Pointer newArray, int32_t arrayIndex);
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-  private:
-    std::vector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
-    std::vector<DoubleArrayType::Pointer> m_NormalizedArraysPtrVector;
-    DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    NormalizeArrays(const NormalizeArrays&); // Copy Constructor Not Implemented
-    void operator=(const NormalizeArrays&); // Operator '=' Not Implemented
+private:
+  std::vector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
+  std::vector<DoubleArrayType::Pointer> m_NormalizedArraysPtrVector;
+  DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+
+  NormalizeArrays(const NormalizeArrays&); // Copy Constructor Not Implemented
+  void operator=(const NormalizeArrays&);  // Operator '=' Not Implemented
 };
 
 #endif /* _NormalizeArrays_H_ */

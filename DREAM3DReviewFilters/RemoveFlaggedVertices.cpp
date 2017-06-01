@@ -38,9 +38,9 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
@@ -53,11 +53,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFlaggedVertices::RemoveFlaggedVertices() 
-  : AbstractFilter()
-  , m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
-  , m_MaskArrayPath(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::CellData::Mask)
-  , m_ReducedVertexGeometry("ReducedVertexDataContainer")
+RemoveFlaggedVertices::RemoveFlaggedVertices()
+: AbstractFilter()
+, m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
+, m_MaskArrayPath(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::CellData::Mask)
+, m_ReducedVertexGeometry("ReducedVertexDataContainer")
 {
   initialize();
   setupFilterParameters();
@@ -87,7 +87,7 @@ void RemoveFlaggedVertices::setupFilterParameters()
 {
   FilterParameterVector parameters;
   DataContainerSelectionFilterParameter::RequirementType dcsReq;
-  IGeometry::Types geomTypes = { IGeometry::Type::Vertex };
+  IGeometry::Types geomTypes = {IGeometry::Type::Vertex};
   dcsReq.dcGeometryTypes = geomTypes;
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Vertex Geometry", VertexGeometry, FilterParameter::RequiredArray, RemoveFlaggedVertices, dcsReq));
   DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Vertex, IGeometry::Type::Vertex);
@@ -120,19 +120,31 @@ void RemoveFlaggedVertices::dataCheck()
 
   VertexGeom::Pointer vertex = getDataContainerArray()->getPrereqGeometryFromDataContainer<VertexGeom, AbstractFilter>(this, getVertexGeometry());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   dataArrays.push_back(vertex->getVertices());
 
   QVector<size_t> cDims(1, 1);
 
-  m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims); 
-  if(m_MaskPtr.lock()) { m_Mask = m_MaskPtr.lock()->getPointer(0); } 
-  if(getErrorCondition() >= 0) { dataArrays.push_back(m_MaskPtr.lock()); }
+  m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims);
+  if(m_MaskPtr.lock())
+  {
+    m_Mask = m_MaskPtr.lock()->getPointer(0);
+  }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrays.push_back(m_MaskPtr.lock());
+  }
 
   DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getReducedVertexGeometry());
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   VertexGeom::Pointer reduced = VertexGeom::CreateGeometry(0, SIMPL::Geometry::VertexGeometry, !getInPreflight());
   dc->setGeometry(reduced);
@@ -146,7 +158,10 @@ void RemoveFlaggedVertices::dataCheck()
   DataArrayPath tempPath;
   AttributeMatrix::Type tempAttrMatType = AttributeMatrix::Type::Vertex;
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   for(auto&& attr_mat : m_AttrMatList)
   {
@@ -184,19 +199,18 @@ void RemoveFlaggedVertices::dataCheck()
 void RemoveFlaggedVertices::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void copyDataToMaskedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t> maskPoints)
+template <typename T> void copyDataToMaskedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t> maskPoints)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   typename DataArray<T>::Pointer maskedDataPtr = std::dynamic_pointer_cast<DataArray<T>>(outDataPtr);
@@ -225,7 +239,10 @@ void RemoveFlaggedVertices::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   VertexGeom::Pointer vertex = getDataContainerArray()->getDataContainer(getVertexGeometry())->getGeometryAs<VertexGeom>();
   int64_t numVerts = vertex->getNumberOfVertices();
@@ -234,7 +251,10 @@ void RemoveFlaggedVertices::execute()
 
   for(int64_t i = 0; i < numVerts; i++)
   {
-    if(!m_Mask[i]) { maskPoints.push_back(i); }
+    if(!m_Mask[i])
+    {
+      maskPoints.push_back(i);
+    }
   }
 
   maskPoints.shrink_to_fit();
@@ -242,7 +262,7 @@ void RemoveFlaggedVertices::execute()
   DataContainer::Pointer reduced = getDataContainerArray()->getDataContainer(getReducedVertexGeometry());
   VertexGeom::Pointer reducedVertex = reduced->getGeometryAs<VertexGeom>();
   reducedVertex->resizeVertexList(maskPoints.size());
-  float coords[3] = { 0.0f, 0.0f, 0.0f };
+  float coords[3] = {0.0f, 0.0f, 0.0f};
 
   for(std::vector<int64_t>::size_type i = 0; i < maskPoints.size(); i++)
   {
@@ -296,13 +316,17 @@ AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilter
 //
 // -----------------------------------------------------------------------------
 const QString RemoveFlaggedVertices::getCompiledLibraryName()
-{ return DREAM3DReviewConstants::DREAM3DReviewBaseName; }
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveFlaggedVertices::getBrandingString()
-{ return "DREAM3DReview"; }
+{
+  return "DREAM3DReview";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -311,7 +335,7 @@ const QString RemoveFlaggedVertices::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 
@@ -319,16 +343,22 @@ const QString RemoveFlaggedVertices::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString RemoveFlaggedVertices::getGroupName()
-{ return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters; }
+{
+  return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveFlaggedVertices::getSubGroupName()
-{ return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters; }
+{
+  return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveFlaggedVertices::getHumanLabel()
-{ return "Remove Flagged Vertices"; }
+{
+  return "Remove Flagged Vertices";
+}
