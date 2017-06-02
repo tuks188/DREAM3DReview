@@ -105,7 +105,7 @@ public:
       }
     }
 
-    size_t updateCheck = 0;
+    //size_t updateCheck = 0;
     int32_t* fPtr = fIds->getPointer(0);
 
     findClusters(filter, mask, inputData, outputData, fPtr, 

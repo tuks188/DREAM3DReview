@@ -42,7 +42,7 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
-#include "SIMPLib/Geometry/GeometryHelpers.hpp"
+#include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
 

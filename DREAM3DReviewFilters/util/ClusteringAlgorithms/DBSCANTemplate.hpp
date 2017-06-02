@@ -75,7 +75,7 @@ public:
     std::vector<bool> visited(numTuples, false);
     std::vector<bool> clustered(numTuples, false);
 
-    double dist = 0.0;
+    //double dist = 0.0;
     double minDist = static_cast<double>(epsilon);
     int32_t cluster = 0;
     bool* mask = maskDataArray->getPointer(0);
