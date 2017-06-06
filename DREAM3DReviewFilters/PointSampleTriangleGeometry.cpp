@@ -37,6 +37,7 @@
 
 #include <cassert>
 #include <ctime>
+#include <cstring>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
