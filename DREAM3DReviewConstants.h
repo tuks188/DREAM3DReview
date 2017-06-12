@@ -78,6 +78,7 @@ const QString ClusteringFilters("Clustering");
 const QString GeometryFilters("Geometry");
 const QString DimensionalityReductionFilters("Dimensionality Reduction");
 const QString ThresholdFilters("Threshold");
+const QString Coarsening("Coarsening");
 }
 }
 

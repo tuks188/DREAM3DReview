@@ -31,6 +31,7 @@ set(_PublicFilters
   KMedoids
   NormalizeArrays
   PointSampleTriangleGeometry
+  PottsModel
   PrincipalComponentAnalysis
   RemoveFlaggedVertices
   RobustAutomaticThreshold
