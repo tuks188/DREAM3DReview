@@ -14,9 +14,9 @@ This **Filter** simulates grain growth using the Potts model.  The Potts model i
 
 \f[ r < e^{\frac{-\Delta E}{kT}} \f]  
   
-  where \f$ r \f$ is a random number on the interval \f$ [0, 1) \f$, \f$ \Delta E \f$ is the energy change computed in step 2, \f$ k \f$ is Boltzmann's constant (1.380e-23 J/K), and \f$ T \f$ is a user-defined temperature value (in Kelvin).
+  where \f$ r \f$ is a random number on the interval \f$ [0, 1) \f$, \f$ \Delta E \f$ is the energy change computed in step 2, \f$ k \f$ is Boltzmann's constant (1.380 x 10<sup>-23</sup> J/K), and \f$ T \f$ is a user-defined temperature value (in Kelvin).
   
-5. Increment the time step by \f$ 1 / N \f$, where \f$ N \f$ is the total number of _lattice sites_ (i.e., the number of **Cells** in the **Image Geometry**); this ensures that, on average, a spin flip is attempted once per lattice site for each iteration
+5. Increment the time step by \f$ 1 / N \f$, where \f$ N \f$ is the total number of _lattice sites_ (i.e., the number of **Cells** in the **Image Geometry**, or the number of _trues_ in the mask, if _Use Mask_ is checked); this ensures that, on average, a spin flip is attempted once per lattice site for each iteration
 
 The Hamiltonian used for this Potts model implementation is _isotropic_; thus, all boundaries are treated similarly.  The major driving force that encourages flipping is the local neighborhood around each spin.  Specifically, the energy change computed in step 2 is equivalent to the following:
 

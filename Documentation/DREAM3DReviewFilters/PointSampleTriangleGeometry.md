@@ -5,7 +5,7 @@ Point Sample Triangle Geometry {#pointsampletrianglegeometry}
 DREAM3D Review (Geometry)
 
 ## Description ##
-This **Filter** randomly samples points locations on **Triangles** in a **Triangle Geometry**.  The sampled point locations are then used to construct a **Vertex Geometry**.  The number of point samples may either be specified manually or by inferring from another **Geometry**:
+This **Filter** randomly samples point locations on **Triangles** in a **Triangle Geometry**.  The sampled point locations are then used to construct a **Vertex Geometry**.  The number of point samples may either be specified manually or by inferring from another **Geometry**:
 
 | Geometry | Source for Number of Samples |
 |----------|-----------|
@@ -27,7 +27,7 @@ p_{i} = \left(1 - \sqrt{r_{1}}\right) a_{i} +
 
 where \f$ p_{i} \f$ are the coordinates of the sampled point; \f$ a_{i} \f$, \f$ b_{i} \f$, and \f$ c_{i} \f$ are the coordinates of the vertices beloning to the **Triangle**; and \f$ r_{1} \f$ and \f$ r_{2} \f$ are random real numbers on the interval \f$ [0, 1) \f$.  This approach has the benefit of uniform sampling within the **Triangle** area, and functions correctly regardless of the dimensionality of the space embedding (i.e., whether the **Triangle** is in the plane or embedded in 3D).
 
-The user may opt to use a mask to prevent certain **Triangles** from bein sampled; where the mask is _false_, the **Triangle** will not be sampled.  Additionally, the user may choose any number of **Face Attribute Arrays** to transfer to the created **Vertex Geometry**. The vertices in the new **Vertex Geometry** will gain the values of the **Faces** from which they were sampled.
+The user may opt to use a mask to prevent certain **Triangles** from being sampled; where the mask is _false_, the **Triangle** will not be sampled.  Additionally, the user may choose any number of **Face Attribute Arrays** to transfer to the created **Vertex Geometry**. The vertices in the new **Vertex Geometry** will gain the values of the **Faces** from which they were sampled.
 
 ## Parameters ##
 
