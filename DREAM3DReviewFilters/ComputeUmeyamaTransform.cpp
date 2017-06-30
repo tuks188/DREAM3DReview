@@ -167,19 +167,19 @@ void ComputeUmeyamaTransform::dataCheck()
 
   if(IGeometry2D::Pointer igeom2D = std::dynamic_pointer_cast<IGeometry2D>(fixedGeom))
   {
-    numMovingVertices = igeom2D->getNumberOfVertices();
+    numFixedVertices = igeom2D->getNumberOfVertices();
   }
   else if(IGeometry3D::Pointer igeom3D = std::dynamic_pointer_cast<IGeometry3D>(fixedGeom))
   {
-    numMovingVertices = igeom3D->getNumberOfVertices();
+    numFixedVertices = igeom3D->getNumberOfVertices();
   }
   else if(VertexGeom::Pointer vertex = std::dynamic_pointer_cast<VertexGeom>(fixedGeom))
   {
-    numMovingVertices = vertex->getNumberOfVertices();
+    numFixedVertices = vertex->getNumberOfVertices();
   }
   else if(EdgeGeom::Pointer edge = std::dynamic_pointer_cast<EdgeGeom>(fixedGeom))
   {
-    numMovingVertices = edge->getNumberOfVertices();
+    numFixedVertices = edge->getNumberOfVertices();
   }
 
   if(numMovingVertices != numFixedVertices)
