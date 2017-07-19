@@ -6,6 +6,11 @@
 
 #include <QtCore/QFileInfo>
 
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+
 #include "SIMPLib/Common/Constants.h"
 
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
@@ -46,6 +51,23 @@ void ImportMASSIFData::initialize()
 void ImportMASSIFData::setupFilterParameters()
 {
   FilterParameterVector parameters;
+
+  {
+    parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", MassifInputFilePath, FilterParameter::Parameter, ImportMASSIFData, "*.h5;*.hdf5;*.dream3d"));
+  }
+
+  {
+    parameters.push_back(SIMPL_NEW_STRING_FP("File Prefix", FilePrefix, FilterParameter::Parameter, ImportMASSIFData));
+  }
+
+  {
+    parameters.push_back(SIMPL_NEW_INTEGER_FP("Step Value", StepNumber, FilterParameter::Parameter, ImportMASSIFData));
+  }
+
+  {
+    AttributeMatrixSelectionFilterParameter::RequirementType req;
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ImportMASSIFData, req, 1));
+  }
 
   setFilterParameters(parameters);
 }

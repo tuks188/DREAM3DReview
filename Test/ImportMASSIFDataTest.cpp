@@ -32,8 +32,8 @@ class ImportMASSIFDataTest
   void RemoveTestFiles()
   {
   #if REMOVE_TEST_FILES
-//    QFile::remove(UnitTest::ImportMASSIFDataTest::TestFile1);
-//    QFile::remove(UnitTest::ImportMASSIFDataTest::TestFile2);
+    //QFile::remove(UnitTest::ImportMASSIFDataTest::TestFile1);
+    //QFile::remove(UnitTest::ImportMASSIFDataTest::TestFile2);
   #endif
   }
 
