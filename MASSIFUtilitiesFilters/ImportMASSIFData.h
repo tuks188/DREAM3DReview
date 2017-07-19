@@ -23,7 +23,17 @@ class ImportMASSIFData : public AbstractFilter
 
     virtual ~ImportMASSIFData();
 
+    SIMPL_FILTER_PARAMETER(QString, MassifInputFilePath)
+    Q_PROPERTY(QString MassifInputFilePath READ getMassifInputFilePath WRITE setMassifInputFilePath)
 
+    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
+    Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
+
+    SIMPL_FILTER_PARAMETER(QString, FilePrefix)
+    Q_PROPERTY(QString FilePrefix READ getFilePrefix WRITE setFilePrefix)
+
+    SIMPL_FILTER_PARAMETER(int, StepNumber)
+    Q_PROPERTY(int StepNumber READ getStepNumber WRITE setStepNumber)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

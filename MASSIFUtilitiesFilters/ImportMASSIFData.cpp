@@ -4,9 +4,9 @@
 
 #include "ImportMASSIFData.h"
 
+#include <QtCore/QFileInfo>
+
 #include "SIMPLib/Common/Constants.h"
-
-
 
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
 #include "MASSIFUtilities/MASSIFUtilitiesVersion.h"
@@ -56,6 +56,65 @@ void ImportMASSIFData::setupFilterParameters()
 void ImportMASSIFData::dataCheck()
 {
   setErrorCondition(0);
+
+  if (m_MassifInputFilePath.isEmpty())
+  {
+    QString ss = "No HDF5 file has been selected";
+    setErrorCondition(-3001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  QFileInfo hdf5FileInfo(m_MassifInputFilePath);
+  QString ext = hdf5FileInfo.suffix();
+  if (hdf5FileInfo.exists() && hdf5FileInfo.isFile() && ext != "h5" && ext != "hdf5" && ext != "dream3d")
+  {
+    QString ss = tr("The selected file '%1' is not an HDF5 file.").arg(hdf5FileInfo.fileName());
+    setErrorCondition(-3002);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  int err = 0;
+  AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+  if (getErrorCondition() < 0) { return; }
+
+  hid_t fileId = H5Utilities::openFile(m_MassifInputFilePath.toStdString(), true);
+  if (fileId < 0)
+  {
+    QString ss = tr("Error Reading HDF5 file: %1\n").arg(m_MassifInputFilePath);
+    setErrorCondition(-3003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+//  QVector<DataArrayPath> dataArrayPaths;
+
+//  DataArrayPath dPath = m_SelectedAttributeMatrix;
+//  dPath.setDataArrayName("D11");
+
+//  for (int i=0; i<m_SelectedHDF5Paths.size(); i++)
+//  {
+//    QString parentPath = QH5Utilities::getParentPath(m_SelectedHDF5Paths[i]);
+
+//    hid_t parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
+
+//    // Read dataset into DREAM.3D structure
+//    QString objectName = QH5Utilities::getObjectNameFromPath(m_SelectedHDF5Paths[i]);
+
+//    QVector<hsize_t> dims;
+//    H5T_class_t type_class;
+//    size_t type_size;
+//    herr_t err = QH5Lite::getDatasetInfo(parentId, objectName, dims, type_class, type_size);
+//    if (err < 0)
+//    {
+//      QString ss = tr("Error reading type info from dataset with path '%1'").arg(m_SelectedHDF5Paths[i]);
+//      setErrorCondition(-20004);
+//      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+//      return;
+//    }
+
+//    IDataArray::Pointer dPtr = H5DataArrayReader::ReadIDataArray(parentId, objectName, getInPreflight());
   
 }
 
