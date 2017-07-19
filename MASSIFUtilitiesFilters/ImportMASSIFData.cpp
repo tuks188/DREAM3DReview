@@ -64,11 +64,6 @@ void ImportMASSIFData::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_INTEGER_FP("Step Value", StepNumber, FilterParameter::Parameter, ImportMASSIFData));
   }
 
-  {
-    AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ImportMASSIFData, req, 1));
-  }
-
   setFilterParameters(parameters);
 }
 
