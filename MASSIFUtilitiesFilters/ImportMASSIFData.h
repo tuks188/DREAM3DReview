@@ -26,9 +26,6 @@ class ImportMASSIFData : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, MassifInputFilePath)
     Q_PROPERTY(QString MassifInputFilePath READ getMassifInputFilePath WRITE setMassifInputFilePath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
-    Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
-
     SIMPL_FILTER_PARAMETER(QString, FilePrefix)
     Q_PROPERTY(QString FilePrefix READ getFilePrefix WRITE setFilePrefix)
 
@@ -126,6 +123,49 @@ class ImportMASSIFData : public AbstractFilter
     void initialize();
 
   private:
+    QString           m_PaddedStep = "";
+
+    DEFINE_DATAARRAY_VARIABLE(float, DField)
+    DEFINE_DATAARRAY_VARIABLE(float, EField)
+    DEFINE_DATAARRAY_VARIABLE(float, SField)
+
+    /**
+     * @brief createDataArrayPaths
+     * @return
+     */
+    QVector<DataArrayPath> createDataArrayPaths();
+
+    /**
+     * @brief createHDF5DatasetPaths
+     * @return
+     */
+    QVector<QString> createHDF5DatasetPaths();
+
+    /**
+     * @brief generateIndexString
+     * @param index
+     * @param maxIndex
+     * @return
+     */
+    QString generateIndexString(int index, int maxIndex);
+
+    /**
+     * @brief getDataContainerGeometry
+     * @param tDims
+     * @param origin
+     * @param res
+     */
+    void getDataContainerGeometry(QVector<size_t> &tDims, QVector<float> &origin, QVector<float> &res);
+
+    /**
+     * @brief readIDataArray
+     * @param gid
+     * @param name
+     * @param metaDataOnly
+     * @return
+     */
+    IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, QVector<size_t> geoDims, bool metaDataOnly);
+
     ImportMASSIFData(const ImportMASSIFData&); // Copy Constructor Not Implemented
     void operator=(const ImportMASSIFData&); // Operator '=' Not Implemented
 };
