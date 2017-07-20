@@ -4,7 +4,7 @@
         "FilterVersion": "1.0.12",
         "Filter_Human_Label": "Import MASSIF Data",
         "Filter_Name": "ImportMASSIFData",
-        "MassifInputFilePath": "/Users/joeykleingers/Desktop/FFT-data.h5",
+        "MassifInputFilePath": "Data/MASSIF/ExampleData.h5",
         "StepNumber": 2
     },
     "1": {
@@ -206,7 +206,7 @@
         "FilterVersion": "6.4.79",
         "Filter_Human_Label": "Import Ensemble Info File",
         "Filter_Name": "EnsembleInfoReader",
-        "InputFile": "/Users/joeykleingers/Desktop/Ensemble.ini",
+        "InputFile": "Data/MASSIF/Ensemble.ini",
         "PhaseTypesArrayName": "PhaseTypes"
     },
     "6": {
@@ -276,7 +276,7 @@
         "FilterVersion": "1.0.109",
         "Filter_Human_Label": "Write DREAM.3D Data File",
         "Filter_Name": "DataContainerWriter",
-        "OutputFile": "/Users/joeykleingers/Desktop/Untitled.dream3d",
+        "OutputFile": "Data/Output/MASSIF/ExampleImport.dream3d",
         "WriteTimeSeries": 0,
         "WriteXdmfFile": 1
     },
