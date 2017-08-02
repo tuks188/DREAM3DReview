@@ -129,8 +129,8 @@ void ImportMASSIFData::dataCheck()
   if (m_FilePrefix.isEmpty())
   {
     QString ss = tr("The file prefix is empty.  Are you sure you meant to do this?");
-    setErrorCondition(-3004);
-    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+    setWarningCondition(-3004);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
 
   // Get the geometry info of the arrays
