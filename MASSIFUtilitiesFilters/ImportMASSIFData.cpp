@@ -68,6 +68,7 @@ ImportMASSIFData::~ImportMASSIFData()
 void ImportMASSIFData::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -99,6 +100,7 @@ void ImportMASSIFData::setupFilterParameters()
 void ImportMASSIFData::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if (m_MassifInputFilePath.isEmpty())
   {

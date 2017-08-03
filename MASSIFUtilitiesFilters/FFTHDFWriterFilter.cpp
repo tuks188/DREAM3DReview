@@ -142,6 +142,7 @@ void FFTHDFWriterFilter::readFilterParameters(AbstractFilterParametersReader* re
 void FFTHDFWriterFilter::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   QString ss;
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getFeatureIdsArrayPath().getDataContainerName());
@@ -242,6 +243,7 @@ void FFTHDFWriterFilter::preflight()
 void FFTHDFWriterFilter::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {
