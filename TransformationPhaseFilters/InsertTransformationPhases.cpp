@@ -296,6 +296,7 @@ void InsertTransformationPhases::readFilterParameters(AbstractFilterParametersRe
 void InsertTransformationPhases::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if( nullptr != m_AvgQuatsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_AvgQuats = m_AvgQuatsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -319,6 +320,7 @@ void InsertTransformationPhases::updateFeatureInstancePointers()
 void InsertTransformationPhases::updateStatsGenEnsembleInstancePointers()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if( nullptr != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -334,6 +336,7 @@ void InsertTransformationPhases::updateStatsGenEnsembleInstancePointers()
 void InsertTransformationPhases::updateVolEnsembleInstancePointers()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if( nullptr != m_NumFeaturesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_NumFeatures = m_NumFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -354,6 +357,7 @@ void InsertTransformationPhases::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
+  setWarningCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || m == nullptr) { return; }
@@ -454,6 +458,7 @@ void InsertTransformationPhases::preflight()
 void InsertTransformationPhases::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
