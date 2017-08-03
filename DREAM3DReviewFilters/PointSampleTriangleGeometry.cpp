@@ -172,6 +172,7 @@ void PointSampleTriangleGeometry::initialize()
 void PointSampleTriangleGeometry::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   switch(getSamplesNumberType())
@@ -373,6 +374,7 @@ void PointSampleTriangleGeometry::sampleTriangle(float a[3], float b[3], float c
 void PointSampleTriangleGeometry::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

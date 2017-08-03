@@ -104,6 +104,7 @@ void RobustAutomaticThreshold::readFilterParameters(AbstractFilterParametersRead
 void RobustAutomaticThreshold::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -113,6 +114,7 @@ void RobustAutomaticThreshold::initialize()
 void RobustAutomaticThreshold::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QVector<DataArrayPath> dataArrayPaths;
 

@@ -81,6 +81,7 @@ ExtractInternalSurfacesFromTriangleGeometry::~ExtractInternalSurfacesFromTriangl
 void ExtractInternalSurfacesFromTriangleGeometry::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
   m_AttrMatList.clear();
 }
@@ -119,6 +120,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::readFilterParameters(AbstractF
 void ExtractInternalSurfacesFromTriangleGeometry::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QVector<IDataArray::Pointer> arrays;
 

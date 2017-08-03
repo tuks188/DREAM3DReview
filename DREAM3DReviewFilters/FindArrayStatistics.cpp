@@ -189,6 +189,7 @@ void FindArrayStatistics::initialize()
 void FindArrayStatistics::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(!getFindMin() && !getFindMax() && !getFindMean() && !getFindMedian() && !getFindStdDeviation() && !getFindSummation() && !getFindLength())
   {
@@ -787,6 +788,7 @@ void findStatistics(IDataArray::Pointer source, Int32ArrayType::Pointer featureI
 void FindArrayStatistics::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

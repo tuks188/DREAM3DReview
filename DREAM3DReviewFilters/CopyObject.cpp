@@ -139,6 +139,7 @@ void CopyObject::initialize()
 void CopyObject::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getCopiedObjectName().isEmpty() == true)
   {
@@ -250,6 +251,7 @@ void CopyObject::preflight()
 void CopyObject::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

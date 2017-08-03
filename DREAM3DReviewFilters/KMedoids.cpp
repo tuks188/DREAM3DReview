@@ -141,6 +141,7 @@ void KMedoids::initialize()
 void KMedoids::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   if(getInitClusters() < 1)
@@ -296,6 +297,7 @@ void KMedoids::preflight()
 void KMedoids::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

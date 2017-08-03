@@ -277,6 +277,7 @@ void CreateGeometry::initialize()
 void CreateGeometry::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
@@ -542,6 +543,7 @@ void CreateGeometry::preflight()
 void CreateGeometry::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

@@ -111,6 +111,7 @@ void FindNorm::initialize()
 void FindNorm::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getPSpace() < 0)
   {
@@ -183,6 +184,7 @@ template <typename T> void findPthNorm(IDataArray::Pointer inDataPtr, FloatArray
 void FindNorm::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

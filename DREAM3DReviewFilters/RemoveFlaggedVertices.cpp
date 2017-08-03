@@ -76,6 +76,7 @@ RemoveFlaggedVertices::~RemoveFlaggedVertices()
 void RemoveFlaggedVertices::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
   m_AttrMatList.clear();
 }
@@ -114,6 +115,7 @@ void RemoveFlaggedVertices::readFilterParameters(AbstractFilterParametersReader*
 void RemoveFlaggedVertices::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   QVector<IDataArray::Pointer> dataArrays;

@@ -150,6 +150,7 @@ void Silhouette::initialize()
 void Silhouette::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QVector<DataArrayPath> dataArrayPaths;
   QVector<size_t> cDims(1, 1);
@@ -215,6 +216,7 @@ void Silhouette::preflight()
 void Silhouette::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

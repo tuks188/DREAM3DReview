@@ -154,6 +154,7 @@ void NormalizeArrays::initialize()
 void NormalizeArrays::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   if(getNormalizeType() != 0 && getNormalizeType() != 1)
@@ -339,6 +340,7 @@ private:
 void NormalizeArrays::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

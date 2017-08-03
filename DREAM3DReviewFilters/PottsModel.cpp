@@ -386,6 +386,7 @@ PottsModel::~PottsModel()
 void PottsModel::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 

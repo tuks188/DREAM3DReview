@@ -145,6 +145,7 @@ void PrincipalComponentAnalysis::initialize()
 void PrincipalComponentAnalysis::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   if(getSelectedDataArrayPaths().size() < 2)
@@ -277,6 +278,7 @@ template <typename T> void copyDataArrays(IDataArray::Pointer dataPtr, std::vect
 void PrincipalComponentAnalysis::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {
