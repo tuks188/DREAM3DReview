@@ -371,6 +371,7 @@ void TesselateFarFieldGrains::readFilterParameters(AbstractFilterParametersReade
 void TesselateFarFieldGrains::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(nullptr != m_FeaturePhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -420,6 +421,7 @@ void TesselateFarFieldGrains::updateFeatureInstancePointers()
 void TesselateFarFieldGrains::updateEnsembleInstancePointers()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -451,6 +453,7 @@ void TesselateFarFieldGrains::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
+  setWarningCondition(0);
   // This is for convenience
 
   // Make sure we have our input DataContainer with the proper Ensemble data
