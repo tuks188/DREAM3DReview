@@ -503,7 +503,7 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
   else
   {
     QString classType;
-    int version = 0;
+    //int version = 0;
     QVector<size_t> tDims = geoDims;
     QVector<size_t> cDims;
 
