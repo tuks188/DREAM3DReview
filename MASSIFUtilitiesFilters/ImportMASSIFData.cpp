@@ -191,7 +191,7 @@ void ImportMASSIFData::dataCheck()
     QString parentPath = QH5Utilities::getParentPath(hdf5ArrayPaths[i]);
 
     hid_t parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
-
+    HDF5ScopedGroupSentinel sentinel(&parentId, false);
     // Read dataset into DREAM.3D structure
     QString objectName = QH5Utilities::getObjectNameFromPath(hdf5ArrayPaths[i]);
 
@@ -203,7 +203,6 @@ void ImportMASSIFData::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
-
     am->addAttributeArray(dPtr->getName(), dPtr);
   }
 }
@@ -354,29 +353,29 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   m_PaddedStep.append(generateIndexString(m_StepNumber, MASSIFUtilitiesConstants::ImportMassifData::MaxStepNumber));
   totalPath.append("/" + m_PaddedStep);
 
-  gid = QH5Utilities::openHDF5Object(gid, m_PaddedStep);
-  if (gid < 0)
+  hid_t stepGid = QH5Utilities::openHDF5Object(gid, m_PaddedStep);
+  if (stepGid < 0)
   {
     QString ss = tr("Could not open path: %1\n").arg(totalPath);
     setErrorCondition(-3007);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  sentinel.addGroupId(&gid);
+  sentinel.addGroupId(&stepGid);
 
   totalPath.append("/" + MASSIFUtilitiesConstants::ImportMassifData::GeometryGrpName);
-  gid = QH5Utilities::openHDF5Object(gid, MASSIFUtilitiesConstants::ImportMassifData::GeometryGrpName);
-  if (gid < 0)
+  hid_t geoGid = QH5Utilities::openHDF5Object(stepGid, MASSIFUtilitiesConstants::ImportMassifData::GeometryGrpName);
+  if (geoGid < 0)
   {
     QString ss = tr("Could not open path: %1\n").arg(totalPath);
     setErrorCondition(-3007);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  sentinel.addGroupId(&gid);
+  sentinel.addGroupId(&geoGid);
 
   std::vector<size_t> dims;
-  herr_t err = QH5Lite::readVectorDataset(gid, MASSIFUtilitiesConstants::ImportMassifData::DimGrpName, dims);
+  herr_t err = QH5Lite::readVectorDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::DimGrpName, dims);
   if (err < 0)
   {
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
@@ -390,7 +389,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   tDims = QVector<size_t>::fromStdVector(dims);
 
   std::vector<float> stdOrigin;
-  err = QH5Lite::readVectorDataset(gid, MASSIFUtilitiesConstants::ImportMassifData::OriginGrpName, stdOrigin);
+  err = QH5Lite::readVectorDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::OriginGrpName, stdOrigin);
   if (err < 0)
   {
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
@@ -404,7 +403,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   origin = QVector<float>::fromStdVector(stdOrigin);
 
   std::vector<float> stdRes;
-  err = QH5Lite::readVectorDataset(gid, MASSIFUtilitiesConstants::ImportMassifData::SpacingGrpName, stdRes);
+  err = QH5Lite::readVectorDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::SpacingGrpName, stdRes);
   if (err < 0)
   {
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
