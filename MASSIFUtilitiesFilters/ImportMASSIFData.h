@@ -142,14 +142,6 @@ class ImportMASSIFData : public AbstractFilter
     QVector<QString> createHDF5DatasetPaths();
 
     /**
-     * @brief generateIndexString
-     * @param index
-     * @param maxIndex
-     * @return
-     */
-    QString generateIndexString(int index, int maxIndex);
-
-    /**
      * @brief getDataContainerGeometry
      * @param tDims
      * @param origin

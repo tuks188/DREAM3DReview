@@ -10,7 +10,7 @@
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-
+#include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
@@ -298,31 +298,6 @@ void ImportMASSIFData::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImportMASSIFData::generateIndexString(int index, int maxIndex)
-{
-  QString numStr = QString::number(index);
-
-  if(maxIndex >= 10)
-  {
-    int mag = 0;
-    int max = maxIndex;
-    while(max > 0)
-    {
-      mag++;
-      max = max / 10;
-    }
-    numStr = "";             // Clear the string
-    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
-    ss.setFieldWidth(mag);
-    ss.setPadChar('0');
-    ss << index;
-  }
-  return numStr;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<float> &origin, QVector<float> &res)
 {
   hid_t fileId = QH5Utilities::openFile(m_MassifInputFilePath, true);
@@ -350,7 +325,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
 
   // Build up the step
   m_PaddedStep = m_FilePrefix;
-  m_PaddedStep.append(generateIndexString(m_StepNumber, MASSIFUtilitiesConstants::ImportMassifData::MaxStepNumber));
+  m_PaddedStep.append(StringOperations::GenerateIndexString(m_StepNumber, MASSIFUtilitiesConstants::ImportMassifData::MaxStepNumber));
   totalPath.append("/" + m_PaddedStep);
 
   hid_t stepGid = QH5Utilities::openHDF5Object(gid, m_PaddedStep);
