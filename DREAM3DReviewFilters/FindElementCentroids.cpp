@@ -69,8 +69,7 @@ FindElementCentroids::FindElementCentroids()
 //
 // -----------------------------------------------------------------------------
 FindElementCentroids::~FindElementCentroids()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -239,7 +238,7 @@ void FindElementCentroids::execute()
   int32_t err = 0;
   IGeometry::Pointer geom = getDataContainerArray()->getDataContainer(getCellCentroidsArrayPath().getDataContainerName())->getGeometry();
 
-  if(geom->getElementCentroids().get() == nullptr)
+  if(geom->getElementCentroids() == nullptr)
   {
     err = geom->findElementCentroids();
   }
@@ -275,7 +274,7 @@ void FindElementCentroids::execute()
 AbstractFilter::Pointer FindElementCentroids::newFilterInstance(bool copyFilterParameters)
 {
   FindElementCentroids::Pointer filter = FindElementCentroids::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -62,8 +62,7 @@ SplitAttributeArray::SplitAttributeArray()
 //
 // -----------------------------------------------------------------------------
 SplitAttributeArray::~SplitAttributeArray()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -212,7 +211,7 @@ void SplitAttributeArray::execute()
 AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterParameters)
 {
   SplitAttributeArray::Pointer filter = SplitAttributeArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

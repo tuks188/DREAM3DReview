@@ -83,8 +83,7 @@ NormalizeArrays::NormalizeArrays()
 //
 // -----------------------------------------------------------------------------
 NormalizeArrays::~NormalizeArrays()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -294,8 +293,7 @@ public:
   }
 
   virtual ~NormalizeArraysImpl()
-  {
-  }
+  = default;
 
   void compute(size_t start, size_t end) const
   {
@@ -374,7 +372,7 @@ void NormalizeArrays::execute()
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, arrays.size()), NormalizeArraysImpl(arrays, m_NormalizeType, m_RangeMin, m_RangeMax), tbb::auto_partitioner());
   }
@@ -417,7 +415,7 @@ void NormalizeArrays::execute()
 AbstractFilter::Pointer NormalizeArrays::newFilterInstance(bool copyFilterParameters)
 {
   NormalizeArrays::Pointer filter = NormalizeArrays::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

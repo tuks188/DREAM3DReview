@@ -72,8 +72,7 @@ AverageVertexArrayToEdgeFaceCellArray::AverageVertexArrayToEdgeFaceCellArray()
 //
 // -----------------------------------------------------------------------------
 AverageVertexArrayToEdgeFaceCellArray::~AverageVertexArrayToEdgeFaceCellArray()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -117,7 +116,7 @@ void AverageVertexArrayToEdgeFaceCellArray::readFilterParameters(AbstractFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, DataContainer::Pointer m, bool weightAverage)
+template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, const DataContainer::Pointer& m, bool weightAverage)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   IGeometry::Pointer geom = m->getGeometry();
@@ -338,7 +337,7 @@ void AverageVertexArrayToEdgeFaceCellArray::dataCheck()
 
   m_AverageCellArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
       this, getAverageCellArrayPath(), 0, cDims);   /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_AverageCellArrayPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_AverageCellArrayPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_AverageCellArray = m_AverageCellArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -408,7 +407,7 @@ void AverageVertexArrayToEdgeFaceCellArray::execute()
 AbstractFilter::Pointer AverageVertexArrayToEdgeFaceCellArray::newFilterInstance(bool copyFilterParameters)
 {
   AverageVertexArrayToEdgeFaceCellArray::Pointer filter = AverageVertexArrayToEdgeFaceCellArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

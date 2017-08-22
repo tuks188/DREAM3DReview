@@ -73,8 +73,7 @@ KDistanceGraph::KDistanceGraph()
 //
 // -----------------------------------------------------------------------------
 KDistanceGraph::~KDistanceGraph()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -225,7 +224,7 @@ void KDistanceGraph::execute()
 AbstractFilter::Pointer KDistanceGraph::newFilterInstance(bool copyFilterParameters)
 {
   KDistanceGraph::Pointer filter = KDistanceGraph::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

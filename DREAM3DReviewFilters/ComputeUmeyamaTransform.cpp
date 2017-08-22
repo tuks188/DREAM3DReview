@@ -73,8 +73,7 @@ ComputeUmeyamaTransform::ComputeUmeyamaTransform()
 //
 // -----------------------------------------------------------------------------
 ComputeUmeyamaTransform::~ComputeUmeyamaTransform()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -207,7 +206,7 @@ void ComputeUmeyamaTransform::dataCheck()
 
   m_TransformationMatrixPtr =
       getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_TransformationMatrixPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_TransformationMatrixPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_TransformationMatrix = m_TransformationMatrixPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -322,7 +321,7 @@ void ComputeUmeyamaTransform::execute()
 AbstractFilter::Pointer ComputeUmeyamaTransform::newFilterInstance(bool copyFilterParameters)
 {
   ComputeUmeyamaTransform::Pointer filter = ComputeUmeyamaTransform::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

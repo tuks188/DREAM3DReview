@@ -115,8 +115,7 @@ CreateGeometry::CreateGeometry()
 //
 // -----------------------------------------------------------------------------
 CreateGeometry::~CreateGeometry()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -794,7 +793,7 @@ void CreateGeometry::execute()
 AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParameters)
 {
   CreateGeometry::Pointer filter = CreateGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

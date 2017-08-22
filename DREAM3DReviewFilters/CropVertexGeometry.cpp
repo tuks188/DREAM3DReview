@@ -72,8 +72,7 @@ CropVertexGeometry::CropVertexGeometry()
 //
 // -----------------------------------------------------------------------------
 CropVertexGeometry::~CropVertexGeometry()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -333,7 +332,7 @@ void CropVertexGeometry::execute()
 AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterParameters)
 {
   CropVertexGeometry::Pointer filter = CropVertexGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -36,8 +36,8 @@
 #include "PointSampleTriangleGeometry.h"
 
 #include <cassert>
-#include <ctime>
 #include <cstring>
+#include <ctime>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
@@ -88,8 +88,7 @@ PointSampleTriangleGeometry::PointSampleTriangleGeometry()
 //
 // -----------------------------------------------------------------------------
 PointSampleTriangleGeometry::~PointSampleTriangleGeometry()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -346,8 +345,10 @@ template <typename T> void copyDataToPoints(IDataArray::Pointer source, IDataArr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PointSampleTriangleGeometry::sampleTriangle(float a[3], float b[3], float c[3], int64_t curVertex, VertexGeom::Pointer vertex, int64_t tri, std::mt19937_64& gen,
-                                                 std::uniform_real_distribution<>& dist)
+void PointSampleTriangleGeometry::sampleTriangle(float a[3], float b[3], float c[3], 
+                                                  int64_t curVertex, VertexGeom::Pointer vertex, 
+                                                  int64_t tri, std::mt19937_64& gen, 
+                                                  std::uniform_real_distribution<>& dist)
 {
   float* vertices = vertex->getVertexPointer(curVertex);
 
@@ -466,7 +467,7 @@ void PointSampleTriangleGeometry::execute()
 AbstractFilter::Pointer PointSampleTriangleGeometry::newFilterInstance(bool copyFilterParameters)
 {
   PointSampleTriangleGeometry::Pointer filter = PointSampleTriangleGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

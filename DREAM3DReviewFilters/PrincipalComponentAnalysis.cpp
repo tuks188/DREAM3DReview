@@ -79,8 +79,7 @@ PrincipalComponentAnalysis::PrincipalComponentAnalysis()
 //
 // -----------------------------------------------------------------------------
 PrincipalComponentAnalysis::~PrincipalComponentAnalysis()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -393,7 +392,7 @@ void PrincipalComponentAnalysis::execute()
 AbstractFilter::Pointer PrincipalComponentAnalysis::newFilterInstance(bool copyFilterParameters)
 {
   PrincipalComponentAnalysis::Pointer filter = PrincipalComponentAnalysis::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

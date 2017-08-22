@@ -77,8 +77,7 @@ Silhouette::Silhouette()
 //
 // -----------------------------------------------------------------------------
 Silhouette::~Silhouette()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -181,10 +180,10 @@ void Silhouette::dataCheck()
     dataArrayPaths.push_back(getSelectedArrayPath());
   }
 
-  if(m_UseMask == true)
+  if(m_UseMask)
   {
     m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getMaskArrayPath(), cDims);
-    if(m_MaskPtr.lock().get())
+    if(m_MaskPtr.lock().get() != nullptr)
     {
       m_Mask = m_MaskPtr.lock()->getPointer(0);
     }
@@ -251,7 +250,7 @@ void Silhouette::execute()
 AbstractFilter::Pointer Silhouette::newFilterInstance(bool copyFilterParameters)
 {
   Silhouette::Pointer filter = Silhouette::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

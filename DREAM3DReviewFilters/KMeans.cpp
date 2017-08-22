@@ -77,8 +77,7 @@ KMeans::KMeans()
 //
 // -----------------------------------------------------------------------------
 KMeans::~KMeans()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -329,7 +328,7 @@ void KMeans::execute()
 AbstractFilter::Pointer KMeans::newFilterInstance(bool copyFilterParameters)
 {
   KMeans::Pointer filter = KMeans::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

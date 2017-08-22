@@ -91,8 +91,7 @@ ExtractAttributeArraysFromGeometry::ExtractAttributeArraysFromGeometry()
 //
 // -----------------------------------------------------------------------------
 ExtractAttributeArraysFromGeometry::~ExtractAttributeArraysFromGeometry()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -593,7 +592,7 @@ void ExtractAttributeArraysFromGeometry::execute()
 AbstractFilter::Pointer ExtractAttributeArraysFromGeometry::newFilterInstance(bool copyFilterParameters)
 {
   ExtractAttributeArraysFromGeometry::Pointer filter = ExtractAttributeArraysFromGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -113,8 +113,7 @@ FindArrayStatistics::FindArrayStatistics()
 //
 // -----------------------------------------------------------------------------
 FindArrayStatistics::~FindArrayStatistics()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -404,10 +403,10 @@ template <template <typename, typename...> class C, typename T, typename... Ts> 
   {
     return static_cast<float>(medVal);
   }
-  else
-  {
+  
+  
     return static_cast<float>((0.5f * (medVal + tmpList[halfElements - 1])));
-  }
+  
 }
 
 // -----------------------------------------------------------------------------
@@ -745,7 +744,7 @@ void findStatistics(IDataArray::Pointer source, Int32ArrayType::Pointer featureI
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-    if(doParallel == true)
+    if(doParallel)
     {
       tbb::parallel_for(tbb::blocked_range<size_t>(0, numFeatures), FindStatisticsByIndexImpl<T>(featureValueMap, length, min, max, mean, median, stdDeviation, summation, arrays),
                         tbb::auto_partitioner());
@@ -903,7 +902,7 @@ void FindArrayStatistics::execute()
 AbstractFilter::Pointer FindArrayStatistics::newFilterInstance(bool copyFilterParameters)
 {
   FindArrayStatistics::Pointer filter = FindArrayStatistics::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

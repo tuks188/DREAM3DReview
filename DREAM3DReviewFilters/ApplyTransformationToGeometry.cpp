@@ -88,8 +88,7 @@ ApplyTransformationToGeometry::ApplyTransformationToGeometry()
 //
 // -----------------------------------------------------------------------------
 ApplyTransformationToGeometry::~ApplyTransformationToGeometry()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -363,7 +362,7 @@ void ApplyTransformationToGeometry::applyTransformation()
 
   for(int64_t i = 0; i < numVertices; i++)
   {
-    if(getCancel() == true)
+    if(getCancel())
     {
       return;
     }
@@ -403,10 +402,10 @@ void ApplyTransformationToGeometry::execute()
   {
     return;
   }
-  else
-  {
+  
+  
     applyTransformation();
-  }
+  
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -417,7 +416,7 @@ void ApplyTransformationToGeometry::execute()
 AbstractFilter::Pointer ApplyTransformationToGeometry::newFilterInstance(bool copyFilterParameters)
 {
   ApplyTransformationToGeometry::Pointer filter = ApplyTransformationToGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -69,8 +69,7 @@ AverageEdgeFaceCellArrayToVertexArray::AverageEdgeFaceCellArrayToVertexArray()
 //
 // -----------------------------------------------------------------------------
 AverageEdgeFaceCellArrayToVertexArray::~AverageEdgeFaceCellArrayToVertexArray()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -112,7 +111,7 @@ void AverageEdgeFaceCellArrayToVertexArray::readFilterParameters(AbstractFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void findCellAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, DataContainer::Pointer m)
+template <typename T> void findCellAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, const DataContainer::Pointer& m)
 {
   IGeometry::Pointer igeom = m->getGeometry();
 
@@ -269,7 +268,7 @@ void AverageEdgeFaceCellArrayToVertexArray::dataCheck()
 
   m_AverageVertexArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
       this, getAverageVertexArrayPath(), 0, cDims);   /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_AverageVertexArrayPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_AverageVertexArrayPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_AverageVertexArray = m_AverageVertexArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -339,7 +338,7 @@ void AverageEdgeFaceCellArrayToVertexArray::execute()
 AbstractFilter::Pointer AverageEdgeFaceCellArrayToVertexArray::newFilterInstance(bool copyFilterParameters)
 {
   AverageEdgeFaceCellArrayToVertexArray::Pointer filter = AverageEdgeFaceCellArrayToVertexArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

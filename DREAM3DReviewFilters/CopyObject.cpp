@@ -67,8 +67,7 @@ CopyObject::CopyObject()
 //
 // -----------------------------------------------------------------------------
 CopyObject::~CopyObject()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -141,7 +140,7 @@ void CopyObject::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(getCopiedObjectName().isEmpty() == true)
+  if(getCopiedObjectName().isEmpty())
   {
     setErrorCondition(-11001);
     QString ss = QObject::tr("The copied object name must be set");
@@ -267,7 +266,7 @@ void CopyObject::execute()
 AbstractFilter::Pointer CopyObject::newFilterInstance(bool copyFilterParameters)
 {
   CopyObject::Pointer filter = CopyObject::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

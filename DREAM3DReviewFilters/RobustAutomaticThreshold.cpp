@@ -68,8 +68,7 @@ RobustAutomaticThreshold::RobustAutomaticThreshold()
 //
 // -----------------------------------------------------------------------------
 RobustAutomaticThreshold::~RobustAutomaticThreshold()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -177,7 +176,7 @@ void RobustAutomaticThreshold::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void findThreshold(IDataArray::Pointer inputPtr, FloatArrayType::Pointer gradMagPtr, BoolArrayType::Pointer maskPtr)
+template <typename T> void findThreshold(IDataArray::Pointer inputPtr, const FloatArrayType::Pointer& gradMagPtr, const BoolArrayType::Pointer& maskPtr)
 {
   typename DataArray<T>::Pointer input = std::dynamic_pointer_cast<DataArray<T>>(inputPtr);
   T* iPtr = input->getPointer(0);
@@ -234,7 +233,7 @@ void RobustAutomaticThreshold::execute()
 AbstractFilter::Pointer RobustAutomaticThreshold::newFilterInstance(bool copyFilterParameters)
 {
   RobustAutomaticThreshold::Pointer filter = RobustAutomaticThreshold::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

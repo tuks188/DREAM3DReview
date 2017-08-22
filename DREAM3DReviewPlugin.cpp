@@ -44,8 +44,7 @@ DREAM3DReviewPlugin::DREAM3DReviewPlugin()
 //
 // -----------------------------------------------------------------------------
 DREAM3DReviewPlugin::~DREAM3DReviewPlugin()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -161,9 +160,9 @@ QMap<QString, QString> DREAM3DReviewPlugin::getThirdPartyLicenses()
   fileStrList.push_back(":/ThirdParty/Qt.txt");
   fileStrList.push_back(":/ThirdParty/Qwt.txt");
 
-  for(QList<QString>::iterator iter = fileStrList.begin(); iter != fileStrList.end(); iter++)
+  for(auto & iter : fileStrList)
   {
-    QFile file(*iter);
+    QFile file(iter);
     QFileInfo licenseFileInfo(file);
 
     if(licenseFileInfo.exists())
@@ -206,14 +205,14 @@ void DREAM3DReviewPlugin::setLocation(QString filePath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DREAM3DReviewPlugin::writeSettings(QSettings& prefs)
+void DREAM3DReviewPlugin::writeSettings(QSettings&  /*prefs*/)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DREAM3DReviewPlugin::readSettings(QSettings& prefs)
+void DREAM3DReviewPlugin::readSettings(QSettings&  /*prefs*/)
 {
 }
 

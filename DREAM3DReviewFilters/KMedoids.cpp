@@ -77,8 +77,7 @@ KMedoids::KMedoids()
 //
 // -----------------------------------------------------------------------------
 KMedoids::~KMedoids()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -325,7 +324,7 @@ void KMedoids::execute()
 AbstractFilter::Pointer KMedoids::newFilterInstance(bool copyFilterParameters)
 {
   KMedoids::Pointer filter = KMedoids::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

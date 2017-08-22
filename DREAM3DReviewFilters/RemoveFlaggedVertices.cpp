@@ -67,8 +67,7 @@ RemoveFlaggedVertices::RemoveFlaggedVertices()
 //
 // -----------------------------------------------------------------------------
 RemoveFlaggedVertices::~RemoveFlaggedVertices()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -307,7 +306,7 @@ void RemoveFlaggedVertices::execute()
 AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilterParameters)
 {
   RemoveFlaggedVertices::Pointer filter = RemoveFlaggedVertices::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

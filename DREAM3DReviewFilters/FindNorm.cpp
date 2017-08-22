@@ -68,8 +68,7 @@ FindNorm::FindNorm()
 //
 // -----------------------------------------------------------------------------
 FindNorm::~FindNorm()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -157,7 +156,7 @@ void FindNorm::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void findPthNorm(IDataArray::Pointer inDataPtr, FloatArrayType::Pointer normPtr, float p)
+template <typename T> void findPthNorm(IDataArray::Pointer inDataPtr, const FloatArrayType::Pointer& normPtr, float p)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   T* inData = inputDataPtr->getPointer(0);
@@ -202,7 +201,7 @@ void FindNorm::execute()
 AbstractFilter::Pointer FindNorm::newFilterInstance(bool copyFilterParameters)
 {
   FindNorm::Pointer filter = FindNorm::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

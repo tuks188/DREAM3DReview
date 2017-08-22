@@ -173,7 +173,10 @@ signals:
 protected:
   PointSampleTriangleGeometry();
 
-  void sampleTriangle(float a[3], float b[3], float c[3], int64_t curVertex, VertexGeom::Pointer vertex, int64_t tri, std::mt19937_64& gen, std::uniform_real_distribution<>& dist);
+  void sampleTriangle(float a[3], float b[3], float c[3], 
+                      int64_t curVertex, VertexGeom::Pointer vertex, 
+                      int64_t tri, std::mt19937_64& gen, 
+                      std::uniform_real_distribution<>& dist);
 
   /**
    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays

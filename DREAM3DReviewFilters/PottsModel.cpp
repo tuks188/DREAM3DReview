@@ -39,6 +39,8 @@
 #include <chrono>
 #include <deque>
 #include <random>
+#include <utility>
+#include <utility>
 
 #include "SIMPLib/Common/Constants.h"
 
@@ -62,7 +64,7 @@ namespace
 {
 using Neighborhood = std::vector<std::array<int8_t, 3>>;
 
-static const double BOLTZMANN = 1.38064852e-23;
+const double BOLTZMANN = 1.38064852e-23;
 
 enum class Dimension : uint8_t
 {
@@ -74,16 +76,16 @@ class SpinLattice
 {
 public:
   SpinLattice(ImageGeom::Pointer image, double temperature, bool periodic, int32_t* fIds, bool* mask)
-  : image_(image)
+  : image_(std::move(image))
   , temperature_(temperature)
   , periodic_(periodic)
   , fIds_(fIds)
   , mask_(mask)
   {
     initialize();
-  };
+  }
 
-  virtual ~SpinLattice(){};
+  virtual ~SpinLattice()= default;
 
   void attempt_flip(size_t index)
   {
@@ -167,7 +169,7 @@ private:
         size_t mody = apply_modular_operation(y, neighbor[1], dims_[1]);
         size_t modz = apply_modular_operation(z, neighbor[2], dims_[2]);
         size_t neigh = neighbor_index(modx, mody, modz);
-        if(mask_)
+        if(mask_ != nullptr)
         {
           if(mask_[neigh])
           {
@@ -187,7 +189,7 @@ private:
         if((modx >= 0 && modx < static_cast<int64_t>(dims_[0])) && (mody >= 0 && mody < static_cast<int64_t>(dims_[1])) && (modz >= 0 && modz < static_cast<int64_t>(dims_[2])))
         {
           size_t neigh = neighbor_index(modx, mody, modz);
-          if(mask_)
+          if(mask_ != nullptr)
           {
             if(mask_[neigh])
             {
@@ -210,10 +212,10 @@ private:
     {
       return a - b;
     }
-    else
-    {
+    
+    
       return m - b + a;
-    }
+    
   }
 
   size_t modular_addition(size_t a, size_t b, size_t m)
@@ -227,10 +229,10 @@ private:
     {
       return a - b;
     }
-    else
-    {
+    
+    
       return m - b + a;
-    }
+    
   }
 
   size_t apply_modular_operation(size_t a, int8_t b, size_t m)
@@ -241,10 +243,10 @@ private:
       size_t c = static_cast<size_t>(b);
       return modular_subtraction(a, b, m);
     }
-    else
-    {
+    
+    
       return modular_addition(a, b, m);
-    }
+    
   }
 
   template <typename T> size_t neighbor_index(T x, T y, T z)
@@ -342,18 +344,18 @@ private:
 
   ImageGeom::Pointer image_;
   double temperature_;
-  double kT_;
+  double kT_{};
   bool periodic_;
   Neighborhood neighborhood_;
   int32_t* fIds_;
   bool* mask_;
-  size_t dims_[3];
+  size_t dims_[3]{};
   Dimension dim_type_;
-  size_t total_flips_;
-  std::mt19937_64::result_type seed_;
+  size_t total_flips_{};
+  std::mt19937_64::result_type seed_{};
   std::mt19937_64 gen_;
 };
-}
+} // namespace
 
 // -----------------------------------------------------------------------------
 //
@@ -377,8 +379,7 @@ PottsModel::PottsModel()
 //
 // -----------------------------------------------------------------------------
 PottsModel::~PottsModel()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -583,7 +584,7 @@ void PottsModel::execute()
 AbstractFilter::Pointer PottsModel::newFilterInstance(bool copyFilterParameters)
 {
   PottsModel::Pointer filter = PottsModel::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -72,8 +72,7 @@ ExtractInternalSurfacesFromTriangleGeometry::ExtractInternalSurfacesFromTriangle
 //
 // -----------------------------------------------------------------------------
 ExtractInternalSurfacesFromTriangleGeometry::~ExtractInternalSurfacesFromTriangleGeometry()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -311,7 +310,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
       Vertex tmpCoords2 = {{vertices[3 * triangles[3 * i + 1] + 0], vertices[3 * triangles[3 * i + 1] + 1], vertices[3 * triangles[3 * i + 1] + 2]}};
       Vertex tmpCoords3 = {{vertices[3 * triangles[3 * i + 2] + 0], vertices[3 * triangles[3 * i + 2] + 1], vertices[3 * triangles[3 * i + 2] + 2]}};
 
-      VertexMap::iterator iter = vertexMap.find(tmpCoords1);
+      auto iter = vertexMap.find(tmpCoords1);
       if(iter == vertexMap.end())
       {
         tmpVerts.push_back(tmpCoords1);
@@ -461,7 +460,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
 AbstractFilter::Pointer ExtractInternalSurfacesFromTriangleGeometry::newFilterInstance(bool copyFilterParameters)
 {
   ExtractInternalSurfacesFromTriangleGeometry::Pointer filter = ExtractInternalSurfacesFromTriangleGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
