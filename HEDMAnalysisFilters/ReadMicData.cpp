@@ -308,7 +308,7 @@ void ReadMicData::dataCheck()
 
   if(m_InputFile.isEmpty() == true && m_Manufacturer == Ebsd::UnknownManufacturer)
   {
-    QString ss = QObject::tr("%1: The InputFile must be set. It is empty.").arg(getHumanLabel());
+    QString ss = QObject::tr("The input file must be set for property %1").arg("InputFile");
     setErrorCondition(-1);
     notifyErrorMessage(getHumanLabel(), ss, -1);
   }
