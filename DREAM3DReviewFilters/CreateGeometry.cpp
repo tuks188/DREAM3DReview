@@ -201,7 +201,7 @@ void CreateGeometry::setupFilterParameters()
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath2, FilterParameter::RequiredArray, CreateGeometry, req, 4));
-    req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int64, 2, AttributeMatrix::Category::Any);
+    req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int64, 3, AttributeMatrix::Category::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Triangle List", SharedTriListArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 4));
     parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName2, FilterParameter::CreatedArray, CreateGeometry, 4));
     parameters.push_back(SIMPL_NEW_STRING_FP("Face Attribute Matrix", FaceAttributeMatrixName0, FilterParameter::CreatedArray, CreateGeometry, 4));
