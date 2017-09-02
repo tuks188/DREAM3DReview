@@ -84,7 +84,9 @@ A **Quadrilateral Geometry** is a _mesh-like_ **Geometry**, consisting of a coll
 A **Tetrahedral Geometry** is a _mesh-like_ **Geometry**, consisting of a collection of tetrahedra connecting four vertices; it is a type of _volume mesh_.  Creating a **Tetrahedral Geometry** requires supplying a shared **Vertex** list and a **Tetrahedral** list.  The winding that define tetrahedra require one additional convention to complement the right hand rule.  By convention, the first three vertices define the tetrahedra _base_; the winding of these vertices by the right hand rule defines a normal that points _towards the fourth vertex_.  This convention is useful since applying it consistently allows for the volume of the tetrahedra to be _signed_, which is important for determining if a tetrahedron is "inverted".
 
 ### Defining Geometries with Attribute Arrays ###
-For **Geometries** that require the selection of **Attribute Arrays** (all **Geometries** except **Image**), the arrays will be _copied_ to create the new **Geometry**.  Therefore, any operations on the original array will not affect the topology of the **Geometry**, and any geometric operations will not affect the original array.  
+
+
+### For **Geometries** that require the selection of **Attribute Arrays** (all **Geometries** except **Image**), the arrays will be _copied_ to create the new **Geometry**.  Therefore, any operations on the original array will not affect the topology of the **Geometry**, and any geometric operations will not affect the original array. This behavior can be adjusted in the filter by using the _Array Handling_ boolean. ###
 
 This **Filter** will validate that the arrays selected to define a **Geometry** "make sense", given the above information for how **Geometries** are stored in **DREAM.3D** (for example, no dimension for an **Image** may be less than or equal to zero, no bounds arrays for a **Rectilinear Grid** may have less than two values, and no **Vertex** Ids stored in a shared **Element** list may be larger than the total number of **Vertices** in the shared **Vertex** list).  The checks that require accessing the actual array values (as opposed to just descriptive information) will be performed at run time.  By default, these checks will only produce warnings, allowing the **Pipeline** to continue; the user may opt to change these warnings to errors by selecting the _Treat Geometry Warnings as Errors_ option. 
 
@@ -120,6 +122,7 @@ In this above example, the vertex information begins on line 4; thus, line 4 def
 |------|------|-------------|
 | Geometry Type | Enumeration | The type of **Geometry** to create |
 | Treat Geometry Warnings as Errors | bool | Whether run time warnings for **Geometries** should be treated as errors |
+| Array Handling | bool | Determines if the arrays that make up the geometry primitives should be **Moved** or **Copied** to the created Geometry object. |
 | Dimensions | size_t (3x) | The number of cells in each of the X, Y, Z directions, if _Image_ is chosen |
 | Origin | float (3x) | The origin of each of the axes in X, Y, Z order, if _Image_ is chosen |
 | Resolution | float (3x) | The length scale of each voxel/pixel, if _Image_ is chosen |

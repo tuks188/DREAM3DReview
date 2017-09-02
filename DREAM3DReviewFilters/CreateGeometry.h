@@ -56,6 +56,9 @@ public:
 
   virtual ~CreateGeometry();
 
+  static const int k_CopyArrays = 0;
+  static const int k_MoveArrays = 1;
+
   SIMPL_FILTER_PARAMETER(int, GeometryType)
   Q_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
 
@@ -142,6 +145,9 @@ public:
 
   SIMPL_FILTER_PARAMETER(bool, TreatWarningsAsErrors)
   Q_PROPERTY(bool TreatWarningsAsErrors READ getTreatWarningsAsErrors WRITE setTreatWarningsAsErrors)
+
+  SIMPL_FILTER_PARAMETER(bool, ArrayHandling)
+  Q_PROPERTY(bool ArrayHandling READ getArrayHandling WRITE setArrayHandling)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
