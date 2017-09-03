@@ -38,6 +38,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
@@ -87,6 +88,7 @@ CreateGeometry::CreateGeometry()
 , m_FaceAttributeMatrixName1(SIMPL::Defaults::FaceAttributeMatrixName)
 , m_TetCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 , m_TreatWarningsAsErrors(false)
+, m_ArrayHandling(k_CopyArrays)
 , m_XBounds(nullptr)
 , m_YBounds(nullptr)
 , m_ZBounds(nullptr)
@@ -170,6 +172,12 @@ void CreateGeometry::setupFilterParameters()
     parameters.push_back(parameter);
   }
   parameters.push_back(SIMPL_NEW_BOOL_FP("Treat Geometry Warnings as Errors", TreatWarningsAsErrors, FilterParameter::Parameter, CreateGeometry));
+
+  {
+    QVector<QString> choices = {"Copy Arrays", "Move Arrays"};
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Array Handling", ArrayHandling, FilterParameter::Parameter, CreateGeometry, choices, false));
+  }
+
   DataContainerSelectionFilterParameter::RequirementType req;
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container", DataContainerName, FilterParameter::RequiredArray, CreateGeometry, req));
   {
@@ -363,9 +371,22 @@ void CreateGeometry::dataCheck()
     }
 
     RectGridGeom::Pointer rectgrid = RectGridGeom::CreateGeometry(SIMPL::Geometry::RectGridGeometry);
-    rectgrid->setXBounds(std::static_pointer_cast<FloatArrayType>(m_XBoundsPtr.lock()->deepCopy(getInPreflight())));
-    rectgrid->setYBounds(std::static_pointer_cast<FloatArrayType>(m_YBoundsPtr.lock()->deepCopy(getInPreflight())));
-    rectgrid->setZBounds(std::static_pointer_cast<FloatArrayType>(m_ZBoundsPtr.lock()->deepCopy(getInPreflight())));
+    if(getArrayHandling() == k_CopyArrays)
+    {
+      rectgrid->setXBounds(std::static_pointer_cast<FloatArrayType>(m_XBoundsPtr.lock()->deepCopy(getInPreflight())));
+      rectgrid->setYBounds(std::static_pointer_cast<FloatArrayType>(m_YBoundsPtr.lock()->deepCopy(getInPreflight())));
+      rectgrid->setZBounds(std::static_pointer_cast<FloatArrayType>(m_ZBoundsPtr.lock()->deepCopy(getInPreflight())));
+    }
+    else
+    {
+      rectgrid->setXBounds(m_XBoundsPtr.lock());
+      rectgrid->setYBounds(m_YBoundsPtr.lock());
+      rectgrid->setZBounds(m_ZBoundsPtr.lock());
+
+      getDataContainerArray()->getAttributeMatrix(getXBoundsArrayPath())->removeAttributeArray(getXBoundsArrayPath().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getYBoundsArrayPath())->removeAttributeArray(getYBoundsArrayPath().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getZBoundsArrayPath())->removeAttributeArray(getZBoundsArrayPath().getDataArrayName());
+    }
     rectgrid->setDimensions(m_XBoundsPtr.lock()->getNumberOfTuples() - 1, m_YBoundsPtr.lock()->getNumberOfTuples() - 1, m_ZBoundsPtr.lock()->getNumberOfTuples() - 1);
     dc->setGeometry(rectgrid);
 
@@ -385,7 +406,16 @@ void CreateGeometry::dataCheck()
       return;
     }
 
-    VertexGeom::Pointer vertex = VertexGeom::CreateGeometry(std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::VertexGeometry);
+    VertexGeom::Pointer vertex = VertexGeom::NullPointer();
+    if(getArrayHandling() == k_CopyArrays)
+    {
+      vertex = VertexGeom::CreateGeometry(std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::VertexGeometry);
+    }
+    else
+    {
+      vertex = VertexGeom::CreateGeometry(verts, SIMPL::Geometry::VertexGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+    }
     dc->setGeometry(vertex);
 
     QVector<size_t> tDims(1, vertex->getNumberOfVertices());
@@ -410,8 +440,18 @@ void CreateGeometry::dataCheck()
       return;
     }
 
-    EdgeGeom::Pointer edge = EdgeGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_EdgesPtr.lock()->deepCopy(getInPreflight())),
-                                                      std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::EdgeGeometry);
+    EdgeGeom::Pointer edge = EdgeGeom::NullPointer();
+    if(getArrayHandling() == k_CopyArrays)
+    {
+      edge = EdgeGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_EdgesPtr.lock()->deepCopy(getInPreflight())),
+                                      std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::EdgeGeometry);
+    }
+    else
+    {
+      edge = EdgeGeom::CreateGeometry(m_EdgesPtr.lock(), verts, SIMPL::Geometry::EdgeGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedEdgeListArrayPath())->removeAttributeArray(getSharedEdgeListArrayPath().getDataArrayName());
+    }
     dc->setGeometry(edge);
 
     m_NumVerts = edge->getNumberOfVertices();
@@ -439,8 +479,18 @@ void CreateGeometry::dataCheck()
       return;
     }
 
-    TriangleGeom::Pointer triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
-                                                                  std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TriangleGeometry);
+    TriangleGeom::Pointer triangle = TriangleGeom::NullPointer();
+    if(getArrayHandling() == k_CopyArrays)
+    {
+      triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
+                                              std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TriangleGeometry);
+    }
+    else
+    {
+      triangle = TriangleGeom::CreateGeometry(m_TrisPtr.lock(), verts, SIMPL::Geometry::TriangleGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedTriListArrayPath())->removeAttributeArray(getSharedTriListArrayPath().getDataArrayName());
+    }
     dc->setGeometry(triangle);
 
     m_NumVerts = triangle->getNumberOfVertices();
@@ -469,8 +519,18 @@ void CreateGeometry::dataCheck()
       return;
     }
 
-    QuadGeom::Pointer quadrilateral = QuadGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_QuadsPtr.lock()->deepCopy(getInPreflight())),
-                                                               std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+    QuadGeom::Pointer quadrilateral = QuadGeom::NullPointer();
+    if(getArrayHandling() == k_CopyArrays)
+    {
+      quadrilateral = QuadGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_QuadsPtr.lock()->deepCopy(getInPreflight())),
+                                               std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+    }
+    else
+    {
+      quadrilateral = QuadGeom::CreateGeometry(m_QuadsPtr.lock(), verts, SIMPL::Geometry::QuadGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedQuadListArrayPath())->removeAttributeArray(getSharedQuadListArrayPath().getDataArrayName());
+    }
     dc->setGeometry(quadrilateral);
 
     m_NumVerts = quadrilateral->getNumberOfVertices();
@@ -499,8 +559,19 @@ void CreateGeometry::dataCheck()
       return;
     }
 
-    TetrahedralGeom::Pointer tetrahedral = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TetsPtr.lock()->deepCopy(getInPreflight())),
-                                                                           std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+    TetrahedralGeom::Pointer tetrahedral = TetrahedralGeom::NullPointer();
+    if(getArrayHandling() == k_CopyArrays)
+    {
+      tetrahedral = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TetsPtr.lock()->deepCopy(getInPreflight())),
+                                                    std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+    }
+    else
+    {
+      tetrahedral = TetrahedralGeom::CreateGeometry(m_TetsPtr.lock(), verts, SIMPL::Geometry::QuadGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedTetListArrayPath())->removeAttributeArray(getSharedTetListArrayPath().getDataArrayName());
+    }
+
     dc->setGeometry(tetrahedral);
 
     m_NumVerts = tetrahedral->getNumberOfVertices();
