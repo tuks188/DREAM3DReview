@@ -63,9 +63,9 @@
 #include "SIMPLib/Geometry/ShapeOps/EllipsoidOps.h"
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
 #include "SIMPLib/Utilities/TimeUtilities.h"
 
 #include "OrientationLib/OrientationMath/OrientationMath.h"

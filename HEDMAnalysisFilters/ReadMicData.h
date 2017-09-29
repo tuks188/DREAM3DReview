@@ -40,12 +40,12 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QDateTime>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 #include "HEDMAnalysisFilters/HEDM/MicPhase.h"
 

@@ -36,7 +36,7 @@
 
 #include "HEDMAnalysisFilters/HEDM/MicReader.h"
 
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/Common/UnitTestSupport.hpp"
 
 #include "EbsdLib/Test/EbsdLibTestFileLocation.h"
 // -----------------------------------------------------------------------------

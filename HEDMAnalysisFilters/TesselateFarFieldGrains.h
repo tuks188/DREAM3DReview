@@ -41,19 +41,18 @@
 #include <map>
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "HEDMAnalysis/HEDMAnalysisConstants.h"
+#include "OrientationLib/LaueOps/OrthoRhombicOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/StatsDataArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
-#include "SIMPLib/StatsData/StatsData.h"
+#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/ShapeOps/ShapeOps.h"
-#include "OrientationLib/LaueOps/OrthoRhombicOps.h"
-#include "HEDMAnalysis/HEDMAnalysisConstants.h"
-
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/StatsData/StatsData.h"
 
 /**
  * @class TesselateFarFieldGrains TesselateFarFieldGrains.h DREAM3DLib/SyntheticBuilderFilters/TesselateFarFieldGrains.h
