@@ -5,9 +5,9 @@
 #ifndef _importmassifdata_h_
 #define _importmassifdata_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ImportMASSIFData class. See [Filter documentation](@ref importmassifdata) for details.
