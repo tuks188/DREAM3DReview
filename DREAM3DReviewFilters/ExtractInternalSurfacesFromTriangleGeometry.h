@@ -36,8 +36,8 @@
 #ifndef _extractinternalsurfacesfromtrianglegeometry_h_
 #define _extractinternalsurfacesfromtrianglegeometry_h_
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**

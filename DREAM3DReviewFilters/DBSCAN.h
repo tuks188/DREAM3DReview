@@ -36,8 +36,8 @@
 #ifndef _dbscan_h_
 #define _dbscan_h_
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 
 /**

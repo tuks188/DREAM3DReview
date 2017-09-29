@@ -36,8 +36,8 @@
 #ifndef _cropvertexgeometry_h_
 #define _cropvertexgeometry_h_
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**

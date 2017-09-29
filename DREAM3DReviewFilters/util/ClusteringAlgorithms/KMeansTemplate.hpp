@@ -39,10 +39,10 @@
 #include <random>
 #include <chrono>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/SIMPLib.h"
 
 #include "DREAM3DReview/DREAM3DReviewFilters/util/DistanceTemplate.hpp"
 
