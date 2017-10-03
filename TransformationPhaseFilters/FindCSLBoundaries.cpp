@@ -460,7 +460,7 @@ const QString FindCSLBoundaries::getGroupName()
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getSubGroupName()
 {
-  return SIMPL::FilterSubGroups::CrystallographicFilters;
+  return SIMPL::FilterSubGroups::CrystallographyFilters;
 }
 
 
