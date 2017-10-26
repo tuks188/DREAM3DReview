@@ -240,7 +240,7 @@ private:
     if(b < 0)
     {
       b *= -1;
-      size_t c = static_cast<size_t>(b);
+      //size_t c = static_cast<size_t>(b);
       return modular_subtraction(a, b, m);
     }
     

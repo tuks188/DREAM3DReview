@@ -276,6 +276,6 @@ install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME}
 #-------------------------------------------------------------------------------
 #- This installs all the Example Pipeline files.
 install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data/
-        DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}/Data
+        DESTINATION Data
         COMPONENT Applications )
 
