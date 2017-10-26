@@ -295,6 +295,7 @@ void FindCSLBoundaries::readFilterParameters(AbstractFilterParametersReader* rea
 void FindCSLBoundaries::dataCheckVoxel()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getAvgQuatsArrayPath().getDataContainerName());
 
@@ -319,6 +320,7 @@ void FindCSLBoundaries::dataCheckSurfaceMesh()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<TriangleGeom, AbstractFilter>(this, getSurfaceMeshFaceLabelsArrayPath().getDataContainerName());
 
@@ -361,6 +363,7 @@ void FindCSLBoundaries::preflight()
 void FindCSLBoundaries::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheckVoxel();
   if(getErrorCondition() < 0) { return; }
   dataCheckSurfaceMesh();
@@ -457,7 +460,7 @@ const QString FindCSLBoundaries::getGroupName()
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getSubGroupName()
 {
-  return SIMPL::FilterSubGroups::CrystallographicFilters;
+  return SIMPL::FilterSubGroups::CrystallographyFilters;
 }
 
 
