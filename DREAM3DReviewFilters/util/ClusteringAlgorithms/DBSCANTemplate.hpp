@@ -70,10 +70,10 @@ class FindEpsilonNeighborhoodsImpl
 
   void compute(size_t start, size_t end) const
   {
-    int64_t counter = 0;
-    int64_t totalElements = end - start;
-    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
-    
+    // int64_t counter = 0;
+    // int64_t totalElements = end - start;
+    // int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+
     for(size_t i = start; i < end; i++)
     {
       if(m_Mask[i])
