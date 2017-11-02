@@ -149,6 +149,9 @@ public:
   SIMPL_FILTER_PARAMETER(bool, ArrayHandling)
   Q_PROPERTY(bool ArrayHandling READ getArrayHandling WRITE setArrayHandling)
 
+  QString getBoxDimensions();
+  Q_PROPERTY(QString BoxDimensions READ getBoxDimensions)
+  
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */

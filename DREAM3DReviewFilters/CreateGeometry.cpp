@@ -43,6 +43,7 @@
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
@@ -143,6 +144,7 @@ void CreateGeometry::setupFilterParameters()
     QStringList linkedProps = {"Dimensions",
                                "Origin",
                                "Resolution",
+                               "BoxDimensions",
                                "ImageCellAttributeMatrixName", // ImageGeom
                                "XBoundsArrayPath",
                                "YBoundsArrayPath",
@@ -192,6 +194,11 @@ void CreateGeometry::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Y Bounds", YBoundsArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 1));
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Z Bounds", ZBoundsArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 1));
     parameters.push_back(SIMPL_NEW_STRING_FP("Cell Attribute Matrix", RectGridCellAttributeMatrixName, FilterParameter::CreatedArray, CreateGeometry, 1));
+    
+    PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Box Size in Length Units", BoxDimensions, FilterParameter::Parameter, CreateGeometry);
+    param->setReadOnly(true);
+    param->setGroupIndex(0);
+    parameters.push_back(param);
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
@@ -856,6 +863,21 @@ void CreateGeometry::execute()
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getBoxDimensions()
+{
+  QString desc;
+  QTextStream ss(&desc);
+
+  ss << "X Range: " << m_Origin.x << " to " << (m_Origin.x + (m_Dimensions.x * m_Resolution.x)) << " (Delta: " << (m_Dimensions.x * m_Resolution.x) << ")\n";
+  ss << "Y Range: " << m_Origin.y << " to " << (m_Origin.y + (m_Dimensions.y * m_Resolution.y)) << " (Delta: " << (m_Dimensions.y * m_Resolution.y) << ")\n";
+  ss << "Z Range: " << m_Origin.z << " to " << (m_Origin.z + (m_Dimensions.z * m_Resolution.z)) << " (Delta: " << (m_Dimensions.z * m_Resolution.z) << ")";
+
+  return desc;
 }
 
 // -----------------------------------------------------------------------------
