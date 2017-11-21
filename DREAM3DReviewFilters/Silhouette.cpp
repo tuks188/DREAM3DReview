@@ -108,14 +108,10 @@ void Silhouette::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Cluster Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, Silhouette, dasReq));
   DataArrayCreationFilterParameter::RequirementType dacReq = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::Any);
   AttributeMatrix::Types amTypes;
-  amTypes.push_back(AttributeMatrix::Type::VertexFeature);
-  amTypes.push_back(AttributeMatrix::Type::EdgeFeature);
-  amTypes.push_back(AttributeMatrix::Type::FaceFeature);
-  amTypes.push_back(AttributeMatrix::Type::CellFeature);
-  amTypes.push_back(AttributeMatrix::Type::VertexEnsemble);
-  amTypes.push_back(AttributeMatrix::Type::EdgeEnsemble);
-  amTypes.push_back(AttributeMatrix::Type::FaceEnsemble);
-  amTypes.push_back(AttributeMatrix::Type::CellEnsemble);
+  amTypes.push_back(AttributeMatrix::Type::Vertex);
+  amTypes.push_back(AttributeMatrix::Type::Edge);
+  amTypes.push_back(AttributeMatrix::Type::Face);
+  amTypes.push_back(AttributeMatrix::Type::Cell);
   dacReq.amTypes = amTypes;
   parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Silhouette", SilhouetteArrayPath, FilterParameter::CreatedArray, Silhouette, dacReq));
   setFilterParameters(parameters);
