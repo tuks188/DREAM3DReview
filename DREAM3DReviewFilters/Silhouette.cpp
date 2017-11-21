@@ -104,7 +104,7 @@ void Silhouette::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Silhouette", SelectedArrayPath, FilterParameter::RequiredArray, Silhouette, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, Silhouette, dasReq));
-  dasReq = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::UInt32, 1, AttributeMatrix::Category::Element);
+  dasReq = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Category::Element);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Cluster Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, Silhouette, dasReq));
   DataArrayCreationFilterParameter::RequirementType dacReq = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::Any);
   AttributeMatrix::Types amTypes;
