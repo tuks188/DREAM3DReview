@@ -240,21 +240,33 @@ add_custom_target(${PLUGIN_NAME}PipelinesCopy ALL
             COMMENT "Copying ${PLUGIN_NAME} Example Pipelines into Binary Directory")
 set_target_properties(${PLUGIN_NAME}PipelinesCopy PROPERTIES FOLDER ZZ_COPY_FILES)
 
+
+
 #-------------------------------------------------------------------------------
 #- This installs all the prebuilt pipeline files.
-if(APPLE)
+if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME})
+  if(APPLE)
+    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources/PrebuiltPipelines/Examples")
+  else()
+    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/PrebuiltPipelines/Examples")
+  endif()
+
   install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME}
-          DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}/Resources/PrebuiltPipelines/Examples
-          COMPONENT Applications )
-else()
-  install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME}
-          DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}/PrebuiltPipelines/Examples
+          DESTINATION ${INSTALL_DESTINATION}
           COMPONENT Applications )
 endif()
 
+
 #-------------------------------------------------------------------------------
 #- This installs all the Data files.
-# install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data/
-#         DESTINATION Data
-#         COMPONENT Applications )
+if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
+  if(APPLE)
+    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources/Data")
+  else()
+    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}")
+  endif()
 
+  install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME}
+          DESTINATION ${INSTALL_DESTINATION}
+          COMPONENT Applications )
+endif()
