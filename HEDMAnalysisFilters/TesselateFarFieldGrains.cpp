@@ -1062,7 +1062,7 @@ void TesselateFarFieldGrains::assign_voxels()
   }
 
   AttributeMatrix::Pointer cellFeatureAttrMat = m->getAttributeMatrix(getOutputCellFeatureAttributeMatrixName());
-  cellFeatureAttrMat->removeInactiveObjects(activeObjects, m_FeatureIdsPtr.lock());
+  cellFeatureAttrMat->removeInactiveObjects(activeObjects, m_FeatureIdsPtr.lock().get());
   // need to update pointers after removing inactive objects
   updateFeatureInstancePointers();
 
