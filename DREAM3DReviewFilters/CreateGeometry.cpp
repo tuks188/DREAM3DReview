@@ -191,7 +191,7 @@ void CreateGeometry::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Y Bounds", YBoundsArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 1));
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Z Bounds", ZBoundsArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 1));
     parameters.push_back(SIMPL_NEW_STRING_FP("Cell Attribute Matrix", RectGridCellAttributeMatrixName, FilterParameter::CreatedArray, CreateGeometry, 1));
-    
+
     PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Box Size in Length Units", BoxDimensions, FilterParameter::Parameter, CreateGeometry);
     param->setReadOnly(true);
     param->setGroupIndex(0);
@@ -235,44 +235,6 @@ void CreateGeometry::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_STRING_FP("Cell Attribute Matrix", TetCellAttributeMatrixName, FilterParameter::CreatedArray, CreateGeometry, 6));
   }
   setFilterParameters(parameters);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CreateGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-  reader->openFilterGroup(this, index);
-  setGeometryType(reader->readValue("GeometryType", getGeometryType()));
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
-  setSharedVertexListArrayPath0(reader->readDataArrayPath("SharedVertexListArrayPath0", getSharedVertexListArrayPath0()));
-  setSharedVertexListArrayPath1(reader->readDataArrayPath("SharedVertexListArrayPath1", getSharedVertexListArrayPath1()));
-  setSharedVertexListArrayPath2(reader->readDataArrayPath("SharedVertexListArrayPath2", getSharedVertexListArrayPath2()));
-  setSharedVertexListArrayPath3(reader->readDataArrayPath("SharedVertexListArrayPath3", getSharedVertexListArrayPath3()));
-  setSharedVertexListArrayPath4(reader->readDataArrayPath("SharedVertexListArrayPath4", getSharedVertexListArrayPath4()));
-  setSharedEdgeListArrayPath(reader->readDataArrayPath("SharedEdgeListArrayPath", getSharedEdgeListArrayPath()));
-  setSharedTriListArrayPath(reader->readDataArrayPath("SharedTriListArrayPath", getSharedTriListArrayPath()));
-  setSharedQuadListArrayPath(reader->readDataArrayPath("SharedQuadListArrayPath", getSharedQuadListArrayPath()));
-  setSharedTetListArrayPath(reader->readDataArrayPath("SharedTetListArrayPath", getSharedTetListArrayPath()));
-  setXBoundsArrayPath(reader->readDataArrayPath("XBoundsArrayPath", getXBoundsArrayPath()));
-  setYBoundsArrayPath(reader->readDataArrayPath("YBoundsArrayPath", getYBoundsArrayPath()));
-  setZBoundsArrayPath(reader->readDataArrayPath("ZBoundsArrayPath", getZBoundsArrayPath()));
-  setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
-  setOrigin(reader->readFloatVec3("Origin", getOrigin()));
-  setResolution(reader->readFloatVec3("Resolution", getResolution()));
-  setImageCellAttributeMatrixName(reader->readString("ImageCellAttributeMatrixName", getImageCellAttributeMatrixName()));
-  setRectGridCellAttributeMatrixName(reader->readString("RectGridCellAttributeMatrixName", getRectGridCellAttributeMatrixName()));
-  setVertexAttributeMatrixName0(reader->readString("VertexAttributeMatrixName0", getVertexAttributeMatrixName0()));
-  setVertexAttributeMatrixName1(reader->readString("VertexAttributeMatrixName1", getVertexAttributeMatrixName1()));
-  setVertexAttributeMatrixName2(reader->readString("VertexAttributeMatrixName2", getVertexAttributeMatrixName2()));
-  setVertexAttributeMatrixName3(reader->readString("VertexAttributeMatrixName3", getVertexAttributeMatrixName3()));
-  setVertexAttributeMatrixName4(reader->readString("VertexAttributeMatrixName4", getVertexAttributeMatrixName4()));
-  setEdgeAttributeMatrixName(reader->readString("EdgeAttributeMatrixName", getEdgeAttributeMatrixName()));
-  setFaceAttributeMatrixName0(reader->readString("FaceAttributeMatrixName0", getFaceAttributeMatrixName0()));
-  setFaceAttributeMatrixName1(reader->readString("FaceAttributeMatrixName1", getFaceAttributeMatrixName1()));
-  setTetCellAttributeMatrixName(reader->readString("TetCellAttributeMatrixName", getTetCellAttributeMatrixName()));
-  setTreatWarningsAsErrors(reader->readValue("TreatWarningsAsErrors", getTreatWarningsAsErrors()));
-  reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
