@@ -183,8 +183,8 @@ class FindCSLBoundaries : public AbstractFilter
     void dataCheckVoxel();
     void dataCheckSurfaceMesh();
 
-    FindCSLBoundaries(const FindCSLBoundaries&); // Copy Constructor Not Implemented
-    void operator=(const FindCSLBoundaries&); // Operator '=' Not Implemented
+    FindCSLBoundaries(const FindCSLBoundaries&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FindCSLBoundaries&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* FindCSLBoundaries_H_ */

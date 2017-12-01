@@ -77,9 +77,6 @@
 
 const static float m_pi = static_cast<float>(M_PI);
 
-// Include the MOC generated file for this class
-#include "moc_InsertTransformationPhases.cpp"
-
 QTextStream& operator<< (QTextStream& os, const ShapeType::Type& value) {
   os << static_cast<ShapeType::EnumType>(value);
   return os;
@@ -140,9 +137,7 @@ InsertTransformationPhases::InsertTransformationPhases() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InsertTransformationPhases::~InsertTransformationPhases()
-{
-}
+InsertTransformationPhases::~InsertTransformationPhases() = default;
 
 // -----------------------------------------------------------------------------
 //

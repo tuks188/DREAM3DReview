@@ -236,7 +236,7 @@ class InsertTransformationPhases : public AbstractFilter
 
     // Feature Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
-    DEFINE_DATAARRAY_VARIABLE(bool, Active)
+    DEFINE_DATAARRAY_WEAKPTR(bool, Active)
     DEFINE_DATAARRAY_VARIABLE(float, Centroids)
     DEFINE_DATAARRAY_VARIABLE(float, EquivalentDiameters)
     DEFINE_DATAARRAY_VARIABLE(float, FeatureEulerAngles)
@@ -266,8 +266,8 @@ class InsertTransformationPhases : public AbstractFilter
      */
     void updateVolEnsembleInstancePointers();
 
-    InsertTransformationPhases(const InsertTransformationPhases&); // Copy Constructor Not Implemented
-    void operator=(const InsertTransformationPhases&); // Operator '=' Not Implemented
+    InsertTransformationPhases(const InsertTransformationPhases&) = delete; // Copy Constructor Not Implemented
+    void operator=(const InsertTransformationPhases&) = delete;             // Operator '=' Not Implemented
 };
 
 #endif /* INSERTTRANSFORMATIONPHASES_H_ */

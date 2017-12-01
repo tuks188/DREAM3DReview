@@ -276,8 +276,8 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     // Ensemble Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
-    TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&); // Copy Constructor Not Implemented
-    void operator=(const TiDwellFatigueCrystallographicAnalysis&); // Operator '=' Not Implemented
+    TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&) = delete; // Copy Constructor Not Implemented
+    void operator=(const TiDwellFatigueCrystallographicAnalysis&) = delete;                         // Operator '=' Not Implemented
 };
 
 #endif /* _TiDwellFatigueCrystallographicAnalysis_H_ */
