@@ -179,7 +179,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
 
   DBSCAN(const DBSCAN&);         // Copy Constructor Not Implemented
-  void operator=(const DBSCAN&); // Operator '=' Not Implemented
+  void operator=(const DBSCAN&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _DBSCAN_H_ */

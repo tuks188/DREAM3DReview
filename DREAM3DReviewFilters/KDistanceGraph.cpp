@@ -48,9 +48,6 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_KDistanceGraph.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,8 +59,6 @@ KDistanceGraph::KDistanceGraph()
 , m_KDistanceArrayPath("", "", "KDistance")
 , m_MinDist(1)
 , m_DistanceMetric(0)
-, m_InData(nullptr)
-, m_Mask(nullptr)
 , m_KDistanceArray(nullptr)
 {
   setupFilterParameters();
@@ -72,8 +67,7 @@ KDistanceGraph::KDistanceGraph()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-KDistanceGraph::~KDistanceGraph()
-= default;
+KDistanceGraph::~KDistanceGraph() = default;
 
 // -----------------------------------------------------------------------------
 //

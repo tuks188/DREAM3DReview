@@ -165,7 +165,7 @@ protected:
 
 private:
   CopyObject(const CopyObject&);     // Copy Constructor Not Implemented
-  void operator=(const CopyObject&); // Operator '=' Not Implemented
+  void operator=(const CopyObject&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _CopyObject_H_ */

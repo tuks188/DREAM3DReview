@@ -163,7 +163,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(float, GradientMagnitude)
   DEFINE_DATAARRAY_VARIABLE(bool, FeatureIds)
 
-  RobustAutomaticThreshold(const RobustAutomaticThreshold&); // Copy Constructor Not Implemented
+  RobustAutomaticThreshold(const RobustAutomaticThreshold&) = delete; // Copy Constructor Not Implemented
   void operator=(const RobustAutomaticThreshold&);           // Operator '=' Not Implemented
 };
 

@@ -161,7 +161,7 @@ private:
   DEFINE_IDATAARRAY_VARIABLE(InVertexArray)
   DEFINE_DATAARRAY_VARIABLE(float, AverageCellArray)
 
-  AverageVertexArrayToEdgeFaceCellArray(const AverageVertexArrayToEdgeFaceCellArray&); // Copy Constructor Not Implemented
+  AverageVertexArrayToEdgeFaceCellArray(const AverageVertexArrayToEdgeFaceCellArray&) = delete; // Copy Constructor Not Implemented
   void operator=(const AverageVertexArrayToEdgeFaceCellArray&);                        // Operator '=' Not Implemented
 };
 

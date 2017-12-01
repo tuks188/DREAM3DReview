@@ -180,7 +180,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
 
   KMedoids(const KMedoids&);       // Copy Constructor Not Implemented
-  void operator=(const KMedoids&); // Operator '=' Not Implemented
+  void operator=(const KMedoids&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _kmedoids_h_ */

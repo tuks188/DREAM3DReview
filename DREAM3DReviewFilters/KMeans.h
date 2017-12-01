@@ -180,7 +180,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(double, MeansArray)
 
   KMeans(const KMeans&);         // Copy Constructor Not Implemented
-  void operator=(const KMeans&); // Operator '=' Not Implemented
+  void operator=(const KMeans&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _kmeans_h_ */

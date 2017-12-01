@@ -268,7 +268,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
   DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
-  FindArrayStatistics(const FindArrayStatistics&); // Copy Constructor Not Implemented
+  FindArrayStatistics(const FindArrayStatistics&) = delete; // Copy Constructor Not Implemented
   void operator=(const FindArrayStatistics&);      // Operator '=' Not Implemented
 };
 

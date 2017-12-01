@@ -179,7 +179,7 @@ private:
 
   FloatArrayType::Pointer m_TransformationReference;
 
-  ApplyTransformationToGeometry(const ApplyTransformationToGeometry&); // Copy Constructor Not Implemented
+  ApplyTransformationToGeometry(const ApplyTransformationToGeometry&) = delete; // Copy Constructor Not Implemented
   void operator=(const ApplyTransformationToGeometry&);                // Operator '=' Not Implemented
 };
 

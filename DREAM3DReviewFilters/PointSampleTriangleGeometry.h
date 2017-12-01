@@ -196,7 +196,7 @@ private:
   std::vector<IDataArray::WeakPointer> m_CreatedWeakPtrVector;
   int32_t m_NumSamples;
 
-  PointSampleTriangleGeometry(const PointSampleTriangleGeometry&); // Copy Constructor Not Implemented
+  PointSampleTriangleGeometry(const PointSampleTriangleGeometry&) = delete; // Copy Constructor Not Implemented
   void operator=(const PointSampleTriangleGeometry&);              // Operator '=' Not Implemented
 };
 

@@ -198,7 +198,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(int64_t, Quads)
   DEFINE_DATAARRAY_VARIABLE(int64_t, Tets)
 
-  ExtractAttributeArraysFromGeometry(const ExtractAttributeArraysFromGeometry&); // Copy Constructor Not Implemented
+  ExtractAttributeArraysFromGeometry(const ExtractAttributeArraysFromGeometry&) = delete; // Copy Constructor Not Implemented
   void operator=(const ExtractAttributeArraysFromGeometry&);                     // Operator '=' Not Implemented
 };
 

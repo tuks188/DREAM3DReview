@@ -257,8 +257,8 @@ private:
 
   int64_t m_NumVerts;
 
-  CreateGeometry(const CreateGeometry&); // Copy Constructor Not Implemented
-  void operator=(const CreateGeometry&); // Operator '=' Not Implemented
+  CreateGeometry(const CreateGeometry&) = delete; // Copy Constructor Not Implemented
+  void operator=(const CreateGeometry&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _CreateGeometry_H_ */

@@ -171,7 +171,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
   PottsModel(const PottsModel&);     // Copy Constructor Not Implemented
-  void operator=(const PottsModel&); // Operator '=' Not Implemented
+  void operator=(const PottsModel&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _PottsModel_H_ */

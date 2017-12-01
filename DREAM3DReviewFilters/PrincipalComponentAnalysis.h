@@ -180,7 +180,7 @@ private:
 
   std::vector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
-  PrincipalComponentAnalysis(const PrincipalComponentAnalysis&); // Copy Constructor Not Implemented
+  PrincipalComponentAnalysis(const PrincipalComponentAnalysis&) = delete; // Copy Constructor Not Implemented
   void operator=(const PrincipalComponentAnalysis&);             // Operator '=' Not Implemented
 };
 

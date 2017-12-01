@@ -163,7 +163,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(float, Norm)
 
   FindNorm(const FindNorm&);       // Copy Constructor Not Implemented
-  void operator=(const FindNorm&); // Operator '=' Not Implemented
+  void operator=(const FindNorm&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _findnorm_h_ */

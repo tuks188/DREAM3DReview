@@ -167,7 +167,7 @@ protected:
 private:
   DEFINE_DATAARRAY_VARIABLE(float, TransformationMatrix)
 
-  ComputeUmeyamaTransform(const ComputeUmeyamaTransform&); // Copy Constructor Not Implemented
+  ComputeUmeyamaTransform(const ComputeUmeyamaTransform&) = delete; // Copy Constructor Not Implemented
   void operator=(const ComputeUmeyamaTransform&);          // Operator '=' Not Implemented
 };
 

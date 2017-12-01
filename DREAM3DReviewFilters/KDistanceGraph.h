@@ -168,12 +168,12 @@ protected:
   void initialize();
 
 private:
-  DEFINE_IDATAARRAY_VARIABLE(InData)
+  IDataArray::WeakPointer m_InDataPtr;
   DEFINE_DATAARRAY_VARIABLE(bool, Mask)
   DEFINE_DATAARRAY_VARIABLE(double, KDistanceArray)
 
-  KDistanceGraph(const KDistanceGraph&); // Copy Constructor Not Implemented
-  void operator=(const KDistanceGraph&); // Operator '=' Not Implemented
+  KDistanceGraph(const KDistanceGraph&) = delete; // Copy Constructor Not Implemented
+  void operator=(const KDistanceGraph&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _KDistanceGraph_H_ */

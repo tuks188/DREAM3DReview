@@ -160,7 +160,7 @@ private:
 
   std::vector<IDataArray::Pointer> m_SplitArraysPtrVector;
 
-  SplitAttributeArray(const SplitAttributeArray&); // Copy Constructor Not Implemented
+  SplitAttributeArray(const SplitAttributeArray&) = delete; // Copy Constructor Not Implemented
   void operator=(const SplitAttributeArray&);      // Operator '=' Not Implemented
 };
 

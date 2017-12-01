@@ -163,7 +163,7 @@ private:
 
   QList<QString> m_AttrMatList;
 
-  RemoveFlaggedVertices(const RemoveFlaggedVertices&); // Copy Constructor Not Implemented
+  RemoveFlaggedVertices(const RemoveFlaggedVertices&) = delete; // Copy Constructor Not Implemented
   void operator=(const RemoveFlaggedVertices&);        // Operator '=' Not Implemented
 };
 

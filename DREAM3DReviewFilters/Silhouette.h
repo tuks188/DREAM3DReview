@@ -173,7 +173,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(double, SilhouetteArray)
 
   Silhouette(const Silhouette&);     // Copy Constructor Not Implemented
-  void operator=(const Silhouette&); // Operator '=' Not Implemented
+  void operator=(const Silhouette&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _Silhouette_H_ */

@@ -137,7 +137,7 @@ private:
   QList<QString> m_Filters;
   bool m_DidLoad;
 
-  DREAM3DReviewPlugin(const DREAM3DReviewPlugin&); // Copy Constructor Not Implemented
+  DREAM3DReviewPlugin(const DREAM3DReviewPlugin&) = delete; // Copy Constructor Not Implemented
   void operator=(const DREAM3DReviewPlugin&);      // Operator '=' Not Implemented
 };
 

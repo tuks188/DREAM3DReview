@@ -180,7 +180,7 @@ private:
   std::vector<DoubleArrayType::Pointer> m_NormalizedArraysPtrVector;
   DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
-  NormalizeArrays(const NormalizeArrays&); // Copy Constructor Not Implemented
+  NormalizeArrays(const NormalizeArrays&) = delete; // Copy Constructor Not Implemented
   void operator=(const NormalizeArrays&);  // Operator '=' Not Implemented
 };
 

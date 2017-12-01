@@ -163,7 +163,7 @@ private:
 
   QList<QString> m_AttrMatList;
 
-  ExtractInternalSurfacesFromTriangleGeometry(const ExtractInternalSurfacesFromTriangleGeometry&); // Copy Constructor Not Implemented
+  ExtractInternalSurfacesFromTriangleGeometry(const ExtractInternalSurfacesFromTriangleGeometry&) = delete; // Copy Constructor Not Implemented
   void operator=(const ExtractInternalSurfacesFromTriangleGeometry&);                              // Operator '=' Not Implemented
 };
 

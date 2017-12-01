@@ -163,7 +163,7 @@ protected:
 private:
   DEFINE_DATAARRAY_VARIABLE(float, CellCentroidsArray)
 
-  FindElementCentroids(const FindElementCentroids&); // Copy Constructor Not Implemented
+  FindElementCentroids(const FindElementCentroids&) = delete; // Copy Constructor Not Implemented
   void operator=(const FindElementCentroids&);       // Operator '=' Not Implemented
 };
 

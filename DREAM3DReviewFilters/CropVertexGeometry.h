@@ -175,7 +175,7 @@ protected:
 private:
   QList<QString> m_AttrMatList;
 
-  CropVertexGeometry(const CropVertexGeometry&); // Copy Constructor Not Implemented
+  CropVertexGeometry(const CropVertexGeometry&) = delete; // Copy Constructor Not Implemented
   void operator=(const CropVertexGeometry&);     // Operator '=' Not Implemented
 };
 
