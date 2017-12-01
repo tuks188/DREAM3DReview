@@ -36,11 +36,11 @@
 #ifndef _creategeometry_h_
 #define _creategeometry_h_
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateGeometry class. See [Filter documentation](@ref creategeometry) for details.
@@ -151,7 +151,7 @@ public:
 
   QString getBoxDimensions();
   Q_PROPERTY(QString BoxDimensions READ getBoxDimensions)
-  
+
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
@@ -195,11 +195,6 @@ public:
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
    */
   virtual void setupFilterParameters();
-
-  /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
   /**
    * @brief execute Reimplemented from @see AbstractFilter class
