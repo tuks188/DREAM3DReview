@@ -139,8 +139,8 @@ class HEDMAnalysisPlugin : public QObject, public ISIMPLibPlugin
     QList<QString>      m_Filters;
     bool                m_DidLoad;
 
-    HEDMAnalysisPlugin(const HEDMAnalysisPlugin&); // Copy Constructor Not Implemented
-    void operator=(const HEDMAnalysisPlugin&); // Operator '=' Not Implemented
+    HEDMAnalysisPlugin(const HEDMAnalysisPlugin&) = delete; // Copy Constructor Not Implemented
+    void operator=(const HEDMAnalysisPlugin&) = delete;     // Operator '=' Not Implemented
 };
 
 #endif /* _HEDMAnalysis_H_ */

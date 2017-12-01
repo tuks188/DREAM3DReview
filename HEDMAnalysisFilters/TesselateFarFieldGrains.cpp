@@ -246,9 +246,6 @@ public:
 private:
 };
 
-// Include the MOC generated file for this class
-#include "moc_TesselateFarFieldGrains.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -304,9 +301,7 @@ TesselateFarFieldGrains::TesselateFarFieldGrains()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TesselateFarFieldGrains::~TesselateFarFieldGrains()
-{
-}
+TesselateFarFieldGrains::~TesselateFarFieldGrains() = default;
 
 // -----------------------------------------------------------------------------
 //

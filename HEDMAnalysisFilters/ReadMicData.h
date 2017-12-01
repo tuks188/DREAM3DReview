@@ -219,8 +219,8 @@ class ReadMicData : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
 
-    ReadMicData(const ReadMicData&); // Copy Constructor Not Implemented
-    void operator=(const ReadMicData&); // Operator '=' Not Implemented
+    ReadMicData(const ReadMicData&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const ReadMicData&) = delete; // Operator '=' Not Implemented
 };
 
 Q_DECLARE_METATYPE(Mic_Private_Data)

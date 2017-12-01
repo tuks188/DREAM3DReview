@@ -75,8 +75,8 @@ class MicFields : public AbstractEbsdFields
     }
 
   private:
-    MicFields(const MicFields&); // Copy Constructor Not Implemented
-    void operator=(const MicFields&); // Operator '=' Not Implemented
+    MicFields(const MicFields&) = delete;      // Copy Constructor Not Implemented
+    void operator=(const MicFields&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* MicFIELDS_H_ */

@@ -256,8 +256,8 @@ class TesselateFarFieldGrains : public AbstractFilter
 
     void updateEnsembleInstancePointers();
 
-    TesselateFarFieldGrains(const TesselateFarFieldGrains&); // Copy Constructor Not Implemented
-    void operator=(const TesselateFarFieldGrains&); // Operator '=' Not Implemented
+    TesselateFarFieldGrains(const TesselateFarFieldGrains&) = delete; // Copy Constructor Not Implemented
+    void operator=(const TesselateFarFieldGrains&) = delete;          // Operator '=' Not Implemented
 };
 
 #endif /* TesselateFarFieldGrains_H_ */
