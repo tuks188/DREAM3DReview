@@ -12,9 +12,6 @@
 
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
 
-// Include the MOC generated file for this class
-#include "moc_MASSIFUtilitiesPlugin.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -35,9 +32,7 @@ m_DidLoad(false)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MASSIFUtilitiesPlugin::~MASSIFUtilitiesPlugin()
-{
-}
+MASSIFUtilitiesPlugin::~MASSIFUtilitiesPlugin() = default;
 
 // -----------------------------------------------------------------------------
 //

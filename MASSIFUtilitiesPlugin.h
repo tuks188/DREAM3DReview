@@ -138,8 +138,8 @@ class MASSIFUtilitiesPlugin : public QObject, public ISIMPLibPlugin
     QList<QString>      m_Filters;
     bool                m_DidLoad;
 
-    MASSIFUtilitiesPlugin(const MASSIFUtilitiesPlugin&); // Copy Constructor Not Implemented
-    void operator=(const MASSIFUtilitiesPlugin&); // Operator '=' Not Implemented
+    MASSIFUtilitiesPlugin(const MASSIFUtilitiesPlugin&) = delete; // Copy Constructor Not Implemented
+    void operator=(const MASSIFUtilitiesPlugin&) = delete;        // Operator '=' Not Implemented
 };
 
 #endif /* _MASSIFUtilities_H_ */

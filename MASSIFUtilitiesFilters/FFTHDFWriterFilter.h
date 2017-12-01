@@ -180,8 +180,8 @@ class FFTHDFWriterFilter : public AbstractFilter
 
     hid_t m_FileId;
 
-    FFTHDFWriterFilter(const FFTHDFWriterFilter&); // Copy Constructor Not Implemented
-    void operator=(const FFTHDFWriterFilter&); // Operator '=' Not Implemented
+    FFTHDFWriterFilter(const FFTHDFWriterFilter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FFTHDFWriterFilter&) = delete;     // Operator '=' Not Implemented
 };
 
 #endif /* _ffthdfwriterfilter_H_ */

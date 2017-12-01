@@ -21,9 +21,6 @@
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
 #include "MASSIFUtilities/MASSIFUtilitiesVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_ImportMASSIFData.cpp"
-
 namespace Detail
 {
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ ImportMASSIFData::ImportMASSIFData() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportMASSIFData::~ImportMASSIFData()
-{
-}
+ImportMASSIFData::~ImportMASSIFData() = default;
 
 // -----------------------------------------------------------------------------
 //

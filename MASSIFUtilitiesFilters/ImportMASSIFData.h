@@ -125,9 +125,9 @@ class ImportMASSIFData : public AbstractFilter
   private:
     QString           m_PaddedStep = "";
 
-    DEFINE_DATAARRAY_VARIABLE(float, DField)
-    DEFINE_DATAARRAY_VARIABLE(float, EField)
-    DEFINE_DATAARRAY_VARIABLE(float, SField)
+    DEFINE_DATAARRAY_WEAKPTR(float, DField)
+    DEFINE_DATAARRAY_WEAKPTR(float, EField)
+    DEFINE_DATAARRAY_WEAKPTR(float, SField)
 
     /**
      * @brief createDataArrayPaths
@@ -158,8 +158,8 @@ class ImportMASSIFData : public AbstractFilter
      */
     IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, QVector<size_t> geoDims, bool metaDataOnly);
 
-    ImportMASSIFData(const ImportMASSIFData&); // Copy Constructor Not Implemented
-    void operator=(const ImportMASSIFData&); // Operator '=' Not Implemented
+    ImportMASSIFData(const ImportMASSIFData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ImportMASSIFData&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _ImportMASSIFData_H_ */
