@@ -13,7 +13,7 @@ namespace MASSIFUtilitiesConstants
 {
   const QString MASSIFUtilitiesPluginFile("MASSIFUtilitiesPlugin");
   const QString MASSIFUtilitiesPluginDisplayName("MASSIFUtilitiesPlugin");
-  const QString MASSIFUtilitiesBaseName("MASSIFUtilitiesPlugin");
+  const QString MASSIFUtilitiesBaseName("MASSIFUtilities");
 
   namespace FilterGroups
   {
