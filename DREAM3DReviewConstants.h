@@ -59,7 +59,7 @@ namespace DREAM3DReviewConstants
 {
 const QString DREAM3DReviewPluginFile("DREAM3DReviewPlugin");
 const QString DREAM3DReviewPluginDisplayName("DREAM3DReviewPlugin");
-const QString DREAM3DReviewBaseName("DREAM3DReviewPlugin");
+const QString DREAM3DReviewBaseName("DREAM3DReview");
 
 namespace FilterGroups
 {
