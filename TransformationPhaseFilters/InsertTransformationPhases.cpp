@@ -1061,7 +1061,7 @@ const QString InsertTransformationPhases::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getBrandingString()
 {
-  return "TransformationPhaseConstants";
+  return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
 
 // -----------------------------------------------------------------------------
@@ -1099,5 +1099,5 @@ const QString InsertTransformationPhases::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getHumanLabel()
 {
-  return "Insert Tranformation Phases";
+  return "Insert Transformation Phases";
 }

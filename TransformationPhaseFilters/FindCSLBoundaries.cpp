@@ -424,7 +424,7 @@ const QString FindCSLBoundaries::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getBrandingString()
 {
-  return "TransformationPhaseConstants";
+  return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
 
 // -----------------------------------------------------------------------------

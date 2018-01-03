@@ -6,7 +6,7 @@
 namespace TransformationPhaseConstants
 {
   const QString TransformationPhasePluginFile("TransformationPhasePlugin");
-  const QString TransformationPhasePluginDisplayName("TransformationPhase");
+  const QString TransformationPhasePluginDisplayName("Transformation Phase");
   const QString TransformationPhaseBaseName("TransformationPhase");
 
   namespace FilterGroups

@@ -862,7 +862,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString()
 {
-  return "TransformationPhaseConstants";
+  return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
 
 // -----------------------------------------------------------------------------
