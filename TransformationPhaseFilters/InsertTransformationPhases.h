@@ -78,22 +78,31 @@ class InsertTransformationPhases : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(int, ParentPhase)
     Q_PROPERTY(int ParentPhase READ getParentPhase WRITE setParentPhase)
+
     SIMPL_FILTER_PARAMETER(int, TransCrystalStruct)
     Q_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
+
     SIMPL_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
     Q_PROPERTY(float TransformationPhaseMisorientation READ getTransformationPhaseMisorientation WRITE setTransformationPhaseMisorientation)
+
     SIMPL_FILTER_PARAMETER(FloatVec3_t, TransformationPhaseHabitPlane)
+    Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
+
     SIMPL_FILTER_PARAMETER(bool, DefineHabitPlane)
     Q_PROPERTY(bool DefineHabitPlane READ getDefineHabitPlane WRITE setDefineHabitPlane)
-    Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
+
     SIMPL_FILTER_PARAMETER(bool, UseAllVariants)
     Q_PROPERTY(bool UseAllVariants READ getUseAllVariants WRITE setUseAllVariants)
+
     SIMPL_FILTER_PARAMETER(float, CoherentFrac)
     Q_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
+
     SIMPL_FILTER_PARAMETER(float, TransformationPhaseThickness)
     Q_PROPERTY(float TransformationPhaseThickness READ getTransformationPhaseThickness WRITE setTransformationPhaseThickness)
+
     SIMPL_FILTER_PARAMETER(int, NumTransformationPhasesPerFeature)
     Q_PROPERTY(int NumTransformationPhasesPerFeature READ getNumTransformationPhasesPerFeature WRITE setNumTransformationPhasesPerFeature)
+
     SIMPL_FILTER_PARAMETER(float, PeninsulaFrac)
     Q_PROPERTY(float PeninsulaFrac READ getPeninsulaFrac WRITE setPeninsulaFrac)
 
@@ -221,11 +230,40 @@ class InsertTransformationPhases : public AbstractFilter
      */
     void initialize();
 
-    void insert_transformationphases();
-    bool place_transformationphase(size_t curFeature, float sample111[], size_t totalFeatures, float plateThickness, float d, size_t numFeatures);
-    void peninsula_transformationphase(size_t curFeature, size_t totalFeatures);
-    size_t transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature);
-    void filter_calls();
+    /**
+     * @brief insertTransformationPhases
+     */
+    void insertTransformationPhases();
+
+    /**
+     * @brief placeTransformationPhase
+     * @param curFeature
+     * @param sample111
+     * @param totalFeatures
+     * @param plateThickness
+     * @param d
+     * @param numFeatures
+     * @param euler
+     * @return
+     */
+    bool placeTransformationPhase(int32_t curFeature, float sample111[], int32_t totalFeatures, float plateThickness, float d, float* euler);
+
+    /**
+     * @brief peninsulaTransformationPhase
+     * @param curFeature
+     * @param totalFeatures
+     */
+    void peninsulaTransformationPhase(int32_t curFeature, int32_t totalFeatures);
+
+    /**
+     * @brief transferAttributes
+     * @param totalFeatures
+     * @param q
+     * @param e
+     * @param curFeature
+     * @return
+     */
+    size_t transferAttributes(size_t totalFeatures, QuatF q, float e[], int32_t curFeature);
 
   private:
     QVector<LaueOps::Pointer> m_OrientationOps;
@@ -250,6 +288,7 @@ class InsertTransformationPhases : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(ShapeType::EnumType, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
+    FloatVec3_t m_NormalizedTransformationPhaseHabitPlane;
 
     /**
      * @brief updateFeatureInstancePointers

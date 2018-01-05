@@ -82,50 +82,35 @@ QTextStream& operator<< (QTextStream& os, const ShapeType::Type& value) {
   return os;
 }
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InsertTransformationPhases::InsertTransformationPhases() :
-  AbstractFilter(),
-  m_ParentPhase(1),
-  m_TransCrystalStruct(Ebsd::CrystalStructure::UnknownCrystalStructure),
-  m_TransformationPhaseMisorientation(60.0f),
-  m_DefineHabitPlane(true),
-  m_UseAllVariants(true),
-  m_CoherentFrac(1.0f),
-  m_TransformationPhaseThickness(0.2f),
-  m_NumTransformationPhasesPerFeature(1),
-  m_PeninsulaFrac(0.0f),
-  m_StatsGenCellEnsembleAttributeMatrixPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, ""),
-  m_CellFeatureAttributeMatrixName(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, ""),
-  m_FeatureIdsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds),
-  m_CellEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerAngles),
-  m_AvgQuatsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::AvgQuats),
-  m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids),
-  m_EquivalentDiametersArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EquivalentDiameters),
-  m_FeatureEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EulerAngles),
-  m_FeaturePhasesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Phases),
-  m_FeatureParentIdsArrayName(SIMPL::FeatureData::ParentIds),
-  m_NumFeaturesPerParentArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::FeatureData::NumFeaturesPerParent),
-  m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures),
-  m_PhaseTypesArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::PhaseTypes),
-  m_ShapeTypesArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::ShapeTypes),
-  m_NumFeaturesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::NumFeatures),
-  m_FeatureIds(nullptr),
-  m_CellEulerAngles(nullptr),
-  m_AvgQuats(nullptr),
-  m_Centroids(nullptr),
-  m_EquivalentDiameters(nullptr),
-  m_FeatureEulerAngles(nullptr),
-  m_FeaturePhases(nullptr),
-  m_FeatureParentIds(nullptr),
-  m_NumFeaturesPerParent(nullptr),
-  m_CrystalStructures(nullptr),
-  m_PhaseTypes(nullptr),
-  m_ShapeTypes(nullptr),
-  m_NumFeatures(nullptr)
+InsertTransformationPhases::InsertTransformationPhases()
+: AbstractFilter()
+, m_ParentPhase(1)
+, m_TransCrystalStruct(Ebsd::CrystalStructure::UnknownCrystalStructure)
+, m_TransformationPhaseMisorientation(60.0f)
+, m_DefineHabitPlane(true)
+, m_UseAllVariants(true)
+, m_CoherentFrac(1.0f)
+, m_TransformationPhaseThickness(0.2f)
+, m_NumTransformationPhasesPerFeature(1)
+, m_PeninsulaFrac(0.0f)
+, m_StatsGenCellEnsembleAttributeMatrixPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, "")
+, m_CellFeatureAttributeMatrixName(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, "")
+, m_FeatureIdsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds)
+, m_CellEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerAngles)
+, m_AvgQuatsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::AvgQuats)
+, m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids)
+, m_EquivalentDiametersArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EquivalentDiameters)
+, m_FeatureEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EulerAngles)
+, m_FeaturePhasesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Phases)
+, m_FeatureParentIdsArrayName(SIMPL::FeatureData::ParentIds)
+, m_NumFeaturesPerParentArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::FeatureData::NumFeaturesPerParent)
+, m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
+, m_PhaseTypesArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::PhaseTypes)
+, m_ShapeTypesArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::ShapeTypes)
+, m_NumFeaturesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::NumFeatures)
 {
   m_OrientationOps = LaueOps::getOrientationOpsQVector();
   m_TransformationPhaseHabitPlane.x = 1.0f;
@@ -152,19 +137,9 @@ void InsertTransformationPhases::setupFilterParameters()
     option->setPropertyName("TransCrystalStruct");
     option->setSetterCallback(SIMPL_BIND_SETTER(InsertTransformationPhases, this, TransCrystalStruct));
     option->setGetterCallback(SIMPL_BIND_GETTER(InsertTransformationPhases, this, TransCrystalStruct));
-    QVector<QString> choices;
     // The choices here are IN ORDER of the enumerations from the EBSDLib. DO NOT CHANGE THE ORDER.
-    choices.push_back("Hexagonal-High 6/mmm");
-    choices.push_back("Cubic-High m-3m");
-    choices.push_back("Hexagonal-Low 6/m");
-    choices.push_back("Cubic-Low m-3 (Tetrahedral)");
-    choices.push_back("Triclinic -1");
-    choices.push_back("Monoclinic 2/m");
-    choices.push_back("Orthorhombic mmm");
-    choices.push_back("Tetragonal-Low 4/m");
-    choices.push_back("Tetragonal-High 4/mmm");
-    choices.push_back("Trigonal-Low -3");
-    choices.push_back("Trigonal-High -3m");
+    QVector<QString> choices = QVector<QString>::fromStdVector(LaueOps::GetLaueNames());
+    choices.pop_back(); // Remove the last name because we don't need it.
     option->setCategory(FilterParameter::Parameter);
     option->setChoices(choices);
     parameters.push_back(option);
@@ -455,7 +430,18 @@ void InsertTransformationPhases::execute()
   setErrorCondition(0);
   setWarningCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
+
+  QString msg;
+  QTextStream ss(&msg);
+  ss << getHumanLabel() << " is an experimental filter that may or may *not* give the correct results. Use at your own risk";
+  notifyWarningMessage(getHumanLabel(), msg, 1);
+
+  m_NormalizedTransformationPhaseHabitPlane = m_TransformationPhaseHabitPlane;
+  m_NormalizedTransformationPhaseHabitPlane.normalize();
 
   //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DataContainerArray::Pointer dca = getDataContainerArray();
@@ -473,12 +459,12 @@ void InsertTransformationPhases::execute()
   updateStatsGenEnsembleInstancePointers();
 
   // hard-coded to the below stats for now
-  m_CrystalStructures[numensembles] = m_TransCrystalStruct;
+  m_CrystalStructures[numensembles] = static_cast<uint32_t>(m_TransCrystalStruct);
   m_PhaseTypes[numensembles] = static_cast<PhaseType::EnumType>(PhaseType::Type::Transformation);
   m_ShapeTypes[numensembles] = static_cast<ShapeType::EnumType>(ShapeType::Type::Ellipsoid);
 
   // start insert transformation phases routine
-  insert_transformationphases();
+  insertTransformationPhases();
 
   notifyStatusMessage(getHumanLabel(), "Placement Complete");
 
@@ -508,7 +494,7 @@ void InsertTransformationPhases::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTransformationPhases::insert_transformationphases()
+void InsertTransformationPhases::insertTransformationPhases()
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   SIMPL_RANDOMNG_NEW()
@@ -539,7 +525,7 @@ void InsertTransformationPhases::insert_transformationphases()
   float trace = 0.0f;
   int minPos = 0;
   std::vector<float> shifts;
-  int numTransformationPhases = 0;
+  size_t numTransformationPhases = 0;
   bool createdTransformationPhase = false;
 
   float voxelDiagonal = sqrtf(xRes * xRes + yRes * yRes + zRes * zRes);
@@ -551,13 +537,13 @@ void InsertTransformationPhases::insert_transformationphases()
       QuatF* avgQuats = reinterpret_cast<QuatF*>(m_AvgQuats);
 
       // set the grain Id to the parent Id for if/when the features get uniquely renumbered
-      m_FeatureParentIds[curFeature] = curFeature;
+      m_FeatureParentIds[curFeature] = static_cast<int32_t>(curFeature);
 
       if (m_DefineHabitPlane == true)
       {
-        crystalHabitPlane[0] = m_TransformationPhaseHabitPlane.x;
-        crystalHabitPlane[1] = m_TransformationPhaseHabitPlane.y;
-        crystalHabitPlane[2] = m_TransformationPhaseHabitPlane.z;
+        crystalHabitPlane[0] = m_NormalizedTransformationPhaseHabitPlane.x;
+        crystalHabitPlane[1] = m_NormalizedTransformationPhaseHabitPlane.y;
+        crystalHabitPlane[2] = m_NormalizedTransformationPhaseHabitPlane.z;
       }
       // pick a habit plane variant if user desires
       if (m_UseAllVariants == true)
@@ -672,12 +658,12 @@ void InsertTransformationPhases::insert_transformationphases()
       if (plateThickness > minRes)
       {
         // select number of transformation phases to insert per grain from 2x user input to zero
-        numTransformationPhases = int(rg.genrand_res53() * double(2 * m_NumTransformationPhasesPerFeature + 1));
+        numTransformationPhases = static_cast<size_t>(rg.genrand_res53() * double(2 * m_NumTransformationPhasesPerFeature + 1));
         shifts.resize(numTransformationPhases);
         int attempt = 0;
 
         // each loop represents an attempt to insert a single transformation phase (all in the same grain)
-        for (int i = 0; i < numTransformationPhases; ++i)
+        for(size_t i = 0; i < static_cast<size_t>(numTransformationPhases); ++i)
         {
           // define the shift placement from centroid
           random = static_cast<float>(rg.genrand_res53());
@@ -689,8 +675,8 @@ void InsertTransformationPhases::insert_transformationphases()
           if (random < 0.5f) { shifts[i] = -shifts[i]; }
 
           // check if new transformation phase will overlap an old transformation phase
-          int ii = i;
-          for (int j = 0; j <= ii; ++j)
+          size_t ii = i;
+          for(size_t j = 0; j <= ii; ++j)
           {
             // if adding more than one transformation phase in a grain, check the current shift from
             // center against the previous ones to make sure the new transformation phase does not
@@ -700,7 +686,7 @@ void InsertTransformationPhases::insert_transformationphases()
             // which skews the calculation (FIX)
             // tolerance is set to 3x the plate thickness + 2x the voxel diagonal -- this empirically
             // keeps the transformation phases separated enough
-            if (fabs(shifts[i] - shifts[j]) <= (plateThickness * 3.0f + voxelDiagonal * 2.0f) && ii != j)
+            if(std::fabs(shifts[i] - shifts[j]) <= (plateThickness * 3.0f + voxelDiagonal * 2.0f) && ii != j)
             {
               // if the attempted placement of a second, third, fourth, ... transformation phase is too close to a
               // previously inserted transformation phase in the current grain, then increment the attempts counter
@@ -716,19 +702,22 @@ void InsertTransformationPhases::insert_transformationphases()
                   - sampleHabitPlane[1] * (m_Centroids[3 * curFeature + 1] + shifts[i])
                   - sampleHabitPlane[2] * (m_Centroids[3 * curFeature + 2] + shifts[i]);
 
-              createdTransformationPhase = place_transformationphase(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, numFeatures);
+              createdTransformationPhase = placeTransformationPhase(curFeature, sampleHabitPlane, totalFeatures, plateThickness, d, e);
               //int stop = 0;
               // change an isthmus transformation phase to a peninsula transformation phase
               random = static_cast<float>(rg.genrand_res53());
               if (createdTransformationPhase == true)
               {
-                if (random < m_PeninsulaFrac) { peninsula_transformationphase(curFeature, totalFeatures); }
+                if(random < m_PeninsulaFrac)
+                {
+                  peninsulaTransformationPhase(curFeature, totalFeatures);
+                }
 
                 // filling in transformation phase stats that already exist for parents
                 tDims[0] = totalFeatures + 1;
                 m->getAttributeMatrix(getFeaturePhasesArrayPath().getAttributeMatrixName())->resizeAttributeArrays(tDims);
                 updateFeatureInstancePointers();
-                totalFeatures = transfer_attributes(totalFeatures, q2, e, curFeature);
+                totalFeatures = transferAttributes(totalFeatures, q2, e, curFeature);
                 ++m_NumFeaturesPerParent[curFeature];
               }
             }
@@ -744,7 +733,7 @@ void InsertTransformationPhases::insert_transformationphases()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool InsertTransformationPhases::place_transformationphase(size_t curFeature, float sampleHabitPlane[3], size_t totalFeatures, float plateThickness, float d, size_t numFeatures)
+bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature, float sampleHabitPlane[3], int32_t totalFeatures, float plateThickness, float d, float* euler)
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   SIMPL_RANDOMNG_NEW()
@@ -770,7 +759,7 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
       yStride = j * xPoints;
       for(int k = 0; k < xPoints; k++)
       {
-        int gnum = m_FeatureIds[zStride + yStride + k];
+        int32_t gnum = m_FeatureIds[zStride + yStride + k];
         x = float(k) * xRes;
         y = float(j) * yRes;
         z = float(i) * zRes;
@@ -790,25 +779,37 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
 
           // if the cell-plane distance is less than the plate thickness then place a transformation phase voxel
           // and that a neighboring cell is not a transformation phase cell
-          if (fabs(D) < plateThickness)
-            ////      && (k == 0 || m_FeatureIds[zStride+yStride+k-1] < numFeatures || m_FeatureIds[zStride+yStride+k-1] == totalFeatures)
-            ////      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
-            ////      && (j == 0 || m_FeatureIds[zStride+yStride+k-xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints] == totalFeatures)
-            ////      && (j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints] == totalFeatures)
-            ////      && (i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] == totalFeatures)
-            ////      && (i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] == totalFeatures))
-            //      && (k == 0 || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints-1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints+1] == totalFeatures)
-            //      && (k == 0 || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints-1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints+1] == totalFeatures)
-            //      && (k == 0 || j == 0 || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] == totalFeatures)
-            //      && (k == 0 || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] == totalFeatures)
-            //      && (k == 0 || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
-            //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
+          if(std::fabs(D) < plateThickness)
+          ////      && (k == 0 || m_FeatureIds[zStride+yStride+k-1] < numFeatures || m_FeatureIds[zStride+yStride+k-1] == totalFeatures)
+          ////      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || m_FeatureIds[zStride+yStride+k+1] < numFeatures || m_FeatureIds[zStride+yStride+k+1] == totalFeatures)
+          ////      && (j == 0 || m_FeatureIds[zStride+yStride+k-xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints] == totalFeatures)
+          ////      && (j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints] == totalFeatures)
+          ////      && (i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints] == totalFeatures)
+          ////      && (i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints] ==
+          /// totalFeatures))
+          //      && (k == 0 || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints-1] == totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || m_FeatureIds[zStride+yStride+k-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints+1] ==
+          //      totalFeatures)
+          //      && (k == 0 || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints-1] ==
+          //      totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints+1] < numFeatures ||
+          //      m_FeatureIds[zStride+yStride+k+xPoints+1] == totalFeatures)
+          //      && (k == 0 || j == 0 || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] < numFeatures ||
+          //      m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints-1] == totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) ||
+          //      m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints-xPoints+1] == totalFeatures)
+          //      && (k == 0 || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) ||
+          //      m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints-1] == totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == (m->getGeometryAs<ImageGeom>()->getZPoints() - 1) ||
+          //      m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k+xPoints*yPoints+xPoints+1] == totalFeatures)
+          //      && (k == 0 || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints-1] ==
+          //      totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == 0 || i == 0 || m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] < numFeatures ||
+          //      m_FeatureIds[zStride+yStride+k-xPoints*yPoints-xPoints+1] == totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 ||
+          //      m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints-1] == totalFeatures)
+          //      && (k == (m->getGeometryAs<ImageGeom>()->getXPoints() - 1) || j == (m->getGeometryAs<ImageGeom>()->getYPoints() - 1) || i == 0 ||
+          //      m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] < numFeatures || m_FeatureIds[zStride+yStride+k-xPoints*yPoints+xPoints+1] == totalFeatures))
           {
             // check if an "island" transformation phase voxel will be placed (excluding the first voxel placement)
             /*
@@ -842,7 +843,11 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
             else
             {
             */
-            m_FeatureIds[zStride + yStride + k] = totalFeatures;
+            size_t cellIndex = static_cast<size_t>(zStride + yStride + k);
+            m_FeatureIds[cellIndex] = static_cast<int32_t>(totalFeatures);
+            m_CellEulerAngles[cellIndex * 3] = euler[0];
+            m_CellEulerAngles[cellIndex * 3 + 1] = euler[1];
+            m_CellEulerAngles[cellIndex * 3 + 2] = euler[2];
             flag = true;
             firstVoxel = false;
             //    }
@@ -858,28 +863,28 @@ bool InsertTransformationPhases::place_transformationphase(size_t curFeature, fl
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature, size_t totalFeatures)
+void InsertTransformationPhases::peninsulaTransformationPhase(int32_t curFeature, int32_t totalFeatures)
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   SIMPL_RANDOMNG_NEW()
-  int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
-  int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
-  int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
+  int32_t xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
+  int32_t yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
+  int32_t zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
 
-  int x1 = -1, x2 = -1, y1 = -1, y2 = -1, z1 = -1, z2 = -1;
+  int32_t x1 = -1, x2 = -1, y1 = -1, y2 = -1, z1 = -1, z2 = -1;
   float transformationPhaseLength = 0.0f, random = 0.0f, fractionKept = 0.0f, currentDistance = 0.0f;
-  int zStride, yStride;
+  int32_t zStride, yStride;
 
   // loop through all cells to find matching grain IDs
-  for(int i = 0; i < zPoints; i++)
+  for(int32_t i = 0; i < zPoints; i++)
   {
     zStride = i * xPoints * yPoints;
-    for (int j = 0 ; j < yPoints; j++)
+    for(int32_t j = 0; j < yPoints; j++)
     {
       yStride = j * xPoints;
-      for(int k = 0; k < xPoints; k++)
+      for(int32_t k = 0; k < xPoints; k++)
       {
-        int gnum = m_FeatureIds[zStride + yStride + k];
+        int32_t gnum = m_FeatureIds[zStride + yStride + k];
         // if the grain IDs match...
         if (gnum == totalFeatures)
         {
@@ -915,16 +920,19 @@ void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature
   }
 
   // choose how much of the transformation phase to keep (has to be at least one voxel)
-  while (int(fractionKept * transformationPhaseLength) < 1) { fractionKept = static_cast<float>(rg.genrand_res53()); }
+  while(static_cast<int32_t>(fractionKept * transformationPhaseLength) < 1)
+  {
+    fractionKept = static_cast<float>(rg.genrand_res53());
+  }
 
   // loop through again to decide which transformation phase Ids get flipped back to grain Ids
-  for(int i = 0; i < zPoints; i++)
+  for(int32_t i = 0; i < zPoints; i++)
   {
     zStride = i * xPoints * yPoints;
-    for (int j = 0; j < yPoints; j++)
+    for(int32_t j = 0; j < yPoints; j++)
     {
       yStride = j * xPoints;
-      for(int k = 0; k < xPoints; k++)
+      for(int32_t k = 0; k < xPoints; k++)
       {
         int gnum = m_FeatureIds[zStride + yStride + k];
         // if the grain IDs match...
@@ -942,7 +950,7 @@ void InsertTransformationPhases::peninsula_transformationphase(size_t curFeature
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, QuatF q, float e[], size_t curFeature)
+size_t InsertTransformationPhases::transferAttributes(size_t totalFeatures, QuatF q, float e[], int32_t curFeature)
 {
   //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
 
@@ -957,79 +965,12 @@ size_t InsertTransformationPhases::transfer_attributes(size_t totalFeatures, Qua
   m_FeatureEulerAngles[3 * totalFeatures + 1] = e[1];
   m_FeatureEulerAngles[3 * totalFeatures + 2] = e[2];
   m_EquivalentDiameters[totalFeatures] = 4.0f;
-  m_FeaturePhases[totalFeatures] = m_PhaseTypesPtr.lock()->getNumberOfTuples() - 1;;
+  m_FeaturePhases[totalFeatures] = static_cast<int32_t>(m_PhaseTypesPtr.lock()->getNumberOfTuples() - 1);
   m_FeatureParentIds[totalFeatures] = curFeature;
   m_NumFeaturesPerParent[totalFeatures] = 0;
   return ++totalFeatures;
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InsertTransformationPhases::filter_calls()
-{
-  //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
-
-  // // mapping euler angles from feature to cell
-  // for (int64_t i = 0; i < m->getNumCellTuples(); ++i)
-  // {
-  //m_CellEulerAngles[3*i+0] = m_FeatureEulerAngles[3*m_FeatureIds[i]+0];
-  //m_CellEulerAngles[3*i+1] = m_FeatureEulerAngles[3*m_FeatureIds[i]+1];
-  //m_CellEulerAngles[3*i+2] = m_FeatureEulerAngles[3*m_FeatureIds[i]+2];
-  // }
-
-  // FindFeatureCentroids::Pointer find_grain_centroids = FindFeatureCentroids::New();
-  // find_grain_centroids->setObservers(this->getObservers());
-  // find_grain_centroids->setVoxelDataContainer(m);
-  // find_grain_centroids->setMessagePrefix(getMessagePrefix());
-  // find_grain_centroids->execute();
-  // int err1 = find_grain_centroids->getErrorCondition();
-  // if (err1 < 0)
-  // {
-  //   setErrorCondition(find_grain_centroids->getErrorCondition());
-  //   addErrorMessages(find_grain_centroids->getPipelineMessages());
-  //   return;
-  // }
-
-  // FindNeighbors::Pointer find_neighbors = FindNeighbors::New();
-  // find_neighbors->setObservers(this->getObservers());
-  // find_neighbors->setVoxelDataContainer(m);
-  // find_neighbors->setMessagePrefix(getMessagePrefix());
-  // find_neighbors->execute();
-  // int err2 = find_neighbors->getErrorCondition();
-  // if (err2 < 0)
-  // {
-  //   setErrorCondition(find_neighbors->getErrorCondition());
-  //   addErrorMessages(find_neighbors->getPipelineMessages());
-  //   return;
-  // }
-
-  // FindSurfaceFeatures::Pointer find_surface_grains = FindSurfaceFeatures::New();
-  // find_surface_grains->setObservers(this->getObservers());
-  // find_surface_grains->setVoxelDataContainer(m);
-  // find_surface_grains->setMessagePrefix(getMessagePrefix());
-  // find_surface_grains->execute();
-  // int err3 = find_surface_grains->getErrorCondition();
-  // if (err3 < 0)
-  // {
-  //   setErrorCondition(find_surface_grains->getErrorCondition());
-  //   addErrorMessages(find_surface_grains->getPipelineMessages());
-  //   return;
-  // }
-
-  // FindSizes::Pointer find_sizes = FindSizes::New();
-  // find_sizes->setObservers(this->getObservers());
-  // find_sizes->setVoxelDataContainer(m);
-  // find_sizes->setMessagePrefix(getMessagePrefix());
-  // find_sizes->execute();
-  // int err4 = find_sizes->getErrorCondition();
-  // if (err4 < 0)
-  // {
-  //   setErrorCondition(find_sizes->getErrorCondition());
-  //   addErrorMessages(find_sizes->getPipelineMessages());
-  //   return;
-  // }
-}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
