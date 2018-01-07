@@ -232,17 +232,6 @@ if(SIMPL_BUILD_TESTING)
 endif()
 
 #-------------------------------------------------------------------------------
-#- This copies all the Prebuilt Pipeline files into the Build directory so the help
-#- works from the Build Tree
-add_custom_target(${PLUGIN_NAME}PipelinesCopy ALL
-            COMMAND ${CMAKE_COMMAND} -E copy_directory ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME}
-            ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/PrebuiltPipelines/Examples/${PLUGIN_NAME}
-            COMMENT "Copying ${PLUGIN_NAME} Example Pipelines into Binary Directory")
-set_target_properties(${PLUGIN_NAME}PipelinesCopy PROPERTIES FOLDER ZZ_COPY_FILES)
-
-
-
-#-------------------------------------------------------------------------------
 #- This installs all the prebuilt pipeline files.
 if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME})
   #-------------------------------------------------------------------------------
