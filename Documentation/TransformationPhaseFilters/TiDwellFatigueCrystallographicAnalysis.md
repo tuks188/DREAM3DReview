@@ -2,9 +2,11 @@ Ti Dwell Fatigue Crystallographic Analysis {#tidwellfatiguecrystallographicanaly
 ======
 	
 ## Group (Subgroup) ##
+
 Statistics Filters (Crystallographic)
 
 ## Description ##
+
 Determines **Initiators**, **Hard Features**, **Soft Features** and **Hard-Soft Pairs** in microtextured voxelized structures.  **Initiators** are alpha globs defined as the user defined angle range between the c-axis ([0001]) and the user defined stress axis.  **Hard Features** are microtextured regions (MTRs) defined as the user defined angle range between {10-17} plane normal and the user defined stress axis.  **Soft Features** are MTRs defined as the user defined angle range between the c-axis ([0001]) and the user defined stress axis.  Note that the **Initiators** and **Soft Features** calculations is the same as the **Find Basal Loading Factor** filter calculation.  **Hard-Soft Pairs** are **HardFeatures** - **Soft Features** pairs with a neighboring **Initiator** that is not flagged here.  Note the **Stress Axis** does not have not be a unit vector.  Note that **Lattice Parameter A** and **Lattice Parameter C** is defaulted for alpha Ti.  The **Subsurface Feature Distance To Consider** defines a subvolume in which only **Features** whose centroid lies within the subvolume are considered for **Initiators**, **Hard Features**, **Soft Features** and **Hard-Soft Pairs** criteria.  All other **Features** are ignored.
 
 ## Parameters ##
@@ -24,6 +26,7 @@ Determines **Initiators**, **Hard Features**, **Soft Features** and **Hard-Soft 
 | Propagator Upper Threshold | Float | The upper threshold (degrees) between the **Feature** c-axis ([0001]) and the **Stress Axis**. | 
 
 ## Required DataContainers ##
+
 Volume
 
 ## Required Arrays ##

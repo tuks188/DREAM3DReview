@@ -2,9 +2,11 @@ Find CSL Boundaries {#findcslboundaries}
 ==========
 
 ## Group (Subgroup) ##
+
 Statistics Filters (Crystallographic)
 
 ## Description ##
+
 This filter identifies all **Faces** between neighboring **Features** that have a coincident site lattice (CSL) relationship.  The filter uses the average orientation of the **Features** on either side of the **Face** to determine the *misorientation* between the **Features**.  If the *axis-angle* that describes the *misorientation* is within a both the axis and angle user-defined tolerance, then the **Face** is flagged as being a twin.  After the **Face** is flagged as a CSL boundary, the crystal direction parallel to the **Face** normal is determined and compared with the *misorientation axis*.  The misalignment of these two crystal directions is stored as the incoherence value for the **Face** (the value is in degrees).  Note this filter will only extract CSL boundaries if the CSL **Feature** is a different phase than the parent **Feature** -- this differs from Find Twin Boundaries where the phases have to be the same. 
 
 ## Parameters ##
@@ -16,6 +18,7 @@ This filter identifies all **Faces** between neighboring **Features** that have 
 | Angle Tolerance | Double | The angle tolerance, in degrees, for the misorientation angle comparision. |
 
 ## Required DataContainers ##
+
 + Volume
 + SurfaceMesh
 
