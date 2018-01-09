@@ -100,6 +100,7 @@ InsertTransformationPhases::InsertTransformationPhases()
 , m_CellFeatureAttributeMatrixName(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, "")
 , m_FeatureIdsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds)
 , m_CellEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerAngles)
+, m_CellPhasesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases)
 , m_AvgQuatsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::AvgQuats)
 , m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids)
 , m_EquivalentDiametersArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EquivalentDiameters)
@@ -167,7 +168,11 @@ void InsertTransformationPhases::setupFilterParameters()
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Type::Cell, IGeometry::Type::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Euler Angles", CellEulerAnglesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
-
+  {
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Type::Cell, IGeometry::Type::Any);
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Phases", CellPhasesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
+  }
+  
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type::CellFeature, IGeometry::Type::Any);
@@ -349,6 +354,11 @@ void InsertTransformationPhases::dataCheck()
   m_CellEulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getCellEulerAnglesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if( nullptr != m_CellEulerAnglesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+
+  dims[0] = 1;
+  m_CellPhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, getCellPhasesArrayPath(), dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if( nullptr != m_CellEulerAnglesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  { m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   // Feature Data
   dims[0] = 4;
@@ -733,7 +743,12 @@ void InsertTransformationPhases::insertTransformationPhases()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature, float sampleHabitPlane[3], int32_t totalFeatures, float plateThickness, float d, float* euler)
+bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature, 
+                                                          float sampleHabitPlane[3], 
+                                                          int32_t totalFeatures, 
+                                                          float plateThickness, 
+                                                          float d, 
+                                                          float* euler)
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   SIMPL_RANDOMNG_NEW()
@@ -848,6 +863,7 @@ bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature, fl
             m_CellEulerAngles[cellIndex * 3] = euler[0];
             m_CellEulerAngles[cellIndex * 3 + 1] = euler[1];
             m_CellEulerAngles[cellIndex * 3 + 2] = euler[2];
+            m_CellPhases[cellIndex] = static_cast<int32_t>(m_PhaseTypesPtr.lock()->getNumberOfTuples() - 1);
             flag = true;
             firstVoxel = false;
             //    }

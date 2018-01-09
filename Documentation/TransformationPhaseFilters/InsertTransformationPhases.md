@@ -1,11 +1,21 @@
 Insert Transformation Phases {#inserttransformationphases}
 ======
-	
+
 ## Group (Subgroup) ##
+
 Synthetic Building Filters (Packing)
 
 ## Description ##
-Takes an already formed voxelized structure and inserts transformation phase morphologies with the correct orientation relationship (and habit plane if coherent).
+
+Takes an already formed voxelized structure and inserts transformation phase morphologies with the correct orientation relationship (and habit plane if coherent). Note that **cell level data** will be updated/changed during the execution of this filter and feature level data will effectively become **invalid** and should be recomputed. A *Prebuilt Pipeline* that demonstrates its use is also included in the filter.
+
+## Example Output ##
+
+Using the include example pipeline, the before and after images are presented:
+
+| Before (IPF Coloring) | After (IPF Coloring) |
+|--|--|
+|![Synthetically Generated Microstructure](Images/InsertTransfromationPhase_Before.png)|![Synthetically Generated Microstructure after inserting a transformation phase.](Images/InsertTransfromationPhase_After.png)|
 
 ## Parameters ##
 
@@ -20,7 +30,8 @@ Takes an already formed voxelized structure and inserts transformation phase mor
 | Transformation Phase Crystal Structure | Default numeric values set in EBSDLib | Hexagonal = 0, Cubic = 1 |
 
 ## Required DataContainers ##
-Volume
+
+Image or RectilinearGrid
 
 ## Required Arrays ##
 
@@ -28,6 +39,7 @@ Volume
 |------|--------------|-------------|---------|------------------------------|
 | Cell | FeatureIds | Ids (ints) that specify to which **Feature** each **Cell** belongs. | Values should be present from segmentation of experimental data or synthetic generation and cannot be determined by this filter. Not having these values will result in the filter to fail/not execute. | Segment Features (Misorientation, C-Axis Misorientation, Scalar) (Reconstruction), Read Dx File (IO), Read Ph File (IO), Pack Primary Phases (SyntheticBuilding), Insert Precipitate Phases (SyntheticBuilding), Establish Matrix Phase (SyntheticBuilding) |
 | Cell | CellEulerAngles | Three (3) angles (floats) defining the orientation of each Cell in Bunge convention (Z-X-Z) | | Import Orientation File(s) to H5Ebsd (IO) |
+| Cell | CellPhases | The phase of each cell | |  |
 | Feature | AvgQuats | Five (4) values (floats) defining the average orientation of the **Feature** in quaternion representation | Filter will calculate average quaternions for **Features** if not already calculated. | Find Feature Average Orientations (Statistics) |
 | Feature | Centroids | X, Y, Z coordinates (floats) of **Feature** center of mass | Filter will calculate **Feature** centroids if not previously calculated | Find Feature Centroids (Generic) |
 | Feature | EquivalentDiameters | Diameter (float) of a sphere with the same volume as the **Feature**. |  | Find Sizes (Statistics) |

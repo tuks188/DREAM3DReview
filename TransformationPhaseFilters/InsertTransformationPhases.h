@@ -118,6 +118,9 @@ class InsertTransformationPhases : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
     Q_PROPERTY(DataArrayPath CellEulerAnglesArrayPath READ getCellEulerAnglesArrayPath WRITE setCellEulerAnglesArrayPath)
 
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CellPhasesArrayPath)
+    Q_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
+    
     SIMPL_FILTER_PARAMETER(DataArrayPath, AvgQuatsArrayPath)
     Q_PROPERTY(DataArrayPath AvgQuatsArrayPath READ getAvgQuatsArrayPath WRITE setAvgQuatsArrayPath)
 
@@ -271,6 +274,7 @@ class InsertTransformationPhases : public AbstractFilter
     // Cell Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
     DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
+    DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
 
     // Feature Data - make sure these are all initialized to nullptr in the constructor
     DEFINE_DATAARRAY_VARIABLE(float, AvgQuats)
