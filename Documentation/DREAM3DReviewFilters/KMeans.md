@@ -2,9 +2,11 @@ K Means {#kmeans}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Clustering)
 
 ## Description ##
+
 This **Filter** applies the k means algorithm to an **Attribute Array**.  K means is a _clustering algorithm_ that assigns to each point of the **Attribute Array** a _cluster Id_.  The user must specify the number of clusters in which to partition the array.  Specifically, a k means partitioning is a _Voronoi tesselation_; an optimal solution to the k means problem is such that each point in the data set is associated with the cluster that has the closest mean.  This partitioning is the one that minimizes the within cluster variance (i.e., minimizes the within cluster sum of squares differences).  Thus, the "metric" used for k means is the 2-norm (the _Euclidean norm_; the squared Euclidean norm may also be used since this maintains the triangle inequality).
 
 Optimal solutions to the k means partitioning problem are computationally difficult; this **Filter** used _Lloyd's algorithm_ to approximate the solution.  Lloyd's algorithm is an iterative algorithm that proceeds as follows:

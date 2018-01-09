@@ -2,9 +2,11 @@ Potts Model {#pottsmodel}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3DReview (Coarsening)
 
 ## Description ##
+
 This **Filter** simulates grain growth using the Potts model.  The Potts model is a generalization of the Ising model to \f$ S \f$ states, or _spins_, on a regular lattice.  This version of the Potts model functions in the context of **Feature** Ids on an **Image Geometry**, and thus will have the effect of coarsening **Features**; additionally, both 2D and 3D **Image Geometries** may be utilized.  The **Feature** Ids are coarsened _in place_.  The present implementation uses a Monte Carlo approach; the user may enter the desired number of Monte Carlo iterations to perform.  For each Monte Carlo iteration, the algorithm proceeds as follows:
 
 1. Pick a **Feature** Id (_spin_) at random
@@ -29,6 +31,7 @@ The user may specify a mask to ignore certain points from the simulation; lattic
 This implementation of the Potts model uses several techniques to speed up the overall computation.  First, after step 1, if the selected site's neighbors all have the same spin as the local site (i.e., the local site is completely within a grain), no spin flip will be attempted.  Additionally, when selecting candidate spins, only spins that are among neighboring sites may be selected.  
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------|------|
 | Iterations | int32_t | Number of Monte Carlo time steps |
@@ -37,15 +40,18 @@ This implementation of the Potts model uses several techniques to speed up the o
 | Use Mask | bool | Whether to use a boolean mask array to ignore certain points flagged as _false_ from the algorithm |
 
 ## Required Geometry ##
+
 Image
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|-----|
 | **Cell Attribute Array** | FeatureIds | int32_t | (1) | Specifies to which **Cell** each **Feature** belongs |
 | **Cell Attrubute Array** | Mask | bool | (1) | Specifies if the point is to be counted in the algorithm, if _Use Mask_ is checked |
 
 ## Created Objects ##
+
 None
 
 ## License & Copyright ##
@@ -55,4 +61,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

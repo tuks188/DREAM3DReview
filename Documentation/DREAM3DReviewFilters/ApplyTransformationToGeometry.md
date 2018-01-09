@@ -2,9 +2,11 @@ Apply Transformation to Geometry {#applytransformationtogeometry}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Rotation/Transformation)
 
 ## Description ##
+
 This **Filter** applies a spatial transformation to an unstructured **Geometry**.  An "unstructured" **Geometry** is any geometry that requires explicit definition of **Vertex** positions.  Specifically, **Vertex**, **Edge**, **Triangle**, **Quadrilateral**, and **Tetrahedral** **Geometries** may be transformed by this **Filter**.  The transformation is applied in place, so the input **Geometry** will be modified.
 
 The user may select from a variety of options for the type of transformation to apply:
@@ -51,4 +53,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

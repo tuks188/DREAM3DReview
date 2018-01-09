@@ -2,9 +2,11 @@ Find Element Centroids {#findelementcentroids}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Geometry)
 
 ## Description ##
+
 This **Filter** computes the centroids of all **Elements** in the supplied **Geometry**.  Currently, **Edge**, **Triangle**, **Quadrilateral**, and **Tetrahedral** **Geometries** are supported.  The user must select where to store the computed centroids array; the **Geometry** used will belong to the **Data Container** in the path for the selected for the centroids.
 
 **Element** centroids represent fundamental topological information about the **Geometry**, and thus will be stored within the **Geometry** object when computed.  This **Filter** will additionally store the centroids as an **Attribute Array** within the data structure.  The array represents the (x, y, z) coordinates of the centroid.  This **Filter** will enforce that the centroids are stored in an **Attribute Matrix** that matches the fundamental **Element** type of the selected **Geometry**:
@@ -35,6 +37,7 @@ This **Filter** may optionally create a new **Data Container** that holds a **Ve
 None
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|-----|
 | **Attribute Array** | Centroids | float | (3) | Centroid coordinates of each **Element** in the supplied **Geometry** |

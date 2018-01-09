@@ -2,9 +2,11 @@ Average Vertex Array to Edge/Face/Cell Array {#averagevertexarraytoedgefacecella
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Statistics)
 
 ## Description ##
+
 This **Filter** averages the selected **Vertex** array onto the **Edges**, **Faces**, or **Cells** of a mesh-like **Geometry**.  Mesh-like **Geometries** are those that require explicit definition of connectivity between **Vertices** and **Elements**, specifically **Edge**, **Triangle**, **Quadrilateral**, and **Tetrahedral** **Geometries**.  The **Element** type on which the averaged array will be stored depends on the **Geometry**: **Edge** **Geometries** result in an **Edge** array, **Triangle** and **Quadrilateral** **Geometries** result in a **Face** array, and **Tetrahedral** **Geometries** result in a **Cell** array.  
 
 The value stored on each **Edge**, **Face**, or **Cell** is the _arithmetic mean_ of the values for all **Vertices** that belong to that **Edge**, **Face**, or **Cell**.  The user may also optionally select for the mean to be _weighted_; in this case, the average values are weighted by the distance of the **Vertex** from the **Edge**, **Face**, or **Cell** _centroid_ such that **Vertices** that are closer to the centroid contribute more strongly to the average value.

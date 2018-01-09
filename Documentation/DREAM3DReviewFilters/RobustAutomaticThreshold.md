@@ -2,9 +2,11 @@ Robust Automatic Threshold {#robustautomaticthreshold}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Threshold)
 
 ## Description ##
+
 This **Filter** automatically computes a threshold value for a scalar **Attribute Array** based on the array's gradient magnitude, producing a boolean array that is _false_ where the input array is less than the threshold value and _true_ otherwise.  The threshold value is computed using the following equation:
 
 \f[ T = \sum_{i = 1}^{n} \frac{a_{i} g_{i}}{g_{i}} \f]
@@ -39,4 +41,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

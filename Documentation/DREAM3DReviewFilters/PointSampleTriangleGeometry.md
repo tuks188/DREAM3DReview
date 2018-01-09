@@ -2,9 +2,11 @@ Point Sample Triangle Geometry {#pointsampletrianglegeometry}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Geometry)
 
 ## Description ##
+
 This **Filter** randomly samples point locations on **Triangles** in a **Triangle Geometry**.  The sampled point locations are then used to construct a **Vertex Geometry**.  The number of point samples may either be specified manually or by inferring from another **Geometry**:
 
 | Geometry | Source for Number of Samples |
@@ -64,4 +66,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

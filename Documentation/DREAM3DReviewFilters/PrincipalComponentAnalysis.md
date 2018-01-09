@@ -2,9 +2,11 @@ Principal Component Analysis {#principalcomponentanalysis}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Dimensionality Reduction)
 
 ## Description ##
+
 This **Filter** performs principal component analysis on a data space defined by the user-selected scalar **Attribute Arrays**.  Specifically, the dimensionality of the data space analyzed is equal to the number of selected arrays, where each array represents one dimension.  The arrays may be of any primitive type, and are not required to share the same primitive type.  This **Filter** uses a matrix approach to compute the principal components; the user may opt to use either the _correlation_ or _covariance_ matrix. The algorithm proceeds as follows:
 
 1. Form a \f$ m \f$ x \f$ n \f$ matrix, \f$ \mathbf{X} \f$, where the columns are the input **Attribute Arrays** (\f$ n \f$ is the number of selected arrays (columns) and \f$ m \f$ is the number of tuples for the arrays (rows))

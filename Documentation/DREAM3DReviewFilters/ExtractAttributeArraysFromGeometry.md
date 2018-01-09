@@ -2,9 +2,11 @@ Extract Attribute Arrays from Geometry {#extractattributearraysfromgeometry}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Geometry)
 
 ## Description ##
+
 This **Filter** extracts the **Attribute Arrays** that define the topology of a **Geometry** object and stores them explicitly in the data structure.  This allows information such as **Vertex** coordinates or **Element** to **Vertex** connectivity to be manipulated outside of **Geometries** (e.g, extracting the arrays into the data structure allows for them to be easily [exported to a text file](@ref writeasciidata)).  This **Filter** extracts the folllowing array information for each **Geometry**:
 
 | Type             | Attribute Arrays Extracted |
@@ -51,4 +53,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

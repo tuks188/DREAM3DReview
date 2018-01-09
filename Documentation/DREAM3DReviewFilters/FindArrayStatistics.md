@@ -2,9 +2,11 @@ Find Attribute Array Statistics {#findarraystatistics}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Statistics)
 
 ## Description ##
+
 This **Filter** computes a variety of statistics for a given scalar array.  The currently available statistics are array length, minimum, maximum, (arithmetic) mean, median, standard deviation, and summation; any combination of these statistics may be computed by this **Filter**.  Any scalar array, of any primitive type, may be used as input.  The type of the output arrays depends on the kind of statistic computed:
 
 | Statistic | Primitive Type |
@@ -27,6 +29,7 @@ The user must select a destination **Attribute Matrix** in which the computed st
 Special operations occur for certain statistics if the supplied array is of type _bool_ (for example, a mask array produced [when thresholding](@ref multithresholdobjects)).  The length, minimum, maximum, median, and summation are computed as normal (although the resulting values may be platform dependent).  The mean and standard deviation for a boolean array will be true if there are more instances of true in the array than false.  If _Standardize Data_ is chosen for a boolean array, no actual modifications will be made to the input.  These operations for boolean inputs are chosen as a basic convention, and are not intended be representative of true boolean logic.
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------|------|
 | Find Length | bool | Whether to compute the length of the input array |
@@ -41,9 +44,11 @@ Special operations occur for certain statistics if the supplied array is of type
 | Standardize Data | bool | Whether the input array should be standardized to have mean of 0 and unit variance; _Find Mean_ and _Find Standard Deviation_ must be selected to use this option |
 
 ## Required Geometry ##
+
 None
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|-----|
 | Any **Attribute Array** | None | Any | (1) | Input **Attribute Array** for which to compute statistics |
@@ -52,6 +57,7 @@ None
 | Destination **Attribute Matrix** | None | Any | N/A | **Attribute Matrix** in which to store the computed statistics |
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|-----|
 | **Attribute Array** | Length | int64_t | (1) | Length of the input array, if _Find Length_ is checked |
@@ -70,4 +76,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

@@ -2,9 +2,11 @@ K Medoids {#kmedoids}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Clustering)
 
 ## Description ##
+
 This **Filter** applies the k medoids algorithm to an **Attribute Array**.  K medoids is a _clustering algorithm_ that assigns to each point of the **Attribute Array** a _cluster Id_.  The user must specify the number of clusters in which to partition the array.  Specifically, a k medoids partitioning is such that each point in the data set is associated with the cluster that minimizes the sum of the pair-wise distances between the data points and their associated cluster centers (medoids).  This approach is analogous to [k means](@ref kmeans), but uses actual data points (the medoids) as the cluster exemplars instead of the means.  Medoids in this context refer to the data point in each cluster that is most like all other data points, i.e., that data point whose average distance to all other data points in the cluster is smallest.  Unlike [k means](@ref kmeans), since pair-wise distances are minimized instead of variance, any arbirtary concept of "distance" may be used; this **Filter** allows for the selection of a variety of distance metrics.    
 
 This **Filter** uses the _Voronoi iteration_ algorithm to produce the clustering.  The algorithm is iterative and proceeds as follows:

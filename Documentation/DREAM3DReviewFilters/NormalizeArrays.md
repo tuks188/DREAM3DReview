@@ -2,9 +2,11 @@ Normalize Attribute Arrays {#normalizearrays}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Statistics)
 
 ## Description ##
+
 This **Filter** performs a _normalization_ operation on any number of scalar input **Attribute Arrays**.  The user may select to either rescale the arrays to a specified range or standardize the arrays to have mean of 0 and unit variance.  The rescaling operation applies to following to each tuple of the input **Attribute Arrays**:
 
 \f[ X' = a + \frac{\left(X-X_{\min}\right)\left(b-a\right)}{X_{\max} - X_{\min}} \f] 
@@ -50,4 +52,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

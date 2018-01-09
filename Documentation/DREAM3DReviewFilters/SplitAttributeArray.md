@@ -2,9 +2,11 @@ Split Multicomponent Attribute Array {#splitattributearray}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Memory/Management)
 
 ## Description ##
+
 This **Filter** splits an \f$n\f$-component **Attribute Array** into \f$ n \f$ scalar arrays, where each array is one of the original components.  Any arbitrary component array may be split in this manner, and the output arrays will have the same primitive type as the input array.  The original array is not modified; instead, \f$ n \f$ new arrays are created.  For example, consider an unsigned 8-bit array with three components:
 
     { v1 v2 v3 }, { v4 v5 v6 }, { v7 v8 v9 } ...
@@ -48,4 +50,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

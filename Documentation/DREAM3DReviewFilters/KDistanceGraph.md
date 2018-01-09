@@ -2,9 +2,11 @@ K Distance Graph {#kdistancegraph}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Clustering)
 
 ## Description ##
+
 This **Filter** computes the distance between each point and its k<sup>th</sup> nearest neighbor.  For example, if \f$ k = 1 \f$, this **Filter** will store the distance bewteen each point and its closest nearest neighbor (i.e., the distance that is smallest among all pair-wise distances).  The user may select from a number of options to use as the distance metric.  When sorted smallest-to-largest, the k distance array forms a graph that is useful for estimating parameters in some clustering algorithms, such as [DBSCAN](@ref dbscan).  The user may opt to use a mask array to ignore points in the distance computation; these points will contain a distance value of 0 in the output array.
 
 ## Parameters ##

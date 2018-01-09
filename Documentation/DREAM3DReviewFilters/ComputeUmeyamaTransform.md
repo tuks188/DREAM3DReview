@@ -2,9 +2,11 @@ Compute Umeyama Transform {#computeumeyamatransform}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Registration)
 
 ## Description ##
+
 This **Filter** computes the Umeyama transform between two unstructured **Geometries**.  An "unstructured" **Geometry** is any geometry that requires explicit definition of **Vertex** positions.  Specifically, **Vertex**, **Edge**, **Triangle**, **Quadrilateral**, and **Tetrahedral** **Geometries** are considered unstructured **Geometries**.  The Umeyama transform estimates the affine transformation that maximizes the _similarity_ (specifically, the covariance) between two n-dimensional point sets.  For two unstructured **Geometries**, this has the effect of estimating, in closed form, the affine transformation that best brings the **Vertices** of the moving **Geometry** into the reference frame of the **Vertices** of the fixed **Geometry**.  The algorithm may optionally incorporate scaling into the computation of the affine transformation matrix.
 
 The moving and fixed unstructured **Geometries** do not need to be the same type, since only the **Vertex** positions are considered; however, the two unstructured **Geometries** need to share the same _number_ of **Vertices**.  This **Filter** will create an **Attribute Matrix** located in the **Data Container** of the moving **Geometry** in which to store the transformation matrix.  Note that the stored transformation matrix will be in _row major_ order.
@@ -44,4 +46,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

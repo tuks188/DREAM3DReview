@@ -2,9 +2,11 @@ Extract Internal Surfaces from Triangle Geometry {#extractinternalsurfacesfromtr
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Geometry)
 
 ## Description ##
+
 This **Filter** extracts any **Triangles** from the supplied **Triangle Geometry** that contain any _internal nodes_, then uses these extracted **Triangles** to create a new **Data Container** with the reduced **Triangle Geometry**.  This operation is the same as removing all **Triangles** that only lie of the outer surface of the supplied **Triangle Geometry**.  The user must supply a **Vertex Attribute Array** that defines the type for each node of the **Triangle Geometry**.  Node types may take the following values:
 
 | Id Value | Node Type |
@@ -48,4 +50,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

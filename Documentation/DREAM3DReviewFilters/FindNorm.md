@@ -2,9 +2,11 @@ Find Norm {#findnorm}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Statistics)
 
 ## Description ##
+
 This **Filter** computes the p<sup>th</sup> norm of an **Attribute Array**.  Specifically, for each tuple of the array, the following is computed:
 
 \f[ \left\| \mathbf{x} \right\| _p := \bigg( \sum_{i=1}^n \left| x_i \right| ^p \bigg) ^{1/p} \f]   
@@ -24,11 +26,13 @@ _Note:_ If the input array is a scalar array, the output array will contain the 
 Any
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|-----|
 | Any **Attribute Array** | None | Any | Any | Input **Attribute Array** for computing the norm |
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|-----|
 | **Attribute Array** | Norm | float | (1) | Norm of the input **Attribute Array** |

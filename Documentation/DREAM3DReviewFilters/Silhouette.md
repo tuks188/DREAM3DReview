@@ -2,9 +2,11 @@ Silhouette {#silhouette}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Clustering)
 
 ## Description ##
+
 This **Filter** computes the silhouette for a clustered **Attribute Array**.  The user must select both the original array that has been clustered and the array of cluster Ids.  The silhouette represents a measure for the quality of a clustering.  Specifically, the silhouette provides a measure for how strongly a given point belongs to its own cluster compared to all other clusters.  The silhouette is computed as follows:
 
 \f[ s_{i} = \frac{b_{i} - a_{i}}{\max\{a_{i},b_{i}\}} \f]

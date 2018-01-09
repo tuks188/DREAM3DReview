@@ -2,9 +2,11 @@ Create Geometry {#creategeometry}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Geometry)
 
 ## Description ##
+
 This **Filter** creates a **Geometry** object within a **Data Container**.  The **Data Container** must not already contain a **Geometry**; empty **Data Containers** may be created using the [Create Data Container](@ref createdatacontainer) **Filter**.  This **Filter** will also create the necessary **Element Attribute Matrices** on which to store **Attribute Arrays**.  The type of **Attribute Matrices** created depends on the kind of **Geometry** being created:
 
 | Type             | Attribute Matrices |
@@ -18,11 +20,13 @@ This **Filter** creates a **Geometry** object within a **Data Container**.  The 
 | Tetrahedral | Vertex + Cell |
 
 ### Understanding Geometries ###
+
 This **Filter** requires the user to enter information that defines the topological information for the chosen **Geometry**.  Choosing valid information for a given **Geometry** necessitates an understanding of how **DREAM.3D** stores and interprets this information.  A general overview of the data model used in **DREAM.3D** may be found [here](@ref datastructure).  More specific information for **Geometry** objects is provided below.
 
 #### Grid Geometries ####
 
 ##### Image #####
+
 An **Image Geometry** is a _grid-like_ **Geometry**, and is the simplest and most widely used of the basic **Geometry** types.  An **Image Geometry** is a _regular, rectilinear grid_; if the _dimenionality_ of the image is _d_, then only _3*d_ numbers are needed to completely define the **Geometry**: three _d_-vectors for the _dimensions_, _origin_, and _resolution_.  Dimensions define the extents of the grid, the resolution defines the spacing between grid planes for each orthogonal direction (constant along a given direction), and the origin defines the physical location of the _bottom left_ grid point in _d_-dimensional space.  The dimensions are stored as _unsigned 64-bit integers_, while the origin and resolution are stored as _32-bit floats_. 
 
 All **Image Geometries** in **DREAM.3D** are defined using 3-vectors (3D images).  A 2D image is assumed when one of the dimension values is exactly 1; the 2D image is then considered a plane.  Most **DREAM.3D** **Filters** will properly take account for the **Image** dimension if it matters (for example, the [Find Feature Shapes](@ref findshapes) **Filter** accounts for whether the **Image** is 2D or 3D when computing values such as _aspect ratios_ or _axis Euler angles_).  No dimension may be negative or equal to 0.  The resolution and origin have no value restrictions.  This **Filter** requires the user to enter the nine values for the dimenions, origin, and resolution.
@@ -30,6 +34,7 @@ All **Image Geometries** in **DREAM.3D** are defined using 3-vectors (3D images)
 Since all **Image Geometries** are implicitly 3D (even when plane-like), the fundamental building-block of an image is a _voxel_, which is a 3D object; therefore, the basic **Element** type for an **Image Geometry** is **Cell**.  **Attribute Arrays** associated with **Image Cells** are assumed to raster _x-y-z_, fastest to slowest.
 
 ##### Rectilinear Grid #####
+
 A **Rectilinear Grid Geometry** is a _grid-like_ **Geometry**.  Similar to an **Image Geometry**, a **Rectilinear Grid Geometry** has grid extents (dimensions), but is allowed to have variable _resolution_ along each orthogonal direction.  The **Geometry** then requires a total of (x<sub>dim</sub> + 1) + (y<sub>dim</sub> + 1) + (z<sub>dim</sub> + 1) numbers to define the topology.  The values are stored in three separate arrays termed the _x bounds_, _y bounds_, and _z bounds_.  These bounds arrays store the spatial location of all the planes along a given orthogonal direction.  The spacing for a given plane (equivalent to the resolution for an **Image Geometry**) is then the difference between two of these contiguous array values.  An origin does not need to be defined for a **Rectilinear Grid Geometry**, since the grid's location in space is explicitly encoded in its bounds arrays.  This **Filter** requires the user to select **Attribute Arrays** that define the three bounds arrays.  These arrays must be _single component, 32-bit float_ arrays.  Additionally, the values for each of the bounds arrays must be _strictly increasing_, which guarantees that computing the spacing for a given plane yields a postive value. 
 
 A **Rectilinear Grid Geometry** may be defined as 2D; the associated bounds array for the plane dimension is then exactly two.  No bounds arrays may have less than two values.  Since all **Rectilinear Grid Geometries** are implicitly 3D (even when plane-like), the fundamental building-block of an image is a _voxel_, which is a 3D object; therefore, the basic **Element** type for an **Image Geometry** is **Cell**.  **Attribute Arrays** associated with **Rectilinear Grid Cells** are assumed to raster _x-y-z_, fastest to slowest.
@@ -37,11 +42,13 @@ A **Rectilinear Grid Geometry** may be defined as 2D; the associated bounds arra
 #### Unstructured and Mesh-Like Geometries ####
 
 ##### Vertex #####
+
 A **Vertex Geometry** is an _unstructured_ **Geometry**.  An unstructured **Geometry** requires explicit definition of point coordinates.  Sometimes referred to as a _point cloud_, a **Vertex Geometry** is simply a collection of points.  Defining this topology requires a total number of values equal to _d_ times the total number of points, where _d_ is the dimensionality of the point cloud; within **DREAM.3D**, _d_ is always taken to be three.  The point coordinates are stored as _32-bit floats_; no other range restrictions are enforced.  This **Filter** requires the user to select an **Attribute Array** that defines these point coordinates.  The array must have _three components_ and consist of _32-bit floats_.  The number of _tuples_ in the array defines the number of vertices in the resulting **Vertex Geometry**.  
 
 The fundamental **Element** type of a **Vertex Geometry** is _vertices_.  Data stored in a **Vertex Attribute Matrix** is ordered according to **Vertex** _Ids_.  Therefore, the n<sup>th</sup> tuple in the supplied **Vertex** list corresponds to the data stored in the n<sup>th</sup> column of the **Vertex Attribute Matrix**.  By convetion, **Vertex** Ids are _zero indexed_.
 
 ##### Mesh-Like Geometries #####
+
 The following **Geometries** are considered _mesh-like_, and all share similar features concerning their storage and interpretation.  A mesh-like **Geometry** is an unstructured **Geometry** that additionally requires explicit definition of the connectivity of its **Elements** and its **Vertices**.  The **Element** type defines the kind of **Geometry** and the number of **Vertices** needed to define that **Element**:
 
 | Name             | Element Type | Number of Vertices Per Element |
@@ -72,15 +79,19 @@ The shared list schema for mesh storage has the benefit of being space efficient
 Note that although the default interpretation of lists that define mesh-like **Geometries** is shared, no undefined behavior should be observed if the information is not stored shared (i.e., if the same **Vertex** is stored more than once with a different Id).  Additionally, not all **Vertices** are required to be associated with an **Element**.  The primary requirement is that the largest **Vertex** Ids listed in the **Element** list must not be larger than the total number of **Vertices**.  
     
 ##### Edge #####
+
 An **Edge Geometry** is the simplest _mesh-like_ **Geometry**, consisting of a collection of edges connecting two vertices.  Creating an **Edge Geometry** requires supplying a shared **Vertex** list and an **Edge** list.
 
 ##### Triangle #####
+
 A **Triangle Geometry** is a _mesh-like_ **Geometry**, consisting of a collection of triangles connecting three vertices; it is a type of _surface mesh_.  Creating a **Triangle Geometry** requires supplying a shared **Vertex** list and a **Triangle** list.
 
 ##### Quadrilateral #####
+
 A **Quadrilateral Geometry** is a _mesh-like_ **Geometry**, consisting of a collection of quadrilaterals connecting four vertices; it is a type of _surface mesh_.  Creating a **Quadrilateral Geometry** requires supplying a shared **Vertex** list and a **Quadrilateral** list.
 
 ##### Tetrahedral #####
+
 A **Tetrahedral Geometry** is a _mesh-like_ **Geometry**, consisting of a collection of tetrahedra connecting four vertices; it is a type of _volume mesh_.  Creating a **Tetrahedral Geometry** requires supplying a shared **Vertex** list and a **Tetrahedral** list.  The winding that define tetrahedra require one additional convention to complement the right hand rule.  By convention, the first three vertices define the tetrahedra _base_; the winding of these vertices by the right hand rule defines a normal that points _towards the fourth vertex_.  This convention is useful since applying it consistently allows for the volume of the tetrahedra to be _signed_, which is important for determining if a tetrahedron is "inverted".
 
 ### Defining Geometries with Attribute Arrays ###

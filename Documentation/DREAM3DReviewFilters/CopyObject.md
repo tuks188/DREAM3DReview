@@ -2,9 +2,11 @@ Copy Object {#copyobject}
 =============
 
 ## Group (Subgroup) ##
+
 DREAM3D Review (Registration)
 
 ## Description ##
+
 This **Filter** copies a **Data Container**, **Attribute Matrix**, or **Attribute Array**.  **Attribute Matrix** copies will be located in the same **Data Container** as the original, while **Attribute Array** copies will be located in the same **Attribute Matrix** as the original.  
 
 If a **Data Container** is copied, then the new **Data Container** will contain copies of the original **Data Container's** **Geometry**, **Attribute Matrices**, and **Attribute Arrays**. Similarly, if an **Attribute Matrix** is copied, then the new **Attribute Matrix** will contain copies of the the original **Attribute Matrix's** **Attribute Arrays**.  Thus, the copy flows down the data structure hierarchy.
@@ -42,4 +44,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users
