@@ -2,9 +2,11 @@ Tesselate Far Field Grains{#tesselatefarfieldgrains}
 ======
 
 ## Group (Subgroup) ##
+
 Synthetic Builder Filters (Packing)
 
 ## Description ##
+
 This filter creates an empty volume for inserting features into to create synthetic microstructures.  The user is asked to set the number of **Cells** in each dimension as well as the edge length of each **Cell** (units are typically in microns, but are actually the user's choice).  The user must also specify the path to the file that holds the goal statistics that will be matched durign the synthetic microstructure generation process.  The filter, after reading the stats file, will populate a *ShapeTypes* section, where the user must provide a type of geometrical object to represent the various phases with (i.e. ellipsoids, super-ellipsoids, cubo-octahedra, cylinders).
 
 The Filter produces an estimate of the number of **Features** in the volume associated with the
@@ -24,6 +26,7 @@ values the user entered.
 | Z Res | Double |
 
 ## Required DataContainers ##
+
 Voxel
 
 ## Required Arrays ##
