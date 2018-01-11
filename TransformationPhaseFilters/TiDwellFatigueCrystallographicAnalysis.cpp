@@ -464,7 +464,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
   QString filtName = "FindNeighbors";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer findNeighborFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer findNeighborFactory = fm->getFactoryFromClassName(filtName);
 
   DataArrayPath tempPath;
 
