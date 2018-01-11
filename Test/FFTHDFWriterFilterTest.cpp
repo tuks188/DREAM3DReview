@@ -45,7 +45,7 @@ class FFTHDFWriterFilterTest
     // Now instantiate the FFTHDFWriterFilterTest Filter from the FilterManager
     QString filtName = "FFTHDFWriterFilter";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
