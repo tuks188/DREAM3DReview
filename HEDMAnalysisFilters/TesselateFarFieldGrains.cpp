@@ -1296,6 +1296,14 @@ const QString TesselateFarFieldGrains::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid TesselateFarFieldGrains::getUuid()
+{
+  return QUuid("{6f1abe57-ca7b-57ce-b03a-8c6f06fdc633}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString TesselateFarFieldGrains::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::PackingFilters;

@@ -85,7 +85,7 @@ class ReadMicData : public AbstractFilter
   public:
     SIMPL_SHARED_POINTERS(ReadMicData)
     SIMPL_STATIC_NEW_MACRO(ReadMicData)
-    SIMPL_TYPE_MACRO_SUPER(ReadMicData, AbstractFilter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadMicData, AbstractFilter)
 
     virtual ~ReadMicData();
 
@@ -117,28 +117,34 @@ class ReadMicData : public AbstractFilter
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-    virtual const QString getCompiledLibraryName();
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-    virtual const QString getGroupName();
+    virtual const QString getCompiledLibraryName() override;
+    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) override;
+    virtual const QString getGroupName() override;
 
     /**
   * @brief This returns the group that the filter belonds to. You can select
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-    virtual const QString getSubGroupName();
+    virtual const QString getSubGroupName() override;
+
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    virtual const QUuid getUuid() override;
 
     /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-    virtual const QString getHumanLabel();
+    virtual const QString getHumanLabel() override;
 
     /**
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-    virtual void setupFilterParameters();
+    virtual void setupFilterParameters() override;
 
     /**
   * @brief This method will read the options from a file
@@ -149,13 +155,13 @@ class ReadMicData : public AbstractFilter
     /**
   * @brief Reimplemented from @see AbstractFilter class
   */
-    virtual void execute();
+    virtual void execute() override;
 
     /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-    virtual void preflight();
+    virtual void preflight() override;
 
     /* These are non-exposed to the user through the GUI. Manual Pipelines are OK to set them */
     SIMPL_INSTANCE_PROPERTY(uint32_t, RefFrameZDir)
