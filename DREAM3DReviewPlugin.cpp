@@ -45,10 +45,27 @@ DREAM3DReviewPlugin::~DREAM3DReviewPlugin()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DREAM3DReviewPlugin::getPluginName()
+QString DREAM3DReviewPlugin::getPluginFileName()
 {
-  return (DREAM3DReviewConstants::DREAM3DReviewPluginDisplayName);
+  return DREAM3DReviewConstants::DREAM3DReviewPluginFile;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DREAM3DReviewPlugin::getPluginDisplayName()
+{
+  return DREAM3DReviewConstants::DREAM3DReviewPluginDisplayName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DREAM3DReviewPlugin::getPluginBaseName()
+{
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
+}
+
 
 // -----------------------------------------------------------------------------
 //
