@@ -37,9 +37,25 @@ MASSIFUtilitiesPlugin::~MASSIFUtilitiesPlugin() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString MASSIFUtilitiesPlugin::getPluginName()
+QString MASSIFUtilitiesPlugin::getPluginFileName()
 {
-  return (MASSIFUtilitiesConstants::MASSIFUtilitiesPluginDisplayName);
+  return MASSIFUtilitiesConstants::MASSIFUtilitiesPluginFile;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString MASSIFUtilitiesPlugin::getPluginDisplayName()
+{
+  return MASSIFUtilitiesConstants::MASSIFUtilitiesPluginDisplayName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString MASSIFUtilitiesPlugin::getPluginBaseName()
+{
+  return MASSIFUtilitiesConstants::MASSIFUtilitiesBaseName;
 }
 
 // -----------------------------------------------------------------------------
