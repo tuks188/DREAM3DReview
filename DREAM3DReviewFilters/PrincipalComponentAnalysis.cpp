@@ -434,6 +434,14 @@ const QString PrincipalComponentAnalysis::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid PrincipalComponentAnalysis::getUuid()
+{
+  return QUuid("{ec163736-39c8-5c69-9a56-61940a337c07}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString PrincipalComponentAnalysis::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::DimensionalityReductionFilters;

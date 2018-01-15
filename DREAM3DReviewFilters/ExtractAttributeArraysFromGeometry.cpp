@@ -634,6 +634,14 @@ const QString ExtractAttributeArraysFromGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ExtractAttributeArraysFromGeometry::getUuid()
+{
+  return QUuid("{2060a933-b6f5-50fd-9382-a008a5cef17f}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ExtractAttributeArraysFromGeometry::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;

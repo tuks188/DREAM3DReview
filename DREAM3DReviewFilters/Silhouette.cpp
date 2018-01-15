@@ -288,6 +288,14 @@ const QString Silhouette::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid Silhouette::getUuid()
+{
+  return QUuid("{f84d4d69-9ea5-54b6-a71c-df76d76d50cf}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString Silhouette::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;

@@ -502,6 +502,14 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ExtractInternalSurfacesFromTriangleGeometry::getUuid()
+{
+  return QUuid("{52a069b4-6a46-5810-b0ec-e0693c636034}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;

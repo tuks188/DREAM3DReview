@@ -449,6 +449,14 @@ const QString AverageVertexArrayToEdgeFaceCellArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid AverageVertexArrayToEdgeFaceCellArray::getUuid()
+{
+  return QUuid("{caed6d53-6846-523f-a837-0692b3a81570}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString AverageVertexArrayToEdgeFaceCellArray::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;

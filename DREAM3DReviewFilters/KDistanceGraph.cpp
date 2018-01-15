@@ -263,6 +263,14 @@ const QString KDistanceGraph::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid KDistanceGraph::getUuid()
+{
+  return QUuid("{247ea39f-cb50-5dbb-bb9d-ecde12377fed}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString KDistanceGraph::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;

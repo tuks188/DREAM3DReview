@@ -509,6 +509,14 @@ const QString PointSampleTriangleGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid PointSampleTriangleGeometry::getUuid()
+{
+  return QUuid("{119861c5-e303-537e-b210-2e62936222e9}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString PointSampleTriangleGeometry::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;

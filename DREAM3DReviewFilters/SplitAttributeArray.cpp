@@ -253,6 +253,14 @@ const QString SplitAttributeArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid SplitAttributeArray::getUuid()
+{
+  return QUuid("{5ecf77f4-a38a-52ab-b4f6-0fb8a9c5cb9c}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString SplitAttributeArray::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters;

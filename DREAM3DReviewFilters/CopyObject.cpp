@@ -307,6 +307,14 @@ const QString CopyObject::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CopyObject::getUuid()
+{
+  return QUuid("{088ef69b-ca98-51a9-97ac-369862015d71}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CopyObject::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters;

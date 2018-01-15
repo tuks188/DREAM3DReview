@@ -275,6 +275,14 @@ const QString RobustAutomaticThreshold::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RobustAutomaticThreshold::getUuid()
+{
+  return QUuid("{3062fc2c-76b2-5c50-92b7-edbbb424c41d}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RobustAutomaticThreshold::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::ThresholdFilters;

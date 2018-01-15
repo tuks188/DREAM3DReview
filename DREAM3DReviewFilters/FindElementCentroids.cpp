@@ -316,6 +316,14 @@ const QString FindElementCentroids::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FindElementCentroids::getUuid()
+{
+  return QUuid("{ef37f78b-bc9a-5884-b372-d882df6abe74}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FindElementCentroids::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;

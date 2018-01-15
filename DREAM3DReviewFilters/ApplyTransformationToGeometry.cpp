@@ -458,6 +458,14 @@ const QString ApplyTransformationToGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ApplyTransformationToGeometry::getUuid()
+{
+  return QUuid("{c681caf4-22f2-5885-bbc9-a0476abc72eb}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ApplyTransformationToGeometry::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::RotationTransformationFilters;

@@ -366,6 +366,14 @@ const QString KMedoids::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid KMedoids::getUuid()
+{
+  return QUuid("{f7486aa6-3049-5be7-8511-ae772b70c90b}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString KMedoids::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;

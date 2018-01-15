@@ -374,6 +374,14 @@ const QString CropVertexGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CropVertexGeometry::getUuid()
+{
+  return QUuid("{f28cbf07-f15a-53ca-8c7f-b41a11dae6cc}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CropVertexGeometry::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::CropCutFilters;

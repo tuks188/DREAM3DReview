@@ -890,6 +890,14 @@ const QString CreateGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CreateGeometry::getUuid()
+{
+  return QUuid("{9ac220b9-14f9-581a-9bac-5714467589cc}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CreateGeometry::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;

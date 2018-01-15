@@ -944,6 +944,14 @@ const QString FindArrayStatistics::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FindArrayStatistics::getUuid()
+{
+  return QUuid("{bf35f515-294b-55ed-8c69-211b7e69cb56}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FindArrayStatistics::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;

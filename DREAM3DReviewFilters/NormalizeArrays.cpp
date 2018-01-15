@@ -457,6 +457,14 @@ const QString NormalizeArrays::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid NormalizeArrays::getUuid()
+{
+  return QUuid("{8c584519-15c3-5010-b5ed-a2ac626591a1}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString NormalizeArrays::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;

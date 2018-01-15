@@ -243,6 +243,14 @@ const QString FindNorm::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FindNorm::getUuid()
+{
+  return QUuid("{5d0cd577-3e3e-57b8-a36d-b215b834251f}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FindNorm::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;

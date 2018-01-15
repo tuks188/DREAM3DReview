@@ -348,6 +348,14 @@ const QString RemoveFlaggedVertices::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RemoveFlaggedVertices::getUuid()
+{
+  return QUuid("{379ccc67-16dd-530a-984f-177db2314bac}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RemoveFlaggedVertices::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;

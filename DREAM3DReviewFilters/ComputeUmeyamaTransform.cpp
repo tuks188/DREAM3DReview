@@ -362,6 +362,14 @@ const QString ComputeUmeyamaTransform::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ComputeUmeyamaTransform::getUuid()
+{
+  return QUuid("{3192d494-d1ec-5ee7-a345-e9963f02aaab}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ComputeUmeyamaTransform::getSubGroupName()
 {
   return DREAM3DReviewConstants::FilterSubGroups::RegistrationFilters;
