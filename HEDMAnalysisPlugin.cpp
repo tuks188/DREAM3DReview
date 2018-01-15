@@ -41,10 +41,27 @@ HEDMAnalysisPlugin::~HEDMAnalysisPlugin() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString HEDMAnalysisPlugin::getPluginName()
+QString HEDMAnalysisPlugin::getPluginFileName()
 {
-  return (HEDMAnalysisConstants::HEDMAnalysisPluginDisplayName);
+  return HEDMAnalysisConstants::HEDMAnalysisPluginFile;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString HEDMAnalysisPlugin::getPluginDisplayName()
+{
+  return HEDMAnalysisConstants::HEDMAnalysisPluginDisplayName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString HEDMAnalysisPlugin::getPluginBaseName()
+{
+  return HEDMAnalysisConstants::HEDMAnalysisBaseName;
+}
+
 
 // -----------------------------------------------------------------------------
 //
