@@ -451,6 +451,14 @@ const QString FindCSLBoundaries::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FindCSLBoundaries::getUuid()
+{
+  return QUuid("{d87ff37c-120d-577d-a955-571c8280fa8e}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FindCSLBoundaries::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::CrystallographyFilters;

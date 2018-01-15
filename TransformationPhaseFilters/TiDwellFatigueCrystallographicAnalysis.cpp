@@ -889,6 +889,14 @@ const QString TiDwellFatigueCrystallographicAnalysis::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid TiDwellFatigueCrystallographicAnalysis::getUuid()
+{
+  return QUuid("{81e94b15-efb6-5bae-9ab1-c74099136174}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::CrystallographyFilters;

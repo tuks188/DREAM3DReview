@@ -1045,6 +1045,14 @@ const QString InsertTransformationPhases::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid InsertTransformationPhases::getUuid()
+{
+  return QUuid("{fd6da27d-0f2c-5c35-802f-7d6ce1ad0ca1}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString InsertTransformationPhases::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::PackingFilters;
