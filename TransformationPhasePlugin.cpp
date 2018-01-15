@@ -71,10 +71,27 @@ TransformationPhasePlugin::~TransformationPhasePlugin() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString TransformationPhasePlugin::getPluginName()
+QString TransformationPhasePlugin::getPluginFileName()
 {
-  return (TransformationPhaseConstants::TransformationPhasePluginDisplayName);
+  return TransformationPhaseConstants::TransformationPhasePluginFile;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString TransformationPhasePlugin::getPluginDisplayName()
+{
+  return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString TransformationPhasePlugin::getPluginBaseName()
+{
+  return TransformationPhaseConstants::TransformationPhaseBaseName;
+}
+
 
 // -----------------------------------------------------------------------------
 //
