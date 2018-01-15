@@ -155,6 +155,10 @@ None
 |------|--------------|------|----------------------|-------------|
 | Various **Attribute Matrices** | None | Vertex/Edge/Face/Cell | N/A | Various **Attribute Matrices** used to store information for the new **Geometry**; see the above documentation for a detailed discussion of what kinds of **Attribute Matrices** are created for each **Geometry** |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

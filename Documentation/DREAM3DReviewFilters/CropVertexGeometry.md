@@ -38,6 +38,10 @@ Vertex
 |------|--------------|------|----------------------|-------------|
 | Cropped **Data Container** | CroppedDataContainer | N/A | N/A | **Data Container** holding the cropped **Vertex Geometry** and any copied **Attribute Matrices** and **Attribute Arrays** |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

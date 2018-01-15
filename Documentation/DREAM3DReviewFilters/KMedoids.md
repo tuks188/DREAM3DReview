@@ -71,6 +71,10 @@ None
 
 [1] A simple and fast algorithm for K-medoids clustering, H.S. Park and C.H. Jun, Expert Systems with Applications, vol. 28 (2), pp. 3336-3341, 2009.
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

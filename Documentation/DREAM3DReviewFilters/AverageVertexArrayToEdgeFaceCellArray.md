@@ -35,6 +35,10 @@ Any mesh-like **Geometry**
 |------|--------------|------|----------------------|-------------|
 | **Edge/Face/Cell Attribute Array** | None | float | Any | The averaged **Edge**, **Face**, or **Cell** array |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

@@ -40,6 +40,10 @@ None
 |------|--------------|------|----------------------|-------------|
 | **Attribute Array** | Silhouette | double | (1) | Silhouette value for each point  |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

@@ -45,6 +45,10 @@ None
 |------|--------------|------|----------------------|-------------|
 | **Attribute Arrays** | Original name + postfix | double | (1) | Rescaled or standardize **Attribute Arrays** |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

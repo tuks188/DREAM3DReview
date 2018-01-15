@@ -37,6 +37,10 @@ Any
 |------|--------------|-------------|---------|-----|
 | **Attribute Array** | Norm | float | (1) | Norm of the input **Attribute Array** |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

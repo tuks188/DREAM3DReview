@@ -34,6 +34,10 @@ None
 |------|--------------|------|----------------------|-------------|
 | **Attribute Array** | Mask | bool | (1) | Mask array produced after application of the computed robust threshold to the input **Attribute Array** |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

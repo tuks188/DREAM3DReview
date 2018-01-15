@@ -39,6 +39,10 @@ Any unstructured **Geometry**
 
 [1] Least-squares estimation of transformation parameters between two point patterns, S. Umeyama, PAMI 1991, DOI: 10.1109/34.88573
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

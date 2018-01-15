@@ -31,6 +31,10 @@ Any mesh-like **Geometry**
 |------|--------------|------|----------------------|-------------|
 | **Vertex Attribute Array** | None | float | Any | The averaged **Vertex** array |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

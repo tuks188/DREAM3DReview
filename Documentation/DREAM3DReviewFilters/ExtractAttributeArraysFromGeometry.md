@@ -46,6 +46,10 @@ RectGrid, Vertex, Edge, Triangle, Quadrilateral, or Tetrahedral
 |------|--------------|------|----------------------|-------------|
 | Various **Attribute Arrays** | None | float/int64_t | 1/2/3/4 | Various **Attribute Arrays** used to define the **Geometry** topology; see [this documentation](@ref creategeometry) for a detailed discussion of what kinds of information are held within **Geometry** |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

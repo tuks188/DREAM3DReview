@@ -70,6 +70,10 @@ None
 
 [1] Least squares quantization in PCM, S.P. Lloyd, IEEE Transactions on Information Theory, vol. 28 (2), pp. 129-137, 1982.
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

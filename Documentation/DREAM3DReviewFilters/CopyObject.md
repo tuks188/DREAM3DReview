@@ -37,6 +37,10 @@ None
 | Any **Attribute Matrix** | None | Any | N/A | Copied **Attribute Matrix** name, if _Attribute Matrix_ is selected for _Object Type to Copy_ |
 | Any **Attribute Array** | None | Any | Any | Copied **Attribute Array** name, if _Attribute Array_ is selected for _Object Type to Copy_ |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.

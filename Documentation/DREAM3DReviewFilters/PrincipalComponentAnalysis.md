@@ -54,6 +54,10 @@ None
 | **Attribute Array**  | PrincipalComponentEigenvectors | double | (n) | Eigenvectors from the principal component analysis |
 | **Attribute Array**  | ProjectedDataSpace | double | (_Number of Dimensions for Projection_) | Projected data space, if _Project Data Space_ is checked |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.
