@@ -990,7 +990,7 @@ size_t InsertTransformationPhases::transferAttributes(size_t totalFeatures, Quat
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * ApplyToVoxelVolume
@@ -1008,7 +1008,7 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getCompiledLibraryName()
+const QString InsertTransformationPhases::getCompiledLibraryName() const
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
@@ -1016,7 +1016,7 @@ const QString InsertTransformationPhases::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getBrandingString()
+const QString InsertTransformationPhases::getBrandingString() const
 {
   return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
@@ -1024,7 +1024,7 @@ const QString InsertTransformationPhases::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getFilterVersion()
+const QString InsertTransformationPhases::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1036,7 +1036,7 @@ const QString InsertTransformationPhases::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getGroupName()
+const QString InsertTransformationPhases::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -1053,7 +1053,7 @@ const QUuid InsertTransformationPhases::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getSubGroupName()
+const QString InsertTransformationPhases::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::PackingFilters;
 }
@@ -1062,7 +1062,7 @@ const QString InsertTransformationPhases::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getHumanLabel()
+const QString InsertTransformationPhases::getHumanLabel() const
 {
   return "Insert Transformation Phases";
 }

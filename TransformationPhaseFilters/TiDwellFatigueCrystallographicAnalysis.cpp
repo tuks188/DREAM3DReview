@@ -839,7 +839,7 @@ float TiDwellFatigueCrystallographicAnalysis::find_angle(float g[3][3], float pl
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstance(bool copyFilterParameters) const
 {
   TiDwellFatigueCrystallographicAnalysis::Pointer filter = TiDwellFatigueCrystallographicAnalysis::New();
   if(true == copyFilterParameters)
@@ -852,7 +852,7 @@ AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstanc
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
+const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName() const
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
@@ -860,7 +860,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString()
+const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString() const
 {
   return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
@@ -868,7 +868,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion()
+const QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -880,7 +880,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getGroupName()
+const QString TiDwellFatigueCrystallographicAnalysis::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -897,7 +897,7 @@ const QUuid TiDwellFatigueCrystallographicAnalysis::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName()
+const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CrystallographyFilters;
 }
@@ -906,7 +906,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getHumanLabel()
+const QString TiDwellFatigueCrystallographicAnalysis::getHumanLabel() const
 {
   return "Ti Dwell Fatigue Crystallographic Analysis";
 }

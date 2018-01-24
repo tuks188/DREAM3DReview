@@ -401,7 +401,7 @@ void FindCSLBoundaries::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterParameters) const
 {
   FindCSLBoundaries::Pointer filter = FindCSLBoundaries::New();
   if(true == copyFilterParameters)
@@ -414,7 +414,7 @@ AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getCompiledLibraryName()
+const QString FindCSLBoundaries::getCompiledLibraryName() const
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
@@ -422,7 +422,7 @@ const QString FindCSLBoundaries::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getBrandingString()
+const QString FindCSLBoundaries::getBrandingString() const
 {
   return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
@@ -430,7 +430,7 @@ const QString FindCSLBoundaries::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getFilterVersion()
+const QString FindCSLBoundaries::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -442,7 +442,7 @@ const QString FindCSLBoundaries::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getGroupName()
+const QString FindCSLBoundaries::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -459,7 +459,7 @@ const QUuid FindCSLBoundaries::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getSubGroupName()
+const QString FindCSLBoundaries::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CrystallographyFilters;
 }
@@ -468,7 +468,7 @@ const QString FindCSLBoundaries::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getHumanLabel()
+const QString FindCSLBoundaries::getHumanLabel() const
 {
   return "Find CSL Boundaries";
 }
