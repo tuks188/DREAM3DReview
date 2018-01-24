@@ -1247,7 +1247,7 @@ void TesselateFarFieldGrains::assign_gaps_only()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer TesselateFarFieldGrains::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer TesselateFarFieldGrains::newFilterInstance(bool copyFilterParameters) const
 {
   TesselateFarFieldGrains::Pointer filter = TesselateFarFieldGrains::New();
   if(true == copyFilterParameters)
@@ -1261,7 +1261,7 @@ AbstractFilter::Pointer TesselateFarFieldGrains::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getCompiledLibraryName()
+const QString TesselateFarFieldGrains::getCompiledLibraryName() const
 {
   return HEDMAnalysisConstants::HEDMAnalysisBaseName;
 }
@@ -1269,7 +1269,7 @@ const QString TesselateFarFieldGrains::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getBrandingString()
+const QString TesselateFarFieldGrains::getBrandingString() const
 {
   return "HEDMAnalysis";
 }
@@ -1277,7 +1277,7 @@ const QString TesselateFarFieldGrains::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getFilterVersion()
+const QString TesselateFarFieldGrains::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1288,7 +1288,7 @@ const QString TesselateFarFieldGrains::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getGroupName()
+const QString TesselateFarFieldGrains::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -1304,7 +1304,7 @@ const QUuid TesselateFarFieldGrains::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getSubGroupName()
+const QString TesselateFarFieldGrains::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::PackingFilters;
 }
@@ -1312,7 +1312,7 @@ const QString TesselateFarFieldGrains::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getHumanLabel()
+const QString TesselateFarFieldGrains::getHumanLabel() const
 {
   return "Tesselate Far Field Grains";
 }

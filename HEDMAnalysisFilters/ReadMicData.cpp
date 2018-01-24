@@ -548,7 +548,7 @@ void ReadMicData::readMicFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ReadMicData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ReadMicData::newFilterInstance(bool copyFilterParameters) const
 {
   ReadMicData::Pointer filter = ReadMicData::New();
   if(true == copyFilterParameters)
@@ -562,7 +562,7 @@ AbstractFilter::Pointer ReadMicData::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadMicData::getCompiledLibraryName()
+const QString ReadMicData::getCompiledLibraryName() const
 {
   return HEDMAnalysisConstants::HEDMAnalysisBaseName;
 }
@@ -570,7 +570,7 @@ const QString ReadMicData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadMicData::getGroupName()
+const QString ReadMicData::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -586,7 +586,7 @@ const QUuid ReadMicData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadMicData::getSubGroupName()
+const QString ReadMicData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -594,7 +594,7 @@ const QString ReadMicData::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadMicData::getHumanLabel()
+const QString ReadMicData::getHumanLabel() const
 {
   return "Import HEDM Data (.mic)";
 }
