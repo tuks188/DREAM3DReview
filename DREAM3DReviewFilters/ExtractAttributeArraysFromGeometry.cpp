@@ -586,7 +586,7 @@ void ExtractAttributeArraysFromGeometry::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ExtractAttributeArraysFromGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ExtractAttributeArraysFromGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   ExtractAttributeArraysFromGeometry::Pointer filter = ExtractAttributeArraysFromGeometry::New();
   if(copyFilterParameters)
@@ -599,7 +599,7 @@ AbstractFilter::Pointer ExtractAttributeArraysFromGeometry::newFilterInstance(bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getCompiledLibraryName()
+const QString ExtractAttributeArraysFromGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -607,7 +607,7 @@ const QString ExtractAttributeArraysFromGeometry::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getBrandingString()
+const QString ExtractAttributeArraysFromGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -615,7 +615,7 @@ const QString ExtractAttributeArraysFromGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getFilterVersion()
+const QString ExtractAttributeArraysFromGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -626,7 +626,7 @@ const QString ExtractAttributeArraysFromGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getGroupName()
+const QString ExtractAttributeArraysFromGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -642,7 +642,7 @@ const QUuid ExtractAttributeArraysFromGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getSubGroupName()
+const QString ExtractAttributeArraysFromGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -650,7 +650,7 @@ const QString ExtractAttributeArraysFromGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getHumanLabel()
+const QString ExtractAttributeArraysFromGeometry::getHumanLabel() const
 {
   return "Extract Attribute Arrays from Geometry";
 }

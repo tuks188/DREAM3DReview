@@ -578,7 +578,7 @@ void PottsModel::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PottsModel::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer PottsModel::newFilterInstance(bool copyFilterParameters) const
 {
   PottsModel::Pointer filter = PottsModel::New();
   if(copyFilterParameters)
@@ -591,7 +591,7 @@ AbstractFilter::Pointer PottsModel::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PottsModel::getCompiledLibraryName()
+const QString PottsModel::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -599,7 +599,7 @@ const QString PottsModel::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PottsModel::getBrandingString()
+const QString PottsModel::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -607,7 +607,7 @@ const QString PottsModel::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PottsModel::getFilterVersion()
+const QString PottsModel::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -618,7 +618,7 @@ const QString PottsModel::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PottsModel::getGroupName()
+const QString PottsModel::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -634,7 +634,7 @@ const QUuid PottsModel::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PottsModel::getSubGroupName()
+const QString PottsModel::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::Coarsening;
 }
@@ -642,7 +642,7 @@ const QString PottsModel::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PottsModel::getHumanLabel()
+const QString PottsModel::getHumanLabel() const
 {
   return "Potts Model";
 }

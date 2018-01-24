@@ -260,7 +260,7 @@ void CopyObject::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CopyObject::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CopyObject::newFilterInstance(bool copyFilterParameters) const
 {
   CopyObject::Pointer filter = CopyObject::New();
   if(copyFilterParameters)
@@ -273,7 +273,7 @@ AbstractFilter::Pointer CopyObject::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getCompiledLibraryName()
+const QString CopyObject::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -281,7 +281,7 @@ const QString CopyObject::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getBrandingString()
+const QString CopyObject::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -289,7 +289,7 @@ const QString CopyObject::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getFilterVersion()
+const QString CopyObject::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -299,7 +299,7 @@ const QString CopyObject::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getGroupName()
+const QString CopyObject::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -315,7 +315,7 @@ const QUuid CopyObject::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getSubGroupName()
+const QString CopyObject::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters;
 }
@@ -323,7 +323,7 @@ const QString CopyObject::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getHumanLabel()
+const QString CopyObject::getHumanLabel() const
 {
   return "Copy Object";
 }

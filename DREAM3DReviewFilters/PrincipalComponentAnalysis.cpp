@@ -386,7 +386,7 @@ void PrincipalComponentAnalysis::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PrincipalComponentAnalysis::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer PrincipalComponentAnalysis::newFilterInstance(bool copyFilterParameters) const
 {
   PrincipalComponentAnalysis::Pointer filter = PrincipalComponentAnalysis::New();
   if(copyFilterParameters)
@@ -399,7 +399,7 @@ AbstractFilter::Pointer PrincipalComponentAnalysis::newFilterInstance(bool copyF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getCompiledLibraryName()
+const QString PrincipalComponentAnalysis::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -407,7 +407,7 @@ const QString PrincipalComponentAnalysis::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getBrandingString()
+const QString PrincipalComponentAnalysis::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -415,7 +415,7 @@ const QString PrincipalComponentAnalysis::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getFilterVersion()
+const QString PrincipalComponentAnalysis::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -426,7 +426,7 @@ const QString PrincipalComponentAnalysis::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getGroupName()
+const QString PrincipalComponentAnalysis::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -442,7 +442,7 @@ const QUuid PrincipalComponentAnalysis::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getSubGroupName()
+const QString PrincipalComponentAnalysis::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::DimensionalityReductionFilters;
 }
@@ -450,7 +450,7 @@ const QString PrincipalComponentAnalysis::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getHumanLabel()
+const QString PrincipalComponentAnalysis::getHumanLabel() const
 {
   return "Principal Component Analysis";
 }

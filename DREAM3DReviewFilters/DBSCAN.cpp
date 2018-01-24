@@ -331,7 +331,7 @@ void DBSCAN::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer DBSCAN::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer DBSCAN::newFilterInstance(bool copyFilterParameters) const
 {
   DBSCAN::Pointer filter = DBSCAN::New();
   if(copyFilterParameters)
@@ -344,7 +344,7 @@ AbstractFilter::Pointer DBSCAN::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getCompiledLibraryName()
+const QString DBSCAN::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -352,7 +352,7 @@ const QString DBSCAN::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getBrandingString()
+const QString DBSCAN::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -360,7 +360,7 @@ const QString DBSCAN::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getFilterVersion()
+const QString DBSCAN::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -371,7 +371,7 @@ const QString DBSCAN::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getGroupName()
+const QString DBSCAN::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -387,7 +387,7 @@ const QUuid DBSCAN::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getSubGroupName()
+const QString DBSCAN::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -395,7 +395,7 @@ const QString DBSCAN::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getHumanLabel()
+const QString DBSCAN::getHumanLabel() const
 {
   return "DBSCAN";
 }

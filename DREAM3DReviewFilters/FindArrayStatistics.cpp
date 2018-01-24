@@ -896,7 +896,7 @@ void FindArrayStatistics::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FindArrayStatistics::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FindArrayStatistics::newFilterInstance(bool copyFilterParameters) const
 {
   FindArrayStatistics::Pointer filter = FindArrayStatistics::New();
   if(copyFilterParameters)
@@ -909,7 +909,7 @@ AbstractFilter::Pointer FindArrayStatistics::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindArrayStatistics::getCompiledLibraryName()
+const QString FindArrayStatistics::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -917,7 +917,7 @@ const QString FindArrayStatistics::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindArrayStatistics::getBrandingString()
+const QString FindArrayStatistics::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -925,7 +925,7 @@ const QString FindArrayStatistics::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindArrayStatistics::getFilterVersion()
+const QString FindArrayStatistics::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -936,7 +936,7 @@ const QString FindArrayStatistics::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindArrayStatistics::getGroupName()
+const QString FindArrayStatistics::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -952,7 +952,7 @@ const QUuid FindArrayStatistics::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindArrayStatistics::getSubGroupName()
+const QString FindArrayStatistics::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
 }
@@ -960,7 +960,7 @@ const QString FindArrayStatistics::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindArrayStatistics::getHumanLabel()
+const QString FindArrayStatistics::getHumanLabel() const
 {
   return "Find Attribute Array Statistics";
 }

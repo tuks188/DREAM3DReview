@@ -410,7 +410,7 @@ void ApplyTransformationToGeometry::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ApplyTransformationToGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ApplyTransformationToGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   ApplyTransformationToGeometry::Pointer filter = ApplyTransformationToGeometry::New();
   if(copyFilterParameters)
@@ -423,7 +423,7 @@ AbstractFilter::Pointer ApplyTransformationToGeometry::newFilterInstance(bool co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyTransformationToGeometry::getCompiledLibraryName()
+const QString ApplyTransformationToGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -431,7 +431,7 @@ const QString ApplyTransformationToGeometry::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyTransformationToGeometry::getBrandingString()
+const QString ApplyTransformationToGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -439,7 +439,7 @@ const QString ApplyTransformationToGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyTransformationToGeometry::getFilterVersion()
+const QString ApplyTransformationToGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -450,7 +450,7 @@ const QString ApplyTransformationToGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyTransformationToGeometry::getGroupName()
+const QString ApplyTransformationToGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -466,7 +466,7 @@ const QUuid ApplyTransformationToGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyTransformationToGeometry::getSubGroupName()
+const QString ApplyTransformationToGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::RotationTransformationFilters;
 }
@@ -474,7 +474,7 @@ const QString ApplyTransformationToGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyTransformationToGeometry::getHumanLabel()
+const QString ApplyTransformationToGeometry::getHumanLabel() const
 {
   return "Apply Transformation to Geometry";
 }

@@ -409,7 +409,7 @@ void NormalizeArrays::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer NormalizeArrays::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer NormalizeArrays::newFilterInstance(bool copyFilterParameters) const
 {
   NormalizeArrays::Pointer filter = NormalizeArrays::New();
   if(copyFilterParameters)
@@ -422,7 +422,7 @@ AbstractFilter::Pointer NormalizeArrays::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getCompiledLibraryName()
+const QString NormalizeArrays::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -430,7 +430,7 @@ const QString NormalizeArrays::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getBrandingString()
+const QString NormalizeArrays::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -438,7 +438,7 @@ const QString NormalizeArrays::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getFilterVersion()
+const QString NormalizeArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -449,7 +449,7 @@ const QString NormalizeArrays::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getGroupName()
+const QString NormalizeArrays::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -465,7 +465,7 @@ const QUuid NormalizeArrays::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getSubGroupName()
+const QString NormalizeArrays::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
 }
@@ -473,7 +473,7 @@ const QString NormalizeArrays::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getHumanLabel()
+const QString NormalizeArrays::getHumanLabel() const
 {
   return "Normalize Attribute Arrays";
 }

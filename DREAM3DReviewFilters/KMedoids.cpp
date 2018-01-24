@@ -318,7 +318,7 @@ void KMedoids::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer KMedoids::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer KMedoids::newFilterInstance(bool copyFilterParameters) const
 {
   KMedoids::Pointer filter = KMedoids::New();
   if(copyFilterParameters)
@@ -331,7 +331,7 @@ AbstractFilter::Pointer KMedoids::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getCompiledLibraryName()
+const QString KMedoids::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -339,7 +339,7 @@ const QString KMedoids::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getBrandingString()
+const QString KMedoids::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -347,7 +347,7 @@ const QString KMedoids::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getFilterVersion()
+const QString KMedoids::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -358,7 +358,7 @@ const QString KMedoids::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getGroupName()
+const QString KMedoids::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -374,7 +374,7 @@ const QUuid KMedoids::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getSubGroupName()
+const QString KMedoids::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -382,7 +382,7 @@ const QString KMedoids::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getHumanLabel()
+const QString KMedoids::getHumanLabel() const
 {
   return "K Medoids";
 }

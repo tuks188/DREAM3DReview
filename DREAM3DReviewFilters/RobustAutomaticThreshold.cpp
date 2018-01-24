@@ -227,7 +227,7 @@ void RobustAutomaticThreshold::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RobustAutomaticThreshold::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RobustAutomaticThreshold::newFilterInstance(bool copyFilterParameters) const
 {
   RobustAutomaticThreshold::Pointer filter = RobustAutomaticThreshold::New();
   if(copyFilterParameters)
@@ -240,7 +240,7 @@ AbstractFilter::Pointer RobustAutomaticThreshold::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getCompiledLibraryName()
+const QString RobustAutomaticThreshold::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -248,7 +248,7 @@ const QString RobustAutomaticThreshold::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getBrandingString()
+const QString RobustAutomaticThreshold::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -256,7 +256,7 @@ const QString RobustAutomaticThreshold::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getFilterVersion()
+const QString RobustAutomaticThreshold::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -267,7 +267,7 @@ const QString RobustAutomaticThreshold::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getGroupName()
+const QString RobustAutomaticThreshold::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -283,7 +283,7 @@ const QUuid RobustAutomaticThreshold::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getSubGroupName()
+const QString RobustAutomaticThreshold::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ThresholdFilters;
 }
@@ -291,7 +291,7 @@ const QString RobustAutomaticThreshold::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getHumanLabel()
+const QString RobustAutomaticThreshold::getHumanLabel() const
 {
   return "Robust Automatic Threshold";
 }

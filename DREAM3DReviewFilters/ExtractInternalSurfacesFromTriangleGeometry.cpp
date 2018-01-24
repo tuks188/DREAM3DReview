@@ -454,7 +454,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ExtractInternalSurfacesFromTriangleGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ExtractInternalSurfacesFromTriangleGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   ExtractInternalSurfacesFromTriangleGeometry::Pointer filter = ExtractInternalSurfacesFromTriangleGeometry::New();
   if(copyFilterParameters)
@@ -467,7 +467,7 @@ AbstractFilter::Pointer ExtractInternalSurfacesFromTriangleGeometry::newFilterIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryName()
+const QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -475,7 +475,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryNam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString()
+const QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -483,7 +483,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion()
+const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -494,7 +494,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName()
+const QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -510,7 +510,7 @@ const QUuid ExtractInternalSurfacesFromTriangleGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName()
+const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -518,7 +518,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getHumanLabel()
+const QString ExtractInternalSurfacesFromTriangleGeometry::getHumanLabel() const
 {
   return "Extract Internal Surfaces from Triangle Geometry";
 }

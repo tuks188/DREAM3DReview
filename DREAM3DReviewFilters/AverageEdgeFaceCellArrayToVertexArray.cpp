@@ -332,7 +332,7 @@ void AverageEdgeFaceCellArrayToVertexArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AverageEdgeFaceCellArrayToVertexArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer AverageEdgeFaceCellArrayToVertexArray::newFilterInstance(bool copyFilterParameters) const
 {
   AverageEdgeFaceCellArrayToVertexArray::Pointer filter = AverageEdgeFaceCellArrayToVertexArray::New();
   if(copyFilterParameters)
@@ -345,7 +345,7 @@ AbstractFilter::Pointer AverageEdgeFaceCellArrayToVertexArray::newFilterInstance
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AverageEdgeFaceCellArrayToVertexArray::getCompiledLibraryName()
+const QString AverageEdgeFaceCellArrayToVertexArray::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -353,7 +353,7 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AverageEdgeFaceCellArrayToVertexArray::getBrandingString()
+const QString AverageEdgeFaceCellArrayToVertexArray::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -361,7 +361,7 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AverageEdgeFaceCellArrayToVertexArray::getFilterVersion()
+const QString AverageEdgeFaceCellArrayToVertexArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -372,7 +372,7 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AverageEdgeFaceCellArrayToVertexArray::getGroupName()
+const QString AverageEdgeFaceCellArrayToVertexArray::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -388,7 +388,7 @@ const QUuid AverageEdgeFaceCellArrayToVertexArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AverageEdgeFaceCellArrayToVertexArray::getSubGroupName()
+const QString AverageEdgeFaceCellArrayToVertexArray::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
 }
@@ -396,7 +396,7 @@ const QString AverageEdgeFaceCellArrayToVertexArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AverageEdgeFaceCellArrayToVertexArray::getHumanLabel()
+const QString AverageEdgeFaceCellArrayToVertexArray::getHumanLabel() const
 {
   return "Average Edge/Face/Cell Array to Vertex Array";
 }

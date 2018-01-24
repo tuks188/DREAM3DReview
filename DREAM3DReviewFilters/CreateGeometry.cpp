@@ -842,7 +842,7 @@ QString CreateGeometry::getBoxDimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   CreateGeometry::Pointer filter = CreateGeometry::New();
   if(copyFilterParameters)
@@ -855,7 +855,7 @@ AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getCompiledLibraryName()
+const QString CreateGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -863,7 +863,7 @@ const QString CreateGeometry::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getBrandingString()
+const QString CreateGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -871,7 +871,7 @@ const QString CreateGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getFilterVersion()
+const QString CreateGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -882,7 +882,7 @@ const QString CreateGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getGroupName()
+const QString CreateGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -898,7 +898,7 @@ const QUuid CreateGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getSubGroupName()
+const QString CreateGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -906,7 +906,7 @@ const QString CreateGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getHumanLabel()
+const QString CreateGeometry::getHumanLabel() const
 {
   return "Create Geometry";
 }

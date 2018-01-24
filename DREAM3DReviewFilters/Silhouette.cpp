@@ -240,7 +240,7 @@ void Silhouette::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer Silhouette::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer Silhouette::newFilterInstance(bool copyFilterParameters) const
 {
   Silhouette::Pointer filter = Silhouette::New();
   if(copyFilterParameters)
@@ -253,7 +253,7 @@ AbstractFilter::Pointer Silhouette::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getCompiledLibraryName()
+const QString Silhouette::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -261,7 +261,7 @@ const QString Silhouette::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getBrandingString()
+const QString Silhouette::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -269,7 +269,7 @@ const QString Silhouette::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getFilterVersion()
+const QString Silhouette::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -280,7 +280,7 @@ const QString Silhouette::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getGroupName()
+const QString Silhouette::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -296,7 +296,7 @@ const QUuid Silhouette::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getSubGroupName()
+const QString Silhouette::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -304,7 +304,7 @@ const QString Silhouette::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getHumanLabel()
+const QString Silhouette::getHumanLabel() const
 {
   return "Silhouette";
 }

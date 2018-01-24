@@ -322,7 +322,7 @@ void KMeans::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer KMeans::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer KMeans::newFilterInstance(bool copyFilterParameters) const
 {
   KMeans::Pointer filter = KMeans::New();
   if(copyFilterParameters)
@@ -335,7 +335,7 @@ AbstractFilter::Pointer KMeans::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMeans::getCompiledLibraryName()
+const QString KMeans::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -343,7 +343,7 @@ const QString KMeans::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMeans::getBrandingString()
+const QString KMeans::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -351,7 +351,7 @@ const QString KMeans::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMeans::getFilterVersion()
+const QString KMeans::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -362,7 +362,7 @@ const QString KMeans::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMeans::getGroupName()
+const QString KMeans::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -378,7 +378,7 @@ const QUuid KMeans::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMeans::getSubGroupName()
+const QString KMeans::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -386,7 +386,7 @@ const QString KMeans::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMeans::getHumanLabel()
+const QString KMeans::getHumanLabel() const
 {
   return "K Means";
 }

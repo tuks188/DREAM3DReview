@@ -315,7 +315,7 @@ void ComputeUmeyamaTransform::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ComputeUmeyamaTransform::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ComputeUmeyamaTransform::newFilterInstance(bool copyFilterParameters) const
 {
   ComputeUmeyamaTransform::Pointer filter = ComputeUmeyamaTransform::New();
   if(copyFilterParameters)
@@ -328,7 +328,7 @@ AbstractFilter::Pointer ComputeUmeyamaTransform::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getCompiledLibraryName()
+const QString ComputeUmeyamaTransform::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -336,7 +336,7 @@ const QString ComputeUmeyamaTransform::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getBrandingString()
+const QString ComputeUmeyamaTransform::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -344,7 +344,7 @@ const QString ComputeUmeyamaTransform::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getFilterVersion()
+const QString ComputeUmeyamaTransform::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -354,7 +354,7 @@ const QString ComputeUmeyamaTransform::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getGroupName()
+const QString ComputeUmeyamaTransform::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -370,7 +370,7 @@ const QUuid ComputeUmeyamaTransform::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getSubGroupName()
+const QString ComputeUmeyamaTransform::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::RegistrationFilters;
 }
@@ -378,7 +378,7 @@ const QString ComputeUmeyamaTransform::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getHumanLabel()
+const QString ComputeUmeyamaTransform::getHumanLabel() const
 {
   return "Compute Umeyama Transform";
 }

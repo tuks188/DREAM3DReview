@@ -326,7 +326,7 @@ void CropVertexGeometry::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   CropVertexGeometry::Pointer filter = CropVertexGeometry::New();
   if(copyFilterParameters)
@@ -339,7 +339,7 @@ AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getCompiledLibraryName()
+const QString CropVertexGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -347,7 +347,7 @@ const QString CropVertexGeometry::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getBrandingString()
+const QString CropVertexGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -355,7 +355,7 @@ const QString CropVertexGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getFilterVersion()
+const QString CropVertexGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -366,7 +366,7 @@ const QString CropVertexGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getGroupName()
+const QString CropVertexGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -382,7 +382,7 @@ const QUuid CropVertexGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getSubGroupName()
+const QString CropVertexGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::CropCutFilters;
 }
@@ -390,7 +390,7 @@ const QString CropVertexGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getHumanLabel()
+const QString CropVertexGeometry::getHumanLabel() const
 {
   return "Crop Geometry (Vertex)";
 }

@@ -268,7 +268,7 @@ void FindElementCentroids::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FindElementCentroids::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FindElementCentroids::newFilterInstance(bool copyFilterParameters) const
 {
   FindElementCentroids::Pointer filter = FindElementCentroids::New();
   if(copyFilterParameters)
@@ -281,7 +281,7 @@ AbstractFilter::Pointer FindElementCentroids::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getCompiledLibraryName()
+const QString FindElementCentroids::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -289,7 +289,7 @@ const QString FindElementCentroids::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getBrandingString()
+const QString FindElementCentroids::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -297,7 +297,7 @@ const QString FindElementCentroids::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getFilterVersion()
+const QString FindElementCentroids::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -308,7 +308,7 @@ const QString FindElementCentroids::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getGroupName()
+const QString FindElementCentroids::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -324,7 +324,7 @@ const QUuid FindElementCentroids::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getSubGroupName()
+const QString FindElementCentroids::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -332,7 +332,7 @@ const QString FindElementCentroids::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getHumanLabel()
+const QString FindElementCentroids::getHumanLabel() const
 {
   return "Find Element Centroids";
 }

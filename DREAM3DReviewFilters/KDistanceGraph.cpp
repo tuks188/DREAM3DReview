@@ -215,7 +215,7 @@ void KDistanceGraph::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer KDistanceGraph::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer KDistanceGraph::newFilterInstance(bool copyFilterParameters) const
 {
   KDistanceGraph::Pointer filter = KDistanceGraph::New();
   if(copyFilterParameters)
@@ -228,7 +228,7 @@ AbstractFilter::Pointer KDistanceGraph::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getCompiledLibraryName()
+const QString KDistanceGraph::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -236,7 +236,7 @@ const QString KDistanceGraph::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getBrandingString()
+const QString KDistanceGraph::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -244,7 +244,7 @@ const QString KDistanceGraph::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getFilterVersion()
+const QString KDistanceGraph::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -255,7 +255,7 @@ const QString KDistanceGraph::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getGroupName()
+const QString KDistanceGraph::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -271,7 +271,7 @@ const QUuid KDistanceGraph::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getSubGroupName()
+const QString KDistanceGraph::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -279,7 +279,7 @@ const QString KDistanceGraph::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getHumanLabel()
+const QString KDistanceGraph::getHumanLabel() const
 {
   return "K Distance Graph";
 }

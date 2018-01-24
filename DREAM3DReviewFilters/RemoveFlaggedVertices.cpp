@@ -300,7 +300,7 @@ void RemoveFlaggedVertices::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilterParameters) const
 {
   RemoveFlaggedVertices::Pointer filter = RemoveFlaggedVertices::New();
   if(copyFilterParameters)
@@ -313,7 +313,7 @@ AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getCompiledLibraryName()
+const QString RemoveFlaggedVertices::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -321,7 +321,7 @@ const QString RemoveFlaggedVertices::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getBrandingString()
+const QString RemoveFlaggedVertices::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -329,7 +329,7 @@ const QString RemoveFlaggedVertices::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getFilterVersion()
+const QString RemoveFlaggedVertices::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -340,7 +340,7 @@ const QString RemoveFlaggedVertices::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getGroupName()
+const QString RemoveFlaggedVertices::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -356,7 +356,7 @@ const QUuid RemoveFlaggedVertices::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getSubGroupName()
+const QString RemoveFlaggedVertices::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -364,7 +364,7 @@ const QString RemoveFlaggedVertices::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getHumanLabel()
+const QString RemoveFlaggedVertices::getHumanLabel() const
 {
   return "Remove Flagged Vertices";
 }

@@ -195,7 +195,7 @@ void FindNorm::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FindNorm::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FindNorm::newFilterInstance(bool copyFilterParameters) const
 {
   FindNorm::Pointer filter = FindNorm::New();
   if(copyFilterParameters)
@@ -208,7 +208,7 @@ AbstractFilter::Pointer FindNorm::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindNorm::getCompiledLibraryName()
+const QString FindNorm::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -216,7 +216,7 @@ const QString FindNorm::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindNorm::getBrandingString()
+const QString FindNorm::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -224,7 +224,7 @@ const QString FindNorm::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindNorm::getFilterVersion()
+const QString FindNorm::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -235,7 +235,7 @@ const QString FindNorm::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindNorm::getGroupName()
+const QString FindNorm::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -251,7 +251,7 @@ const QUuid FindNorm::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindNorm::getSubGroupName()
+const QString FindNorm::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
 }
@@ -259,7 +259,7 @@ const QString FindNorm::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindNorm::getHumanLabel()
+const QString FindNorm::getHumanLabel() const
 {
   return "Find Norm";
 }

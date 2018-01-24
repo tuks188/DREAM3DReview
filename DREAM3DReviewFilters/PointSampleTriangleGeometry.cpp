@@ -461,7 +461,7 @@ void PointSampleTriangleGeometry::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PointSampleTriangleGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer PointSampleTriangleGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   PointSampleTriangleGeometry::Pointer filter = PointSampleTriangleGeometry::New();
   if(copyFilterParameters)
@@ -474,7 +474,7 @@ AbstractFilter::Pointer PointSampleTriangleGeometry::newFilterInstance(bool copy
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PointSampleTriangleGeometry::getCompiledLibraryName()
+const QString PointSampleTriangleGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -482,7 +482,7 @@ const QString PointSampleTriangleGeometry::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PointSampleTriangleGeometry::getBrandingString()
+const QString PointSampleTriangleGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -490,7 +490,7 @@ const QString PointSampleTriangleGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PointSampleTriangleGeometry::getFilterVersion()
+const QString PointSampleTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -501,7 +501,7 @@ const QString PointSampleTriangleGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PointSampleTriangleGeometry::getGroupName()
+const QString PointSampleTriangleGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -517,7 +517,7 @@ const QUuid PointSampleTriangleGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PointSampleTriangleGeometry::getSubGroupName()
+const QString PointSampleTriangleGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -525,7 +525,7 @@ const QString PointSampleTriangleGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PointSampleTriangleGeometry::getHumanLabel()
+const QString PointSampleTriangleGeometry::getHumanLabel() const
 {
   return "Point Sample Triangle Geometry";
 }

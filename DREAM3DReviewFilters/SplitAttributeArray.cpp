@@ -205,7 +205,7 @@ void SplitAttributeArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterParameters) const
 {
   SplitAttributeArray::Pointer filter = SplitAttributeArray::New();
   if(copyFilterParameters)
@@ -218,7 +218,7 @@ AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getCompiledLibraryName()
+const QString SplitAttributeArray::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -226,7 +226,7 @@ const QString SplitAttributeArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getBrandingString()
+const QString SplitAttributeArray::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -234,7 +234,7 @@ const QString SplitAttributeArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getFilterVersion()
+const QString SplitAttributeArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -245,7 +245,7 @@ const QString SplitAttributeArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getGroupName()
+const QString SplitAttributeArray::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -261,7 +261,7 @@ const QUuid SplitAttributeArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getSubGroupName()
+const QString SplitAttributeArray::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::MemoryManagementFilters;
 }
@@ -269,7 +269,7 @@ const QString SplitAttributeArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getHumanLabel()
+const QString SplitAttributeArray::getHumanLabel() const
 {
   return "Split Multicomponent Attribute Array";
 }
