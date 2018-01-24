@@ -394,7 +394,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ImportMASSIFData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ImportMASSIFData::newFilterInstance(bool copyFilterParameters) const
 {
   ImportMASSIFData::Pointer filter = ImportMASSIFData::New();
   if(true == copyFilterParameters)
@@ -407,13 +407,13 @@ AbstractFilter::Pointer ImportMASSIFData::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getCompiledLibraryName()
+const QString ImportMASSIFData::getCompiledLibraryName() const
 { return MASSIFUtilitiesConstants::MASSIFUtilitiesBaseName; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getBrandingString()
+const QString ImportMASSIFData::getBrandingString() const
 {
   return "MASSIFUtilities";
 }
@@ -421,7 +421,7 @@ const QString ImportMASSIFData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getFilterVersion()
+const QString ImportMASSIFData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -432,7 +432,7 @@ const QString ImportMASSIFData::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getGroupName()
+const QString ImportMASSIFData::getGroupName() const
 { return SIMPL::FilterGroups::Unsupported; }
 
 // -----------------------------------------------------------------------------
@@ -446,13 +446,13 @@ const QUuid ImportMASSIFData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getSubGroupName()
+const QString ImportMASSIFData::getSubGroupName() const
 { return "MASSIFUtilities"; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getHumanLabel()
+const QString ImportMASSIFData::getHumanLabel() const
 { return "Import MASSIF Data"; }
 
 // -----------------------------------------------------------------------------

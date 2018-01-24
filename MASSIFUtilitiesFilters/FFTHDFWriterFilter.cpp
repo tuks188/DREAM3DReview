@@ -376,7 +376,7 @@ herr_t FFTHDFWriterFilter::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FFTHDFWriterFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FFTHDFWriterFilter::newFilterInstance(bool copyFilterParameters) const
 {
   FFTHDFWriterFilter::Pointer filter = FFTHDFWriterFilter::New();
   if(true == copyFilterParameters)
@@ -389,7 +389,7 @@ AbstractFilter::Pointer FFTHDFWriterFilter::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FFTHDFWriterFilter::getCompiledLibraryName()
+const QString FFTHDFWriterFilter::getCompiledLibraryName() const
 {
   return MASSIFUtilitiesConstants::MASSIFUtilitiesBaseName;
 }
@@ -397,7 +397,7 @@ const QString FFTHDFWriterFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FFTHDFWriterFilter::getBrandingString()
+const QString FFTHDFWriterFilter::getBrandingString() const
 {
   return "FFTHDFWriter";
 }
@@ -405,7 +405,7 @@ const QString FFTHDFWriterFilter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FFTHDFWriterFilter::getFilterVersion()
+const QString FFTHDFWriterFilter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -416,7 +416,7 @@ const QString FFTHDFWriterFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FFTHDFWriterFilter::getGroupName()
+const QString FFTHDFWriterFilter::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -432,7 +432,7 @@ const QUuid FFTHDFWriterFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FFTHDFWriterFilter::getSubGroupName()
+const QString FFTHDFWriterFilter::getSubGroupName() const
 {
   return "FFTHDFWriter";
 }
@@ -440,7 +440,7 @@ const QString FFTHDFWriterFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FFTHDFWriterFilter::getHumanLabel()
+const QString FFTHDFWriterFilter::getHumanLabel() const
 {
   return "FFTHDFWriterFilter";
 }
