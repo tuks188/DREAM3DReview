@@ -207,7 +207,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
     * @brief readFilterParametersFromJson Reads the filter parameters from a file
