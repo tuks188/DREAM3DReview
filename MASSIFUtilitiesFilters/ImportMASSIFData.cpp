@@ -16,7 +16,7 @@
 
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
 #include "MASSIFUtilities/MASSIFUtilitiesVersion.h"
@@ -190,7 +190,7 @@ void ImportMASSIFData::dataCheck()
     QString parentPath = QH5Utilities::getParentPath(hdf5ArrayPaths[i]);
 
     hid_t parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
-    HDF5ScopedGroupSentinel sentinel(&parentId, false);
+    H5ScopedGroupSentinel sentinel(&parentId, false);
     // Read dataset into DREAM.3D structure
     QString objectName = QH5Utilities::getObjectNameFromPath(hdf5ArrayPaths[i]);
 
@@ -308,7 +308,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     return;
   }
 
-  HDF5ScopedFileSentinel sentinel(&fileId, true);
+  H5ScopedFileSentinel sentinel(&fileId, true);
 
   QString totalPath = MASSIFUtilitiesConstants::ImportMassifData::DCGrpName;
   hid_t gid = QH5Utilities::openHDF5Object(fileId, MASSIFUtilitiesConstants::ImportMassifData::DCGrpName);

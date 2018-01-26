@@ -19,7 +19,7 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
@@ -272,7 +272,7 @@ void FFTHDFWriterFilter::execute()
   }
 
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
-  HDF5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
 
   // Create DataContainer group!
 
