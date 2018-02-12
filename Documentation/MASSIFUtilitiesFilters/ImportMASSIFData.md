@@ -1,4 +1,4 @@
-ImportMASSIFData {#importmassifdata}
+ImportMASSIFData 
 =============
 
 ## Group (Subgroup) ##

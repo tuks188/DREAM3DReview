@@ -1,4 +1,4 @@
-FFTHDFWriterFilter {#ffthdfwriterfilter}
+FFTHDFWriterFilter 
 =============
 
 ## Group (Subgroup) ##
