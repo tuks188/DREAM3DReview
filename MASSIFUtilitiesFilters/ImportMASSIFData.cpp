@@ -408,14 +408,16 @@ AbstractFilter::Pointer ImportMASSIFData::newFilterInstance(bool copyFilterParam
 //
 // -----------------------------------------------------------------------------
 const QString ImportMASSIFData::getCompiledLibraryName() const
-{ return MASSIFUtilitiesConstants::MASSIFUtilitiesBaseName; }
+{
+  return MASSIFUtilitiesConstants::MASSIFUtilitiesBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ImportMASSIFData::getBrandingString() const
 {
-  return "MASSIFUtilities";
+  return "MASSIFUtilities Plugin";
 }
 
 // -----------------------------------------------------------------------------
@@ -433,7 +435,9 @@ const QString ImportMASSIFData::getFilterVersion() const
 //
 // -----------------------------------------------------------------------------
 const QString ImportMASSIFData::getGroupName() const
-{ return SIMPL::FilterGroups::Unsupported; }
+{
+  return SIMPL::FilterGroups::IOFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -447,13 +451,17 @@ const QUuid ImportMASSIFData::getUuid()
 //
 // -----------------------------------------------------------------------------
 const QString ImportMASSIFData::getSubGroupName() const
-{ return "MASSIFUtilities"; }
+{
+  return SIMPL::FilterSubGroups::InputFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ImportMASSIFData::getHumanLabel() const
-{ return "Import MASSIF Data"; }
+{ 
+  return "Import MASSIF Data (HDF5)";
+}
 
 // -----------------------------------------------------------------------------
 //

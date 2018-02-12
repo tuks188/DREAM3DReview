@@ -399,7 +399,7 @@ const QString FFTHDFWriterFilter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 const QString FFTHDFWriterFilter::getBrandingString() const
 {
-  return "FFTHDFWriter";
+  return "MASSIFUtilities Plugin";
 }
 
 // -----------------------------------------------------------------------------
@@ -418,7 +418,7 @@ const QString FFTHDFWriterFilter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 const QString FFTHDFWriterFilter::getGroupName() const
 {
-  return SIMPL::FilterGroups::Unsupported;
+  return SIMPL::FilterGroups::IOFilters;
 }
 
 // -----------------------------------------------------------------------------
@@ -434,7 +434,7 @@ const QUuid FFTHDFWriterFilter::getUuid()
 // -----------------------------------------------------------------------------
 const QString FFTHDFWriterFilter::getSubGroupName() const
 {
-  return "FFTHDFWriter";
+  return SIMPL::FilterSubGroups::OutputFilters;
 }
 
 // -----------------------------------------------------------------------------
@@ -442,5 +442,5 @@ const QString FFTHDFWriterFilter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 const QString FFTHDFWriterFilter::getHumanLabel() const
 {
-  return "FFTHDFWriterFilter";
+  return "Export MASSIF Data (HDF5)";
 }
