@@ -1,4 +1,4 @@
-Potts Model {#pottsmodel}
+Potts Model 
 =============
 
 ## Group (Subgroup) ##

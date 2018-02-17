@@ -1,4 +1,4 @@
-Robust Automatic Threshold {#robustautomaticthreshold}
+Robust Automatic Threshold 
 =============
 
 ## Group (Subgroup) ##

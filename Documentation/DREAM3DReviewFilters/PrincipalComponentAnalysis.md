@@ -1,4 +1,4 @@
-Principal Component Analysis {#principalcomponentanalysis}
+Principal Component Analysis 
 =============
 
 ## Group (Subgroup) ##

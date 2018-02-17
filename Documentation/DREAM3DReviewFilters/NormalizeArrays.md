@@ -1,4 +1,4 @@
-Normalize Attribute Arrays {#normalizearrays}
+Normalize Attribute Arrays 
 =============
 
 ## Group (Subgroup) ##

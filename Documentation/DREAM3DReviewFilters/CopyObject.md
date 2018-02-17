@@ -1,4 +1,4 @@
-Copy Object {#copyobject}
+Copy Object 
 =============
 
 ## Group (Subgroup) ##

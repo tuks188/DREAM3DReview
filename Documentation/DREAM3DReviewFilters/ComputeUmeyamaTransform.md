@@ -1,4 +1,4 @@
-Compute Umeyama Transform {#computeumeyamatransform}
+Compute Umeyama Transform 
 =============
 
 ## Group (Subgroup) ##

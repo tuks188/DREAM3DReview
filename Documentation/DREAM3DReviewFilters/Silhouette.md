@@ -1,4 +1,4 @@
-Silhouette {#silhouette}
+Silhouette 
 =============
 
 ## Group (Subgroup) ##

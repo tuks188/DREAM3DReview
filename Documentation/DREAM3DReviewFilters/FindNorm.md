@@ -1,4 +1,4 @@
-Find Norm {#findnorm}
+Find Norm 
 =============
 
 ## Group (Subgroup) ##

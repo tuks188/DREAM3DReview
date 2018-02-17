@@ -37,7 +37,7 @@
 #define _dbscantemplate_h_
 
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
@@ -104,7 +104,7 @@ class FindEpsilonNeighborhoodsImpl
     return neighbors;
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   void operator()(const tbb::blocked_range<size_t>& r) const
   {
     compute(r.begin(), r.end());
@@ -165,12 +165,12 @@ public:
     int64_t counter = 0;
 
     std::vector<std::list<size_t>> epsilonNeighborhoods(numTuples);
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
     tbb::task_scheduler_init init;
     bool doParallel = true;
 #endif
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
     if(doParallel == true)
     {
       tbb::parallel_for(tbb::blocked_range<size_t>(0, numTuples), FindEpsilonNeighborhoodsImpl<T>(filter, minDist, inputData, mask, 

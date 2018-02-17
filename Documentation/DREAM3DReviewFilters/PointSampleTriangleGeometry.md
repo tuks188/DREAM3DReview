@@ -1,4 +1,4 @@
-Point Sample Triangle Geometry {#pointsampletrianglegeometry}
+Point Sample Triangle Geometry 
 =============
 
 ## Group (Subgroup) ##

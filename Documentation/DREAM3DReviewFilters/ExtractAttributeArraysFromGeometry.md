@@ -1,4 +1,4 @@
-Extract Attribute Arrays from Geometry {#extractattributearraysfromgeometry}
+Extract Attribute Arrays from Geometry 
 =============
 
 ## Group (Subgroup) ##

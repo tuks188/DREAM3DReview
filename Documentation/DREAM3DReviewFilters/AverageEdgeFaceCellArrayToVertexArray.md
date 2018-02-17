@@ -1,4 +1,4 @@
-Average Edge/Face/Cell Array to Vetex Array {#averageedgefacecellarraytovertexarray}
+Average Edge/Face/Cell Array to Vetex Array 
 =============
 
 ## Group (Subgroup) ##

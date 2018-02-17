@@ -1,4 +1,4 @@
-Split Multicomponent Attribute Array {#splitattributearray}
+Split Multicomponent Attribute Array 
 =============
 
 ## Group (Subgroup) ##

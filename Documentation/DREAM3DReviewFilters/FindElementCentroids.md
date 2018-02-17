@@ -1,4 +1,4 @@
-Find Element Centroids {#findelementcentroids}
+Find Element Centroids 
 =============
 
 ## Group (Subgroup) ##

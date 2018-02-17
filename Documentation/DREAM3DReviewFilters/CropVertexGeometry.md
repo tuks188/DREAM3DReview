@@ -1,4 +1,4 @@
-Crop Geometry (Vertex) {#cropvertexgeometry}
+Crop Geometry (Vertex) 
 =============
 
 ## Group (Subgroup) ##

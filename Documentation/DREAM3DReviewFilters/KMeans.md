@@ -1,4 +1,4 @@
-K Means {#kmeans}
+K Means 
 =============
 
 ## Group (Subgroup) ##
