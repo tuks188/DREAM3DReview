@@ -1,4 +1,4 @@
-Insert Transformation Phases {#inserttransformationphases}
+Insert Transformation Phases 
 ======
 
 ## Group (Subgroup) ##

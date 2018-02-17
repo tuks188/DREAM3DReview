@@ -37,7 +37,7 @@
 
 #include "FindCSLBoundaries.h"
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
 #include <tbb/partitioner.h>
@@ -185,7 +185,7 @@ class CalculateCSLBoundaryImpl
       }
     }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
     void operator()(const tbb::blocked_range<size_t>& r) const
     {
       generate(r.begin(), r.end());
@@ -362,7 +362,7 @@ void FindCSLBoundaries::execute()
   dataCheckSurfaceMesh();
   if(getErrorCondition() < 0) { return; }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
   bool doParallel = true;
 #endif
@@ -381,7 +381,7 @@ void FindCSLBoundaries::execute()
   float angtol = m_AngleTolerance;
   float axistol = static_cast<float>( m_AxisTolerance * M_PI / 180.0f );
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   if (doParallel == true)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, numTriangles),

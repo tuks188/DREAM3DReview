@@ -1,4 +1,4 @@
-Ti Dwell Fatigue Crystallographic Analysis {#tidwellfatiguecrystallographicanalysis}
+Ti Dwell Fatigue Crystallographic Analysis 
 ======
 	
 ## Group (Subgroup) ##
