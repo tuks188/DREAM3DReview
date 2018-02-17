@@ -1,4 +1,4 @@
-Read HEDM Data (.mic) {#readmicdata}
+Read HEDM Data (.mic) 
 =====
 
 ## Group (Subgroup) ##

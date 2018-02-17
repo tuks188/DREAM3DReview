@@ -1,4 +1,4 @@
-Tesselate Far Field Grains{#tesselatefarfieldgrains}
+Tesselate Far Field Grains
 ======
 
 ## Group (Subgroup) ##
