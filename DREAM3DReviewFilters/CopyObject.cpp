@@ -156,7 +156,7 @@ void CopyObject::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
-    DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerToCopy());
+    DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerToCopy());
 
     if(getErrorCondition() < 0)
     {

@@ -173,7 +173,7 @@ void CropVertexGeometry::dataCheck()
 
   for(auto&& attr_mat : m_AttrMatList)
   {
-    AttributeMatrix::Pointer tmpAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
+    AttributeMatrix::Pointer tmpAttrMat = m->getPrereqAttributeMatrix(this, attr_mat, -301);
     if(getErrorCondition() >= 0)
     {
       tempAttrMatType = tmpAttrMat->getType();
@@ -184,7 +184,7 @@ void CropVertexGeometry::dataCheck()
       }
       else
       {
-        dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, tmpAttrMat->getName(), tDims, AttributeMatrix::Type::Vertex);
+        dc->createNonPrereqAttributeMatrix(this, tmpAttrMat->getName(), tDims, AttributeMatrix::Type::Vertex);
         tempDataArrayList = tmpAttrMat->getAttributeArrayNames();
         for(auto&& data_array : tempDataArrayList)
         {
@@ -294,7 +294,7 @@ void CropVertexGeometry::execute()
 
   for(auto&& attr_mat : m_AttrMatList)
   {
-    AttributeMatrix::Pointer tmpAttrMat = dc->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
+    AttributeMatrix::Pointer tmpAttrMat = dc->getPrereqAttributeMatrix(this, attr_mat, -301);
     if(getErrorCondition() >= 0)
     {
       AttributeMatrix::Type tempAttrMatType = tmpAttrMat->getType();

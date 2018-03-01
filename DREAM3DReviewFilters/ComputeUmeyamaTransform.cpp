@@ -188,7 +188,7 @@ void ComputeUmeyamaTransform::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSourcePointSet());
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSourcePointSet());
 
   if(getErrorCondition() < 0)
   {
@@ -196,7 +196,7 @@ void ComputeUmeyamaTransform::dataCheck()
   }
 
   QVector<size_t> tDims(1, 1);
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getTransformationAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
+  m->createNonPrereqAttributeMatrix(this, getTransformationAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
 
   QVector<size_t> cDims(2, 4);
   DataArrayPath path(getSourcePointSet(), getTransformationAttributeMatrixName(), getTransformationMatrixName());

@@ -140,7 +140,7 @@ void DBSCAN::dataCheck()
   setWarningCondition(0);
   initialize();
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedArrayPath().getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedArrayPath().getDataContainerName(), false);
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
 
   if(getErrorCondition() < 0)
@@ -221,7 +221,7 @@ void DBSCAN::dataCheck()
   }
 
   QVector<size_t> tDims(1, 0);
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getFeatureAttributeMatrixName(), tDims, destAttrMatType);
+  m->createNonPrereqAttributeMatrix(this, getFeatureAttributeMatrixName(), tDims, destAttrMatType);
 
   if(getEpsilon() <= 0)
   {

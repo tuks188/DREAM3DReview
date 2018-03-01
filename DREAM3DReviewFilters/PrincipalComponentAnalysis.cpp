@@ -185,7 +185,7 @@ void PrincipalComponentAnalysis::dataCheck()
   QVector<size_t> tDims(1, paths.size());
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getSelectedDataArrayPaths()[0].getDataContainerName());
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getPCAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
+  m->createNonPrereqAttributeMatrix(this, getPCAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
 
   DataArrayPath tempPath;
   QVector<size_t> cDims(1, 1);

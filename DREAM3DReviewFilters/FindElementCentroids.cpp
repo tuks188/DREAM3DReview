@@ -178,7 +178,7 @@ void FindElementCentroids::dataCheck()
     vm->setGeometry(vertices);
 
     QVector<size_t> tDims(1, numElements);
-    vm->createNonPrereqAttributeMatrix<AbstractFilter>(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex);
+    vm->createNonPrereqAttributeMatrix(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex);
   }
 
   QVector<size_t> cDims(1, 3);

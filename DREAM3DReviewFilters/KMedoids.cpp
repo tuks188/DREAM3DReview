@@ -146,7 +146,7 @@ void KMedoids::dataCheck()
     notifyErrorMessage(getHumanLabel(), "Must have at least 1 cluster", getErrorCondition());
   }
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedArrayPath().getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedArrayPath().getDataContainerName(), false);
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
 
   if(getErrorCondition() < 0)
@@ -227,7 +227,7 @@ void KMedoids::dataCheck()
   }
 
   QVector<size_t> tDims(1, m_InitClusters + 1);
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getFeatureAttributeMatrixName(), tDims, destAttrMatType);
+  m->createNonPrereqAttributeMatrix(this, getFeatureAttributeMatrixName(), tDims, destAttrMatType);
 
   DataArrayPath tempPath;
   QVector<size_t> cDims;

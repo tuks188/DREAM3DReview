@@ -254,7 +254,7 @@ void PointSampleTriangleGeometry::dataCheck()
   QVector<size_t> tDims(1, m_NumSamples);
   QVector<size_t> cDims(1, 1);
 
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex);
+  m->createNonPrereqAttributeMatrix(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex);
 
   m_TriangleAreasPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, getTriangleAreasArrayPath(), cDims);
   if(m_TriangleAreasPtr.lock())

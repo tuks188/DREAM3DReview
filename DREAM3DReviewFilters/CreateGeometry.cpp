@@ -253,7 +253,7 @@ void CreateGeometry::dataCheck()
   setWarningCondition(0);
   initialize();
 
-  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
+  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName());
 
   if(getErrorCondition() < 0)
   {
@@ -294,7 +294,7 @@ void CreateGeometry::dataCheck()
 
     QVector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
     DataArrayPath path(getDataContainerName(), getImageCellAttributeMatrixName(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
   case 1: // RectGridGeom
@@ -358,7 +358,7 @@ void CreateGeometry::dataCheck()
 
     QVector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
     DataArrayPath path(getDataContainerName(), getRectGridCellAttributeMatrixName(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
   case 2: // VertexGeom
@@ -386,7 +386,7 @@ void CreateGeometry::dataCheck()
 
     QVector<size_t> tDims(1, vertex->getNumberOfVertices());
     DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName0(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     break;
   }
   case 3: // EdgeGeom
@@ -423,10 +423,10 @@ void CreateGeometry::dataCheck()
     m_NumVerts = edge->getNumberOfVertices();
     QVector<size_t> tDims(1, edge->getNumberOfVertices());
     DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName1(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = edge->getNumberOfEdges();
     path.update(getDataContainerName(), getEdgeAttributeMatrixName(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Edge);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Edge);
     break;
   }
   case 4: // TriangleGeom
@@ -462,10 +462,10 @@ void CreateGeometry::dataCheck()
     m_NumVerts = triangle->getNumberOfVertices();
     QVector<size_t> tDims(1, triangle->getNumberOfVertices());
     DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName2(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = triangle->getNumberOfTris();
     path.update(getDataContainerName(), getFaceAttributeMatrixName0(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Face);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Face);
     break;
   }
   case 5: // QuadGeom
@@ -502,10 +502,10 @@ void CreateGeometry::dataCheck()
     m_NumVerts = quadrilateral->getNumberOfVertices();
     QVector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
     DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName3(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = quadrilateral->getNumberOfQuads();
     path.update(getDataContainerName(), getFaceAttributeMatrixName1(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Face);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Face);
     break;
   }
   case 6: // TetrahedralGeom
@@ -543,10 +543,10 @@ void CreateGeometry::dataCheck()
     m_NumVerts = tetrahedral->getNumberOfVertices();
     QVector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
     DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName4(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Vertex);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = tetrahedral->getNumberOfTets();
     path.update(getDataContainerName(), getTetCellAttributeMatrixName(), "");
-    dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, path, tDims, AttributeMatrix::Type::Cell);
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
   default:

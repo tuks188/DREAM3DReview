@@ -163,7 +163,7 @@ void RemoveFlaggedVertices::dataCheck()
 
   for(auto&& attr_mat : m_AttrMatList)
   {
-    AttributeMatrix::Pointer tmpAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
+    AttributeMatrix::Pointer tmpAttrMat = m->getPrereqAttributeMatrix(this, attr_mat, -301);
     if(getErrorCondition() >= 0)
     {
       tempAttrMatType = tmpAttrMat->getType();
@@ -174,7 +174,7 @@ void RemoveFlaggedVertices::dataCheck()
       }
       else
       {
-        dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, tmpAttrMat->getName(), tDims, AttributeMatrix::Type::Vertex);
+        dc->createNonPrereqAttributeMatrix(this, tmpAttrMat->getName(), tDims, AttributeMatrix::Type::Vertex);
         tempDataArrayList = tmpAttrMat->getAttributeArrayNames();
         for(auto&& data_array : tempDataArrayList)
         {
@@ -274,7 +274,7 @@ void RemoveFlaggedVertices::execute()
 
   for(auto&& attr_mat : m_AttrMatList)
   {
-    AttributeMatrix::Pointer tmpAttrMat = reduced->getPrereqAttributeMatrix<AbstractFilter>(this, attr_mat, -301);
+    AttributeMatrix::Pointer tmpAttrMat = reduced->getPrereqAttributeMatrix(this, attr_mat, -301);
     if(getErrorCondition() >= 0)
     {
       tempAttrMatType = tmpAttrMat->getType();
