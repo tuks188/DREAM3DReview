@@ -171,7 +171,7 @@ void ImportMASSIFData::dataCheck()
   if (getErrorCondition() < 0) { return; }
 
   int err = 0;
-  AttributeMatrix::Pointer am = dc->createNonPrereqAttributeMatrix<AbstractFilter>(this, MASSIFUtilitiesConstants::ImportMassifData::MassifAM, geoDims, AttributeMatrix::Type::Cell);
+  AttributeMatrix::Pointer am = dc->createNonPrereqAttributeMatrix(this, MASSIFUtilitiesConstants::ImportMassifData::MassifAM, geoDims, AttributeMatrix::Type::Cell);
   if (getErrorCondition() < 0 || err < 0) { return; }
 
   hid_t fileId = H5Utilities::openFile(m_MassifInputFilePath.toStdString(), true);
