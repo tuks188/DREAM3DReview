@@ -452,7 +452,7 @@ void TesselateFarFieldGrains::dataCheck()
   // This is for convenience
 
   // Make sure we have our input DataContainer with the proper Ensemble data
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getOutputCellAttributeMatrixName().getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getOutputCellAttributeMatrixName().getDataContainerName(), false);
   if(getErrorCondition() < 0 || nullptr == m.get())
   {
     return;
@@ -491,12 +491,12 @@ void TesselateFarFieldGrains::dataCheck()
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   QVector<size_t> tDims(1, 0);
-  AttributeMatrix::Pointer cellFeatureAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getOutputCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature);
+  AttributeMatrix::Pointer cellFeatureAttrMat = m->createNonPrereqAttributeMatrix(this, getOutputCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature);
   if(getErrorCondition() < 0)
   {
     return;
   }
-  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getOutputCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
+  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getOutputCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
   if(getErrorCondition() < 0)
   {
     return;
