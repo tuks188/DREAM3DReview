@@ -334,11 +334,11 @@ void InsertTransformationPhases::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || m == nullptr) { return; }
-  AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
+  AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || statsGenAttrMat == nullptr) { return; }
-  AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getNumFeaturesPerParentArrayPath().getAttributeMatrixName(), -301);
+  AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix(this, getNumFeaturesPerParentArrayPath().getAttributeMatrixName(), -301);
   if(getErrorCondition() < 0 || volAttrMat == nullptr) { return; }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
