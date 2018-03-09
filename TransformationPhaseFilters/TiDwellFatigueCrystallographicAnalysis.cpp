@@ -607,9 +607,10 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
   int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
   int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
-  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
+  float xRes = 0.0f;
+  float yRes = 0.0f;
+  float zRes = 0.0f;
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
   float xyzScaledDimension[3] = {xOrigin + xPoints * xRes, yOrigin + yPoints * yRes, zOrigin + zPoints * zRes};
 
   // check if current feature centroid is within the subsurface defined centroid

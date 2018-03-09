@@ -514,9 +514,10 @@ void InsertTransformationPhases::insertTransformationPhases()
   QVector<size_t> tDims(1, 1);
 
   // find the minimum resolution
-  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
+  float xRes = 0.0f;
+  float yRes = 0.0f;
+  float zRes = 0.0f;
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
   float minRes = xRes;
   if (minRes > yRes) { minRes = yRes; }
   if (minRes > zRes) { minRes = zRes; }
@@ -757,9 +758,10 @@ bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature,
   int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
   int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
   int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
-  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
+  float xRes = 0.0f;
+  float yRes = 0.0f;
+  float zRes = 0.0f;
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
   bool flag = false;
   float x, y, z, D;
   bool firstVoxel = true;
