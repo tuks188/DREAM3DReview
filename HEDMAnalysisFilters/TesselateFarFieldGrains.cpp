@@ -726,7 +726,7 @@ void TesselateFarFieldGrains::load_features()
   size_t currentFeature = 1;
   size_t xDim, yDim, zDim;
   float xRes, yRes, zRes;
-  m->getGeometryAs<ImageGeom>()->getDimensions(xDim, yDim, zDim);
+  std::tie(xDim, yDim, zDim) = m->getGeometryAs<ImageGeom>()->getDimensions();
   m->getGeometryAs<ImageGeom>()->getResolution(xRes, yRes, zRes);
   float xShift = xRes * float(xDim / 2.0);
   float yShift = yRes * float(yDim / 2.0);
@@ -905,7 +905,7 @@ void TesselateFarFieldGrains::assign_voxels()
   int64_t totalPoints = m->getAttributeMatrix(m_OutputCellAttributeMatrixName.getAttributeMatrixName())->getNumberOfTuples();
 
   size_t udims[3] = {0, 0, 0};
-  m->getGeometryAs<ImageGeom>()->getDimensions(udims);
+  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   int64_t dims[3] = {
       static_cast<int64_t>(udims[0]), static_cast<int64_t>(udims[1]), static_cast<int64_t>(udims[2]),
@@ -922,9 +922,10 @@ void TesselateFarFieldGrains::assign_voxels()
 
   int64_t xmin, xmax, ymin, ymax, zmin, zmax;
 
-  float xRes = m->getGeometryAs<ImageGeom>()->getXRes();
-  float yRes = m->getGeometryAs<ImageGeom>()->getYRes();
-  float zRes = m->getGeometryAs<ImageGeom>()->getZRes();
+  float xRes = 0.0f;
+  float yRes = 0.0f;
+  float zRes = 0.0f;
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
   float res[3] = {xRes, yRes, zRes};
 
   Int32ArrayType::Pointer newownersPtr = Int32ArrayType::CreateArray(totalPoints, "newowners");
