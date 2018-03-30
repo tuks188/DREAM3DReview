@@ -56,8 +56,7 @@
 //
 // -----------------------------------------------------------------------------
 ComputeUmeyamaTransform::ComputeUmeyamaTransform()
-: AbstractFilter()
-, m_SourcePointSet("")
+: m_SourcePointSet("")
 , m_DestPointSet("")
 , m_UseScaling(false)
 , m_TransformationAttributeMatrixName("TransformationData")

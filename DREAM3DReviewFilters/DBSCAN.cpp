@@ -54,8 +54,7 @@
 //
 // -----------------------------------------------------------------------------
 DBSCAN::DBSCAN()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_UseMask(false)
 , m_MaskArrayPath("", "", "")
 , m_FeatureIdsArrayName("ClusterIds")

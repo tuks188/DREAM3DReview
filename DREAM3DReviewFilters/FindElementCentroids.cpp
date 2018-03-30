@@ -52,8 +52,7 @@
 //
 // -----------------------------------------------------------------------------
 FindElementCentroids::FindElementCentroids()
-: AbstractFilter()
-, m_CellCentroidsArrayPath("", "", "Centroids")
+: m_CellCentroidsArrayPath("", "", "Centroids")
 , m_CreateVertexDataContainer(false)
 , m_NewDataContainerName(SIMPL::Defaults::VertexDataContainerName)
 , m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)

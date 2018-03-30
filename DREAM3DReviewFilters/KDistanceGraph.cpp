@@ -52,8 +52,7 @@
 //
 // -----------------------------------------------------------------------------
 KDistanceGraph::KDistanceGraph()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_UseMask(false)
 , m_MaskArrayPath("", "", "")
 , m_KDistanceArrayPath("", "", "KDistance")

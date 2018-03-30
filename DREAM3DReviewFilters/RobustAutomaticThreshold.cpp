@@ -49,8 +49,7 @@
 //
 // -----------------------------------------------------------------------------
 RobustAutomaticThreshold::RobustAutomaticThreshold()
-: AbstractFilter()
-, m_InputArrayPath("", "", "")
+: m_InputArrayPath("", "", "")
 , m_FeatureIdsArrayPath("", "", "Mask")
 , m_GradientMagnitudeArrayPath("", "", "")
 , m_InputArray(nullptr)

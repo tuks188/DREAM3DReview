@@ -55,8 +55,7 @@
 //
 // -----------------------------------------------------------------------------
 ExtractInternalSurfacesFromTriangleGeometry::ExtractInternalSurfacesFromTriangleGeometry()
-: AbstractFilter()
-, m_TriangleDataContainerName(SIMPL::Defaults::TriangleDataContainerName)
+: m_TriangleDataContainerName(SIMPL::Defaults::TriangleDataContainerName)
 , m_NodeTypesArrayPath(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::VertexData::SurfaceMeshNodeType)
 , m_InternalTrianglesName("InternalTrianglesDataContainer")
 , m_NodeTypes(nullptr)

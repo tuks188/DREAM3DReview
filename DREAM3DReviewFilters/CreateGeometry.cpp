@@ -59,8 +59,7 @@
 //
 // -----------------------------------------------------------------------------
 CreateGeometry::CreateGeometry()
-: AbstractFilter()
-, m_GeometryType(0)
+: m_GeometryType(0)
 , m_DataContainerName("")
 , m_SharedVertexListArrayPath0("", "", "")
 , m_SharedVertexListArrayPath1("", "", "")

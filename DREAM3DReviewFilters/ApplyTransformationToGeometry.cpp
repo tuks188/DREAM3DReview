@@ -58,8 +58,7 @@
 //
 // -----------------------------------------------------------------------------
 ApplyTransformationToGeometry::ApplyTransformationToGeometry()
-: AbstractFilter()
-, m_ManualTransformationMatrix()
+: m_ManualTransformationMatrix()
 , m_ComputedTransformationMatrix("", "", "TransformationMatrix")
 , m_GeometryToTransform("")
 , m_TransformationMatrixType(1)
