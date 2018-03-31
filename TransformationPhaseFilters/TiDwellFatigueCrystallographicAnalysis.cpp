@@ -69,56 +69,54 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::SyntheticVolumeDataContainerName),
-  m_AlphaGlobPhase(1),
-  m_MTRPhase(2),
-  m_LatticeParameterA(2.9131f),
-  m_LatticeParameterC(4.6572f),
-  m_SubsurfaceDistance(0),
-  m_ConsiderationFraction(1.0f),
-  m_DoNotAssumeInitiatorPresence(true),
-  m_InitiatorLowerThreshold(40.0f),
-  m_InitiatorUpperThreshold(50.0f),
-  m_HardFeatureLowerThreshold(0.0f),
-  m_HardFeatureUpperThreshold(25.0f),
-  m_SoftFeatureLowerThreshold(70.0f),
-  m_SoftFeatureUpperThreshold(90.0f),
-  m_SelectedFeaturesArrayName(TransformationPhaseConstants::SelectedFeatures),
-  m_InitiatorsArrayName(TransformationPhaseConstants::Initiators),
-  m_HardFeaturesArrayName(TransformationPhaseConstants::HardFeatures),
-  m_SoftFeaturesArrayName(TransformationPhaseConstants::SoftFeatures),
-  m_HardSoftGroupsArrayName(TransformationPhaseConstants::HardSoftGroups),
-  m_CellFeatureAttributeMatrixName(SIMPL::Defaults::CellFeatureAttributeMatrixName),
-  m_CellFeatureAttributeMatrixPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, ""),
-  m_FeatureIdsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds),
-  m_CellParentIdsArrayName(SIMPL::CellData::ParentIds),
-  m_FeatureParentIdsArrayName(SIMPL::FeatureData::ParentIds),
-  m_ActiveArrayName(SIMPL::FeatureData::Active),
-  m_FeatureEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EulerAngles),
-  m_FeaturePhasesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Phases),
-  m_NeighborListArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::NeighborList),
-  m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids),
-  m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures),
-  m_SelectedFeatures(nullptr),
-  m_Initiators(nullptr),
-  m_HardFeatures(nullptr),
-  m_SoftFeatures(nullptr),
-  m_HardSoftGroups(nullptr),
-  m_FeatureIds(nullptr),
-  m_CellParentIds(nullptr),
-  m_FeatureParentIds(nullptr),
-  m_Active(nullptr),
-  m_FeatureEulerAngles(nullptr),
-  m_FeaturePhases(nullptr),
-  m_Centroids(nullptr),
-  m_CrystalStructures(nullptr)
+TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
+: m_DataContainerName(SIMPL::Defaults::SyntheticVolumeDataContainerName)
+, m_AlphaGlobPhase(1)
+, m_MTRPhase(2)
+, m_LatticeParameterA(2.9131f)
+, m_LatticeParameterC(4.6572f)
+, m_SubsurfaceDistance(0)
+, m_ConsiderationFraction(1.0f)
+, m_DoNotAssumeInitiatorPresence(true)
+, m_InitiatorLowerThreshold(40.0f)
+, m_InitiatorUpperThreshold(50.0f)
+, m_HardFeatureLowerThreshold(0.0f)
+, m_HardFeatureUpperThreshold(25.0f)
+, m_SoftFeatureLowerThreshold(70.0f)
+, m_SoftFeatureUpperThreshold(90.0f)
+, m_SelectedFeaturesArrayName(TransformationPhaseConstants::SelectedFeatures)
+, m_InitiatorsArrayName(TransformationPhaseConstants::Initiators)
+, m_HardFeaturesArrayName(TransformationPhaseConstants::HardFeatures)
+, m_SoftFeaturesArrayName(TransformationPhaseConstants::SoftFeatures)
+, m_HardSoftGroupsArrayName(TransformationPhaseConstants::HardSoftGroups)
+, m_CellFeatureAttributeMatrixName(SIMPL::Defaults::CellFeatureAttributeMatrixName)
+, m_CellFeatureAttributeMatrixPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, "")
+, m_FeatureIdsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds)
+, m_CellParentIdsArrayName(SIMPL::CellData::ParentIds)
+, m_FeatureParentIdsArrayName(SIMPL::FeatureData::ParentIds)
+, m_ActiveArrayName(SIMPL::FeatureData::Active)
+, m_FeatureEulerAnglesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::EulerAngles)
+, m_FeaturePhasesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Phases)
+, m_NeighborListArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::NeighborList)
+, m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids)
+, m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
+, m_SelectedFeatures(nullptr)
+, m_Initiators(nullptr)
+, m_HardFeatures(nullptr)
+, m_SoftFeatures(nullptr)
+, m_HardSoftGroups(nullptr)
+, m_FeatureIds(nullptr)
+, m_CellParentIds(nullptr)
+, m_FeatureParentIds(nullptr)
+, m_Active(nullptr)
+, m_FeatureEulerAngles(nullptr)
+, m_FeaturePhases(nullptr)
+, m_Centroids(nullptr)
+, m_CrystalStructures(nullptr)
 {
   m_StressAxis.x = 0.0f;
   m_StressAxis.y = 0.0f;
   m_StressAxis.z = 1.0f;
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

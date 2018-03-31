@@ -116,7 +116,6 @@ InsertTransformationPhases::InsertTransformationPhases()
   m_TransformationPhaseHabitPlane.x = 1.0f;
   m_TransformationPhaseHabitPlane.y = 1.0f;
   m_TransformationPhaseHabitPlane.z = 1.0f;
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
