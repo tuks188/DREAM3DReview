@@ -72,7 +72,6 @@ NormalizeArrays::NormalizeArrays()
 , m_DefaultValue(0.0)
 , m_Mask(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

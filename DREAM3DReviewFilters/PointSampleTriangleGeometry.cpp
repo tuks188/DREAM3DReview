@@ -77,7 +77,6 @@ PointSampleTriangleGeometry::PointSampleTriangleGeometry()
 , m_Mask(nullptr)
 , m_NumSamples(0)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

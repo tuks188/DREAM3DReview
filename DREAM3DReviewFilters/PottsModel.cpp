@@ -368,7 +368,6 @@ PottsModel::PottsModel()
 , m_Mask(nullptr)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

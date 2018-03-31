@@ -66,7 +66,6 @@ DBSCAN::DBSCAN()
 , m_Mask(nullptr)
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

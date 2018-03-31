@@ -68,7 +68,6 @@ PrincipalComponentAnalysis::PrincipalComponentAnalysis()
 , m_PCEigenvalues(nullptr)
 , m_PCEigenvectors(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

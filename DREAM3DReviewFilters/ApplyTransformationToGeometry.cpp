@@ -77,7 +77,6 @@ ApplyTransformationToGeometry::ApplyTransformationToGeometry()
   m_Scale.y = 0.0f;
   m_Scale.z = 0.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

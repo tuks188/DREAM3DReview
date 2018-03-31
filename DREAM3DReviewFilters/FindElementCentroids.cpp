@@ -58,7 +58,6 @@ FindElementCentroids::FindElementCentroids()
 , m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
 , m_CellCentroidsArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

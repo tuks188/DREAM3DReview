@@ -66,7 +66,6 @@ Silhouette::Silhouette()
 , m_FeatureIds(nullptr)
 , m_SilhouetteArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

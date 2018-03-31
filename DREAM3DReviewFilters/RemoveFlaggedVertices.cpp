@@ -56,7 +56,6 @@ RemoveFlaggedVertices::RemoveFlaggedVertices()
 , m_ReducedVertexGeometry("ReducedVertexDataContainer")
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

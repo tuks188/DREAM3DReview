@@ -57,7 +57,6 @@ RobustAutomaticThreshold::RobustAutomaticThreshold()
 , m_FeatureIds(nullptr)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

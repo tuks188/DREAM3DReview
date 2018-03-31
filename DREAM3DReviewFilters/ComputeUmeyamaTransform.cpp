@@ -62,7 +62,6 @@ ComputeUmeyamaTransform::ComputeUmeyamaTransform()
 , m_TransformationAttributeMatrixName("TransformationData")
 , m_TransformationMatrixName("TransformationMatrix")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

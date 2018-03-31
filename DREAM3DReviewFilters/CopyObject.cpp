@@ -56,7 +56,6 @@ CopyObject::CopyObject()
 , m_AttributeArrayToCopy("", "", "")
 , m_CopiedObjectName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -61,7 +61,6 @@ ExtractInternalSurfacesFromTriangleGeometry::ExtractInternalSurfacesFromTriangle
 , m_NodeTypes(nullptr)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

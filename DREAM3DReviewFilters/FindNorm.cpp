@@ -57,7 +57,6 @@ FindNorm::FindNorm()
 , m_InArray(nullptr)
 , m_Norm(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

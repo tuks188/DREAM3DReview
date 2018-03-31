@@ -61,7 +61,6 @@ CropVertexGeometry::CropVertexGeometry()
 , m_YMax(0)
 , m_ZMax(0)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

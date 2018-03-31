@@ -58,7 +58,6 @@ AverageEdgeFaceCellArrayToVertexArray::AverageEdgeFaceCellArrayToVertexArray()
 , m_InCellArray(nullptr)
 , m_AverageVertexArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

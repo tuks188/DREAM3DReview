@@ -60,7 +60,6 @@ KDistanceGraph::KDistanceGraph()
 , m_DistanceMetric(0)
 , m_KDistanceArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

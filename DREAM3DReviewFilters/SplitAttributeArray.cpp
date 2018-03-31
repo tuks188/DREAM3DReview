@@ -51,7 +51,6 @@ SplitAttributeArray::SplitAttributeArray()
 : m_InputArrayPath("", "", "")
 , m_SplitArraysSuffix("Component")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

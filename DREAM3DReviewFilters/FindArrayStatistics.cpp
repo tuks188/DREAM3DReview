@@ -102,7 +102,6 @@ FindArrayStatistics::FindArrayStatistics()
 , m_FeatureIds(nullptr)
 , m_Mask(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

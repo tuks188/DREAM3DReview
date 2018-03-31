@@ -66,7 +66,6 @@ KMeans::KMeans()
 , m_FeatureIds(nullptr)
 , m_MeansArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

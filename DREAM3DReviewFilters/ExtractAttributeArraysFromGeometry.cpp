@@ -80,7 +80,6 @@ ExtractAttributeArraysFromGeometry::ExtractAttributeArraysFromGeometry()
 , m_Tets(nullptr)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
