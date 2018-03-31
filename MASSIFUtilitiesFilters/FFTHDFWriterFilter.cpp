@@ -64,7 +64,6 @@ FFTHDFWriterFilter::FFTHDFWriterFilter()
 , m_CellEulerAnglesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerAngles)
 , m_FileId(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
