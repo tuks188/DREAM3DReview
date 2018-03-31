@@ -84,10 +84,10 @@ class ReadMicData : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(ReadMicData)
-    SIMPL_STATIC_NEW_MACRO(ReadMicData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadMicData, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ReadMicData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadMicData, AbstractFilter)
 
-    virtual ~ReadMicData();
+    ~ReadMicData() override;
 
     SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
@@ -117,51 +117,51 @@ class ReadMicData : public AbstractFilter
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-    virtual const QString getCompiledLibraryName() const override;
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-    virtual const QString getGroupName() const override;
+    const QString getCompiledLibraryName() const override;
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+    const QString getGroupName() const override;
 
     /**
   * @brief This returns the group that the filter belonds to. You can select
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-    virtual const QString getSubGroupName() const override;
+    const QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    virtual const QUuid getUuid() override;
+    const QUuid getUuid() override;
 
     /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-    virtual const QString getHumanLabel() const override;
+    const QString getHumanLabel() const override;
 
     /**
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-    virtual void setupFilterParameters() override;
+    void setupFilterParameters() override;
 
     /**
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
   * @brief Reimplemented from @see AbstractFilter class
   */
-    virtual void execute() override;
+    void execute() override;
 
     /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-    virtual void preflight() override;
+    void preflight() override;
 
     /* These are non-exposed to the user through the GUI. Manual Pipelines are OK to set them */
     SIMPL_INSTANCE_PROPERTY(uint32_t, RefFrameZDir)
@@ -225,8 +225,11 @@ class ReadMicData : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
 
+  public:
     ReadMicData(const ReadMicData&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const ReadMicData&) = delete; // Operator '=' Not Implemented
+    ReadMicData(ReadMicData&&) = delete;         // Move Constructor
+    ReadMicData& operator=(const ReadMicData&) = delete; // Copy Assignment
+    ReadMicData& operator=(ReadMicData&&) = delete;      // Move Assignment
 };
 
 Q_DECLARE_METATYPE(Mic_Private_Data)

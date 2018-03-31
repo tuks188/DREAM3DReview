@@ -294,7 +294,6 @@ TesselateFarFieldGrains::TesselateFarFieldGrains()
   m_FeatureInputFileListInfo.InputPath = "";
 
   m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
