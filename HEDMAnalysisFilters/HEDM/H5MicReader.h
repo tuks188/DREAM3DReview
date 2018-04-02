@@ -166,7 +166,7 @@ class H5MicReader : public MicReader
     bool                  m_ReadAllArrays;
 
     H5MicReader(const H5MicReader&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const H5MicReader&) = delete; // Operator '=' Not Implemented
+    void operator=(const H5MicReader&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _H5MicREADER_H_ */

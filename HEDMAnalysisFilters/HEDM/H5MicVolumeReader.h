@@ -120,7 +120,7 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
     QVector<MicPhase::Pointer> m_Phases;
 
     H5MicVolumeReader(const H5MicVolumeReader&);    // Copy Constructor Not Implemented
-    void operator=(const H5MicVolumeReader&);  // Operator '=' Not Implemented
+    void operator=(const H5MicVolumeReader&);       // Move assignment Not Implemented
 
     /**
      * @brief Allocats a contiguous chunk of memory to store values from the .Mic file

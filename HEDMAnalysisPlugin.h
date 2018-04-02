@@ -158,7 +158,7 @@ class HEDMAnalysisPlugin : public QObject, public ISIMPLibPlugin
     bool                m_DidLoad;
 
     HEDMAnalysisPlugin(const HEDMAnalysisPlugin&) = delete; // Copy Constructor Not Implemented
-    void operator=(const HEDMAnalysisPlugin&) = delete;     // Operator '=' Not Implemented
+    void operator=(const HEDMAnalysisPlugin&) = delete;     // Move assignment Not Implemented
 };
 
 #endif /* _HEDMAnalysis_H_ */

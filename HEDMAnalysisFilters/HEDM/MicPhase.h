@@ -93,7 +93,7 @@ class MicPhase
 
   private:
     MicPhase(const MicPhase&) = delete;       // Copy Constructor Not Implemented
-    void operator=(const MicPhase&) = delete; // Operator '=' Not Implemented
+    void operator=(const MicPhase&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* MicPHASE_H_ */
