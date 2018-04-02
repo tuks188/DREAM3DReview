@@ -167,7 +167,7 @@ class ImportMASSIFData : public AbstractFilter
   public:
     ImportMASSIFData(const ImportMASSIFData&) = delete; // Copy Constructor Not Implemented
     ImportMASSIFData(ImportMASSIFData&&) = delete;      // Move Constructor
-    ImportMASSIFData& operator=(const ImportMASSIFData&) = delete; // Copy Assignment
+    ImportMASSIFData& operator=(const ImportMASSIFData&) = delete; // Copy Assignment Not Implemented
     ImportMASSIFData& operator=(ImportMASSIFData&&) = delete;      // Move Assignment
 };
 

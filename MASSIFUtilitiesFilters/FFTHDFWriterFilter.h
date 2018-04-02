@@ -179,7 +179,7 @@ private:
 public:
   FFTHDFWriterFilter(const FFTHDFWriterFilter&) = delete;            // Copy Constructor Not Implemented
   FFTHDFWriterFilter(FFTHDFWriterFilter&&) = delete;                 // Move Constructor
-  FFTHDFWriterFilter& operator=(const FFTHDFWriterFilter&) = delete; // Copy Assignment
+  FFTHDFWriterFilter& operator=(const FFTHDFWriterFilter&) = delete; // Copy Assignment Not Implemented
   FFTHDFWriterFilter& operator=(FFTHDFWriterFilter&&) = delete;      // Move Assignment
 };
 
