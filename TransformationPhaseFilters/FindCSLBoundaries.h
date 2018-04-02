@@ -191,7 +191,7 @@ class FindCSLBoundaries : public AbstractFilter
   public:
     FindCSLBoundaries(const FindCSLBoundaries&) = delete; // Copy Constructor Not Implemented
     FindCSLBoundaries(FindCSLBoundaries&&) = delete;      // Move Constructor
-    FindCSLBoundaries& operator=(const FindCSLBoundaries&) = delete; // Copy Assignment
+    FindCSLBoundaries& operator=(const FindCSLBoundaries&) = delete; // Copy Assignment Not Implemented
     FindCSLBoundaries& operator=(FindCSLBoundaries&&) = delete;      // Move Assignment
 };
 

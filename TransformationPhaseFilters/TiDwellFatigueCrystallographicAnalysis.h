@@ -284,7 +284,7 @@ class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
   public:
     TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&) = delete; // Copy Constructor Not Implemented
     TiDwellFatigueCrystallographicAnalysis(TiDwellFatigueCrystallographicAnalysis&&) = delete;      // Move Constructor
-    TiDwellFatigueCrystallographicAnalysis& operator=(const TiDwellFatigueCrystallographicAnalysis&) = delete; // Copy Assignment
+    TiDwellFatigueCrystallographicAnalysis& operator=(const TiDwellFatigueCrystallographicAnalysis&) = delete; // Copy Assignment Not Implemented
     TiDwellFatigueCrystallographicAnalysis& operator=(TiDwellFatigueCrystallographicAnalysis&&) = delete;      // Move Assignment
 };
 

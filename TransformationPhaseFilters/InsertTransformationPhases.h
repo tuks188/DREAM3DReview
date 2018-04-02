@@ -317,7 +317,7 @@ class InsertTransformationPhases : public AbstractFilter
   public:
     InsertTransformationPhases(const InsertTransformationPhases&) = delete; // Copy Constructor Not Implemented
     InsertTransformationPhases(InsertTransformationPhases&&) = delete;      // Move Constructor
-    InsertTransformationPhases& operator=(const InsertTransformationPhases&) = delete; // Copy Assignment
+    InsertTransformationPhases& operator=(const InsertTransformationPhases&) = delete; // Copy Assignment Not Implemented
     InsertTransformationPhases& operator=(InsertTransformationPhases&&) = delete;      // Move Assignment
 };
 
