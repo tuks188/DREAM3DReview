@@ -172,7 +172,7 @@ private:
 public:
   FindElementCentroids(const FindElementCentroids&) = delete; // Copy Constructor Not Implemented
   FindElementCentroids(FindElementCentroids&&) = delete;      // Move Constructor
-  void operator=(const FindElementCentroids&);       // Operator '=' Not Implemented
+  void operator=(const FindElementCentroids&);                // Move assignment Not Implemented
 };
 
 #endif /* _FindElementCentroids_H_ */

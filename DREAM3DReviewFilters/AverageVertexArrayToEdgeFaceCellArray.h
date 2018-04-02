@@ -170,7 +170,7 @@ private:
 public:
   AverageVertexArrayToEdgeFaceCellArray(const AverageVertexArrayToEdgeFaceCellArray&) = delete; // Copy Constructor Not Implemented
   AverageVertexArrayToEdgeFaceCellArray(AverageVertexArrayToEdgeFaceCellArray&&) = delete;      // Move Constructor
-  void operator=(const AverageVertexArrayToEdgeFaceCellArray&);                        // Operator '=' Not Implemented
+  void operator=(const AverageVertexArrayToEdgeFaceCellArray&);                                 // Move assignment Not Implemented
 };
 
 #endif /* _AverageVertexArrayToEdgeFaceCellArray_H_ */

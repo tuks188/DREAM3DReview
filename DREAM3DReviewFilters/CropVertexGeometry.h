@@ -184,7 +184,7 @@ private:
 public:
   CropVertexGeometry(const CropVertexGeometry&) = delete; // Copy Constructor Not Implemented
   CropVertexGeometry(CropVertexGeometry&&) = delete;      // Move Constructor
-  void operator=(const CropVertexGeometry&);     // Operator '=' Not Implemented
+  void operator=(const CropVertexGeometry&);              // Move assignment Not Implemented
 };
 
 #endif /* _CropVertexGeometry_H_ */

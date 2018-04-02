@@ -205,7 +205,7 @@ private:
 public:
   PointSampleTriangleGeometry(const PointSampleTriangleGeometry&) = delete; // Copy Constructor Not Implemented
   PointSampleTriangleGeometry(PointSampleTriangleGeometry&&) = delete;      // Move Constructor
-  void operator=(const PointSampleTriangleGeometry&);              // Operator '=' Not Implemented
+  void operator=(const PointSampleTriangleGeometry&);                       // Move assignment Not Implemented
 };
 
 #endif /* _pointsampletrianglegeometry_h_ */

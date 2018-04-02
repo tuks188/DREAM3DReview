@@ -169,7 +169,7 @@ private:
 public:
   SplitAttributeArray(const SplitAttributeArray&) = delete; // Copy Constructor Not Implemented
   SplitAttributeArray(SplitAttributeArray&&) = delete;      // Move Constructor
-  void operator=(const SplitAttributeArray&);      // Operator '=' Not Implemented
+  void operator=(const SplitAttributeArray&);               // Move assignment Not Implemented
 };
 
 #endif /* _SplitAttributeArray_H_ */

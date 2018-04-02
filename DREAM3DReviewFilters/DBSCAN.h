@@ -185,7 +185,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
 
   DBSCAN(const DBSCAN&);         // Copy Constructor Not Implemented
-  DBSCAN& operator=(const DBSCAN&) = delete; // Copy Assignment
+  DBSCAN& operator=(const DBSCAN&) = delete; // Copy Assignment Not Implemented
   DBSCAN& operator=(DBSCAN&&) = delete;      // Move Assignment
 };
 

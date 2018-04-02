@@ -186,7 +186,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(double, MeansArray)
 
   KMeans(const KMeans&);         // Copy Constructor Not Implemented
-  KMeans& operator=(const KMeans&) = delete; // Copy Assignment
+  KMeans& operator=(const KMeans&) = delete; // Copy Assignment Not Implemented
   KMeans& operator=(KMeans&&) = delete;      // Move Assignment
 };
 

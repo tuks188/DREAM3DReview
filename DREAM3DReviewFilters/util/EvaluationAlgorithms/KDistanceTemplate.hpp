@@ -114,7 +114,7 @@ public:
 
 private:
   KDistanceTemplate(const KDistanceTemplate&); // Copy Constructor Not Implemented
-  void operator=(const KDistanceTemplate&); // Operator '=' Not Implemented
+  void operator=(const KDistanceTemplate&);    // Move assignment Not Implemented
 };
 
 #endif /* _kdistancetemplate_h_ */

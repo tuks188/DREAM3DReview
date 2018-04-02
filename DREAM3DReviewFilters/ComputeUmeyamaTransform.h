@@ -176,7 +176,7 @@ private:
 public:
   ComputeUmeyamaTransform(const ComputeUmeyamaTransform&) = delete; // Copy Constructor Not Implemented
   ComputeUmeyamaTransform(ComputeUmeyamaTransform&&) = delete;      // Move Constructor
-  void operator=(const ComputeUmeyamaTransform&);          // Operator '=' Not Implemented
+  void operator=(const ComputeUmeyamaTransform&);                   // Move assignment Not Implemented
 };
 
 #endif /* _ComputeUmeyamaTransform_H_ */

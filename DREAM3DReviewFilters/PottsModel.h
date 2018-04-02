@@ -177,7 +177,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
   PottsModel(const PottsModel&);     // Copy Constructor Not Implemented
-  PottsModel& operator=(const PottsModel&) = delete; // Copy Assignment
+  PottsModel& operator=(const PottsModel&) = delete; // Copy Assignment Not Implemented
   PottsModel& operator=(PottsModel&&) = delete;      // Move Assignment
 };
 

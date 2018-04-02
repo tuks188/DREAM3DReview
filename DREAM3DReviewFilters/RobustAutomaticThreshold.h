@@ -172,7 +172,7 @@ private:
 public:
   RobustAutomaticThreshold(const RobustAutomaticThreshold&) = delete; // Copy Constructor Not Implemented
   RobustAutomaticThreshold(RobustAutomaticThreshold&&) = delete;      // Move Constructor
-  void operator=(const RobustAutomaticThreshold&);           // Operator '=' Not Implemented
+  void operator=(const RobustAutomaticThreshold&);                    // Move assignment Not Implemented
 };
 
 #endif /* _robustautomaticthreshold_H_ */

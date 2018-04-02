@@ -172,7 +172,7 @@ private:
 public:
   ExtractInternalSurfacesFromTriangleGeometry(const ExtractInternalSurfacesFromTriangleGeometry&) = delete; // Copy Constructor Not Implemented
   ExtractInternalSurfacesFromTriangleGeometry(ExtractInternalSurfacesFromTriangleGeometry&&) = delete;      // Move Constructor
-  void operator=(const ExtractInternalSurfacesFromTriangleGeometry&);                              // Operator '=' Not Implemented
+  void operator=(const ExtractInternalSurfacesFromTriangleGeometry&);                                       // Move assignment Not Implemented
 };
 
 #endif /* _ExtractInternalSurfacesFromTriangleGeometry_H_ */

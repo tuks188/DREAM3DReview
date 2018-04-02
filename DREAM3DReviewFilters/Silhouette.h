@@ -179,7 +179,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(double, SilhouetteArray)
 
   Silhouette(const Silhouette&);     // Copy Constructor Not Implemented
-  Silhouette& operator=(const Silhouette&) = delete; // Copy Assignment
+  Silhouette& operator=(const Silhouette&) = delete; // Copy Assignment Not Implemented
   Silhouette& operator=(Silhouette&&) = delete;      // Move Assignment
 };
 

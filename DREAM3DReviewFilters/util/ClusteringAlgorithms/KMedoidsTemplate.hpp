@@ -221,7 +221,7 @@ private:
   }
 
   KMedoidsTemplate(const KMedoidsTemplate&); // Copy Constructor Not Implemented
-  void operator=(const KMedoidsTemplate&); // Operator '=' Not Implemented
+  void operator=(const KMedoidsTemplate&);   // Move assignment Not Implemented
 };
 
 #endif /* _kmedoidstemplate_H_ */
