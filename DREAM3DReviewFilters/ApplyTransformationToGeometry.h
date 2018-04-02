@@ -188,7 +188,8 @@ private:
 public:
   ApplyTransformationToGeometry(const ApplyTransformationToGeometry&) = delete; // Copy Constructor Not Implemented
   ApplyTransformationToGeometry(ApplyTransformationToGeometry&&) = delete;      // Move Constructor
-  void operator=(const ApplyTransformationToGeometry&);                         // Move assignment Not Implemented
+  ApplyTransformationToGeometry& operator=(const ApplyTransformationToGeometry&) = delete; // Copy Assignment Not Implemented
+  ApplyTransformationToGeometry& operator=(ApplyTransformationToGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 
 #endif /* _ApplyTransformationToGeometry_H_ */

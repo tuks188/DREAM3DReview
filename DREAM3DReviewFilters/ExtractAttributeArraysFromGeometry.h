@@ -207,7 +207,8 @@ private:
 public:
   ExtractAttributeArraysFromGeometry(const ExtractAttributeArraysFromGeometry&) = delete; // Copy Constructor Not Implemented
   ExtractAttributeArraysFromGeometry(ExtractAttributeArraysFromGeometry&&) = delete;      // Move Constructor
-  void operator=(const ExtractAttributeArraysFromGeometry&);                              // Move assignment Not Implemented
+  ExtractAttributeArraysFromGeometry& operator=(const ExtractAttributeArraysFromGeometry&) = delete; // Copy Assignment Not Implemented
+  ExtractAttributeArraysFromGeometry& operator=(ExtractAttributeArraysFromGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 
 #endif /* _ExtractAttributeArraysFromGeometry_H_ */
