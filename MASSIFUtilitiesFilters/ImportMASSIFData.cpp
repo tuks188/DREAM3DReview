@@ -47,13 +47,11 @@ template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportMASSIFData::ImportMASSIFData() :
-  AbstractFilter(),
-  m_FilePrefix("Step-"),
-  m_StepNumber(2)
+ImportMASSIFData::ImportMASSIFData()
+: m_FilePrefix("Step-")
+, m_StepNumber(2)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

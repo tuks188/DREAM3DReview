@@ -101,8 +101,6 @@ class ImportMASSIFDataTest
 
   private:
     ImportMASSIFDataTest(const ImportMASSIFDataTest&); // Copy Constructor Not Implemented
-    void operator=(const ImportMASSIFDataTest&); // Operator '=' Not Implemented
-
-
+    void operator=(const ImportMASSIFDataTest&);       // Move assignment Not Implemented
 };
 

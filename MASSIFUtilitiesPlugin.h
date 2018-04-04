@@ -157,7 +157,7 @@ class MASSIFUtilitiesPlugin : public QObject, public ISIMPLibPlugin
     bool                m_DidLoad;
 
     MASSIFUtilitiesPlugin(const MASSIFUtilitiesPlugin&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MASSIFUtilitiesPlugin&) = delete;        // Operator '=' Not Implemented
+    void operator=(const MASSIFUtilitiesPlugin&) = delete;        // Move assignment Not Implemented
 };
 
 #endif /* _MASSIFUtilities_H_ */

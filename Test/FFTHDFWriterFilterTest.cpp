@@ -101,8 +101,6 @@ class FFTHDFWriterFilterTest
 
   private:
     FFTHDFWriterFilterTest(const FFTHDFWriterFilterTest&); // Copy Constructor Not Implemented
-    void operator=(const FFTHDFWriterFilterTest&); // Operator '=' Not Implemented
-
-
+    void operator=(const FFTHDFWriterFilterTest&);         // Move assignment Not Implemented
 };
 

@@ -18,10 +18,10 @@ class ImportMASSIFData : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(ImportMASSIFData)
-    SIMPL_STATIC_NEW_MACRO(ImportMASSIFData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportMASSIFData, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ImportMASSIFData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportMASSIFData, AbstractFilter)
 
-    virtual ~ImportMASSIFData();
+    ~ImportMASSIFData() override;
 
     SIMPL_FILTER_PARAMETER(QString, MassifInputFilePath)
     Q_PROPERTY(QString MassifInputFilePath READ getMassifInputFilePath WRITE setMassifInputFilePath)
@@ -35,62 +35,62 @@ class ImportMASSIFData : public AbstractFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getCompiledLibraryName() const override;
+    const QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
     */
-    virtual const QString getBrandingString() const override;
+    const QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    virtual const QString getFilterVersion() const override;
+    const QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getGroupName() const override;
+    const QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getSubGroupName() const override;
+    const QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    virtual const QUuid getUuid() override;
+    const QUuid getUuid() override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getHumanLabel() const override;
+    const QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void setupFilterParameters() override;
+    void setupFilterParameters() override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
-    virtual void execute() override;
+    void execute() override;
 
     /**
     * @brief preflight Reimplemented from @see AbstractFilter class
     */
-    virtual void preflight() override;
+    void preflight() override;
 
   signals:
     /**
@@ -164,8 +164,11 @@ class ImportMASSIFData : public AbstractFilter
      */
     IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, QVector<size_t> geoDims, bool metaDataOnly);
 
+  public:
     ImportMASSIFData(const ImportMASSIFData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ImportMASSIFData&) = delete;   // Operator '=' Not Implemented
+    ImportMASSIFData(ImportMASSIFData&&) = delete;      // Move Constructor
+    ImportMASSIFData& operator=(const ImportMASSIFData&) = delete; // Copy Assignment Not Implemented
+    ImportMASSIFData& operator=(ImportMASSIFData&&) = delete;      // Move Assignment
 };
 
 #endif /* _ImportMASSIFData_H_ */

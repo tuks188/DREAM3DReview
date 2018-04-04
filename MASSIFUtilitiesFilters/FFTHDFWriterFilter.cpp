@@ -34,7 +34,7 @@ namespace Detail
 class H5GroupAutoCloser
 {
 public:
-  H5GroupAutoCloser(hid_t* groupId)
+  explicit H5GroupAutoCloser(hid_t* groupId)
   : gid(groupId)
   {
   }
@@ -45,35 +45,25 @@ public:
     {
       H5Gclose(*gid);
     }
-  }
+    }
 
-private:
-  hid_t* gid;
+  private:
+    hid_t* gid;
 };
-}
+} // namespace Detail
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FFTHDFWriterFilter::FFTHDFWriterFilter()
-: AbstractFilter()
-, m_OutputFile("")
+: m_OutputFile("")
 , m_WritePipeline(true)
-,
-    //  m_WriteXdmfFile(true),
-    m_AppendToExisting(false)
-,
-    //---------------------------------------
-    m_FeatureIdsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds)
+, m_AppendToExisting(false)
+, m_FeatureIdsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds)
 , m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases)
 , m_CellEulerAnglesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerAngles)
-, m_FeatureIds(nullptr)
-, m_CellPhases(nullptr)
-, m_CellEulerAngles(nullptr)
 , m_FileId(-1)
-
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -184,7 +174,7 @@ void FFTHDFWriterFilter::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -195,7 +185,7 @@ void FFTHDFWriterFilter::dataCheck()
 
   m_CellPhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getCellPhasesArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_CellPhasesPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_CellPhasesPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -207,7 +197,7 @@ void FFTHDFWriterFilter::dataCheck()
   cDims[0] = 3;
   m_CellEulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getCellEulerAnglesArrayPath(),
                                                                                                            cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_CellEulerAnglesPtr.lock().get())                                                                 /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_CellEulerAnglesPtr.lock())                                                                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -348,12 +338,12 @@ void FFTHDFWriterFilter::writeXdmfFooter(QTextStream& xdmf)
 hid_t FFTHDFWriterFilter::openFile(bool appendData)
 {
   // Try to open a file to append data into
-  if(APPEND_DATA_TRUE == appendData)
+  if(appendData)
   {
     m_FileId = QH5Utilities::openFile(m_OutputFile, false);
   }
   // No file was found or we are writing new data only to a clean file
-  if(APPEND_DATA_FALSE == appendData || m_FileId < 0)
+  if(!appendData || m_FileId < 0)
   {
     m_FileId = QH5Utilities::createFile(m_OutputFile);
   }
@@ -370,7 +360,7 @@ herr_t FFTHDFWriterFilter::closeFile()
   {
     return QH5Utilities::closeFile(m_FileId);
   }
-  return true;
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -379,7 +369,7 @@ herr_t FFTHDFWriterFilter::closeFile()
 AbstractFilter::Pointer FFTHDFWriterFilter::newFilterInstance(bool copyFilterParameters) const
 {
   FFTHDFWriterFilter::Pointer filter = FFTHDFWriterFilter::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
