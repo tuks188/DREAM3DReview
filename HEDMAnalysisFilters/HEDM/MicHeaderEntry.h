@@ -101,7 +101,7 @@ class MicHeaderEntry : public EbsdHeaderEntry
     QString m_key;
 
     MicHeaderEntry(const MicHeaderEntry&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MicHeaderEntry&) = delete; // Operator '=' Not Implemented
+    void operator=(const MicHeaderEntry&) = delete; // Move assignment Not Implemented
 };
 
 /**
@@ -151,7 +151,7 @@ class MicStringHeaderEntry : public EbsdHeaderEntry
     QString m_key;
 
     MicStringHeaderEntry(const MicStringHeaderEntry&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MicStringHeaderEntry&) = delete;       // Operator '=' Not Implemented
+    void operator=(const MicStringHeaderEntry&) = delete;       // Move assignment Not Implemented
 };
 
 

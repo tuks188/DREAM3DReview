@@ -215,8 +215,7 @@ class MicReader : public EbsdReader
     void parseDataLine(QByteArray& line, size_t i);
 
     MicReader(const MicReader&);    // Copy Constructor Not Implemented
-    void operator=(const MicReader&);  // Operator '=' Not Implemented
-
+    void operator=(const MicReader&); // Move assignment Not Implemented
 };
 
 #endif /* _MicREADER_H_ */
