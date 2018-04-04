@@ -184,7 +184,7 @@ class TransformationPhasePlugin : public QObject, public ISIMPLibPlugin
     bool                m_DidLoad;
 
     TransformationPhasePlugin(const TransformationPhasePlugin&) = delete; // Copy Constructor Not Implemented
-    void operator=(const TransformationPhasePlugin&) = delete;            // Operator '=' Not Implemented
+    void operator=(const TransformationPhasePlugin&) = delete;            // Move assignment Not Implemented
 };
 
 #endif /* _TransformationPhase_H_ */
