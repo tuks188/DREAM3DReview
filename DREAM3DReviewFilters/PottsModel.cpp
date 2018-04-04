@@ -358,8 +358,7 @@ private:
 //
 // -----------------------------------------------------------------------------
 PottsModel::PottsModel()
-: AbstractFilter()
-, m_Iterations(100)
+: m_Iterations(100)
 , m_Temperature(273.0)
 , m_PeriodicBoundaries(false)
 , m_UseMask(false)
@@ -369,7 +368,6 @@ PottsModel::PottsModel()
 , m_Mask(nullptr)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -152,7 +152,7 @@ public:
 
 private:
   SilhouetteTemplate(const SilhouetteTemplate&); // Copy Constructor Not Implemented
-  void operator=(const SilhouetteTemplate&); // Operator '=' Not Implemented
+  void operator=(const SilhouetteTemplate&);     // Move assignment Not Implemented
 };
 
 #endif /* _silhouettetemplate_h_ */

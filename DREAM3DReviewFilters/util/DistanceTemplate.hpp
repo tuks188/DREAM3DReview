@@ -171,7 +171,7 @@ public:
 
 private:
   DistanceTemplate(const DistanceTemplate&); // Copy Constructor Not Implemented
-  void operator=(const DistanceTemplate&); // Operator '=' Not Implemented
+  void operator=(const DistanceTemplate&);   // Move assignment Not Implemented
 };
 
 #endif /* _DistanceTemplate_H_ */

@@ -53,8 +53,7 @@
 //
 // -----------------------------------------------------------------------------
 KMedoids::KMedoids()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_UseMask(false)
 , m_MaskArrayPath("", "", "")
 , m_FeatureIdsArrayName("ClusterIds")
@@ -67,7 +66,6 @@ KMedoids::KMedoids()
 , m_Mask(nullptr)
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

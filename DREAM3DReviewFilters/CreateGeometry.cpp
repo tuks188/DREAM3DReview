@@ -59,8 +59,7 @@
 //
 // -----------------------------------------------------------------------------
 CreateGeometry::CreateGeometry()
-: AbstractFilter()
-, m_GeometryType(0)
+: m_GeometryType(0)
 , m_DataContainerName("")
 , m_SharedVertexListArrayPath0("", "", "")
 , m_SharedVertexListArrayPath1("", "", "")
@@ -108,7 +107,6 @@ CreateGeometry::CreateGeometry()
   m_Resolution.y = 1.0f;
   m_Resolution.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

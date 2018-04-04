@@ -210,7 +210,7 @@ private:
   }
 
   KMeansTemplate(const KMeansTemplate&); // Copy Constructor Not Implemented
-  void operator=(const KMeansTemplate&); // Operator '=' Not Implemented
+  void operator=(const KMeansTemplate&); // Move assignment Not Implemented
 };
 
 #endif /* _kmeanstemplate_h_ */

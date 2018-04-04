@@ -58,8 +58,7 @@
 //
 // -----------------------------------------------------------------------------
 ApplyTransformationToGeometry::ApplyTransformationToGeometry()
-: AbstractFilter()
-, m_ManualTransformationMatrix()
+: m_ManualTransformationMatrix()
 , m_ComputedTransformationMatrix("", "", "TransformationMatrix")
 , m_GeometryToTransform("")
 , m_TransformationMatrixType(1)
@@ -78,7 +77,6 @@ ApplyTransformationToGeometry::ApplyTransformationToGeometry()
   m_Scale.y = 0.0f;
   m_Scale.z = 0.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

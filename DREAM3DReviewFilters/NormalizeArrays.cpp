@@ -62,8 +62,7 @@
 //
 // -----------------------------------------------------------------------------
 NormalizeArrays::NormalizeArrays()
-: AbstractFilter()
-, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_NormalizeType(0)
 , m_RangeMin(0.0)
 , m_RangeMax(1.0)
@@ -73,7 +72,6 @@ NormalizeArrays::NormalizeArrays()
 , m_DefaultValue(0.0)
 , m_Mask(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

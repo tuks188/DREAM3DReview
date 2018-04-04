@@ -68,8 +68,7 @@
 //
 // -----------------------------------------------------------------------------
 FindArrayStatistics::FindArrayStatistics()
-: AbstractFilter()
-, m_FindLength(false)
+: m_FindLength(false)
 , m_FindMin(false)
 , m_FindMax(false)
 , m_FindMean(false)
@@ -103,7 +102,6 @@ FindArrayStatistics::FindArrayStatistics()
 , m_FeatureIds(nullptr)
 , m_Mask(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

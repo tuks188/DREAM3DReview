@@ -55,8 +55,7 @@
 //
 // -----------------------------------------------------------------------------
 Silhouette::Silhouette()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_UseMask(false)
 , m_MaskArrayPath("", "", "Mask")
 , m_FeatureIdsArrayPath("", "", "ClusterIds")
@@ -67,7 +66,6 @@ Silhouette::Silhouette()
 , m_FeatureIds(nullptr)
 , m_SilhouetteArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -53,8 +53,7 @@
 //
 // -----------------------------------------------------------------------------
 KMeans::KMeans()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_UseMask(false)
 , m_MaskArrayPath("", "", "")
 , m_FeatureIdsArrayName("ClusterIds")
@@ -67,7 +66,6 @@ KMeans::KMeans()
 , m_FeatureIds(nullptr)
 , m_MeansArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

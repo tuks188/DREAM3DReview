@@ -57,8 +57,7 @@
 //
 // -----------------------------------------------------------------------------
 ExtractAttributeArraysFromGeometry::ExtractAttributeArraysFromGeometry()
-: AbstractFilter()
-, m_DataContainerName("")
+: m_DataContainerName("")
 , m_SharedVertexListArrayPath0(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
 , m_SharedVertexListArrayPath1(SIMPL::Defaults::EdgeDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
 , m_SharedVertexListArrayPath2(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
@@ -81,7 +80,6 @@ ExtractAttributeArraysFromGeometry::ExtractAttributeArraysFromGeometry()
 , m_Tets(nullptr)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

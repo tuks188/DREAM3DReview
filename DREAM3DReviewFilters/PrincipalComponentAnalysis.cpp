@@ -57,8 +57,7 @@
 //
 // -----------------------------------------------------------------------------
 PrincipalComponentAnalysis::PrincipalComponentAnalysis()
-: AbstractFilter()
-, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_PCAttributeMatrixName("PrincipalComponentAnalysis")
 , m_PCEigenvaluesName("PrincipalComponentEigenvalues")
 , m_PCEigenvectorsName("PrincipalComponentEigenvectors")
@@ -69,7 +68,6 @@ PrincipalComponentAnalysis::PrincipalComponentAnalysis()
 , m_PCEigenvalues(nullptr)
 , m_PCEigenvectors(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

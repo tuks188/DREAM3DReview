@@ -50,14 +50,12 @@
 //
 // -----------------------------------------------------------------------------
 CopyObject::CopyObject()
-: AbstractFilter()
-, m_ObjectToCopy(0)
+: m_ObjectToCopy(0)
 , m_DataContainerToCopy("")
 , m_AttributeMatrixToCopy("", "", "")
 , m_AttributeArrayToCopy("", "", "")
 , m_CopiedObjectName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

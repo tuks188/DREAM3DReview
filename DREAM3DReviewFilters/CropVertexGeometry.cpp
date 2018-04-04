@@ -52,8 +52,7 @@
 //
 // -----------------------------------------------------------------------------
 CropVertexGeometry::CropVertexGeometry()
-: AbstractFilter()
-, m_DataContainerName(SIMPL::Defaults::VertexDataContainerName)
+: m_DataContainerName(SIMPL::Defaults::VertexDataContainerName)
 , m_CroppedDataContainerName("CroppedDataContainer")
 , m_XMin(0)
 , m_YMin(0)
@@ -62,7 +61,6 @@ CropVertexGeometry::CropVertexGeometry()
 , m_YMax(0)
 , m_ZMax(0)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -294,7 +294,7 @@ private:
   }
   
   DBSCANTemplate(const DBSCANTemplate&); // Copy Constructor Not Implemented
-  void operator=(const DBSCANTemplate&); // Operator '=' Not Implemented
+  void operator=(const DBSCANTemplate&); // Move assignment Not Implemented
 };
 
 #endif /* _dbscantemplate_h_ */

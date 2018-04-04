@@ -63,8 +63,7 @@
 //
 // -----------------------------------------------------------------------------
 PointSampleTriangleGeometry::PointSampleTriangleGeometry()
-: AbstractFilter()
-, m_SamplesNumberType(0)
+: m_SamplesNumberType(0)
 , m_TriangleGeometry(SIMPL::Defaults::TriangleDataContainerName)
 , m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
 , m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
@@ -78,7 +77,6 @@ PointSampleTriangleGeometry::PointSampleTriangleGeometry()
 , m_Mask(nullptr)
 , m_NumSamples(0)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

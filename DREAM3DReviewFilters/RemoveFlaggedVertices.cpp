@@ -51,13 +51,11 @@
 //
 // -----------------------------------------------------------------------------
 RemoveFlaggedVertices::RemoveFlaggedVertices()
-: AbstractFilter()
-, m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
+: m_VertexGeometry(SIMPL::Defaults::VertexDataContainerName)
 , m_MaskArrayPath(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, SIMPL::CellData::Mask)
 , m_ReducedVertexGeometry("ReducedVertexDataContainer")
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
