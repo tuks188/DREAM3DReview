@@ -612,8 +612,8 @@ void TesselateFarFieldGrains::preflight()
   }
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, hasMissingFiles, orderAscending,
-                                                                  m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix, m_FeatureInputFileListInfo.FileSuffix,
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, m_FeatureInputFileListInfo.IncrementIndex, hasMissingFiles,
+                                                                  orderAscending, m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix, m_FeatureInputFileListInfo.FileSuffix,
                                                                   m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
   if(fileList.size() == 0)
   {
@@ -715,8 +715,8 @@ void TesselateFarFieldGrains::load_features()
   }
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, hasMissingFiles, orderAscending,
-                                                                  m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix, m_FeatureInputFileListInfo.FileSuffix,
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, m_FeatureInputFileListInfo.IncrementIndex, hasMissingFiles,
+                                                                  orderAscending, m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix, m_FeatureInputFileListInfo.FileSuffix,
                                                                   m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
   std::ifstream inFile;
 
