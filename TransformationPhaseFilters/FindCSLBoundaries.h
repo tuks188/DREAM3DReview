@@ -62,6 +62,17 @@
 class FindCSLBoundaries : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(FindCSLBoundaries SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(float CSL READ getCSL WRITE setCSL)
+    PYB11_PROPERTY(float AxisTolerance READ getAxisTolerance WRITE setAxisTolerance)
+    PYB11_PROPERTY(float AngleTolerance READ getAngleTolerance WRITE setAngleTolerance)
+    PYB11_PROPERTY(DataArrayPath AvgQuatsArrayPath READ getAvgQuatsArrayPath WRITE setAvgQuatsArrayPath)
+    PYB11_PROPERTY(DataArrayPath FeaturePhasesArrayPath READ getFeaturePhasesArrayPath WRITE setFeaturePhasesArrayPath)
+    PYB11_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
+    PYB11_PROPERTY(DataArrayPath SurfaceMeshFaceLabelsArrayPath READ getSurfaceMeshFaceLabelsArrayPath WRITE setSurfaceMeshFaceLabelsArrayPath)
+    PYB11_PROPERTY(DataArrayPath SurfaceMeshFaceNormalsArrayPath READ getSurfaceMeshFaceNormalsArrayPath WRITE setSurfaceMeshFaceNormalsArrayPath)
+    PYB11_PROPERTY(QString SurfaceMeshCSLBoundaryArrayName READ getSurfaceMeshCSLBoundaryArrayName WRITE setSurfaceMeshCSLBoundaryArrayName)
+    PYB11_PROPERTY(QString SurfaceMeshCSLBoundaryIncoherenceArrayName READ getSurfaceMeshCSLBoundaryIncoherenceArrayName WRITE setSurfaceMeshCSLBoundaryIncoherenceArrayName)
   public:
     SIMPL_SHARED_POINTERS(FindCSLBoundaries)
     SIMPL_FILTER_NEW_MACRO(FindCSLBoundaries)
