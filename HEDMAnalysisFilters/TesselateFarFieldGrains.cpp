@@ -286,6 +286,7 @@ TesselateFarFieldGrains::TesselateFarFieldGrains()
 
   m_FeatureInputFileListInfo.StartIndex = 0;
   m_FeatureInputFileListInfo.EndIndex = 0;
+  m_FeatureInputFileListInfo.IncrementIndex = 1;
   m_FeatureInputFileListInfo.PaddingDigits = 0;
   m_FeatureInputFileListInfo.Ordering = 0;
   m_FeatureInputFileListInfo.FileExtension = "";
