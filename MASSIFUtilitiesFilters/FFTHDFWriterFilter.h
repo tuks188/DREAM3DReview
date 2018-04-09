@@ -17,18 +17,19 @@
 class FFTHDFWriterFilter : public AbstractFilter
 {
   Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+  PYB11_CREATE_BINDINGS(FFTHDFWriterFilter SUPERCLASS AbstractFilter) PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
+      PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+          PYB11_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
+              PYB11_PROPERTY(DataArrayPath CellEulerAnglesArrayPath READ getCellEulerAnglesArrayPath WRITE setCellEulerAnglesArrayPath)
 
-      public : SIMPL_SHARED_POINTERS(FFTHDFWriterFilter) SIMPL_FILTER_NEW_MACRO(FFTHDFWriterFilter) SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FFTHDFWriterFilter, AbstractFilter)
+                  public : SIMPL_SHARED_POINTERS(FFTHDFWriterFilter) SIMPL_FILTER_NEW_MACRO(FFTHDFWriterFilter) SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FFTHDFWriterFilter, AbstractFilter)
 
-                   ~FFTHDFWriterFilter() override;
+                               ~FFTHDFWriterFilter() override;
 
   SIMPL_FILTER_PARAMETER(QString, OutputFile)
   Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
   SIMPL_INSTANCE_PROPERTY(bool, WritePipeline)
-
-  //    SIMPL_FILTER_PARAMETER(bool, WriteXdmfFile)
-  //    Q_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
 
   SIMPL_INSTANCE_PROPERTY(bool, AppendToExisting)
   //-------------------------------------------------------------------
