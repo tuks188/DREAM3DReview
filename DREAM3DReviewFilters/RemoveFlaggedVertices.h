@@ -46,6 +46,10 @@
 class RemoveFlaggedVertices : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(RemoveFlaggedVertices SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString VertexGeometry READ getVertexGeometry WRITE setVertexGeometry)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(QString ReducedVertexGeometry READ getReducedVertexGeometry WRITE setReducedVertexGeometry)
 
 public:
   SIMPL_SHARED_POINTERS(RemoveFlaggedVertices)

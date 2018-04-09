@@ -46,6 +46,9 @@
 class SplitAttributeArray : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
+  PYB11_PROPERTY(QString SplitArraysSuffix READ getSplitArraysSuffix WRITE setSplitArraysSuffix)
 
 public:
   SIMPL_SHARED_POINTERS(SplitAttributeArray)

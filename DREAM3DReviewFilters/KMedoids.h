@@ -46,6 +46,15 @@
 class KMedoids : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(KMedoids SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
+  PYB11_PROPERTY(QString MedoidsArrayName READ getMedoidsArrayName WRITE setMedoidsArrayName)
+  PYB11_PROPERTY(QString FeatureAttributeMatrixName READ getFeatureAttributeMatrixName WRITE setFeatureAttributeMatrixName)
+  PYB11_PROPERTY(int InitClusters READ getInitClusters WRITE setInitClusters)
+  PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
 
 public:
   SIMPL_SHARED_POINTERS(KMedoids)

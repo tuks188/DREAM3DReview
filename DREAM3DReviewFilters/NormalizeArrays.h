@@ -46,6 +46,15 @@
 class NormalizeArrays : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(NormalizeArrays SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  PYB11_PROPERTY(int NormalizeType READ getNormalizeType WRITE setNormalizeType)
+  PYB11_PROPERTY(double RangeMin READ getRangeMin WRITE setRangeMin)
+  PYB11_PROPERTY(double RangeMax READ getRangeMax WRITE setRangeMax)
+  PYB11_PROPERTY(QString Postfix READ getPostfix WRITE setPostfix)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(double DefaultValue READ getDefaultValue WRITE setDefaultValue)
 
 public:
   SIMPL_SHARED_POINTERS(NormalizeArrays)

@@ -46,6 +46,11 @@
 class FindElementCentroids : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(FindElementCentroids SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath CellCentroidsArrayPath READ getCellCentroidsArrayPath WRITE setCellCentroidsArrayPath)
+  PYB11_PROPERTY(bool CreateVertexDataContainer READ getCreateVertexDataContainer WRITE setCreateVertexDataContainer)
+  PYB11_PROPERTY(QString NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
+  PYB11_PROPERTY(QString VertexAttributeMatrixName READ getVertexAttributeMatrixName WRITE setVertexAttributeMatrixName)
 
 public:
   SIMPL_SHARED_POINTERS(FindElementCentroids)

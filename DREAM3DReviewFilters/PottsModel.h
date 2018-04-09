@@ -48,6 +48,13 @@
 class PottsModel : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PottsModel SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(int Iterations READ getIterations WRITE setIterations)
+  PYB11_PROPERTY(double Temperature READ getTemperature WRITE setTemperature)
+  PYB11_PROPERTY(bool PeriodicBoundaries READ getPeriodicBoundaries WRITE setPeriodicBoundaries)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
 public:
   SIMPL_SHARED_POINTERS(PottsModel)

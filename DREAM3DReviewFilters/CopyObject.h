@@ -46,6 +46,12 @@
 class CopyObject : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
+  PYB11_PROPERTY(QString DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
+  PYB11_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
+  PYB11_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
+  PYB11_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
 
 public:
   SIMPL_SHARED_POINTERS(CopyObject)

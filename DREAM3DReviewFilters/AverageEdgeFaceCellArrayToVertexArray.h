@@ -46,6 +46,9 @@
 class AverageEdgeFaceCellArrayToVertexArray : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(AverageEdgeFaceCellArrayToVertexArray SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(DataArrayPath AverageVertexArrayPath READ getAverageVertexArrayPath WRITE setAverageVertexArrayPath)
 
 public:
   SIMPL_SHARED_POINTERS(AverageEdgeFaceCellArrayToVertexArray)

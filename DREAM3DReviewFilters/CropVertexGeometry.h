@@ -46,6 +46,15 @@
 class CropVertexGeometry : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(QString CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
+  PYB11_PROPERTY(float XMin READ getXMin WRITE setXMin)
+  PYB11_PROPERTY(float YMin READ getYMin WRITE setYMin)
+  PYB11_PROPERTY(float ZMin READ getZMin WRITE setZMin)
+  PYB11_PROPERTY(float XMax READ getXMax WRITE setXMax)
+  PYB11_PROPERTY(float YMax READ getYMax WRITE setYMax)
+  PYB11_PROPERTY(float ZMax READ getZMax WRITE setZMax)
 
 public:
   SIMPL_SHARED_POINTERS(CropVertexGeometry)

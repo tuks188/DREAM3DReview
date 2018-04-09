@@ -46,6 +46,13 @@
 class KDistanceGraph : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(KDistanceGraph SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(DataArrayPath KDistanceArrayPath READ getKDistanceArrayPath WRITE setKDistanceArrayPath)
+  PYB11_PROPERTY(int MinDist READ getMinDist WRITE setMinDist)
+  PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
 
 public:
   SIMPL_SHARED_POINTERS(KDistanceGraph)

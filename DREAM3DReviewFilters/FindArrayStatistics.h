@@ -46,6 +46,29 @@
 class FindArrayStatistics : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(FindArrayStatistics SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(bool FindLength READ getFindLength WRITE setFindLength)
+  PYB11_PROPERTY(bool FindMin READ getFindMin WRITE setFindMin)
+  PYB11_PROPERTY(bool FindMax READ getFindMax WRITE setFindMax)
+  PYB11_PROPERTY(bool FindMean READ getFindMean WRITE setFindMean)
+  PYB11_PROPERTY(bool FindMedian READ getFindMedian WRITE setFindMedian)
+  PYB11_PROPERTY(bool FindStdDeviation READ getFindStdDeviation WRITE setFindStdDeviation)
+  PYB11_PROPERTY(bool FindSummation READ getFindSummation WRITE setFindSummation)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(bool StandardizeData READ getStandardizeData WRITE setStandardizeData)
+  PYB11_PROPERTY(bool ComputeByIndex READ getComputeByIndex WRITE setComputeByIndex)
+  PYB11_PROPERTY(DataArrayPath DestinationAttributeMatrix READ getDestinationAttributeMatrix WRITE setDestinationAttributeMatrix)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(QString LengthArrayName READ getLengthArrayName WRITE setLengthArrayName)
+  PYB11_PROPERTY(QString MinimumArrayName READ getMinimumArrayName WRITE setMinimumArrayName)
+  PYB11_PROPERTY(QString MaximumArrayName READ getMaximumArrayName WRITE setMaximumArrayName)
+  PYB11_PROPERTY(QString MeanArrayName READ getMeanArrayName WRITE setMeanArrayName)
+  PYB11_PROPERTY(QString MedianArrayName READ getMedianArrayName WRITE setMedianArrayName)
+  PYB11_PROPERTY(QString StdDeviationArrayName READ getStdDeviationArrayName WRITE setStdDeviationArrayName)
+  PYB11_PROPERTY(QString SummationArrayName READ getSummationArrayName WRITE setSummationArrayName)
+  PYB11_PROPERTY(QString StandardizedArrayName READ getStandardizedArrayName WRITE setStandardizedArrayName)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
 public:
   SIMPL_SHARED_POINTERS(FindArrayStatistics)

@@ -46,6 +46,10 @@
 class FindNorm : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(FindNorm SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(DataArrayPath NormArrayPath READ getNormArrayPath WRITE setNormArrayPath)
+  PYB11_PROPERTY(float PSpace READ getPSpace WRITE setPSpace)
 
 public:
   SIMPL_SHARED_POINTERS(FindNorm)

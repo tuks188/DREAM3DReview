@@ -46,6 +46,10 @@
 class RobustAutomaticThreshold : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(RobustAutomaticThreshold SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
+  PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+  PYB11_PROPERTY(DataArrayPath GradientMagnitudeArrayPath READ getGradientMagnitudeArrayPath WRITE setGradientMagnitudeArrayPath)
 
 public:
   SIMPL_SHARED_POINTERS(RobustAutomaticThreshold)

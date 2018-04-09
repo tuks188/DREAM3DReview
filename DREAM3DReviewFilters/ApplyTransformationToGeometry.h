@@ -47,6 +47,15 @@
 class ApplyTransformationToGeometry : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ApplyTransformationToGeometry SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DynamicTableData ManualTransformationMatrix READ getManualTransformationMatrix WRITE setManualTransformationMatrix)
+  PYB11_PROPERTY(DataArrayPath ComputedTransformationMatrix READ getComputedTransformationMatrix WRITE setComputedTransformationMatrix)
+  PYB11_PROPERTY(QString GeometryToTransform READ getGeometryToTransform WRITE setGeometryToTransform)
+  PYB11_PROPERTY(int TransformationMatrixType READ getTransformationMatrixType WRITE setTransformationMatrixType)
+  PYB11_PROPERTY(FloatVec3_t RotationAxis READ getRotationAxis WRITE setRotationAxis)
+  PYB11_PROPERTY(float RotationAngle READ getRotationAngle WRITE setRotationAngle)
+  PYB11_PROPERTY(FloatVec3_t Translation READ getTranslation WRITE setTranslation)
+  PYB11_PROPERTY(FloatVec3_t Scale READ getScale WRITE setScale)
 
 public:
   SIMPL_SHARED_POINTERS(ApplyTransformationToGeometry)

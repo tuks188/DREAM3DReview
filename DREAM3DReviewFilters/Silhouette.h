@@ -46,6 +46,13 @@
 class Silhouette : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(Silhouette SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+  PYB11_PROPERTY(DataArrayPath SilhouetteArrayPath READ getSilhouetteArrayPath WRITE setSilhouetteArrayPath)
+  PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
 
 public:
   SIMPL_SHARED_POINTERS(Silhouette)

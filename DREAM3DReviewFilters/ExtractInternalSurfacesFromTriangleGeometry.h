@@ -46,6 +46,10 @@
 class ExtractInternalSurfacesFromTriangleGeometry : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ExtractInternalSurfacesFromTriangleGeometry SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString TriangleDataContainerName READ getTriangleDataContainerName WRITE setTriangleDataContainerName)
+  PYB11_PROPERTY(DataArrayPath NodeTypesArrayPath READ getNodeTypesArrayPath WRITE setNodeTypesArrayPath)
+  PYB11_PROPERTY(QString InternalTrianglesName READ getInternalTrianglesName WRITE setInternalTrianglesName)
 
 public:
   SIMPL_SHARED_POINTERS(ExtractInternalSurfacesFromTriangleGeometry)

@@ -46,6 +46,15 @@
 class PrincipalComponentAnalysis : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PrincipalComponentAnalysis SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  PYB11_PROPERTY(QString PCAttributeMatrixName READ getPCAttributeMatrixName WRITE setPCAttributeMatrixName)
+  PYB11_PROPERTY(QString PCEigenvaluesName READ getPCEigenvaluesName WRITE setPCEigenvaluesName)
+  PYB11_PROPERTY(QString PCEigenvectorsName READ getPCEigenvectorsName WRITE setPCEigenvectorsName)
+  PYB11_PROPERTY(int MatrixApproach READ getMatrixApproach WRITE setMatrixApproach)
+  PYB11_PROPERTY(bool ProjectDataSpace READ getProjectDataSpace WRITE setProjectDataSpace)
+  PYB11_PROPERTY(int NumberOfDimensionsForProjection READ getNumberOfDimensionsForProjection WRITE setNumberOfDimensionsForProjection)
+  PYB11_PROPERTY(DataArrayPath ProjectedDataSpaceArrayPath READ getProjectedDataSpaceArrayPath WRITE setProjectedDataSpaceArrayPath)
 
 public:
   SIMPL_SHARED_POINTERS(PrincipalComponentAnalysis)

@@ -50,6 +50,17 @@
 class PointSampleTriangleGeometry : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PointSampleTriangleGeometry SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(int SamplesNumberType READ getSamplesNumberType WRITE setSamplesNumberType)
+  PYB11_PROPERTY(QString TriangleGeometry READ getTriangleGeometry WRITE setTriangleGeometry)
+  PYB11_PROPERTY(QString VertexGeometry READ getVertexGeometry WRITE setVertexGeometry)
+  PYB11_PROPERTY(QString VertexAttributeMatrixName READ getVertexAttributeMatrixName WRITE setVertexAttributeMatrixName)
+  PYB11_PROPERTY(int NumberOfSamples READ getNumberOfSamples WRITE setNumberOfSamples)
+  PYB11_PROPERTY(QString ParentGeometry READ getParentGeometry WRITE setParentGeometry)
+  PYB11_PROPERTY(DataArrayPath TriangleAreasArrayPath READ getTriangleAreasArrayPath WRITE setTriangleAreasArrayPath)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
 public:
   SIMPL_SHARED_POINTERS(PointSampleTriangleGeometry)

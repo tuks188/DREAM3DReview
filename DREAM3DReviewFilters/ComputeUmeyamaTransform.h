@@ -46,6 +46,12 @@
 class ComputeUmeyamaTransform : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ComputeUmeyamaTransform SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString SourcePointSet READ getSourcePointSet WRITE setSourcePointSet)
+  PYB11_PROPERTY(QString DestPointSet READ getDestPointSet WRITE setDestPointSet)
+  PYB11_PROPERTY(bool UseScaling READ getUseScaling WRITE setUseScaling)
+  PYB11_PROPERTY(QString TransformationAttributeMatrixName READ getTransformationAttributeMatrixName WRITE setTransformationAttributeMatrixName)
+  PYB11_PROPERTY(QString TransformationMatrixName READ getTransformationMatrixName WRITE setTransformationMatrixName)
 
 public:
   SIMPL_SHARED_POINTERS(ComputeUmeyamaTransform)
