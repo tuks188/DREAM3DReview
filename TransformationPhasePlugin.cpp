@@ -251,5 +251,11 @@ void TransformationPhasePlugin::readSettings(QSettings& prefs)
 
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TransformationPhasePlugin::registerFilterWidgets(FilterWidgetManager* fwm)
+{
+}
+
 #include "TransformationPhaseFilters/RegisterKnownFilters.cpp"
-#include "TransformationPhase/FilterParameterWidgets/RegisterKnownFilterParameterWidgets.cpp"
