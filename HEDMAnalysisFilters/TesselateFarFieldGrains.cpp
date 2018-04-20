@@ -286,6 +286,7 @@ TesselateFarFieldGrains::TesselateFarFieldGrains()
 
   m_FeatureInputFileListInfo.StartIndex = 0;
   m_FeatureInputFileListInfo.EndIndex = 0;
+  m_FeatureInputFileListInfo.IncrementIndex = 1;
   m_FeatureInputFileListInfo.PaddingDigits = 0;
   m_FeatureInputFileListInfo.Ordering = 0;
   m_FeatureInputFileListInfo.FileExtension = "";
@@ -612,9 +613,9 @@ void TesselateFarFieldGrains::preflight()
   }
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, hasMissingFiles, orderAscending,
-                                                                  m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix, m_FeatureInputFileListInfo.FileSuffix,
-                                                                  m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, m_FeatureInputFileListInfo.IncrementIndex,
+                                                                  hasMissingFiles, orderAscending, m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix,
+                                                                  m_FeatureInputFileListInfo.FileSuffix, m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
   if(fileList.size() == 0)
   {
     QString ss = QObject::tr("No files have been selected for import. Have you set the input directory?");
@@ -715,9 +716,9 @@ void TesselateFarFieldGrains::load_features()
   }
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, hasMissingFiles, orderAscending,
-                                                                  m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix, m_FeatureInputFileListInfo.FileSuffix,
-                                                                  m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, m_FeatureInputFileListInfo.IncrementIndex,
+                                                                  hasMissingFiles, orderAscending, m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix,
+                                                                  m_FeatureInputFileListInfo.FileSuffix, m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
   std::ifstream inFile;
 
   int slabCount = 0;

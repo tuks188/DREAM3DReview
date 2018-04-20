@@ -227,7 +227,11 @@ void HEDMAnalysisPlugin::readSettings(QSettings& prefs)
 
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void HEDMAnalysisPlugin::registerFilterWidgets(FilterWidgetManager* fwm)
+{
+}
+
 #include "HEDMAnalysisFilters/RegisterKnownFilters.cpp"
-
-#include "FilterParameterWidgets/RegisterKnownFilterParameterWidgets.cpp"
-
