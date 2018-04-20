@@ -229,6 +229,11 @@ void DREAM3DReviewPlugin::readSettings(QSettings&  /*prefs*/)
 {
 }
 
-#include "DREAM3DReviewFilters/RegisterKnownFilters.cpp"
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DREAM3DReviewPlugin::registerFilterWidgets(FilterWidgetManager* fwm)
+{
+}
 
-#include "FilterParameterWidgets/RegisterKnownFilterParameterWidgets.cpp"
+#include "DREAM3DReviewFilters/RegisterKnownFilters.cpp"
