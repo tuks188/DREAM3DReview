@@ -220,7 +220,11 @@ void MASSIFUtilitiesPlugin::readSettings(QSettings& prefs)
 {
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MASSIFUtilitiesPlugin::registerFilterWidgets(FilterWidgetManager* fwm)
+{
+}
+
 #include "MASSIFUtilitiesFilters/RegisterKnownFilters.cpp"
-
-#include "FilterParameterWidgets/RegisterKnownFilterParameterWidgets.cpp"
-
