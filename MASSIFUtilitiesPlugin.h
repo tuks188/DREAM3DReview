@@ -10,10 +10,13 @@
 
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
+#include "MASSIFUtilities/MASSIFUtilitiesDLLExport.h"
+
 /**
  * @brief The MASSIFUtilitiesPlugin class
  */
-class MASSIFUtilitiesPlugin : public QObject, public ISIMPLibPlugin
+class MASSIFUtilities_EXPORT MASSIFUtilitiesPlugin : public QObject, public ISIMPLibPlugin
+
 {
     Q_OBJECT
     Q_INTERFACES(ISIMPLibPlugin)

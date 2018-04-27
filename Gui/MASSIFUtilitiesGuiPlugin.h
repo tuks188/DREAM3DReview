@@ -10,7 +10,13 @@ class MASSIFUtilitiesGuiPlugin : public MASSIFUtilitiesPlugin
 
 public:
   MASSIFUtilitiesGuiPlugin();
-  ~MASSIFUtilitiesGuiPlugin() override;
+   ~MASSIFUtilitiesGuiPlugin() override;
+  
+  /**
+   * @brief Register all the filters with the FilterWidgetFactory
+   */
+  void registerFilterWidgets(FilterWidgetManager* fwm) override;
+  
 
 public:
   MASSIFUtilitiesGuiPlugin(const MASSIFUtilitiesGuiPlugin&) = delete;            // Copy Constructor Not Implemented
