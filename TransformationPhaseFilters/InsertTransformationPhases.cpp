@@ -334,7 +334,6 @@ void InsertTransformationPhases::dataCheck()
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || m == nullptr) { return; }
-
   AttributeMatrix::Pointer statsGenAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath(), -301);
   if(getErrorCondition() < 0 || statsGenAttrMat == nullptr) { return; }
   AttributeMatrix::Pointer volAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getNumFeaturesPerParentArrayPath(), -301);
