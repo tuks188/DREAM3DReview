@@ -10,7 +10,13 @@ class TransformationPhaseGuiPlugin : public TransformationPhasePlugin
 
 public:
   TransformationPhaseGuiPlugin();
-  ~TransformationPhaseGuiPlugin() override;
+   ~TransformationPhaseGuiPlugin() override;
+  
+  /**
+   * @brief Register all the filters with the FilterWidgetFactory
+   */
+  void registerFilterWidgets(FilterWidgetManager* fwm) override;
+  
 
 public:
   TransformationPhaseGuiPlugin(const TransformationPhaseGuiPlugin&) = delete;            // Copy Constructor Not Implemented

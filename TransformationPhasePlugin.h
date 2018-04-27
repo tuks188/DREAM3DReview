@@ -44,14 +44,17 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
 
+#include "TransformationPhase/TransformationPhaseDLLExport.h"
+
 /**
- * @class TransformationPhasePlugin TransformationPhasePlugin.h TransformationPhase/TransformationPhasePlugin.h
+ * @class TransformationPhasePlugin TransformationPhasePlugin.hTransformationPhase/TransformationPhasePlugin.h
  * @brief
  * @author Joseph C Tucker (UES) & Michael A Groeber (AFRL)
  * @date July 7, 2014
  * @version 4.0
  */
-class TransformationPhasePlugin : public QObject, public ISIMPLibPlugin
+class TransformationPhase_EXPORT TransformationPhasePlugin : public QObject, public ISIMPLibPlugin
+
 {
     Q_OBJECT
     Q_INTERFACES(ISIMPLibPlugin)
