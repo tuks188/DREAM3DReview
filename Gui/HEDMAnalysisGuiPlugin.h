@@ -10,7 +10,13 @@ class HEDMAnalysisGuiPlugin : public HEDMAnalysisPlugin
 
 public:
   HEDMAnalysisGuiPlugin();
-  ~HEDMAnalysisGuiPlugin() override;
+   ~HEDMAnalysisGuiPlugin() override;
+  
+  /**
+   * @brief Register all the filters with the FilterWidgetFactory
+   */
+  void registerFilterWidgets(FilterWidgetManager* fwm) override;
+  
 
 public:
   HEDMAnalysisGuiPlugin(const HEDMAnalysisGuiPlugin&) = delete;            // Copy Constructor Not Implemented

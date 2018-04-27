@@ -11,14 +11,17 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
 
+#include "HEDMAnalysis/HEDMAnalysisDLLExport.h"
+
 /**
- * @class HEDMAnalysisPlugin HEDMAnalysisPlugin.h SurfaceMeshing/HEDMAnalysisPlugin.h
+ * @class HEDMAnalysisPlugin HEDMAnalysisPlugin.hSurfaceMeshing/HEDMAnalysisPlugin.h
  * @brief
  * @author
  * @date
  * @version 1.0
  */
-class HEDMAnalysisPlugin : public QObject, public ISIMPLibPlugin
+class HEDMAnalysis_EXPORT HEDMAnalysisPlugin : public QObject, public ISIMPLibPlugin
+
 {
     Q_OBJECT
     Q_INTERFACES(ISIMPLibPlugin)
