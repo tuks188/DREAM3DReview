@@ -10,10 +10,13 @@
 
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The DREAM3DReviewPlugin class
  */
-class DREAM3DReviewPlugin : public QObject, public ISIMPLibPlugin
+class DREAM3DReview_EXPORT DREAM3DReviewPlugin : public QObject, public ISIMPLibPlugin
+
 {
   Q_OBJECT
   Q_INTERFACES(ISIMPLibPlugin)
