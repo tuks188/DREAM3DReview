@@ -170,7 +170,7 @@ void InsertTransformationPhases::setupFilterParameters()
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Type::Cell, IGeometry::Type::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Phases", CellPhasesArrayPath, FilterParameter::RequiredArray, InsertTransformationPhases, req));
   }
-  
+
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type::CellFeature, IGeometry::Type::Any);
@@ -334,9 +334,10 @@ void InsertTransformationPhases::dataCheck()
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || m == nullptr) { return; }
-  AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
+
+  AttributeMatrix::Pointer statsGenAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getStatsGenCellEnsembleAttributeMatrixPath(), -301);
   if(getErrorCondition() < 0 || statsGenAttrMat == nullptr) { return; }
-  AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix(this, getNumFeaturesPerParentArrayPath().getAttributeMatrixName(), -301);
+  AttributeMatrix::Pointer volAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getNumFeaturesPerParentArrayPath(), -301);
   if(getErrorCondition() < 0 || volAttrMat == nullptr) { return; }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
@@ -742,11 +743,11 @@ void InsertTransformationPhases::insertTransformationPhases()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature, 
-                                                          float sampleHabitPlane[3], 
-                                                          int32_t totalFeatures, 
-                                                          float plateThickness, 
-                                                          float d, 
+bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature,
+                                                          float sampleHabitPlane[3],
+                                                          int32_t totalFeatures,
+                                                          float plateThickness,
+                                                          float d,
                                                           float* euler)
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
