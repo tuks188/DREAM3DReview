@@ -661,21 +661,21 @@ void TesselateFarFieldGrains::execute()
 
   notifyStatusMessage(getHumanLabel(), "Loading Features");
   load_features();
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }
 
   notifyStatusMessage(getHumanLabel(), "Assigning Voxels");
   assign_voxels();
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }
 
   notifyStatusMessage(getHumanLabel(), "Assigning Gaps");
   assign_gaps_only();
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }
@@ -1061,7 +1061,7 @@ void TesselateFarFieldGrains::assign_voxels()
   // need to update pointers after removing inactive objects
   updateFeatureInstancePointers();
 
-  if(getCancel() == true)
+  if(getCancel())
   {
     QString ss = QObject::tr("Filter Cancelled.");
     setErrorCondition(-1);
