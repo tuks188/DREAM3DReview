@@ -50,6 +50,8 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "TransformationPhase/TransformationPhaseDLLExport.h"
+
 /**
  * @class TiDwellFatigueCrystallographicAnalysis TiDwellFatigueCrystallographicAnalysis.h /TransformationPhase/TiDwellFatigueCrystallographicAnalysis.h
  * @brief
@@ -57,7 +59,7 @@
  * @date Jan 23, 2015
  * @version 5.1
  */
-class TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
+class TransformationPhase_EXPORT TiDwellFatigueCrystallographicAnalysis : public AbstractFilter
 {
     Q_OBJECT
   public:

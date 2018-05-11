@@ -52,6 +52,8 @@
 #include "OrientationLib/LaueOps/HexagonalOps.h"
 #include "OrientationLib/LaueOps/OrthoRhombicOps.h"
 
+#include "TransformationPhase/TransformationPhaseDLLExport.h"
+
 /**
  * @class FindCSLBoundaries FindCSLBoundaries.h /TransformationPhase/FindCSLBoundaries.h
  * @brief
@@ -59,7 +61,7 @@
  * @date July 28, 2014
  * @version 5.1
  */
-class FindCSLBoundaries : public AbstractFilter
+class TransformationPhase_EXPORT FindCSLBoundaries : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(FindCSLBoundaries SUPERCLASS AbstractFilter)

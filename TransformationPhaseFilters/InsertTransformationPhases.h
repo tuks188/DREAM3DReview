@@ -56,7 +56,7 @@
 
 #include "OrientationLib/LaueOps/LaueOps.h"
 
-
+#include "TransformationPhase/TransformationPhaseDLLExport.h"
 
 /**
  * @class InsertTransformationPhases InsertTransformationPhases.h DREAM3DLib/SyntheticBuildingFilters/InsertTransformationPhases.h
@@ -66,7 +66,7 @@
  * @date Feb 6, 2015
  * @version 5.1
  */
-class InsertTransformationPhases : public AbstractFilter
+class TransformationPhase_EXPORT InsertTransformationPhases : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(InsertTransformationPhases SUPERCLASS AbstractFilter)
