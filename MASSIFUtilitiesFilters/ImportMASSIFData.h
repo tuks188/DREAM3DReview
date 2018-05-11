@@ -9,10 +9,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "MASSIFUtilities/MASSIFUtilitiesDLLExport.h"
+
 /**
  * @brief The ImportMASSIFData class. See [Filter documentation](@ref importmassifdata) for details.
  */
-class ImportMASSIFData : public AbstractFilter
+class MASSIFUtilities_EXPORT ImportMASSIFData : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ImportMASSIFData SUPERCLASS AbstractFilter)

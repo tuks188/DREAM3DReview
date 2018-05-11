@@ -11,10 +11,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "MASSIFUtilities/MASSIFUtilitiesDLLExport.h"
+
 /**
  * @brief The FFTHDFWriterFilter class. See [Filter documentation](@ref ffthdfwriterfilter) for details.
  */
-class FFTHDFWriterFilter : public AbstractFilter
+class MASSIFUtilities_EXPORT FFTHDFWriterFilter : public AbstractFilter
 {
   Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   PYB11_CREATE_BINDINGS(FFTHDFWriterFilter SUPERCLASS AbstractFilter) PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
