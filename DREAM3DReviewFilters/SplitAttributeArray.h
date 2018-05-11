@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The SplitAttributeArray class. See [Filter documentation](@ref splitattributearray) for details.
  */
-class SplitAttributeArray : public AbstractFilter
+class DREAM3DReview_EXPORT SplitAttributeArray : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)

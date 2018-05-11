@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The FindNorm class. See [Filter documentation](@ref findnorm) for details.
  */
-class FindNorm : public AbstractFilter
+class DREAM3DReview_EXPORT FindNorm : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(FindNorm SUPERCLASS AbstractFilter)

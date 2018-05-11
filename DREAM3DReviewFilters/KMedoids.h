@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The KMedoids class. See [Filter documentation](@ref kmedoids) for details.
  */
-class KMedoids : public AbstractFilter
+class DREAM3DReview_EXPORT KMedoids : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(KMedoids SUPERCLASS AbstractFilter)

@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The ComputeUmeyamaTransform class. See [Filter documentation](@ref computeumeyamatransform) for details.
  */
-class ComputeUmeyamaTransform : public AbstractFilter
+class DREAM3DReview_EXPORT ComputeUmeyamaTransform : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ComputeUmeyamaTransform SUPERCLASS AbstractFilter)

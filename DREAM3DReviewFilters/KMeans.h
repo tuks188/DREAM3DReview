@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The KMeans class. See [Filter documentation](@ref kmeans) for details.
  */
-class KMeans : public AbstractFilter
+class DREAM3DReview_EXPORT KMeans : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(KMeans SUPERCLASS AbstractFilter)

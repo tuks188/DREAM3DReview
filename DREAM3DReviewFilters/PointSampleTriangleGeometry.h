@@ -44,10 +44,12 @@
 
 #include "SIMPLib/Geometry/VertexGeom.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The PointSampleTriangleGeometry class. See [Filter documentation](@ref pointsampletrianglegeometry) for details.
  */
-class PointSampleTriangleGeometry : public AbstractFilter
+class DREAM3DReview_EXPORT PointSampleTriangleGeometry : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(PointSampleTriangleGeometry SUPERCLASS AbstractFilter)

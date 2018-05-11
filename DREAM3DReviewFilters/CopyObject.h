@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The CopyObject class. See [Filter documentation](@ref copyobject) for details.
  */
-class CopyObject : public AbstractFilter
+class DREAM3DReview_EXPORT CopyObject : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(CopyObject SUPERCLASS AbstractFilter)

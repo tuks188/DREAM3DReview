@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The FindArrayStatistics class. See [Filter documentation](@ref findarraystatistics) for details.
  */
-class FindArrayStatistics : public AbstractFilter
+class DREAM3DReview_EXPORT FindArrayStatistics : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(FindArrayStatistics SUPERCLASS AbstractFilter)

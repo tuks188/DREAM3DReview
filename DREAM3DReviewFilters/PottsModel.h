@@ -42,10 +42,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The PottsModel class. See [Filter documentation](@ref pottsmodel) for details.
  */
-class PottsModel : public AbstractFilter
+class DREAM3DReview_EXPORT PottsModel : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(PottsModel SUPERCLASS AbstractFilter)

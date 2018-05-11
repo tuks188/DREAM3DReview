@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The ExtractInternalSurfacesFromTriangleGeometry class. See [Filter documentation](@ref extractinternalsurfacesfromtrianglegeometry) for details.
  */
-class ExtractInternalSurfacesFromTriangleGeometry : public AbstractFilter
+class DREAM3DReview_EXPORT ExtractInternalSurfacesFromTriangleGeometry : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ExtractInternalSurfacesFromTriangleGeometry SUPERCLASS AbstractFilter)

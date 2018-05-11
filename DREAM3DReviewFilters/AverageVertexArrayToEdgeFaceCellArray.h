@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The AverageVertexArrayToEdgeFaceCellArray class. See [Filter documentation](@ref averagevertexarraytoedgefacecellArray) for details.
  */
-class AverageVertexArrayToEdgeFaceCellArray : public AbstractFilter
+class DREAM3DReview_EXPORT AverageVertexArrayToEdgeFaceCellArray : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(AverageVertexArrayToEdgeFaceCellArray SUPERCLASS AbstractFilter)

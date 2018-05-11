@@ -36,6 +36,8 @@
 #ifndef _applytransformationtogeometry_h_
 #define _applytransformationtogeometry_h_
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -44,7 +46,7 @@
 /**
  * @brief The ApplyTransformationToGeometry class. See [Filter documentation](@ref applytransformationtogeometry) for details.
  */
-class ApplyTransformationToGeometry : public AbstractFilter
+class DREAM3DReview_EXPORT ApplyTransformationToGeometry : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ApplyTransformationToGeometry SUPERCLASS AbstractFilter)

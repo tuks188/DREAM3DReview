@@ -42,10 +42,12 @@
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The CreateGeometry class. See [Filter documentation](@ref creategeometry) for details.
  */
-class CreateGeometry : public AbstractFilter
+class DREAM3DReview_EXPORT CreateGeometry : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)

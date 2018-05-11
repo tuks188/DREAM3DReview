@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The ExtractAttributeArraysFromGeometry class. See [Filter documentation](@ref ExtractAttributeArraysFromGeometry) for details.
  */
-class ExtractAttributeArraysFromGeometry : public AbstractFilter
+class DREAM3DReview_EXPORT ExtractAttributeArraysFromGeometry : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ExtractAttributeArraysFromGeometry SUPERCLASS AbstractFilter)

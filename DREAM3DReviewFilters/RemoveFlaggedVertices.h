@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The RemoveFlaggedVertices class. See [Filter documentation](@ref removeflaggedvertices) for details.
  */
-class RemoveFlaggedVertices : public AbstractFilter
+class DREAM3DReview_EXPORT RemoveFlaggedVertices : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(RemoveFlaggedVertices SUPERCLASS AbstractFilter)

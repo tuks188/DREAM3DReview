@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The FindElementCentroids class. See [Filter documentation](@ref findelementcentroids) for details.
  */
-class FindElementCentroids : public AbstractFilter
+class DREAM3DReview_EXPORT FindElementCentroids : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(FindElementCentroids SUPERCLASS AbstractFilter)

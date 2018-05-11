@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The KDistanceGraph class. See [Filter documentation](@ref kdistancegraph) for details.
  */
-class KDistanceGraph : public AbstractFilter
+class DREAM3DReview_EXPORT KDistanceGraph : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(KDistanceGraph SUPERCLASS AbstractFilter)

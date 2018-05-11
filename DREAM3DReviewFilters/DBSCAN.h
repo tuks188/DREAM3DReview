@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The DBSCAN class. See [Filter documentation](@ref DBSCAN) for details.
  */
-class DBSCAN : public AbstractFilter
+class DREAM3DReview_EXPORT DBSCAN : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(DBSCAN SUPERCLASS AbstractFilter)
