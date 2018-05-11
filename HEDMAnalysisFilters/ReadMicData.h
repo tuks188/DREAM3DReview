@@ -70,6 +70,8 @@ enum MIC_READ_FLAG
 // our PIMPL private class
 class ReadMicDataPrivate;
 
+#include "HEDMAnalysis/HEDMAnalysisDLLExport.h"
+
 /**
 * @class ReadMicData ReadMicData.h /FilterCategoryFilters/ReadMicData.h
 * @brief
@@ -77,7 +79,7 @@ class ReadMicDataPrivate;
 * @date
 * @version 1.0
 */
-class ReadMicData : public AbstractFilter
+class HEDMAnalysis_EXPORT ReadMicData : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ReadMicData SUPERCLASS AbstractFilter)

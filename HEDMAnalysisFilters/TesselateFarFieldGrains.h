@@ -54,6 +54,8 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/StatsData/StatsData.h"
 
+#include "HEDMAnalysis/HEDMAnalysisDLLExport.h"
+
 /**
  * @class TesselateFarFieldGrains TesselateFarFieldGrains.h DREAM3DLib/SyntheticBuilderFilters/TesselateFarFieldGrains.h
  * @brief
@@ -61,7 +63,7 @@
  * @date Nov 19, 2011
  * @version 1.0
  */
-class TesselateFarFieldGrains : public AbstractFilter
+class HEDMAnalysis_EXPORT TesselateFarFieldGrains : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(TesselateFarFieldGrains SUPERCLASS AbstractFilter)
