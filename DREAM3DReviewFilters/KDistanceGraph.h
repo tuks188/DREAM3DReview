@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _kdistancegraph_h_
-#define _kdistancegraph_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -194,4 +193,3 @@ public:
   KDistanceGraph& operator=(KDistanceGraph&&) = delete;      // Move Assignment
 };
 
-#endif /* _KDistanceGraph_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _kdistancetemplate_h_
-#define _kdistancetemplate_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -117,4 +116,3 @@ private:
   void operator=(const KDistanceTemplate&);    // Move assignment Not Implemented
 };
 
-#endif /* _kdistancetemplate_h_ */

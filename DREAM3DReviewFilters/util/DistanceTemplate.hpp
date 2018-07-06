@@ -2,8 +2,7 @@
  * Your License or Copyright Information can go here
  */
 
-#ifndef _distancetemplate_h_
-#define _distancetemplate_h_
+#pragma once
 
 #include <QtCore/QFile>
 #include <QtCore/QString>
@@ -174,4 +173,3 @@ private:
   void operator=(const DistanceTemplate&);   // Move assignment Not Implemented
 };
 
-#endif /* _DistanceTemplate_H_ */

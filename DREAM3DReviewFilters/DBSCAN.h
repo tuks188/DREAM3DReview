@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dbscan_h_
-#define _dbscan_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -200,4 +199,3 @@ private:
   DBSCAN& operator=(DBSCAN&&) = delete;      // Move Assignment
 };
 
-#endif /* _DBSCAN_H_ */

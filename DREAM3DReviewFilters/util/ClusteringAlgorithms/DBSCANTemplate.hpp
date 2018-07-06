@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dbscantemplate_h_
-#define _dbscantemplate_h_
+#pragma once
 
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -297,4 +296,3 @@ private:
   void operator=(const DBSCANTemplate&); // Move assignment Not Implemented
 };
 
-#endif /* _dbscantemplate_h_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pottsmodel_h_
-#define _pottsmodel_h_
+#pragma once
 
 #include <array>
 
@@ -190,4 +189,3 @@ private:
   PottsModel& operator=(PottsModel&&) = delete;      // Move Assignment
 };
 
-#endif /* _PottsModel_H_ */

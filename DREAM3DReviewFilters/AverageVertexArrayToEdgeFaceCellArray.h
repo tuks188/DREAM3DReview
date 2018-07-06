@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _averagevertexarraytoedgefacecellarray_h_
-#define _averagevertexarraytoedgefacecellarray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -180,4 +179,3 @@ public:
   AverageVertexArrayToEdgeFaceCellArray& operator=(AverageVertexArrayToEdgeFaceCellArray&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _AverageVertexArrayToEdgeFaceCellArray_H_ */

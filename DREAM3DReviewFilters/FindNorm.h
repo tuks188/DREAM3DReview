@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _findnorm_h_
-#define _findnorm_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -179,4 +178,3 @@ private:
   FindNorm& operator=(FindNorm&&) = delete;      // Move Assignment
 };
 
-#endif /* _findnorm_h_ */

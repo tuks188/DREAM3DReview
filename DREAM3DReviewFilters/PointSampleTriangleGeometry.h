@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pointsampletrianglegeometry_h_
-#define _pointsampletrianglegeometry_h_
+#pragma once
 
 #include <random>
 
@@ -222,4 +221,3 @@ public:
   PointSampleTriangleGeometry& operator=(PointSampleTriangleGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _pointsampletrianglegeometry_h_ */

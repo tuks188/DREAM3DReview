@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _removeflaggedvertices_h_
-#define _removeflaggedvertices_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -182,4 +181,3 @@ public:
   RemoveFlaggedVertices& operator=(RemoveFlaggedVertices&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _removeflaggedvertices_h_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _silhouette_h_
-#define _silhouette_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -192,4 +191,3 @@ private:
   Silhouette& operator=(Silhouette&&) = delete;      // Move Assignment
 };
 
-#endif /* _Silhouette_H_ */

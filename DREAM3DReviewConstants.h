@@ -1,8 +1,7 @@
 /*
  * Your License should go here
  */
-#ifndef _dream3dreviewconstants_h_
-#define _dream3dreviewconstants_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -90,4 +89,3 @@ namespace FilterParameterWidgetType
 {
 /* const QString SomeCustomWidget("SomeCustomWidget"); */
 }
-#endif

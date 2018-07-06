@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _principalcomponentanalysis_h_
-#define _principalcomponentanalysis_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -204,4 +203,3 @@ public:
   PrincipalComponentAnalysis& operator=(PrincipalComponentAnalysis&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _principalcomponentanalysis_h_ */

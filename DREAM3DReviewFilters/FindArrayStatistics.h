@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FindArrayStatistics_h_
-#define _FindArrayStatistics_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -306,4 +305,3 @@ public:
   FindArrayStatistics& operator=(FindArrayStatistics&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _FindArrayStatistics_H_ */

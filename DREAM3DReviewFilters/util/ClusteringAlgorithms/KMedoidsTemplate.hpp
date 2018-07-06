@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _kmedoidstemplate_H_
-#define _kmedoidstemplate_H_
+#pragma once
 
 #include <random>
 #include <chrono>
@@ -224,4 +223,3 @@ private:
   void operator=(const KMedoidsTemplate&);   // Move assignment Not Implemented
 };
 
-#endif /* _kmedoidstemplate_H_ */

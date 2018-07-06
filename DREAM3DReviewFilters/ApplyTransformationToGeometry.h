@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _applytransformationtogeometry_h_
-#define _applytransformationtogeometry_h_
+#pragma once
 
 #include "DREAM3DReview/DREAM3DReviewDLLExport.h"
 
@@ -203,4 +202,3 @@ public:
   ApplyTransformationToGeometry& operator=(ApplyTransformationToGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _ApplyTransformationToGeometry_H_ */

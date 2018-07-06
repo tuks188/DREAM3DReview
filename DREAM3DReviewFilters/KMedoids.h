@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _kmedoids_h_
-#define _kmedoids_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -201,4 +200,3 @@ private:
   KMedoids& operator=(KMedoids&&) = delete;      // Move Assignment
 };
 
-#endif /* _kmedoids_h_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _kmeans_h_
-#define _kmeans_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -201,4 +200,3 @@ private:
   KMeans& operator=(KMeans&&) = delete;      // Move Assignment
 };
 
-#endif /* _kmeans_h_ */

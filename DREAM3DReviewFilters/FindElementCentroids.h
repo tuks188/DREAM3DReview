@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _findelementcentroids_h_
-#define _findelementcentroids_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -183,4 +182,3 @@ public:
   FindElementCentroids& operator=(FindElementCentroids&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _FindElementCentroids_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _silhouettetemplate_h_
-#define _silhouettetemplate_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -155,4 +154,3 @@ private:
   void operator=(const SilhouetteTemplate&);     // Move assignment Not Implemented
 };
 
-#endif /* _silhouettetemplate_h_ */

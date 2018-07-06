@@ -2,8 +2,7 @@
  * Your License or Copyright can go here
  */
 
-#ifndef _dream3dreviewplugin_h_
-#define _dream3dreviewplugin_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -162,4 +161,3 @@ private:
   void operator=(const DREAM3DReviewPlugin&);               // Move assignment Not Implemented
 };
 
-#endif /* _DREAM3DReview_H_ */

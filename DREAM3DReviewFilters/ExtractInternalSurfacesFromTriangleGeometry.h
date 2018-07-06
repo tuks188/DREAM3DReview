@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _extractinternalsurfacesfromtrianglegeometry_h_
-#define _extractinternalsurfacesfromtrianglegeometry_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -182,4 +181,3 @@ public:
   ExtractInternalSurfacesFromTriangleGeometry& operator=(ExtractInternalSurfacesFromTriangleGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _ExtractInternalSurfacesFromTriangleGeometry_H_ */

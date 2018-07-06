@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _kmeanstemplate_h_
-#define _kmeanstemplate_h_
+#pragma once
 
 #include <random>
 #include <chrono>
@@ -213,4 +212,3 @@ private:
   void operator=(const KMeansTemplate&); // Move assignment Not Implemented
 };
 
-#endif /* _kmeanstemplate_h_ */

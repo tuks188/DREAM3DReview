@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _normalizearrays_h_
-#define _normalizearrays_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -204,4 +203,3 @@ public:
   NormalizeArrays& operator=(NormalizeArrays&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _NormalizeArrays_H_ */
