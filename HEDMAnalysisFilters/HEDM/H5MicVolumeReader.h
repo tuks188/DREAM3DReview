@@ -34,8 +34,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _h5micvolumereader_h_
-#define _h5micvolumereader_h_
+#pragma once
 
 #include <QtCore/QVector>
 
@@ -163,5 +162,4 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
 
 };
 
-#endif /* _H5MicDATALOADER_H_ */
 

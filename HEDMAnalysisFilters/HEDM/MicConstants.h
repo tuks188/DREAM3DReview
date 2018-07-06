@@ -37,8 +37,7 @@
 
 
 
-#ifndef _micconstants_h_
-#define _micconstants_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -161,5 +160,4 @@
 
   }
 
-#endif /* MicCONSTANTS_H_ */
 

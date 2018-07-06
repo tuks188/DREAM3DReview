@@ -33,8 +33,7 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _h5micreader_h_
-#define _h5micreader_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -169,5 +168,4 @@ class H5MicReader : public MicReader
     void operator=(const H5MicReader&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _H5MicREADER_H_ */
 

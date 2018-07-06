@@ -33,8 +33,7 @@
 *                           FA8650-07-D-5800
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _readmicdata_h_
-#define _readmicdata_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
@@ -243,7 +242,6 @@ class HEDMAnalysis_EXPORT ReadMicData : public AbstractFilter
 Q_DECLARE_METATYPE(Mic_Private_Data)
 
 
-#endif /* _ReadMicData_H_ */
 
 
 

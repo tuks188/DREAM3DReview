@@ -38,8 +38,7 @@
 
 
 
-#ifndef _micphase_h_
-#define _micphase_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -96,5 +95,4 @@ class MicPhase
     void operator=(const MicPhase&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* MicPHASE_H_ */
 

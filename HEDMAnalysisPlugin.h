@@ -2,8 +2,7 @@
  * Your License or Copyright Information can go here
  */
 
-#ifndef _hedmanalysisplugin_h_
-#define _hedmanalysisplugin_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -164,4 +163,3 @@ class HEDMAnalysis_EXPORT HEDMAnalysisPlugin : public QObject, public ISIMPLibPl
     void operator=(const HEDMAnalysisPlugin&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* _HEDMAnalysis_H_ */

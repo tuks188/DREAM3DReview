@@ -33,8 +33,7 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _micreader_h_
-#define _micreader_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QMap>
@@ -218,5 +217,4 @@ class MicReader : public EbsdReader
     void operator=(const MicReader&); // Move assignment Not Implemented
 };
 
-#endif /* _MicREADER_H_ */
 

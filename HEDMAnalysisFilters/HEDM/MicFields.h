@@ -34,8 +34,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _micfields_h_
-#define _micfields_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -79,5 +78,4 @@ class MicFields : public AbstractEbsdFields
     void operator=(const MicFields&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* MicFIELDS_H_ */
 

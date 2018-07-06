@@ -34,8 +34,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _tesselatefarfieldgrains_h_
-#define _tesselatefarfieldgrains_h_
+#pragma once
 
 #include <vector>
 #include <map>
@@ -288,7 +287,6 @@ class HEDMAnalysis_EXPORT TesselateFarFieldGrains : public AbstractFilter
     TesselateFarFieldGrains& operator=(TesselateFarFieldGrains&&) = delete;      // Move Assignment
 };
 
-#endif /* TesselateFarFieldGrains_H_ */
 
 
 

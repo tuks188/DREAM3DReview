@@ -37,8 +37,7 @@
 
 
 
-#ifndef _h5micimporter_h_
-#define _h5micimporter_h_
+#pragma once
 
 #if defined (_MSC_VER)
 #define WIN32_LEAN_AND_MEAN   // Exclude rarely-used stuff from Windows headers
@@ -133,5 +132,4 @@ class H5MicImporter : public EbsdImporter
 };
 
 
-#endif /* _H5MicIMPORTER_H_ */
 
