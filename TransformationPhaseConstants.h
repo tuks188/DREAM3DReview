@@ -1,5 +1,4 @@
-#ifndef _transformationphaseconstants_h_
-#define _transformationphaseconstants_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -77,4 +76,3 @@ namespace TransformationPhaseConstants
   {29.5f, 46.39f, 2.0f, 2.0f, 1.0f}
   };
 }
-#endif

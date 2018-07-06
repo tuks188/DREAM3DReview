@@ -34,8 +34,7 @@
  *                   FA8650-07-D-5800 and FA8650-10-D-5226
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _tidwellfatiguecrystallographicanalysis_h_
-#define _tidwellfatiguecrystallographicanalysis_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -290,6 +289,5 @@ class TransformationPhase_EXPORT TiDwellFatigueCrystallographicAnalysis : public
     TiDwellFatigueCrystallographicAnalysis& operator=(TiDwellFatigueCrystallographicAnalysis&&) = delete;      // Move Assignment
 };
 
-#endif /* _TiDwellFatigueCrystallographicAnalysis_H_ */
 
 

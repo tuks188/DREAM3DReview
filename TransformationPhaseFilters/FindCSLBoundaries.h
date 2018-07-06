@@ -35,8 +35,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _findcslboundaries_h_
-#define _findcslboundaries_h_
+#pragma once
 
 #include <vector>
 #include <QtCore/QString>
@@ -208,6 +207,5 @@ class TransformationPhase_EXPORT FindCSLBoundaries : public AbstractFilter
     FindCSLBoundaries& operator=(FindCSLBoundaries&&) = delete;      // Move Assignment
 };
 
-#endif /* FindCSLBoundaries_H_ */
 
 

@@ -38,8 +38,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _inserttransformationphases_h_
-#define _inserttransformationphases_h_
+#pragma once
 
 #include <vector>
 
@@ -348,4 +347,3 @@ class TransformationPhase_EXPORT InsertTransformationPhases : public AbstractFil
     InsertTransformationPhases& operator=(InsertTransformationPhases&&) = delete;      // Move Assignment
 };
 
-#endif /* INSERTTRANSFORMATIONPHASES_H_ */

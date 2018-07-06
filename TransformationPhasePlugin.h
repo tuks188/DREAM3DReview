@@ -35,8 +35,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _transformationphaseplugin_h_
-#define _transformationphaseplugin_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -190,4 +189,3 @@ class TransformationPhase_EXPORT TransformationPhasePlugin : public QObject, pub
     void operator=(const TransformationPhasePlugin&) = delete;            // Move assignment Not Implemented
 };
 
-#endif /* _TransformationPhase_H_ */
