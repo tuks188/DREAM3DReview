@@ -17,11 +17,8 @@ set(_PublicFilters
   AverageEdgeFaceCellArrayToVertexArray
   AverageVertexArrayToEdgeFaceCellArray
   ComputeUmeyamaTransform
-  CopyObject
-  CreateGeometry
-  CropVertexGeometry
+
   DBSCAN
-  ExtractAttributeArraysFromGeometry
   ExtractInternalSurfacesFromTriangleGeometry
   FindArrayStatistics
   FindElementCentroids
@@ -36,7 +33,6 @@ set(_PublicFilters
   RemoveFlaggedVertices
   RobustAutomaticThreshold
   Silhouette
-  SplitAttributeArray
 )
 
 list(LENGTH _PublicFilters PluginNumFilters)
