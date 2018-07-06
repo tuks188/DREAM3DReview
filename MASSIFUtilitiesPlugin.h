@@ -2,8 +2,7 @@
  * Your License or Copyright can go here
  */
 
-#ifndef _massifutilitiesplugin_h_
-#define _massifutilitiesplugin_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -163,4 +162,3 @@ class MASSIFUtilities_EXPORT MASSIFUtilitiesPlugin : public QObject, public ISIM
     void operator=(const MASSIFUtilitiesPlugin&) = delete;        // Move assignment Not Implemented
 };
 
-#endif /* _MASSIFUtilities_H_ */

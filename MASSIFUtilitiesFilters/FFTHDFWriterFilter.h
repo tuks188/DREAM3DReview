@@ -2,8 +2,7 @@
  * Your License or Copyright can go here
  */
 
-#ifndef _ffthdfwriterfilter_H_
-#define _ffthdfwriterfilter_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/FileWriter.h"
@@ -186,4 +185,3 @@ public:
   FFTHDFWriterFilter& operator=(FFTHDFWriterFilter&&) = delete;      // Move Assignment
 };
 
-#endif /* _ffthdfwriterfilter_H_ */

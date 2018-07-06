@@ -1,8 +1,7 @@
 /*
  * Your License should go here
  */
-#ifndef _massifutilitiesconstants_h_
-#define _massifutilitiesconstants_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -57,4 +56,3 @@ namespace FilterParameterWidgetType
 {
 /* const QString SomeCustomWidget("SomeCustomWidget"); */
 }
-#endif

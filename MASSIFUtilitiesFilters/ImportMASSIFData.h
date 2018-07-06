@@ -2,8 +2,7 @@
  * Your License or Copyright can go here
  */
 
-#ifndef _importmassifdata_h_
-#define _importmassifdata_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -177,4 +176,3 @@ public:
   ImportMASSIFData& operator=(ImportMASSIFData&&) = delete;      // Move Assignment
 };
 
-#endif /* _ImportMASSIFData_H_ */
