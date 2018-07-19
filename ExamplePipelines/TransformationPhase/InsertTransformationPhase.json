@@ -166,7 +166,7 @@
         "Filter_Enabled": true,
         "Filter_Human_Label": "Pack Primary Phases",
         "Filter_Name": "PackPrimaryPhases",
-        "HaveFeatures": 0,
+        "FeatureGeneration": 0,
         "InputPhaseNamesArrayPath": {
             "Attribute Matrix Name": "CellEnsembleData",
             "Data Array Name": "PhaseName",
