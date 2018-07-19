@@ -262,7 +262,7 @@ void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(QJsonObject &o
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(QJsonObject &obj)
+void TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(QJsonObject &obj) const
 {
   AbstractFilter::writeFilterParameters(obj);
   obj["CellFeatureAttributeMatrixName"] = getCellFeatureAttributeMatrixName();
