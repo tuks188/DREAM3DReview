@@ -2,7 +2,6 @@
  * Your License or Copyright Information can go here
  */
 
-
 #include "HEDMAnalysisPlugin.h"
 
 #include <QtCore/QFile>
@@ -14,23 +13,27 @@
 #include "HEDMAnalysis/HEDMAnalysisConstants.h"
 #include "HEDMAnalysis/HEDMAnalysisVersion.h"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HEDMAnalysisPlugin::HEDMAnalysisPlugin() :
-  m_Version(HEDMAnalysis::Version::Package()),                            // Initialize HEDMAnalysis's Version Number Here
-  m_CompatibilityVersion(HEDMAnalysis::Version::Package()), // Initialize HEDMAnalysis's Compatibility Version Number Here
-  m_Vendor("Vendor Name"),                                // Initialize HEDMAnalysis's Vendor Name Here
-  m_URL("URL"),                                           // Initialize Company URL Here
-  m_Location("Location"),                                 // Initialize Company Location Here
-  m_Description("Description"),                           // Initialize HEDMAnalysis's Description Here
-  m_Copyright("Copyright"),                               // Initialize HEDMAnalysis's Copyright Here
-  m_Filters(QList<QString>()),                        // Initialize HEDMAnalysis's List of Dependencies Here
-  m_DidLoad(false)
+HEDMAnalysisPlugin::HEDMAnalysisPlugin()
+: m_Version(HEDMAnalysis::Version::Package())
+, // Initialize HEDMAnalysis's Version Number Here
+    m_CompatibilityVersion(HEDMAnalysis::Version::Package())
+, // Initialize HEDMAnalysis's Compatibility Version Number Here
+    m_Vendor("Open-Source")
+, m_URL("http://www.github.com/dream3d/HEDMAnalysisPlugin")
+, // Initialize Company URL Here
+    m_Location("")
+, // Initialize Company Location Here
+    m_Description("")
+, // Initialize HEDMAnalysis's Description Here
+    m_Copyright("")
+, // Initialize HEDMAnalysis's Copyright Here
+    m_Filters(QList<QString>())
+, // Initialize HEDMAnalysis's List of Dependencies Here
+    m_DidLoad(false)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -61,7 +64,6 @@ QString HEDMAnalysisPlugin::getPluginBaseName()
 {
   return HEDMAnalysisConstants::HEDMAnalysisBaseName;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -115,9 +117,9 @@ QString HEDMAnalysisPlugin::getDescription()
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--Description was not read-->>";
 
-  if ( licenseFileInfo.exists() )
+  if(licenseFileInfo.exists())
   {
-    if ( licenseFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    if(licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       QTextStream in(&licenseFile);
       text = in.readAll();
@@ -146,9 +148,9 @@ QString HEDMAnalysisPlugin::getLicense()
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--License was not read-->>";
 
-  if ( licenseFileInfo.exists() )
+  if(licenseFileInfo.exists())
   {
-    if ( licenseFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    if(licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       QTextStream in(&licenseFile);
       text = in.readAll();
@@ -165,18 +167,18 @@ QMap<QString, QString> HEDMAnalysisPlugin::getThirdPartyLicenses()
   QMap<QString, QString> licenseMap;
   QList<QString> fileStrList;
   fileStrList.push_back(":/ThirdParty/HDF5.txt");
-  
+
   fileStrList.push_back(":/ThirdParty/Qt.txt");
   fileStrList.push_back(":/ThirdParty/Qwt.txt");
 
-  for (QList<QString>::iterator iter = fileStrList.begin(); iter != fileStrList.end(); iter++)
+  for(QList<QString>::iterator iter = fileStrList.begin(); iter != fileStrList.end(); iter++)
   {
     QFile file(*iter);
     QFileInfo licenseFileInfo(file);
 
-    if ( licenseFileInfo.exists() )
+    if(licenseFileInfo.exists())
     {
-      if ( file.open(QIODevice::ReadOnly | QIODevice::Text) )
+      if(file.open(QIODevice::ReadOnly | QIODevice::Text))
       {
         QTextStream in(&file);
         licenseMap.insert(licenseFileInfo.baseName(), in.readAll());
@@ -216,7 +218,6 @@ void HEDMAnalysisPlugin::setLocation(QString filePath)
 // -----------------------------------------------------------------------------
 void HEDMAnalysisPlugin::writeSettings(QSettings& prefs)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -224,7 +225,6 @@ void HEDMAnalysisPlugin::writeSettings(QSettings& prefs)
 // -----------------------------------------------------------------------------
 void HEDMAnalysisPlugin::readSettings(QSettings& prefs)
 {
-
 }
 
 // -----------------------------------------------------------------------------
