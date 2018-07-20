@@ -46,21 +46,18 @@
 
 #include "TransformationPhase/TransformationPhaseConstants.h"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TransformationPhasePlugin::TransformationPhasePlugin() :
-  m_Version(TransformationPhase::Version::Package()),
-  m_CompatibilityVersion(TransformationPhase::Version::Package()),
-  m_Vendor("Open-Source"),
-  m_URL("http://www.github.com/dream3d/TransformationPhase"),
-  m_Location(""),
-  m_Copyright(""),
-  m_DidLoad(false)
+TransformationPhasePlugin::TransformationPhasePlugin()
+: m_Version(TransformationPhase::Version::Package())
+, m_CompatibilityVersion(TransformationPhase::Version::Package())
+, m_Vendor("Open-Source")
+, m_URL("http://www.github.com/dream3d/TransformationPhase")
+, m_Location("")
+, m_Copyright("")
+, m_DidLoad(false)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -91,7 +88,6 @@ QString TransformationPhasePlugin::getPluginBaseName()
 {
   return TransformationPhaseConstants::TransformationPhaseBaseName;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -142,9 +138,9 @@ QString TransformationPhasePlugin::getDescription()
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--Description was not read-->>";
 
-  if ( licenseFileInfo.exists() )
+  if(licenseFileInfo.exists())
   {
-    if ( licenseFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    if(licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       QTextStream in(&licenseFile);
       text = in.readAll();
@@ -170,9 +166,9 @@ QString TransformationPhasePlugin::getLicense()
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--License was not read-->>";
 
-  if ( licenseFileInfo.exists() )
+  if(licenseFileInfo.exists())
   {
-    if ( licenseFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    if(licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       QTextStream in(&licenseFile);
       text = in.readAll();
@@ -189,18 +185,18 @@ QMap<QString, QString> TransformationPhasePlugin::getThirdPartyLicenses()
   QMap<QString, QString> licenseMap;
   QList<QString> fileStrList;
   fileStrList.push_back(":/ThirdParty/HDF5.txt");
-  
+
   fileStrList.push_back(":/ThirdParty/Qt.txt");
   fileStrList.push_back(":/ThirdParty/Qwt.txt");
 
-  for (QList<QString>::iterator iter = fileStrList.begin(); iter != fileStrList.end(); iter++)
+  for(QList<QString>::iterator iter = fileStrList.begin(); iter != fileStrList.end(); iter++)
   {
     QFile file(*iter);
     QFileInfo licenseFileInfo(file);
 
-    if ( licenseFileInfo.exists() )
+    if(licenseFileInfo.exists())
     {
-      if ( file.open(QIODevice::ReadOnly | QIODevice::Text) )
+      if(file.open(QIODevice::ReadOnly | QIODevice::Text))
       {
         QTextStream in(&file);
         licenseMap.insert(licenseFileInfo.baseName(), in.readAll());
@@ -240,7 +236,6 @@ void TransformationPhasePlugin::setLocation(QString filePath)
 // -----------------------------------------------------------------------------
 void TransformationPhasePlugin::writeSettings(QSettings& prefs)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -248,7 +243,6 @@ void TransformationPhasePlugin::writeSettings(QSettings& prefs)
 // -----------------------------------------------------------------------------
 void TransformationPhasePlugin::readSettings(QSettings& prefs)
 {
-
 }
 
 // -----------------------------------------------------------------------------
