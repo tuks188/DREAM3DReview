@@ -11,24 +11,23 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
+#include "DREAM3DReview/DREAM3DReviewVersion.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DREAM3DReviewPlugin::DREAM3DReviewPlugin()
-: m_Version("0.1.0")
-, // Initialize DREAM3DReview's Version Number Here
-    m_CompatibilityVersion("0.1.0")
-, // Initialize DREAM3DReview's Compatibility Version Number Here
-    m_Vendor("Vendor Name")
+: m_Version(DREAM3DReview::Version::Package())
+, m_CompatibilityVersion(DREAM3DReview::Version::Package())
+, m_Vendor("Open-Source")
 , // Initialize DREAM3DReview's Vendor Name Here
-    m_URL("URL")
+    m_URL("http://www.github.com/dream3d/DREAM3DReview")
 , // Initialize Company URL Here
-    m_Location("Location")
+    m_Location("")
 , // Initialize DREAM3DReview library Location Here
-    m_Description("Description")
+    m_Description("Staging plugin for filters that are ready to be incorporated into official DREAM.3D plugin repositories")
 , // Initialize DREAM3DReview's Description Here
-    m_Copyright("Copyright")
+    m_Copyright("Copyright is assigned by Filter")
 , // Initialize DREAM3DReview's Copyright Here
     m_Filters(QList<QString>())
 , // Initialize DREAM3DReview's List of Dependencies Here
@@ -39,8 +38,7 @@ DREAM3DReviewPlugin::DREAM3DReviewPlugin()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DREAM3DReviewPlugin::~DREAM3DReviewPlugin()
-= default;
+DREAM3DReviewPlugin::~DREAM3DReviewPlugin() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -65,7 +63,6 @@ QString DREAM3DReviewPlugin::getPluginBaseName()
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -169,11 +166,11 @@ QMap<QString, QString> DREAM3DReviewPlugin::getThirdPartyLicenses()
   QMap<QString, QString> licenseMap;
   QList<QString> fileStrList;
   fileStrList.push_back(":/ThirdParty/HDF5.txt");
-  
+
   fileStrList.push_back(":/ThirdParty/Qt.txt");
   fileStrList.push_back(":/ThirdParty/Qwt.txt");
 
-  for(auto & iter : fileStrList)
+  for(auto& iter : fileStrList)
   {
     QFile file(iter);
     QFileInfo licenseFileInfo(file);
@@ -218,14 +215,14 @@ void DREAM3DReviewPlugin::setLocation(QString filePath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DREAM3DReviewPlugin::writeSettings(QSettings&  /*prefs*/)
+void DREAM3DReviewPlugin::writeSettings(QSettings& /*prefs*/)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DREAM3DReviewPlugin::readSettings(QSettings&  /*prefs*/)
+void DREAM3DReviewPlugin::readSettings(QSettings& /*prefs*/)
 {
 }
 
