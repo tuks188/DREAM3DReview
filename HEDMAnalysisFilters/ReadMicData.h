@@ -41,7 +41,7 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
