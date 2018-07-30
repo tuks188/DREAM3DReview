@@ -20,7 +20,7 @@ public:
 
 public:
   TransformationPhaseGuiPlugin(const TransformationPhaseGuiPlugin&) = delete;            // Copy Constructor Not Implemented
-  TransformationPhaseGuiPlugin(TransformationPhaseGuiPlugin&&) = delete;                 // Move Constructor
+  TransformationPhaseGuiPlugin(TransformationPhaseGuiPlugin&&) = delete;                 // Move Constructor Not Implemented
   TransformationPhaseGuiPlugin& operator=(const TransformationPhaseGuiPlugin&) = delete; // Copy Assignment Not Implemented
   TransformationPhaseGuiPlugin& operator=(TransformationPhaseGuiPlugin&&) = delete;      // Move Assignment Not Implemented
 };

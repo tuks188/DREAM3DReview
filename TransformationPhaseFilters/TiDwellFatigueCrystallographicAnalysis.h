@@ -284,7 +284,7 @@ class TransformationPhase_EXPORT TiDwellFatigueCrystallographicAnalysis : public
 
   public:
     TiDwellFatigueCrystallographicAnalysis(const TiDwellFatigueCrystallographicAnalysis&) = delete; // Copy Constructor Not Implemented
-    TiDwellFatigueCrystallographicAnalysis(TiDwellFatigueCrystallographicAnalysis&&) = delete;      // Move Constructor
+    TiDwellFatigueCrystallographicAnalysis(TiDwellFatigueCrystallographicAnalysis&&) = delete;      // Move Constructor Not Implemented
     TiDwellFatigueCrystallographicAnalysis& operator=(const TiDwellFatigueCrystallographicAnalysis&) = delete; // Copy Assignment Not Implemented
     TiDwellFatigueCrystallographicAnalysis& operator=(TiDwellFatigueCrystallographicAnalysis&&) = delete;      // Move Assignment
 };

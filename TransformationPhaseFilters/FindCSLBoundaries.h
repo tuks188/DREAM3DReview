@@ -202,7 +202,7 @@ class TransformationPhase_EXPORT FindCSLBoundaries : public AbstractFilter
 
   public:
     FindCSLBoundaries(const FindCSLBoundaries&) = delete; // Copy Constructor Not Implemented
-    FindCSLBoundaries(FindCSLBoundaries&&) = delete;      // Move Constructor
+    FindCSLBoundaries(FindCSLBoundaries&&) = delete;      // Move Constructor Not Implemented
     FindCSLBoundaries& operator=(const FindCSLBoundaries&) = delete; // Copy Assignment Not Implemented
     FindCSLBoundaries& operator=(FindCSLBoundaries&&) = delete;      // Move Assignment
 };
