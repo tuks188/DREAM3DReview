@@ -20,7 +20,7 @@ public:
 
 public:
   MASSIFUtilitiesGuiPlugin(const MASSIFUtilitiesGuiPlugin&) = delete;            // Copy Constructor Not Implemented
-  MASSIFUtilitiesGuiPlugin(MASSIFUtilitiesGuiPlugin&&) = delete;                 // Move Constructor
+  MASSIFUtilitiesGuiPlugin(MASSIFUtilitiesGuiPlugin&&) = delete;                 // Move Constructor Not Implemented
   MASSIFUtilitiesGuiPlugin& operator=(const MASSIFUtilitiesGuiPlugin&) = delete; // Copy Assignment Not Implemented
   MASSIFUtilitiesGuiPlugin& operator=(MASSIFUtilitiesGuiPlugin&&) = delete;      // Move Assignment Not Implemented
 };
