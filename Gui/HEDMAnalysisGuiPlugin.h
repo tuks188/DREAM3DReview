@@ -20,7 +20,7 @@ public:
 
 public:
   HEDMAnalysisGuiPlugin(const HEDMAnalysisGuiPlugin&) = delete;            // Copy Constructor Not Implemented
-  HEDMAnalysisGuiPlugin(HEDMAnalysisGuiPlugin&&) = delete;                 // Move Constructor
+  HEDMAnalysisGuiPlugin(HEDMAnalysisGuiPlugin&&) = delete;                 // Move Constructor Not Implemented
   HEDMAnalysisGuiPlugin& operator=(const HEDMAnalysisGuiPlugin&) = delete; // Copy Assignment Not Implemented
   HEDMAnalysisGuiPlugin& operator=(HEDMAnalysisGuiPlugin&&) = delete;      // Move Assignment Not Implemented
 };

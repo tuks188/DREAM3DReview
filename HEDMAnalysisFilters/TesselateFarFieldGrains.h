@@ -282,7 +282,7 @@ class HEDMAnalysis_EXPORT TesselateFarFieldGrains : public AbstractFilter
 
   public:
     TesselateFarFieldGrains(const TesselateFarFieldGrains&) = delete; // Copy Constructor Not Implemented
-    TesselateFarFieldGrains(TesselateFarFieldGrains&&) = delete;      // Move Constructor
+    TesselateFarFieldGrains(TesselateFarFieldGrains&&) = delete;      // Move Constructor Not Implemented
     TesselateFarFieldGrains& operator=(const TesselateFarFieldGrains&) = delete; // Copy Assignment Not Implemented
     TesselateFarFieldGrains& operator=(TesselateFarFieldGrains&&) = delete;      // Move Assignment
 };
