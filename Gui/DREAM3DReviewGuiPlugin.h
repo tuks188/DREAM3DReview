@@ -20,7 +20,7 @@ public:
 
 public:
   DREAM3DReviewGuiPlugin(const DREAM3DReviewGuiPlugin&) = delete;            // Copy Constructor Not Implemented
-  DREAM3DReviewGuiPlugin(DREAM3DReviewGuiPlugin&&) = delete;                 // Move Constructor
+  DREAM3DReviewGuiPlugin(DREAM3DReviewGuiPlugin&&) = delete;                 // Move Constructor Not Implemented
   DREAM3DReviewGuiPlugin& operator=(const DREAM3DReviewGuiPlugin&) = delete; // Copy Assignment Not Implemented
   DREAM3DReviewGuiPlugin& operator=(DREAM3DReviewGuiPlugin&&) = delete;      // Move Assignment Not Implemented
 };

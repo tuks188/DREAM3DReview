@@ -300,7 +300,7 @@ private:
 
 public:
   FindArrayStatistics(const FindArrayStatistics&) = delete; // Copy Constructor Not Implemented
-  FindArrayStatistics(FindArrayStatistics&&) = delete;      // Move Constructor
+  FindArrayStatistics(FindArrayStatistics&&) = delete;      // Move Constructor Not Implemented
   FindArrayStatistics& operator=(const FindArrayStatistics&) = delete; // Copy Assignment Not Implemented
   FindArrayStatistics& operator=(FindArrayStatistics&&) = delete;      // Move Assignment Not Implemented
 };

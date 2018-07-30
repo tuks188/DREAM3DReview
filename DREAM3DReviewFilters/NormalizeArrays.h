@@ -198,7 +198,7 @@ private:
 
 public:
   NormalizeArrays(const NormalizeArrays&) = delete; // Copy Constructor Not Implemented
-  NormalizeArrays(NormalizeArrays&&) = delete;      // Move Constructor
+  NormalizeArrays(NormalizeArrays&&) = delete;      // Move Constructor Not Implemented
   NormalizeArrays& operator=(const NormalizeArrays&) = delete; // Copy Assignment Not Implemented
   NormalizeArrays& operator=(NormalizeArrays&&) = delete;      // Move Assignment Not Implemented
 };

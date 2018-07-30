@@ -177,7 +177,7 @@ private:
 
 public:
   FindElementCentroids(const FindElementCentroids&) = delete; // Copy Constructor Not Implemented
-  FindElementCentroids(FindElementCentroids&&) = delete;      // Move Constructor
+  FindElementCentroids(FindElementCentroids&&) = delete;      // Move Constructor Not Implemented
   FindElementCentroids& operator=(const FindElementCentroids&) = delete; // Copy Assignment Not Implemented
   FindElementCentroids& operator=(FindElementCentroids&&) = delete;      // Move Assignment Not Implemented
 };

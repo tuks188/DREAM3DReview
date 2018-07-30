@@ -176,7 +176,7 @@ private:
 
 public:
   RobustAutomaticThreshold(const RobustAutomaticThreshold&) = delete; // Copy Constructor Not Implemented
-  RobustAutomaticThreshold(RobustAutomaticThreshold&&) = delete;      // Move Constructor
+  RobustAutomaticThreshold(RobustAutomaticThreshold&&) = delete;      // Move Constructor Not Implemented
   RobustAutomaticThreshold& operator=(const RobustAutomaticThreshold&) = delete; // Copy Assignment Not Implemented
   RobustAutomaticThreshold& operator=(RobustAutomaticThreshold&&) = delete;      // Move Assignment Not Implemented
 };

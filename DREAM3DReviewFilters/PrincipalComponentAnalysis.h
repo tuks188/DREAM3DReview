@@ -198,7 +198,7 @@ private:
 
 public:
   PrincipalComponentAnalysis(const PrincipalComponentAnalysis&) = delete; // Copy Constructor Not Implemented
-  PrincipalComponentAnalysis(PrincipalComponentAnalysis&&) = delete;      // Move Constructor
+  PrincipalComponentAnalysis(PrincipalComponentAnalysis&&) = delete;      // Move Constructor Not Implemented
   PrincipalComponentAnalysis& operator=(const PrincipalComponentAnalysis&) = delete; // Copy Assignment Not Implemented
   PrincipalComponentAnalysis& operator=(PrincipalComponentAnalysis&&) = delete;      // Move Assignment Not Implemented
 };

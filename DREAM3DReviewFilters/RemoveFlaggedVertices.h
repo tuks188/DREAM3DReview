@@ -176,7 +176,7 @@ private:
 
 public:
   RemoveFlaggedVertices(const RemoveFlaggedVertices&) = delete; // Copy Constructor Not Implemented
-  RemoveFlaggedVertices(RemoveFlaggedVertices&&) = delete;      // Move Constructor
+  RemoveFlaggedVertices(RemoveFlaggedVertices&&) = delete;      // Move Constructor Not Implemented
   RemoveFlaggedVertices& operator=(const RemoveFlaggedVertices&) = delete; // Copy Assignment Not Implemented
   RemoveFlaggedVertices& operator=(RemoveFlaggedVertices&&) = delete;      // Move Assignment Not Implemented
 };

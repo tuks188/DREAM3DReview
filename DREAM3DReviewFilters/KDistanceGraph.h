@@ -188,7 +188,7 @@ private:
 
 public:
   KDistanceGraph(const KDistanceGraph&) = delete; // Copy Constructor Not Implemented
-  KDistanceGraph(KDistanceGraph&&) = delete;      // Move Constructor
+  KDistanceGraph(KDistanceGraph&&) = delete;      // Move Constructor Not Implemented
   KDistanceGraph& operator=(const KDistanceGraph&) = delete; // Copy Assignment Not Implemented
   KDistanceGraph& operator=(KDistanceGraph&&) = delete;      // Move Assignment
 };

@@ -197,7 +197,7 @@ private:
 
 public:
   ApplyTransformationToGeometry(const ApplyTransformationToGeometry&) = delete; // Copy Constructor Not Implemented
-  ApplyTransformationToGeometry(ApplyTransformationToGeometry&&) = delete;      // Move Constructor
+  ApplyTransformationToGeometry(ApplyTransformationToGeometry&&) = delete;      // Move Constructor Not Implemented
   ApplyTransformationToGeometry& operator=(const ApplyTransformationToGeometry&) = delete; // Copy Assignment Not Implemented
   ApplyTransformationToGeometry& operator=(ApplyTransformationToGeometry&&) = delete;      // Move Assignment Not Implemented
 };

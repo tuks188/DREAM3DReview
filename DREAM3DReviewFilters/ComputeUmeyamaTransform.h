@@ -182,7 +182,7 @@ private:
 
 public:
   ComputeUmeyamaTransform(const ComputeUmeyamaTransform&) = delete; // Copy Constructor Not Implemented
-  ComputeUmeyamaTransform(ComputeUmeyamaTransform&&) = delete;      // Move Constructor
+  ComputeUmeyamaTransform(ComputeUmeyamaTransform&&) = delete;      // Move Constructor Not Implemented
   ComputeUmeyamaTransform& operator=(const ComputeUmeyamaTransform&) = delete; // Copy Assignment Not Implemented
   ComputeUmeyamaTransform& operator=(ComputeUmeyamaTransform&&) = delete;      // Move Assignment Not Implemented
 };
