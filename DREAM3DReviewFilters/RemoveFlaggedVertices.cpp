@@ -36,7 +36,7 @@
 #include "RemoveFlaggedVertices.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"

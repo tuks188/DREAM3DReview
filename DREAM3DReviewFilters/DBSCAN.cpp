@@ -36,7 +36,7 @@
 #include "DBSCAN.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
