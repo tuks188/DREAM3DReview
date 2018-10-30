@@ -17,7 +17,7 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
@@ -134,40 +134,12 @@ void FFTHDFWriterFilter::dataCheck()
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getFeatureIdsArrayPath().getDataContainerName());
 
-  if(m_OutputFile.isEmpty() == true)
-  {
-    setErrorCondition(-10000);
-    ss = QObject::tr("The output file must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-
-  QFileInfo fi(m_OutputFile);
-  QDir parentPath(fi.path());
-  if(parentPath.exists() == false)
-  {
-    setWarningCondition(-1);
-    ss = QObject::tr("The directory path for the output file does not exist. DREAM.3D will attempt to create this path during execution of the filter");
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
-  }
+  QFileInfo fi(getOutputFile());
   if(fi.suffix().compare("") == 0)
   {
     m_OutputFile.append(".dream3d");
   }
-  if(fi.baseName().compare("") == 0)
-  {
-    setErrorCondition(-10001);
-    ss = QObject::tr("The output file must have its actual filename set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-
-  QFileInfo dirInfo(fi.path());
-
-  if(dirInfo.isWritable() == false && parentPath.exists() == true)
-  {
-    setErrorCondition(-10002);
-    ss = QObject::tr("The user does not have the proper permissions to write to the output file");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
+  FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getOutputFile(), true);
 
   QVector<DataArrayPath> dataArrayPaths;
 
