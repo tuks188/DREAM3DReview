@@ -236,7 +236,7 @@ class HEDMAnalysis_EXPORT ReadMicData : public AbstractFilter
     ReadMicData(const ReadMicData&) = delete;    // Copy Constructor Not Implemented
     ReadMicData(ReadMicData&&) = delete;         // Move Constructor Not Implemented
     ReadMicData& operator=(const ReadMicData&) = delete; // Copy Assignment Not Implemented
-    ReadMicData& operator=(ReadMicData&&) = delete;      // Move Assignment
+    ReadMicData& operator=(ReadMicData&&) = delete;      // Move Assignment Not Implemented
 };
 
 Q_DECLARE_METATYPE(Mic_Private_Data)
