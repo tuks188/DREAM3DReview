@@ -127,8 +127,11 @@ class H5MicImporter : public EbsdImporter
     float yRes;
     int   m_FileVersion;
 
+  public:
     H5MicImporter(const H5MicImporter&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const H5MicImporter&) = delete; // Move assignment Not Implemented
+    H5MicImporter(H5MicImporter&&) = delete;       // Move Constructor Not Implemented
+    H5MicImporter& operator=(const H5MicImporter&) = delete; // Copy Assignment Not Implemented
+    H5MicImporter& operator=(H5MicImporter&&) = delete;      // Move Assignment Not Implemented
 };
 
 

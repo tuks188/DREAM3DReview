@@ -90,9 +90,11 @@ class MicPhase
   protected:
     MicPhase();
 
-  private:
+  public:
     MicPhase(const MicPhase&) = delete;       // Copy Constructor Not Implemented
-    void operator=(const MicPhase&) = delete; // Move assignment Not Implemented
+    MicPhase(MicPhase&&) = delete;            // Move Constructor Not Implemented
+    MicPhase& operator=(const MicPhase&) = delete; // Copy Assignment Not Implemented
+    MicPhase& operator=(MicPhase&&) = delete;      // Move Assignment Not Implemented
 };
 
 

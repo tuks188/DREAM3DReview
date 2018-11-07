@@ -164,8 +164,11 @@ class H5MicReader : public MicReader
     QSet<QString> m_ArrayNames;
     bool                  m_ReadAllArrays;
 
+  public:
     H5MicReader(const H5MicReader&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const H5MicReader&) = delete; // Move assignment Not Implemented
+    H5MicReader(H5MicReader&&) = delete;         // Move Constructor Not Implemented
+    H5MicReader& operator=(const H5MicReader&) = delete; // Copy Assignment Not Implemented
+    H5MicReader& operator=(H5MicReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 
