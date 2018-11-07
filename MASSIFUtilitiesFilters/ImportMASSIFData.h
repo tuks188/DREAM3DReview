@@ -173,6 +173,6 @@ public:
   ImportMASSIFData(const ImportMASSIFData&) = delete;            // Copy Constructor Not Implemented
   ImportMASSIFData(ImportMASSIFData&&) = delete;                 // Move Constructor Not Implemented
   ImportMASSIFData& operator=(const ImportMASSIFData&) = delete; // Copy Assignment Not Implemented
-  ImportMASSIFData& operator=(ImportMASSIFData&&) = delete;      // Move Assignment
+  ImportMASSIFData& operator=(ImportMASSIFData&&) = delete;      // Move Assignment Not Implemented
 };
 
