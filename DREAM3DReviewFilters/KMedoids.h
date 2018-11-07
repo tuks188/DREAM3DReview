@@ -197,6 +197,6 @@ private:
 
   KMedoids(const KMedoids&);       // Copy Constructor Not Implemented
   KMedoids& operator=(const KMedoids&) = delete; // Copy Assignment Not Implemented
-  KMedoids& operator=(KMedoids&&) = delete;      // Move Assignment
+  KMedoids& operator=(KMedoids&&) = delete;      // Move Assignment Not Implemented
 };
 

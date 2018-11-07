@@ -186,6 +186,6 @@ private:
 
   PottsModel(const PottsModel&);     // Copy Constructor Not Implemented
   PottsModel& operator=(const PottsModel&) = delete; // Copy Assignment Not Implemented
-  PottsModel& operator=(PottsModel&&) = delete;      // Move Assignment
+  PottsModel& operator=(PottsModel&&) = delete;      // Move Assignment Not Implemented
 };
 

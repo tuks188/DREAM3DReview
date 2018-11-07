@@ -196,6 +196,6 @@ private:
 
   DBSCAN(const DBSCAN&);         // Copy Constructor Not Implemented
   DBSCAN& operator=(const DBSCAN&) = delete; // Copy Assignment Not Implemented
-  DBSCAN& operator=(DBSCAN&&) = delete;      // Move Assignment
+  DBSCAN& operator=(DBSCAN&&) = delete;      // Move Assignment Not Implemented
 };
 

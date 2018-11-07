@@ -197,6 +197,6 @@ private:
 
   KMeans(const KMeans&);         // Copy Constructor Not Implemented
   KMeans& operator=(const KMeans&) = delete; // Copy Assignment Not Implemented
-  KMeans& operator=(KMeans&&) = delete;      // Move Assignment
+  KMeans& operator=(KMeans&&) = delete;      // Move Assignment Not Implemented
 };
 

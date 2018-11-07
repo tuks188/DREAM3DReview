@@ -188,6 +188,6 @@ private:
 
   Silhouette(const Silhouette&);     // Copy Constructor Not Implemented
   Silhouette& operator=(const Silhouette&) = delete; // Copy Assignment Not Implemented
-  Silhouette& operator=(Silhouette&&) = delete;      // Move Assignment
+  Silhouette& operator=(Silhouette&&) = delete;      // Move Assignment Not Implemented
 };
 

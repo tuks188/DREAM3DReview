@@ -175,6 +175,6 @@ private:
 
   FindNorm(const FindNorm&);       // Copy Constructor Not Implemented
   FindNorm& operator=(const FindNorm&) = delete; // Copy Assignment Not Implemented
-  FindNorm& operator=(FindNorm&&) = delete;      // Move Assignment
+  FindNorm& operator=(FindNorm&&) = delete;      // Move Assignment Not Implemented
 };
 
