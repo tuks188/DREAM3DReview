@@ -131,9 +131,7 @@ public:
     newownersPtr = newowners;
     ellipfuncsPtr = ellipfuncs;
   }
-  virtual ~AssignVoxelsImpl()
-  {
-  }
+  virtual ~AssignVoxelsImpl() = default;
 
   // -----------------------------------------------------------------------------
   //
@@ -616,7 +614,7 @@ void TesselateFarFieldGrains::preflight()
   QVector<QString> fileList = FilePathGenerator::GenerateFileList(m_FeatureInputFileListInfo.StartIndex, m_FeatureInputFileListInfo.EndIndex, m_FeatureInputFileListInfo.IncrementIndex,
                                                                   hasMissingFiles, orderAscending, m_FeatureInputFileListInfo.InputPath, m_FeatureInputFileListInfo.FilePrefix,
                                                                   m_FeatureInputFileListInfo.FileSuffix, m_FeatureInputFileListInfo.FileExtension, m_FeatureInputFileListInfo.PaddingDigits);
-  if(fileList.size() == 0)
+  if(fileList.empty())
   {
     QString ss = QObject::tr("No files have been selected for import. Have you set the input directory?");
     setErrorCondition(-11);
@@ -772,31 +770,31 @@ void TesselateFarFieldGrains::load_features()
     for(int i = 1; i <= numPhases; i++)
     {
       inFile >> phaseName >> crystruct >> aRef >> bRef >> cRef >> alphaRef >> betaRef >> gammaRef;
-      if(crystruct.compare("Cubic") == 0)
+      if(crystruct == "Cubic")
       {
         cStruct = Ebsd::CrystalStructure::Cubic_High;
       }
-      else if(crystruct.compare("Hexagonal") == 0)
+      else if(crystruct == "Hexagonal")
       {
         cStruct = Ebsd::CrystalStructure::Hexagonal_High;
       }
-      else if(crystruct.compare("Tetragonal") == 0)
+      else if(crystruct == "Tetragonal")
       {
         cStruct = Ebsd::CrystalStructure::Tetragonal_High;
       }
-      else if(crystruct.compare("Orthorhombic") == 0)
+      else if(crystruct == "Orthorhombic")
       {
         cStruct = Ebsd::CrystalStructure::OrthoRhombic;
       }
-      else if(crystruct.compare("Trigonal") == 0)
+      else if(crystruct == "Trigonal")
       {
         cStruct = Ebsd::CrystalStructure::Trigonal_High;
       }
-      else if(crystruct.compare("Monoclinic") == 0)
+      else if(crystruct == "Monoclinic")
       {
         cStruct = Ebsd::CrystalStructure::Monoclinic;
       }
-      else if(crystruct.compare("Triclinic") == 0)
+      else if(crystruct == "Triclinic")
       {
         cStruct = Ebsd::CrystalStructure::Triclinic;
       }
@@ -1021,7 +1019,7 @@ void TesselateFarFieldGrains::assign_voxels()
 
 //#if 0
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-    if(doParallel == true)
+    if(doParallel)
     {
       tbb::parallel_for(tbb::blocked_range3d<int, int, int>(zmin, zmax + 1, ymin, ymax + 1, xmin, xmax + 1),
                         AssignVoxelsImpl(dims, res, m_FeatureIds, radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr), tbb::auto_partitioner());
@@ -1039,11 +1037,11 @@ void TesselateFarFieldGrains::assign_voxels()
   for(size_t i = 0; i < static_cast<size_t>(totalPoints); i++)
   {
     //    if(ellipfuncs[i] >= 0) { m_FeatureIds[i] = newowners[i]; }
-    if(ellipfuncs[i] >= 0 && m_Mask[i] == true)
+    if(ellipfuncs[i] >= 0 && m_Mask[i])
     {
       m_FeatureIds[i] = newowners[i];
     }
-    if(m_Mask[i] == false)
+    if(!m_Mask[i])
     {
       m_FeatureIds[i] = 0;
     }
@@ -1250,7 +1248,7 @@ void TesselateFarFieldGrains::assign_gaps_only()
 AbstractFilter::Pointer TesselateFarFieldGrains::newFilterInstance(bool copyFilterParameters) const
 {
   TesselateFarFieldGrains::Pointer filter = TesselateFarFieldGrains::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     filter->setFilterParameters(getFilterParameters());
     copyFilterParameterInstanceVariables(filter.get());

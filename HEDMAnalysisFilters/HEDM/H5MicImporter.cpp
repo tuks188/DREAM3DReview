@@ -156,8 +156,7 @@ using namespace H5Support_NAMESPACE;
 //
 // -----------------------------------------------------------------------------
 H5MicImporter::H5MicImporter()
-: EbsdImporter()
-, xDim(0)
+: xDim(0)
 , yDim(0)
 , xRes(0)
 , yRes(0)
@@ -203,7 +202,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
 {
   herr_t err = -1;
   setCancel(false);
-  setErrorCondition(false);
+  setErrorCondition(0);
   setPipelineMessage("");
 
   //  std::cout << "H5MicImporter: Importing " << MicFile << std::endl;
@@ -438,7 +437,7 @@ int H5MicImporter::writePhaseData(MicReader& reader, hid_t phasesGid)
     WRITE_PHASE_HEADER_STRING_DATA((*phase), QString, BasisAtoms, Mic::BasisAtoms)
     WRITE_PHASE_HEADER_STRING_DATA((*phase), QString, Symmetry, Mic::Symmetry)
 
-    if(p->getZandCoordinates().size() > 0)
+    if(!p->getZandCoordinates().empty())
     {
       hid_t ZandCGid = QH5Utilities::createGroup(pid, Mic::ZandCoordinates);
       err = writeZandCoordinates(p, ZandCGid);

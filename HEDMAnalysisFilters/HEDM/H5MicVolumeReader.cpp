@@ -55,7 +55,6 @@ using namespace H5Support_NAMESPACE;
 //
 // -----------------------------------------------------------------------------
 H5MicVolumeReader::H5MicVolumeReader()
-: H5EbsdVolumeReader()
 {
   // Init all the arrays to nullptr
   m_Euler1 = nullptr;

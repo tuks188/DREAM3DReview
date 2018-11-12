@@ -51,8 +51,7 @@ using namespace H5Support_NAMESPACE;
 //
 // -----------------------------------------------------------------------------
 H5MicReader::H5MicReader()
-: MicReader()
-, m_ReadAllArrays(true)
+: m_ReadAllArrays(true)
 {
 }
 
@@ -70,7 +69,7 @@ H5MicReader::~H5MicReader()
 int H5MicReader::readFile()
 {
   int err = -1;
-  if(m_HDF5Path.isEmpty() == true)
+  if(m_HDF5Path.isEmpty())
   {
     std::cout << "H5MicReader Error: HDF5 Path is empty." << std::endl;
     return -1;
@@ -115,7 +114,7 @@ int H5MicReader::readFile()
 int H5MicReader::readHeaderOnly()
 {
   int err = -1;
-  if(m_HDF5Path.isEmpty() == true)
+  if(m_HDF5Path.isEmpty())
   {
     std::cout << "H5MicReader Error: HDF5 Path is empty." << std::endl;
     QString ss = QObject::tr("H5MicReader Error: HDF5 Path is empty.");
@@ -180,7 +179,7 @@ int H5MicReader::readHeader(hid_t parId)
 
   QList<QString> names;
   err = QH5Utilities::getGroupObjects(phasesGid, H5Utilities::H5Support_GROUP, names);
-  if(err < 0 || names.size() == 0)
+  if(err < 0 || names.empty())
   {
     std::cout << "H5MicReader Error: There were no Phase groups present in the HDF5 file" << std::endl;
     H5Gclose(phasesGid);

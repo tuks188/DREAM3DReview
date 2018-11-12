@@ -62,7 +62,6 @@
 //
 // -----------------------------------------------------------------------------
 MicReader::MicReader()
-: EbsdReader()
 {
 
   // Init all the arrays to nullptr
@@ -309,7 +308,7 @@ int MicReader::readHeaderOnly()
 
   QString parentPath(fi.path());
   QString name = fi.baseName();
-  if(QDir::toNativeSeparators(parentPath).isEmpty() == true)
+  if(QDir::toNativeSeparators(parentPath).isEmpty())
   {
     name = name + ".config";
   }
@@ -351,7 +350,7 @@ int MicReader::readDatFile()
   QFileInfo fi(getFileName());
   QString parentPath(fi.path());
   QString name = fi.baseName();
-  if(QDir::toNativeSeparators(parentPath).isEmpty() == true)
+  if(QDir::toNativeSeparators(parentPath).isEmpty())
   {
     name = name + ".dat";
   }
@@ -487,7 +486,7 @@ int MicReader::readMicFile()
     buf = in.readLine();
 
     ++counter;
-    if(in.atEnd() == true)
+    if(in.atEnd())
     {
       break;
     }
@@ -653,8 +652,7 @@ void MicReader::parseHeaderLine(QByteArray& line)
 #endif
     return;
   }
-  else
-  {
+
     int size = tokens[0].count();
     line = line.mid(size);
     p->parseValue(line); // Send the second part of the QByteArray, just the value part
@@ -662,7 +660,6 @@ void MicReader::parseHeaderLine(QByteArray& line)
     std::cout << "<tr>\n    <td>" << p->getKey() << "</td>\n    <td>" << p->getHDFType() << "</td>\n";
     std::cout << "    <td colspan=\"2\"> Contains value for the header entry " << p->getKey() << "</td>\n</tr>" << std::endl;
 #endif
-  }
 }
 
 // -----------------------------------------------------------------------------
