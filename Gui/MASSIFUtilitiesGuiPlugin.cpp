@@ -5,10 +5,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MASSIFUtilitiesGuiPlugin::MASSIFUtilitiesGuiPlugin()
-: MASSIFUtilitiesPlugin()
-{
-}
+MASSIFUtilitiesGuiPlugin::MASSIFUtilitiesGuiPlugin() = default;
 
 // -----------------------------------------------------------------------------
 //

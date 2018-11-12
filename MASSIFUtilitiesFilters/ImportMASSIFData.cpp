@@ -277,9 +277,10 @@ void ImportMASSIFData::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  if (getCancel() == true) { return; }
-
-
+  if(getCancel())
+  {
+    return;
+  }
 
   if (getErrorCondition() < 0)
   {
@@ -395,7 +396,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
 AbstractFilter::Pointer ImportMASSIFData::newFilterInstance(bool copyFilterParameters) const
 {
   ImportMASSIFData::Pointer filter = ImportMASSIFData::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
@@ -516,7 +517,7 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
     // Check to see if we are reading a bool array and if so read it and return
     if(classType.compare("DataArray<bool>") == 0)
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<bool>(gid, name, tDims, cDims);
       }
@@ -541,9 +542,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
       break;
     case H5T_INTEGER:
       // qDebug() << "User Meta Data Type is Integer" ;
-      if(H5Tequal(typeId, H5T_STD_U8BE) || H5Tequal(typeId, H5T_STD_U8LE))
+      if((H5Tequal(typeId, H5T_STD_U8BE) != 0) || (H5Tequal(typeId, H5T_STD_U8LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<uint8_t>(gid, name, tDims, cDims);
         }
@@ -552,9 +553,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<uint8_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
+      else if((H5Tequal(typeId, H5T_STD_U16BE) != 0) || (H5Tequal(typeId, H5T_STD_U16LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<uint16_t>(gid, name, tDims, cDims);
         }
@@ -563,9 +564,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<uint16_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
+      else if((H5Tequal(typeId, H5T_STD_U32BE) != 0) || (H5Tequal(typeId, H5T_STD_U32LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<uint32_t>(gid, name, tDims, cDims);
         }
@@ -574,9 +575,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<uint32_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
+      else if((H5Tequal(typeId, H5T_STD_U64BE) != 0) || (H5Tequal(typeId, H5T_STD_U64LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<uint64_t>(gid, name, tDims, cDims);
         }
@@ -585,9 +586,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<uint64_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
+      else if((H5Tequal(typeId, H5T_STD_I8BE) != 0) || (H5Tequal(typeId, H5T_STD_I8LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<int8_t>(gid, name, tDims, cDims);
         }
@@ -596,9 +597,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<int8_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
+      else if((H5Tequal(typeId, H5T_STD_I16BE) != 0) || (H5Tequal(typeId, H5T_STD_I16LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<int16_t>(gid, name, tDims, cDims);
         }
@@ -607,9 +608,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<int16_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
+      else if((H5Tequal(typeId, H5T_STD_I32BE) != 0) || (H5Tequal(typeId, H5T_STD_I32LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<int32_t>(gid, name, tDims, cDims);
         }
@@ -618,9 +619,9 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
           ptr = DataArray<int32_t>::CreateArray(tDims, cDims, name, false);
         }
       }
-      else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
+      else if((H5Tequal(typeId, H5T_STD_I64BE) != 0) || (H5Tequal(typeId, H5T_STD_I64LE) != 0))
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<int64_t>(gid, name, tDims, cDims);
         }
@@ -638,7 +639,7 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
     case H5T_FLOAT:
       if(attr_size == 4)
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<float>(gid, name, tDims, cDims);
         }
@@ -649,7 +650,7 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
       }
       else if(attr_size == 8)
       {
-        if(metaDataOnly == false)
+        if(!metaDataOnly)
         {
           ptr = Detail::readH5Dataset<double>(gid, name, tDims, cDims);
         }
