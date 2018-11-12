@@ -96,7 +96,7 @@ class CalculateCSLBoundaryImpl
       m_OrientationOps = LaueOps::getOrientationOpsQVector();
     }
 
-    virtual ~CalculateCSLBoundaryImpl() {}
+    virtual ~CalculateCSLBoundaryImpl() = default;
 
     void generate(size_t start, size_t end) const
     {
@@ -380,7 +380,7 @@ void FindCSLBoundaries::execute()
   float axistol = static_cast<float>( m_AxisTolerance * M_PI / 180.0f );
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if (doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, numTriangles),
                       CalculateCSLBoundaryImpl(cslindex, angtol, axistol, m_SurfaceMeshFaceLabels, m_SurfaceMeshFaceNormals, m_AvgQuats, m_FeaturePhases, m_CrystalStructures, m_SurfaceMeshCSLBoundary, m_SurfaceMeshCSLBoundaryIncoherence), tbb::auto_partitioner());
@@ -402,7 +402,7 @@ void FindCSLBoundaries::execute()
 AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterParameters) const
 {
   FindCSLBoundaries::Pointer filter = FindCSLBoundaries::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

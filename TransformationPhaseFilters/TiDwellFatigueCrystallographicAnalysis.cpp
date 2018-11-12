@@ -423,14 +423,20 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
       m_SelectedFeatures[i] = true;
       subsurfaceFlag = determine_subsurfacefeatures(i);
     }
-    if (subsurfaceFlag == true)
+    if(subsurfaceFlag)
     {
       // Determine if it's a hard feature
       if (m_FeaturePhases[i] == m_MTRPhase) { hardfeatureFlag = determine_hardfeatures(i); }
       // Determine if it's a soft feature only if it's not a hard feature
-      if (hardfeatureFlag == false && m_FeaturePhases[i] == m_MTRPhase) { determine_softfeatures(i); }
+      if(!hardfeatureFlag && m_FeaturePhases[i] == m_MTRPhase)
+      {
+        determine_softfeatures(i);
+      }
       // Determine if it's an initiator only if we're assuming initiators are not necessarily present
-      if (m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[i] == m_AlphaGlobPhase ) { determine_initiators(i); }
+      if(m_DoNotAssumeInitiatorPresence && m_FeaturePhases[i] == m_AlphaGlobPhase)
+      {
+        determine_initiators(i);
+      }
       subsurfaceFlag = false;
     }
   }
@@ -438,7 +444,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   for (size_t i = 1; i < totalFeatures; ++i)
   {
     // Group neighboring hard features and soft features
-    if (m_HardFeatures[i] == true || m_SoftFeatures[i] == true)
+    if(m_HardFeatures[i] || m_SoftFeatures[i])
     {
       group_flaggedfeatures(i);
     }
@@ -483,7 +489,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     QVariant v;
     v.setValue(tempPath);
     bool propWasSet = find_Neighbor->setProperty("CellFeatureAttributeMatrixPath", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("CellFeatureAttributeMatrixPath").arg(filtName);
       setErrorCondition(-109872);
@@ -493,7 +499,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCellParentIdsArrayName() );
     v.setValue(tempPath);
     propWasSet = find_Neighbor->setProperty("FeatureIdsArrayPath", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("FeatureIdsArrayPath").arg(filtName);
       setErrorCondition(-109873);
@@ -503,7 +509,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     QString tempString("BoundaryCells");
     v.setValue(tempString);
     propWasSet = find_Neighbor->setProperty("BoundaryCellsArrayName", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("BoundaryCellsArrayName").arg(filtName);
       setErrorCondition(-109874);
@@ -513,7 +519,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     tempString = "SurfaceFeatures";
     v.setValue(tempString);
     propWasSet = find_Neighbor->setProperty("SurfaceFeaturesArrayName", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("SurfaceFeaturesArrayName").arg(filtName);
       setErrorCondition(-109875);
@@ -522,7 +528,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
     v.setValue(false);
     propWasSet = find_Neighbor->setProperty("StoreBoundaryCells", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("StoreBoundaryCellsArrayName").arg(filtName);
       setErrorCondition(-109876);
@@ -531,7 +537,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
 
     v.setValue(false);
     propWasSet = find_Neighbor->setProperty("StoreSurfaceFeatures", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("StoreSurfaceFeaturesArrayName").arg(filtName);
       setErrorCondition(-109877);
@@ -541,7 +547,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     tempString = "ParentNumNeighbors";
     v.setValue(tempString);
     propWasSet = find_Neighbor->setProperty("NumNeighborsArrayName", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentNumNeighbors").arg(filtName);
       setErrorCondition(-109878);
@@ -551,7 +557,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     tempString = "ParentNeighborList";
     v.setValue(tempString);
     propWasSet = find_Neighbor->setProperty("NeighborListArrayName", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentNeighborList").arg(filtName);
       setErrorCondition(-109879);
@@ -561,7 +567,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     tempString = "ParentSharedSurfaceAreaList";
     v.setValue(tempString);
     propWasSet = find_Neighbor->setProperty("SharedSurfaceAreaListArrayName", v);
-    if(false == propWasSet)
+    if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentSharedSurfaceAreaList").arg(filtName);
       setErrorCondition(-109880);
@@ -577,10 +583,13 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   for (size_t i = 1; i < totalFeatures; ++i)
   {
     // only proceed if it's either an MTR or alpha glob
-    if (m_FeaturePhases[i] == m_MTRPhase || (m_FeaturePhases[i] == m_AlphaGlobPhase && m_DoNotAssumeInitiatorPresence == true))
+    if(m_FeaturePhases[i] == m_MTRPhase || (m_FeaturePhases[i] == m_AlphaGlobPhase && m_DoNotAssumeInitiatorPresence))
     {
       // Determine if it's a hard-soft pair only if there the current ID is either a hardfeature, initiator or soft feature
-      if (m_Initiators[i] == true || m_HardFeatures[i] == true || m_SoftFeatures[i] == true) { assign_HardSoftGroups(i); }
+      if(m_Initiators[i] || m_HardFeatures[i] || m_SoftFeatures[i])
+      {
+        assign_HardSoftGroups(i);
+      }
     }
   }
 
@@ -618,8 +627,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   {
     subsurfaceFlag = true;
   }
-  if (subsurfaceFlag == true) { return true; }
-  else { return false; }
+  return subsurfaceFlag;
 }
 
 // -----------------------------------------------------------------------------
@@ -675,8 +683,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_hardfeatures(int index)
       }
     }
   }
-  if (hardfeatureFlag == true) { return true; }
-  else { return false; }
+  return hardfeatureFlag;
 }
 
 // -----------------------------------------------------------------------------
@@ -740,7 +747,7 @@ void TiDwellFatigueCrystallographicAnalysis::group_flaggedfeatures(int index)
 
   for (int j = 0; j < neighborlist[index].size(); ++j)
   {
-    if (m_FeatureParentIds[index] != neighborlist[index][j] && ((m_HardFeatures[index] == true && m_HardFeatures[neighborlist[index][j]] == true) || (m_SoftFeatures[index] == true && m_SoftFeatures[neighborlist[index][j]])))
+    if(m_FeatureParentIds[index] != neighborlist[index][j] && ((m_HardFeatures[index] && m_HardFeatures[neighborlist[index][j]]) || (m_SoftFeatures[index] && m_SoftFeatures[neighborlist[index][j]])))
     {
       if (m_FeatureParentIds[neighborlist[index][j]] == -1)
       {
@@ -770,39 +777,39 @@ void TiDwellFatigueCrystallographicAnalysis::assign_HardSoftGroups(int index)
 
   for (int j = 0; j < parentneighborlist[index].size(); ++j)
   {
-    if ((m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase) || m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
+    if((m_DoNotAssumeInitiatorPresence && m_FeaturePhases[index] == m_AlphaGlobPhase) || m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
     {
-      if (m_Initiators[index] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[index] == m_AlphaGlobPhase)
+      if(m_Initiators[index] && !initiatorFlag && m_DoNotAssumeInitiatorPresence && m_FeaturePhases[index] == m_AlphaGlobPhase)
       {
         initiatorFlag = true;
       }
-      if (m_Initiators[parentneighborlist[index][j]] == true && initiatorFlag == false && m_DoNotAssumeInitiatorPresence == true && m_FeaturePhases[parentneighborlist[index][j]] == m_AlphaGlobPhase)
+      if(m_Initiators[parentneighborlist[index][j]] && !initiatorFlag && m_DoNotAssumeInitiatorPresence && m_FeaturePhases[parentneighborlist[index][j]] == m_AlphaGlobPhase)
       {
         initiatorFlag = true;
       }
-      if (m_HardFeatures[index] == true && hardfeatureFlag == false && m_FeaturePhases[index] == m_MTRPhase)
+      if(m_HardFeatures[index] && !hardfeatureFlag && m_FeaturePhases[index] == m_MTRPhase)
       {
         hardfeatureFlag = true;
         hardfeatureIndex = index;
       }
-      if (m_HardFeatures[parentneighborlist[index][j]] == true && hardfeatureFlag == false && m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
+      if(m_HardFeatures[parentneighborlist[index][j]] && !hardfeatureFlag && m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
       {
         hardfeatureFlag = true;
         hardfeatureIndex = parentneighborlist[index][j];
       }
-      if (m_SoftFeatures[index] == true && softfeatureFlag == false && m_FeaturePhases[index] == m_MTRPhase)
+      if(m_SoftFeatures[index] && !softfeatureFlag && m_FeaturePhases[index] == m_MTRPhase)
       {
         softfeatureFlag = true;
         softfeatureIndex = index;
       }
-      if (m_SoftFeatures[parentneighborlist[index][j]] == true && softfeatureFlag == false && m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
+      if(m_SoftFeatures[parentneighborlist[index][j]] && !softfeatureFlag && m_FeaturePhases[parentneighborlist[index][j]] == m_MTRPhase)
       {
         softfeatureFlag = true;
         softfeatureIndex = parentneighborlist[index][j];
       }
       // only flag as a hard-soft pair if there's a neighboring group of initiator - hardfeature - soft feature and either the current index of the hardfeature or
       // soft feature have not already been flagged as a bad acting pair
-      if ((m_DoNotAssumeInitiatorPresence == false || initiatorFlag == true) && hardfeatureFlag == true && softfeatureFlag == true && (m_HardSoftGroups[hardfeatureIndex] == false || m_HardSoftGroups[softfeatureIndex] == false))
+      if((!m_DoNotAssumeInitiatorPresence || initiatorFlag) && hardfeatureFlag && softfeatureFlag && (!m_HardSoftGroups[hardfeatureIndex] || !m_HardSoftGroups[softfeatureIndex]))
       {
         m_HardSoftGroups[hardfeatureIndex] = true;
         m_HardSoftGroups[softfeatureIndex] = true;
@@ -841,7 +848,7 @@ float TiDwellFatigueCrystallographicAnalysis::find_angle(float g[3][3], float pl
 AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstance(bool copyFilterParameters) const
 {
   TiDwellFatigueCrystallographicAnalysis::Pointer filter = TiDwellFatigueCrystallographicAnalysis::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

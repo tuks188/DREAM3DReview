@@ -5,10 +5,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TransformationPhaseGuiPlugin::TransformationPhaseGuiPlugin()
-: TransformationPhasePlugin()
-{
-}
+TransformationPhaseGuiPlugin::TransformationPhaseGuiPlugin() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -549,14 +549,14 @@ void InsertTransformationPhases::insertTransformationPhases()
       // set the grain Id to the parent Id for if/when the features get uniquely renumbered
       m_FeatureParentIds[curFeature] = static_cast<int32_t>(curFeature);
 
-      if (m_DefineHabitPlane == true)
+      if(m_DefineHabitPlane)
       {
         crystalHabitPlane[0] = m_NormalizedTransformationPhaseHabitPlane.x;
         crystalHabitPlane[1] = m_NormalizedTransformationPhaseHabitPlane.y;
         crystalHabitPlane[2] = m_NormalizedTransformationPhaseHabitPlane.z;
       }
       // pick a habit plane variant if user desires
-      if (m_UseAllVariants == true)
+      if(m_UseAllVariants)
       {
         random = static_cast<float>(rg.genrand_res53());
         for (int i = 0; i < 3; ++i)
@@ -705,8 +705,7 @@ void InsertTransformationPhases::insertTransformationPhases()
               --i;
               break;
             }
-            else
-            {
+
               // set the origin of the plane
               d = -sampleHabitPlane[0] * (m_Centroids[3 * curFeature + 0] + shifts[i])
                   - sampleHabitPlane[1] * (m_Centroids[3 * curFeature + 1] + shifts[i])
@@ -716,7 +715,7 @@ void InsertTransformationPhases::insertTransformationPhases()
               //int stop = 0;
               // change an isthmus transformation phase to a peninsula transformation phase
               random = static_cast<float>(rg.genrand_res53());
-              if (createdTransformationPhase == true)
+              if(createdTransformationPhase)
               {
                 if(random < m_PeninsulaFrac)
                 {
@@ -730,7 +729,6 @@ void InsertTransformationPhases::insertTransformationPhases()
                 totalFeatures = transferAttributes(totalFeatures, q2, e, curFeature);
                 ++m_NumFeaturesPerParent[curFeature];
               }
-            }
           }
           // try 10 times to insert 2+ transformation phases, if it can't, the grain is probably too small
           if (attempt == 10) { break; }
@@ -873,8 +871,7 @@ bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature,
       }
     }
   }
-  if (flag == true) { return true; }
-  else { return false; }
+  return flag;
 }
 
 // -----------------------------------------------------------------------------
@@ -999,7 +996,7 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
   * Origin
   */
   InsertTransformationPhases::Pointer filter = InsertTransformationPhases::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
