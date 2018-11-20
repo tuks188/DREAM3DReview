@@ -100,19 +100,6 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
 , m_NeighborListArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::NeighborList)
 , m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids)
 , m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
-, m_SelectedFeatures(nullptr)
-, m_Initiators(nullptr)
-, m_HardFeatures(nullptr)
-, m_SoftFeatures(nullptr)
-, m_HardSoftGroups(nullptr)
-, m_FeatureIds(nullptr)
-, m_CellParentIds(nullptr)
-, m_FeatureParentIds(nullptr)
-, m_Active(nullptr)
-, m_FeatureEulerAngles(nullptr)
-, m_FeaturePhases(nullptr)
-, m_Centroids(nullptr)
-, m_CrystalStructures(nullptr)
 {
   m_StressAxis.x = 0.0f;
   m_StressAxis.y = 0.0f;
@@ -286,7 +273,6 @@ void TiDwellFatigueCrystallographicAnalysis::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------

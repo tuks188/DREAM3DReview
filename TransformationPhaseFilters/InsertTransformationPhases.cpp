@@ -320,7 +320,6 @@ void InsertTransformationPhases::updateVolEnsembleInstancePointers()
 // -----------------------------------------------------------------------------
 void InsertTransformationPhases::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
