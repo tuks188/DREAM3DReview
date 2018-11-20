@@ -265,18 +265,6 @@ TesselateFarFieldGrains::TesselateFarFieldGrains()
 , m_EquivalentDiametersArrayName(SIMPL::FeatureData::EquivalentDiameters)
 , m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures)
 , m_MaskArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask)
-, m_FeatureIds(nullptr)
-, m_CellPhases(nullptr)
-, m_Mask(nullptr)
-, m_FeaturePhases(nullptr)
-, m_SlabId(nullptr)
-, m_Centroids(nullptr)
-, m_Volumes(nullptr)
-, m_AxisLengths(nullptr)
-, m_AxisEulerAngles(nullptr)
-, m_Omega3s(nullptr)
-, m_EquivalentDiameters(nullptr)
-, m_CrystalStructures(nullptr)
 {
   m_EllipsoidOps = EllipsoidOps::New();
 
