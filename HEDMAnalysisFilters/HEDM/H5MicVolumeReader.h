@@ -61,7 +61,7 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
     EBSD_SHARED_POINTERS(H5MicVolumeReader)
     EBSD_STATIC_NEW_SUPERCLASS(H5EbsdVolumeReader, H5MicVolumeReader)
 
-    virtual ~H5MicVolumeReader();
+    ~H5MicVolumeReader() override;
 
 
     EBSD_POINTER_PROPERTY(Euler1, Euler1, float)
@@ -118,11 +118,6 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
   private:
     QVector<MicPhase::Pointer> m_Phases;
 
-  public:
-    H5MicVolumeReader(const H5MicVolumeReader&) = delete;            // Copy Constructor Not Implemented
-    H5MicVolumeReader(H5MicVolumeReader&&) = delete;                 // Move Constructor Not Implemented
-    H5MicVolumeReader& operator=(const H5MicVolumeReader&) = delete; // Copy Assignment Not Implemented
-    H5MicVolumeReader& operator=(H5MicVolumeReader&&) = delete;      // Move Assignment Not Implemented
 
     /**
      * @brief Allocats a contiguous chunk of memory to store values from the .Mic file
@@ -163,6 +158,11 @@ class H5MicVolumeReader : public H5EbsdVolumeReader
       }
     }
 
+  public:
+    H5MicVolumeReader(const H5MicVolumeReader&) = delete;            // Copy Constructor Not Implemented
+    H5MicVolumeReader(H5MicVolumeReader&&) = delete;                 // Move Constructor Not Implemented
+    H5MicVolumeReader& operator=(const H5MicVolumeReader&) = delete; // Copy Assignment Not Implemented
+    H5MicVolumeReader& operator=(H5MicVolumeReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

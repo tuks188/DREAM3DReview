@@ -70,7 +70,7 @@ class H5MicImporter : public EbsdImporter
     EBSD_TYPE_MACRO(H5MicImporter)
     EBSD_STATIC_NEW_SUPERCLASS(EbsdImporter, H5MicImporter)
 
-    virtual ~H5MicImporter();
+    ~H5MicImporter() override;
 
     /**
      * @brief Imports a specific file into the HDF5 file
@@ -94,27 +94,27 @@ class H5MicImporter : public EbsdImporter
      * @param x Number of X Voxels (out)
      * @param y Number of Y Voxels (out)
      */
-    virtual void getDims(int64_t& x, int64_t& y);
+    void getDims(int64_t& x, int64_t& y) override;
 
     /**
      * @brief Returns the x and y resolution of the voxels
      * @param x The x resolution (out)
      * @param y The y resolution (out)
      */
-    virtual void getResolution(float& x, float& y);
+    void getResolution(float& x, float& y) override;
 
     /**
      * @brief Return the number of slices imported
      * @return
      */
-    virtual int numberOfSlicesImported();
+    int numberOfSlicesImported() override;
 
     /**
      * @brief This function sets the version of the H5Ebsd file that will be written.
      * @param version
      * @return
      */
-    virtual void setFileVersion(uint32_t version);
+    void setFileVersion(uint32_t version) override;
 
   protected:
     H5MicImporter();

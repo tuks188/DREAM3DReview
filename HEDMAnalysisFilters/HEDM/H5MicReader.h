@@ -103,7 +103,7 @@ class H5MicReader : public MicReader
     EBSD_SHARED_POINTERS(H5MicReader)
     EBSD_STATIC_NEW_MACRO(H5MicReader)
     EBSD_TYPE_MACRO(H5MicReader)
-    virtual ~H5MicReader();
+    ~H5MicReader() override;
 
     /**
      * @brief The HDF5 path to find the EBSD data
@@ -114,7 +114,7 @@ class H5MicReader : public MicReader
      * @brief Reads the file
      * @return error condition
      */
-    virtual int readFile();
+    int readFile() override;
 
     /**
      * @brief Reads the header section of the file
@@ -127,7 +127,7 @@ class H5MicReader : public MicReader
     * @brief Reads ONLY the header portion of the HEDM .Mic file
     * @return 1 on success
     */
-    virtual int readHeaderOnly();
+    int readHeaderOnly() override;
 
     /**
      * @brief Returns a vector of MicPhase objects corresponding to the phases
@@ -139,14 +139,14 @@ class H5MicReader : public MicReader
      * @brief Sets the names of the arrays to read out of the file
      * @param names
      */
-    virtual void setArraysToRead(QSet<QString> names);
+    void setArraysToRead(QSet<QString> names);
 
     /**
      * @brief Over rides the setArraysToReads to tell the reader to load ALL the data from the HDF5 file. If the
      * ArrayNames to read is empty and this is true then all arrays will be read.
      * @param b
      */
-    virtual void readAllArrays(bool b);
+    void readAllArrays(bool b);
 
   protected:
     H5MicReader();

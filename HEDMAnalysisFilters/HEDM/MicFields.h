@@ -57,9 +57,9 @@ class MicFields : public AbstractEbsdFields
 {
   public:
     MicFields();
-    virtual ~MicFields();
+    ~MicFields() override;
 
-    virtual QVector<QString> getFieldNames();
+    QVector<QString> getFieldNames() override;
 
     template<typename T>
     T getFilterFeatures()
