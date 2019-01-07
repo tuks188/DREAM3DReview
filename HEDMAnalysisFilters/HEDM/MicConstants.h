@@ -59,6 +59,18 @@
 
   namespace Mic
   {
+
+  namespace H5Mic
+  {
+  const QString OriginalHeader("OriginalHeader");
+  const QString Data("Data");
+  const QString Phases("Phases");
+  const QString Header("Header");
+
+  const QString FileVersionStr("FileVersion");
+  const unsigned int FileVersion = 5;
+  } // namespace H5Mic
+
     const QString Manufacturer("HEDM");
 
     DECLARE_STRING_CONST(Cubic)

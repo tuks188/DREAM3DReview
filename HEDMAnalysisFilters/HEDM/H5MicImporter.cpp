@@ -160,7 +160,7 @@ H5MicImporter::H5MicImporter()
 , yDim(0)
 , xRes(0)
 , yRes(0)
-, m_FileVersion(Ebsd::H5::FileVersion)
+, m_FileVersion(Mic::H5Mic::FileVersion)
 {
 }
 
@@ -227,11 +227,11 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
     H5T_class_t type_class;
     size_t type_size = 0;
     hid_t attr_type = -1;
-    err = QH5Lite::getAttributeInfo(fileId, "/", Ebsd::H5::FileVersionStr, dims, type_class, type_size, attr_type);
+    err = QH5Lite::getAttributeInfo(fileId, "/", Mic::H5Mic::FileVersionStr, dims, type_class, type_size, attr_type);
     if(attr_type < 0) // The attr_type variable was never set which means the attribute was NOT there
     {
       // The file version does not exist so write it to the file
-      err = QH5Lite::writeScalarAttribute(fileId, "/", Ebsd::H5::FileVersionStr, m_FileVersion);
+      err = QH5Lite::writeScalarAttribute(fileId, "/", Mic::H5Mic::FileVersionStr, m_FileVersion);
     }
     else
     {
@@ -251,7 +251,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
     return -1;
   }
 
-  hid_t gid = QH5Utilities::createGroup(MicGroup, Ebsd::H5::Header);
+  hid_t gid = QH5Utilities::createGroup(MicGroup, Mic::H5Mic::Header);
   if(gid < 0)
   {
     QString ss = QObject::tr("H5MicImporter Error: The 'Header' Group for Z index %1 could not be created."
@@ -264,7 +264,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
     return -1;
   }
 
-  hid_t phasesGid = QH5Utilities::createGroup(gid, Ebsd::H5::Phases);
+  hid_t phasesGid = QH5Utilities::createGroup(gid, Mic::H5Mic::Phases);
   err = writePhaseData(reader, phasesGid);
   // Close this group
   err = H5Gclose(phasesGid);
@@ -335,13 +335,13 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
 
                                                                                                                                                       QString micCompleteHeader =
                                                                                                                                                           reader.getOriginalHeader();
-  err = QH5Lite::writeStringDataset(gid, Ebsd::H5::OriginalHeader, micCompleteHeader);
+  err = QH5Lite::writeStringDataset(gid, Mic::H5Mic::OriginalHeader, micCompleteHeader);
 
   // Close the "Header" group
   err = H5Gclose(gid);
 
   // Create the "Data" group
-  gid = QH5Utilities::createGroup(MicGroup, Ebsd::H5::Data);
+  gid = QH5Utilities::createGroup(MicGroup, Mic::H5Mic::Data);
   if(gid < 0)
   {
     QString ss = QObject::tr("H5MicImporter Error: The 'Data' Group for Z index %1 could not be created."
