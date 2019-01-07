@@ -190,15 +190,15 @@ void MicReader::initPointers(size_t numElements)
 // -----------------------------------------------------------------------------
 void MicReader::deletePointers()
 {
-  this->deallocateArrayData<float>(m_Euler1);
-  this->deallocateArrayData<float>(m_Euler2);
-  this->deallocateArrayData<float>(m_Euler3);
-  this->deallocateArrayData<float>(m_Conf);
-  this->deallocateArrayData<int>(m_Phase);
-  this->deallocateArrayData<int>(m_Level);
-  this->deallocateArrayData<int>(m_Up);
-  this->deallocateArrayData<float>(m_X);
-  this->deallocateArrayData<float>(m_Y);
+  deallocateArrayData<float>(m_Euler1);
+  deallocateArrayData<float>(m_Euler2);
+  deallocateArrayData<float>(m_Euler3);
+  deallocateArrayData<float>(m_Conf);
+  deallocateArrayData<int>(m_Phase);
+  deallocateArrayData<int>(m_Level);
+  deallocateArrayData<int>(m_Up);
+  deallocateArrayData<float>(m_X);
+  deallocateArrayData<float>(m_Y);
 }
 
 // -----------------------------------------------------------------------------
@@ -457,14 +457,6 @@ int MicReader::readMicFile()
   buf = in.readLine();
   origEdgeLength = buf.toFloat(&ok);
 
-  // Initialize our pointers to 1 element
-  initPointers(1);
-  if(nullptr == m_Euler1 || nullptr == m_Euler2 || nullptr == m_Euler3 || nullptr == m_Conf || nullptr == m_Phase || nullptr == m_Level || m_X == nullptr || m_Y == nullptr)
-  {
-    qDebug() << "Internal pointers were nullptr at " __FILE__ << "(" << __LINE__ << ")";
-    return -1;
-  }
-
   // Read the first line of actual data which we then derive the actual number of data rows
   buf = in.readLine();
   parseDataLine(buf, 0);
@@ -475,6 +467,7 @@ int MicReader::readMicFile()
 
   // Reinitialize the pointers that hold the data to the proper size
   initPointers(totalPossibleDataRows);
+
   // Reparse the first data line to get those values into the new arrays
   parseDataLine(buf, 0);
 

@@ -101,7 +101,7 @@ void MicPhase::parseZandCoordinates(QByteArray& data)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int MicPhase::determineCrystalStructure()
+unsigned int MicPhase::determineLaueGroup()
 {
   unsigned int crystal_structure;
   if(m_Symmetry.compare(Mic::Cubic) == 0)

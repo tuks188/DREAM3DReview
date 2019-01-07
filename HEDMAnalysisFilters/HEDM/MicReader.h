@@ -172,15 +172,6 @@ class MicReader : public EbsdReader
     */
     int readHeaderOnly() override;
 
-    /** @brief Allocates the proper amount of memory (after reading the header portion of the file)
-    * and then splats '0' across all the bytes of the memory allocation
-    */
-    void initPointers(size_t numElements) override;
-
-    /** @brief 'free's the allocated memory and sets the pointer to nullptr
-    */
-    void deletePointers() override;
-
     int getXDimension() override;
     int getYDimension() override;
     void setXDimension(int xD) override;
@@ -189,7 +180,9 @@ class MicReader : public EbsdReader
     float getYStep();
 
   protected:
-
+    /** @brief 'free's the allocated memory and sets the pointer to nullptr
+     */
+    void deletePointers();
 
   private:
     MicPhase::Pointer   m_CurrentPhase;
@@ -212,6 +205,12 @@ class MicReader : public EbsdReader
       * @param line The line of data to parse
       */
     void parseDataLine(QByteArray& line, size_t i);
+
+    /**
+     * @brief initPointers
+     * @param numElements
+     */
+    void initPointers(size_t numElements);
 
   public:
     MicReader(const MicReader&) = delete;            // Copy Constructor Not Implemented

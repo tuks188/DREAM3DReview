@@ -97,7 +97,7 @@ ReadMicData::ReadMicData()
 , m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures)
 , m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants)
 , m_RefFrameZDir(SIMPL::RefFrameZDir::UnknownRefFrameZDirection)
-, m_Manufacturer(Ebsd::UnknownManufacturer)
+, m_Manufacturer(Ebsd::OEM::Unknown)
 , d_ptr(new ReadMicDataPrivate(this))
 {
 }
@@ -293,7 +293,7 @@ void ReadMicData::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if(m_InputFile.isEmpty() && m_Manufacturer == Ebsd::UnknownManufacturer)
+  if(m_InputFile.isEmpty() && m_Manufacturer == Ebsd::OEM::Unknown)
   {
     QString ss = QObject::tr("The input file must be set for property %1").arg("InputFile");
     setErrorCondition(-1);
@@ -623,7 +623,7 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   for(size_t i = 0; i < phases.size(); i++)
   {
     int phaseID = phases[i]->getPhaseIndex();
-    crystalStructures->setValue(phaseID, phases[i]->determineCrystalStructure());
+    crystalStructures->setValue(phaseID, phases[i]->determineLaueGroup());
     materialNames->setValue(phaseID, phases[i]->getMaterialName());
     QVector<float> lc = phases[i]->getLatticeConstants();
 

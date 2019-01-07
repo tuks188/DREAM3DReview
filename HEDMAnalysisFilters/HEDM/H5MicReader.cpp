@@ -155,7 +155,7 @@ int H5MicReader::readHeaderOnly()
 int H5MicReader::readHeader(hid_t parId)
 {
   int err = -1;
-  hid_t gid = H5Gopen(parId, Ebsd::H5::Header.toLatin1().data(), H5P_DEFAULT);
+  hid_t gid = H5Gopen(parId, Mic::H5Mic::Header.toLatin1().data(), H5P_DEFAULT);
   if(gid < 0)
   {
     QString ss = QObject::tr("H5MicReader Error: Could not open 'Header' Group").arg(m_HDF5Path);
@@ -169,7 +169,7 @@ int H5MicReader::readHeader(hid_t parId)
   READ_EBSD_HEADER_DATA("H5MicReader", MicHeaderEntry<int>, int, XDim, Mic::XDim, gid)
   READ_EBSD_HEADER_DATA("H5MicReader", MicHeaderEntry<int>, int, YDim, Mic::YDim, gid)
 
-  hid_t phasesGid = H5Gopen(gid, Ebsd::H5::Phases.toLatin1().data(), H5P_DEFAULT);
+  hid_t phasesGid = H5Gopen(gid, Mic::H5Mic::Phases.toLatin1().data(), H5P_DEFAULT);
   if(phasesGid < 0)
   {
     std::cout << "H5MicReader Error: Could not open Header/Phases HDF Group. Is this an older file?" << std::endl;
@@ -202,7 +202,7 @@ int H5MicReader::readHeader(hid_t parId)
   }
 
   QString completeHeader;
-  err = QH5Lite::readStringDataset(gid, Ebsd::H5::OriginalHeader, completeHeader);
+  err = QH5Lite::readStringDataset(gid, Mic::H5Mic::OriginalHeader, completeHeader);
   setOriginalHeader(completeHeader);
   err = H5Gclose(phasesGid);
   err = H5Gclose(gid);
@@ -243,7 +243,7 @@ int H5MicReader::readData(hid_t parId)
 
   totalDataRows = xDim * yDim;
 
-  hid_t gid = H5Gopen(parId, Ebsd::H5::Data.toLatin1().data(), H5P_DEFAULT);
+  hid_t gid = H5Gopen(parId, Mic::H5Mic::Data.toLatin1().data(), H5P_DEFAULT);
   if(gid < 0)
   {
     std::cout << "H5MicReader Error: Could not open 'Data' Group" << std::endl;
