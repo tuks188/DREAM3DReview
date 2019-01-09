@@ -422,9 +422,6 @@ void ReadMicData::execute()
       setInputFile_Cache(m_InputFile);
     }
   }
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
