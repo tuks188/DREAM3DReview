@@ -568,7 +568,6 @@ void PottsModel::execute()
     iter++;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

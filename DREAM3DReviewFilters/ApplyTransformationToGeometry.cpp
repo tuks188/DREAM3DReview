@@ -400,7 +400,6 @@ void ApplyTransformationToGeometry::execute()
     applyTransformation();
   
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

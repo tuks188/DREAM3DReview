@@ -310,7 +310,6 @@ void KMeans::execute()
     EXECUTE_TEMPLATE(this, KMeansTemplate, m_InDataPtr.lock(), this, m_InDataPtr.lock(), m_MeansArrayPtr.lock(), tmpMask, m_InitClusters, m_FeatureIdsPtr.lock(), m_DistanceMetric);
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

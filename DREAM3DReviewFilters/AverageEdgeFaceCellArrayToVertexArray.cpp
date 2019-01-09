@@ -322,7 +322,6 @@ void AverageEdgeFaceCellArrayToVertexArray::execute()
 
   EXECUTE_FUNCTION_TEMPLATE(this, findCellAverage, m_InCellArrayPtr.lock(), this, m_InCellArrayPtr.lock(), m_AverageVertexArrayPtr.lock(), m)
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

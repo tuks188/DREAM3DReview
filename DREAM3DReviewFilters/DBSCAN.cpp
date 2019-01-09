@@ -320,7 +320,6 @@ void DBSCAN::execute()
   QVector<size_t> tDims(1, maxCluster + 1);
   featAttrMat->resizeAttributeArrays(tDims);
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

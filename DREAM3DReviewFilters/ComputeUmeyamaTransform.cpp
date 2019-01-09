@@ -307,7 +307,6 @@ void ComputeUmeyamaTransform::execute()
     m_TransformationMatrix[i] = umeyamaArray[i];
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

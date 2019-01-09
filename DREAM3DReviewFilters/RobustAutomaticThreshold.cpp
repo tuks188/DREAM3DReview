@@ -216,7 +216,6 @@ void RobustAutomaticThreshold::execute()
 
   EXECUTE_FUNCTION_TEMPLATE_NO_BOOL(this, findThreshold, m_InputArrayPtr.lock(), m_InputArrayPtr.lock(), m_GradientMagnitudePtr.lock(), m_FeatureIdsPtr.lock());
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

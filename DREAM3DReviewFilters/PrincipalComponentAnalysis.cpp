@@ -376,7 +376,6 @@ void PrincipalComponentAnalysis::execute()
     }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

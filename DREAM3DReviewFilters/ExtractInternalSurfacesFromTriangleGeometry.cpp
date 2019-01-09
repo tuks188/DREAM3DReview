@@ -445,7 +445,6 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
     internalTriangles[3 * i + 2] = tmpTris[i][2];
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

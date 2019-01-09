@@ -228,7 +228,6 @@ void Silhouette::execute()
     EXECUTE_TEMPLATE(this, SilhouetteTemplate, m_InDataPtr.lock(), this, m_InDataPtr.lock(), m_SilhouetteArrayPtr.lock(), tmpMask, uniqueIds.size(), m_FeatureIdsPtr.lock(), m_DistanceMetric)
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

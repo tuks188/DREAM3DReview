@@ -259,7 +259,6 @@ void FindElementCentroids::execute()
     std::memcpy(vertex, m_CellCentroidsArray, sizeof(float) * numElements * 3);
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

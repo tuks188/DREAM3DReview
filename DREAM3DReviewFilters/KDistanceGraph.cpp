@@ -206,7 +206,6 @@ void KDistanceGraph::execute()
     EXECUTE_TEMPLATE(this, KDistanceTemplate, m_InDataPtr.lock(), this, m_InDataPtr.lock(), m_KDistanceArrayPtr.lock(), tmpMask, m_MinDist, m_DistanceMetric)
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

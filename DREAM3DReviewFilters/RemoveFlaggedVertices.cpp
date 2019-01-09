@@ -292,7 +292,6 @@ void RemoveFlaggedVertices::execute()
     }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

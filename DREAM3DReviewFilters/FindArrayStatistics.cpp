@@ -873,7 +873,6 @@ void FindArrayStatistics::execute()
     }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

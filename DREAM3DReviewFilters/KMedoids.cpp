@@ -306,7 +306,6 @@ void KMedoids::execute()
     EXECUTE_TEMPLATE(this, KMedoidsTemplate, m_InDataPtr.lock(), this, m_InDataPtr.lock(), m_MedoidsArrayPtr.lock(), tmpMask, m_InitClusters, m_FeatureIdsPtr.lock(), m_DistanceMetric)
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

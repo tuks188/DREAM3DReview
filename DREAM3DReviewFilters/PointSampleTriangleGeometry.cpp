@@ -451,7 +451,6 @@ void PointSampleTriangleGeometry::execute()
     counter++;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
