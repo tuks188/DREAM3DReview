@@ -276,7 +276,6 @@ void FFTHDFWriterFilter::execute()
 
   //       dcaGid = -1;
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 //--------------------------------------------------------------

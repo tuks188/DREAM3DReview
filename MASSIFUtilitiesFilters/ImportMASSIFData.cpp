@@ -290,7 +290,6 @@ void ImportMASSIFData::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
