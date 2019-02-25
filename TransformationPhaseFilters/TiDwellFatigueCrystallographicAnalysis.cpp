@@ -116,7 +116,7 @@ TiDwellFatigueCrystallographicAnalysis::~TiDwellFatigueCrystallographicAnalysis(
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   QStringList linkedProps1("AlphaGlobPhase");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Alpha Glob Phase Present", AlphaGlobPhasePresent, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis, linkedProps1));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Alpha Glob Phase Number", AlphaGlobPhase, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));

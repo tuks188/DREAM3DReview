@@ -128,7 +128,7 @@ InsertTransformationPhases::~InsertTransformationPhases() = default;
 // -----------------------------------------------------------------------------
 void InsertTransformationPhases::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Parent Phase", ParentPhase, FilterParameter::Parameter, InsertTransformationPhases));
   {
     ChoiceFilterParameter::Pointer option = ChoiceFilterParameter::New();

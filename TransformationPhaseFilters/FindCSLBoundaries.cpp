@@ -220,7 +220,7 @@ FindCSLBoundaries::~FindCSLBoundaries() = default;
 // -----------------------------------------------------------------------------
 void FindCSLBoundaries::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_FLOAT_FP("CSL (Sigma)", CSL, FilterParameter::Parameter, FindCSLBoundaries));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Axis Tolerance (Degrees)", AxisTolerance, FilterParameter::Parameter, FindCSLBoundaries));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Angle Tolerance (Degrees)", AngleTolerance, FilterParameter::Parameter, FindCSLBoundaries));
