@@ -293,7 +293,7 @@ TesselateFarFieldGrains::~TesselateFarFieldGrains() = default;
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_FILELISTINFO_FP("Feature Input File List", FeatureInputFileListInfo, FilterParameter::Parameter, TesselateFarFieldGrains));
 

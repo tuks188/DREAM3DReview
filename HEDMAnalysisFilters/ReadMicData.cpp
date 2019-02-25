@@ -119,7 +119,7 @@ SIMPL_PIMPL_PROPERTY_DEF(ReadMicData, QDateTime, TimeStamp_Cache)
 // -----------------------------------------------------------------------------
 void ReadMicData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, ReadMicData, "*.mic"));
   parameters.push_back(SIMPL_NEW_STRING_FP("Data Container", DataContainerName, FilterParameter::CreatedArray, ReadMicData));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
