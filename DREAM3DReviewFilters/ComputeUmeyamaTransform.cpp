@@ -75,7 +75,7 @@ ComputeUmeyamaTransform::~ComputeUmeyamaTransform()
 // -----------------------------------------------------------------------------
 void ComputeUmeyamaTransform::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_BOOL_FP("Use Scaling", UseScaling, FilterParameter::Parameter, ComputeUmeyamaTransform));
   DataContainerSelectionFilterParameter::RequirementType dcReq;
   dcReq.dcGeometryTypes = {IGeometry::Type::Vertex, IGeometry::Type::Edge, IGeometry::Type::Triangle, IGeometry::Type::Quad, IGeometry::Type::Tetrahedral};

@@ -70,7 +70,7 @@ FindElementCentroids::~FindElementCentroids()
 // -----------------------------------------------------------------------------
 void FindElementCentroids::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   QStringList linkedProps;
   linkedProps << "NewDataContainerName"
               << "VertexAttributeMatrixName";

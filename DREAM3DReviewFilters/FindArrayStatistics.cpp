@@ -104,7 +104,7 @@ FindArrayStatistics::~FindArrayStatistics()
 // -----------------------------------------------------------------------------
 void FindArrayStatistics::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SeparatorFilterParameter::New("Statistics Options", FilterParameter::Parameter));
   QStringList linkedProps("LengthArrayName");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Find Length", FindLength, FilterParameter::Parameter, FindArrayStatistics, linkedProps));

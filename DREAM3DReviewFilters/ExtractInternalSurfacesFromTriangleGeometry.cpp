@@ -84,7 +84,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::initialize()
 // -----------------------------------------------------------------------------
 void ExtractInternalSurfacesFromTriangleGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   DataContainerSelectionFilterParameter::RequirementType dcsReq;
   IGeometry::Types geomTypes = {IGeometry::Type::Triangle};
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Triangle Data Container", TriangleDataContainerName, FilterParameter::RequiredArray, ExtractInternalSurfacesFromTriangleGeometry, dcsReq));

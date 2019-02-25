@@ -88,7 +88,7 @@ ApplyTransformationToGeometry::~ApplyTransformationToGeometry()
 // -----------------------------------------------------------------------------
 void ApplyTransformationToGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Transformation Type");

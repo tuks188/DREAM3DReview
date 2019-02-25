@@ -75,7 +75,7 @@ Silhouette::~Silhouette()
 // -----------------------------------------------------------------------------
 void Silhouette::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Distance Metric");

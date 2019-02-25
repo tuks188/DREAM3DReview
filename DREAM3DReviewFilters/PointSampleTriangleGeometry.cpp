@@ -88,7 +88,7 @@ PointSampleTriangleGeometry::~PointSampleTriangleGeometry()
 // -----------------------------------------------------------------------------
 void PointSampleTriangleGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Source for Number of Samples");

@@ -80,7 +80,7 @@ void RemoveFlaggedVertices::initialize()
 // -----------------------------------------------------------------------------
 void RemoveFlaggedVertices::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   DataContainerSelectionFilterParameter::RequirementType dcsReq;
   IGeometry::Types geomTypes = {IGeometry::Type::Vertex};
   dcsReq.dcGeometryTypes = geomTypes;

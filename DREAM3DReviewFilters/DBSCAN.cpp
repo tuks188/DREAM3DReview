@@ -76,7 +76,7 @@ DBSCAN::~DBSCAN()
 // -----------------------------------------------------------------------------
 void DBSCAN::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Epsilon", Epsilon, FilterParameter::Parameter, DBSCAN));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Minimum Number of Points", MinPnts, FilterParameter::Parameter, DBSCAN));
   {

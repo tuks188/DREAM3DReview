@@ -67,7 +67,7 @@ RobustAutomaticThreshold::~RobustAutomaticThreshold()
 // -----------------------------------------------------------------------------
 void RobustAutomaticThreshold::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Threshold", InputArrayPath, FilterParameter::RequiredArray, RobustAutomaticThreshold, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Float, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);

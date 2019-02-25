@@ -75,7 +75,7 @@ KMeans::~KMeans()
 // -----------------------------------------------------------------------------
 void KMeans::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Clusters", InitClusters, FilterParameter::Parameter, KMeans));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();

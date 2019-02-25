@@ -71,7 +71,7 @@ KDistanceGraph::~KDistanceGraph() = default;
 // -----------------------------------------------------------------------------
 void KDistanceGraph::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_INTEGER_FP("K<sup>th</sup> Nearest Neighbor", MinDist, FilterParameter::Parameter, KDistanceGraph));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();

@@ -84,7 +84,7 @@ NormalizeArrays::~NormalizeArrays()
 // -----------------------------------------------------------------------------
 void NormalizeArrays::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Operation Type");

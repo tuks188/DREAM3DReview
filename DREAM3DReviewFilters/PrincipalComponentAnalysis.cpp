@@ -79,7 +79,7 @@ PrincipalComponentAnalysis::~PrincipalComponentAnalysis()
 // -----------------------------------------------------------------------------
 void PrincipalComponentAnalysis::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   MultiDataArraySelectionFilterParameter::RequirementType mdaReq =
       MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays for Computing Principal Components", SelectedDataArrayPaths, FilterParameter::RequiredArray, PrincipalComponentAnalysis, mdaReq));
