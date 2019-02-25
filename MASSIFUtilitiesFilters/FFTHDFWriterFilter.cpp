@@ -79,7 +79,7 @@ FFTHDFWriterFilter::~FFTHDFWriterFilter()
 // -----------------------------------------------------------------------------
 void FFTHDFWriterFilter::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FFTHDFWriterFilter, this, OutputFile),
                                                       SIMPL_BIND_GETTER(FFTHDFWriterFilter, this, OutputFile), "*.dream3d", ""));
