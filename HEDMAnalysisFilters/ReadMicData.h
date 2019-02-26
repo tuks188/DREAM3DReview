@@ -82,7 +82,7 @@ class HEDMAnalysis_EXPORT ReadMicData : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ReadMicData SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(QString CellEnsembleAttributeMatrixName READ getCellEnsembleAttributeMatrixName WRITE setCellEnsembleAttributeMatrixName)
     PYB11_PROPERTY(QString CellAttributeMatrixName READ getCellAttributeMatrixName WRITE setCellAttributeMatrixName)
     PYB11_PROPERTY(bool FileWasRead READ getFileWasRead WRITE setFileWasRead)
@@ -96,8 +96,8 @@ class HEDMAnalysis_EXPORT ReadMicData : public AbstractFilter
 
     ~ReadMicData() override;
 
-    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
-    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
     SIMPL_FILTER_PARAMETER(QString, CellEnsembleAttributeMatrixName)
     Q_PROPERTY(QString CellEnsembleAttributeMatrixName READ getCellEnsembleAttributeMatrixName WRITE setCellEnsembleAttributeMatrixName)
