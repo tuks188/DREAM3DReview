@@ -75,7 +75,7 @@ void FindElementCentroids::setupFilterParameters()
   linkedProps << "NewDataContainerName"
               << "VertexAttributeMatrixName";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Create Vertex Geometry from Centroids", CreateVertexDataContainer, FilterParameter::Parameter, FindElementCentroids, linkedProps));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Data Container", NewDataContainerName, FilterParameter::CreatedArray, FindElementCentroids));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Vertex Data Container", NewDataContainerName, FilterParameter::CreatedArray, FindElementCentroids));
   parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName, FilterParameter::CreatedArray, FindElementCentroids));
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::CreatedArray));
   {
@@ -93,7 +93,7 @@ void FindElementCentroids::readFilterParameters(AbstractFilterParametersReader* 
   reader->openFilterGroup(this, index);
   setCreateVertexDataContainer(reader->readValue("CreateVertexDataContainer", getCreateVertexDataContainer()));
   setCellCentroidsArrayPath(reader->readDataArrayPath("CellCentroidsArrayPath", getCellCentroidsArrayPath()));
-  setNewDataContainerName(reader->readString("NewDataContainerName", getNewDataContainerName()));
+  setNewDataContainerName(reader->readDataArrayPath("NewDataContainerName", getNewDataContainerName()));
   reader->closeFilterGroup();
 }
 

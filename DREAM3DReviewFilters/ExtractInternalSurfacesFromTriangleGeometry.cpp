@@ -101,7 +101,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::setupFilterParameters()
 void ExtractInternalSurfacesFromTriangleGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setTriangleDataContainerName(reader->readString("TriangleDataContainerName", getTriangleDataContainerName()));
+  setTriangleDataContainerName(reader->readDataArrayPath("TriangleDataContainerName", getTriangleDataContainerName()));
   setNodeTypesArrayPath(reader->readDataArrayPath("NodeTypesArrayPath", getNodeTypesArrayPath()));
   setInternalTrianglesName(reader->readString("InternalTrianglesName", getInternalTrianglesName()));
   reader->closeFilterGroup();
