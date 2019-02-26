@@ -67,8 +67,8 @@ class TransformationPhase_EXPORT TiDwellFatigueCrystallographicAnalysis : public
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
 
     ~TiDwellFatigueCrystallographicAnalysis() override;
-    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
-    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
     SIMPL_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
