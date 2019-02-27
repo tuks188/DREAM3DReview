@@ -198,7 +198,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName() ) );
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName() ) );
   setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
   setAlphaGlobPhase(reader->readValue("AlphaGlobPhase", getAlphaGlobPhase()) );
   setMTRPhase(reader->readValue("MTRPhase", getMTRPhase()) );
@@ -471,7 +471,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     // Now set the filter parameters for the filter using QProperty System since we can not directly
     // instantiate the filter since it resides in a plugin. These calls are SLOW. DO NOT EVER do this in a
     // tight loop. Your filter will slow down by 10X.
-    tempPath.update(getDataContainerName(), getCellFeatureAttributeMatrixName(), "");
+    tempPath.update(getDataContainerName().getDataContainerName(), getCellFeatureAttributeMatrixName(), "");
     QVariant v;
     v.setValue(tempPath);
     bool propWasSet = find_Neighbor->setProperty("CellFeatureAttributeMatrixPath", v);
