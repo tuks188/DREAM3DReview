@@ -46,6 +46,7 @@
 #include "HEDMAnalysisFilters/HEDM/MicReader.h"
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -340,7 +341,7 @@ void ReadMicData::dataCheck()
     }
 
     QVector<size_t> dim(1, 3);
-    tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), getCellEulerAnglesArrayName());
+    tempPath.update(getDataContainerName().getDataContainerName(), getCellAttributeMatrixName(), getCellEulerAnglesArrayName());
     m_CellEulerAnglesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
         this, tempPath, 0, dim);                     /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
     if(nullptr != m_CellEulerAnglesPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -348,7 +349,7 @@ void ReadMicData::dataCheck()
       m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
     dim[0] = 1;
-    tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), getCellPhasesArrayName());
+    tempPath.update(getDataContainerName().getDataContainerName(), getCellAttributeMatrixName(), getCellPhasesArrayName());
     m_CellPhasesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(
         this, tempPath, 0, dim);                /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
     if(nullptr != m_CellPhasesPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -357,7 +358,7 @@ void ReadMicData::dataCheck()
     } /* Now assign the raw pointer to data from the DataArray<T> object */
 
     // typedef DataArray<unsigned int> XTalStructArrayType;
-    tempPath.update(getDataContainerName(), getCellEnsembleAttributeMatrixName(), getCrystalStructuresArrayName());
+    tempPath.update(getDataContainerName().getDataContainerName(), getCellEnsembleAttributeMatrixName(), getCrystalStructuresArrayName());
     m_CrystalStructuresPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(
         this, tempPath, Ebsd::CrystalStructure::UnknownCrystalStructure, dim); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
     if(nullptr != m_CrystalStructuresPtr.lock())                               /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -365,7 +366,7 @@ void ReadMicData::dataCheck()
       m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
     dim[0] = 6;
-    tempPath.update(getDataContainerName(), getCellEnsembleAttributeMatrixName(), getLatticeConstantsArrayName());
+    tempPath.update(getDataContainerName().getDataContainerName(), getCellEnsembleAttributeMatrixName(), getLatticeConstantsArrayName());
     m_LatticeConstantsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(
         this, tempPath, 0.0, dim);                    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
     if(nullptr != m_LatticeConstantsPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
