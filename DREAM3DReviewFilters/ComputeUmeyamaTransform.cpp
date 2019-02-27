@@ -93,8 +93,8 @@ void ComputeUmeyamaTransform::setupFilterParameters()
 void ComputeUmeyamaTransform::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSourcePointSet(reader->readString("SourcePointSet", getSourcePointSet()));
-  setDestPointSet(reader->readString("DestPointSet", getDestPointSet()));
+  setSourcePointSet(reader->readDataArrayPath("SourcePointSet", getSourcePointSet()));
+  setDestPointSet(reader->readDataArrayPath("DestPointSet", getDestPointSet()));
   setUseScaling(reader->readValue("UseScaling", getUseScaling()));
   setTransformationAttributeMatrixName(reader->readString("TransformationAttributeMatrixName", getTransformationAttributeMatrixName()));
   setTransformationMatrixName(reader->readString("TransformationMatrixName", getTransformationMatrixName()));
@@ -197,7 +197,7 @@ void ComputeUmeyamaTransform::dataCheck()
   m->createNonPrereqAttributeMatrix(this, getTransformationAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
 
   QVector<size_t> cDims(2, 4);
-  DataArrayPath path(getSourcePointSet(), getTransformationAttributeMatrixName(), getTransformationMatrixName());
+  DataArrayPath path(getSourcePointSet().getDataContainerName(), getTransformationAttributeMatrixName(), getTransformationMatrixName());
 
   m_TransformationMatrixPtr =
       getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */

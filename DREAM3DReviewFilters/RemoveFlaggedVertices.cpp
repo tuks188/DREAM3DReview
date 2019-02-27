@@ -97,7 +97,7 @@ void RemoveFlaggedVertices::setupFilterParameters()
 void RemoveFlaggedVertices::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setVertexGeometry(reader->readString("VertexGeometry", getVertexGeometry()));
+  setVertexGeometry(reader->readDataArrayPath("VertexGeometry", getVertexGeometry()));
   setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));
   setReducedVertexGeometry(reader->readString("ReducedVertexGeometry", getReducedVertexGeometry()));
   reader->closeFilterGroup();

@@ -138,11 +138,11 @@ void PointSampleTriangleGeometry::readFilterParameters(AbstractFilterParametersR
 {
   reader->openFilterGroup(this, index);
   setSamplesNumberType(reader->readValue("SamplesNumberType", getSamplesNumberType()));
-  setTriangleGeometry(reader->readString("TriangleGeometry", getTriangleGeometry()));
+  setTriangleGeometry(reader->readDataArrayPath("TriangleGeometry", getTriangleGeometry()));
   setVertexGeometry(reader->readString("VertexGeometry", getVertexGeometry()));
   setVertexAttributeMatrixName(reader->readString("VertexAttributeMatrixName", getVertexAttributeMatrixName()));
   setNumberOfSamples(reader->readValue("NumberOfSamples", getNumberOfSamples()));
-  setParentGeometry(reader->readString("ParentGeometry", getParentGeometry()));
+  setParentGeometry(reader->readDataArrayPath("ParentGeometry", getParentGeometry()));
   setTriangleAreasArrayPath(reader->readDataArrayPath("TriangleAreasArrayPath", getTriangleAreasArrayPath()));
   setUseMask(reader->readValue("UseMask", getUseMask()));
   setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));

@@ -71,8 +71,8 @@ public:
   SIMPL_FILTER_PARAMETER(DataArrayPath, ComputedTransformationMatrix)
   Q_PROPERTY(DataArrayPath ComputedTransformationMatrix READ getComputedTransformationMatrix WRITE setComputedTransformationMatrix)
 
-  SIMPL_FILTER_PARAMETER(QString, GeometryToTransform)
-  Q_PROPERTY(QString GeometryToTransform READ getGeometryToTransform WRITE setGeometryToTransform)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, GeometryToTransform)
+  Q_PROPERTY(DataArrayPath GeometryToTransform READ getGeometryToTransform WRITE setGeometryToTransform)
 
   SIMPL_FILTER_PARAMETER(int, TransformationMatrixType)
   Q_PROPERTY(int TransformationMatrixType READ getTransformationMatrixType WRITE setTransformationMatrixType)

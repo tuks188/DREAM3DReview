@@ -145,7 +145,7 @@ void ApplyTransformationToGeometry::readFilterParameters(AbstractFilterParameter
   reader->openFilterGroup(this, index);
   setManualTransformationMatrix(reader->readDynamicTableData("ManualTransformationMatrix", getManualTransformationMatrix()));
   setComputedTransformationMatrix(reader->readDataArrayPath("ComputedTransformationMatrix", getComputedTransformationMatrix()));
-  setGeometryToTransform(reader->readString("GeometryToTransform", getGeometryToTransform()));
+  setGeometryToTransform(reader->readDataArrayPath("GeometryToTransform", getGeometryToTransform()));
   setTransformationMatrixType(reader->readValue("TransformationMatrixType", getTransformationMatrixType()));
   setRotationAxis(reader->readFloatVec3("RotationAxis", getRotationAxis()));
   setRotationAngle(reader->readValue("RotationAngle", getRotationAngle()));
