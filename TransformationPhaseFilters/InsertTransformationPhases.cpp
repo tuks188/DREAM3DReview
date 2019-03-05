@@ -113,9 +113,9 @@ InsertTransformationPhases::InsertTransformationPhases()
 , m_NumFeaturesArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::NumFeatures)
 {
   m_OrientationOps = LaueOps::getOrientationOpsQVector();
-  m_TransformationPhaseHabitPlane.x = 1.0f;
-  m_TransformationPhaseHabitPlane.y = 1.0f;
-  m_TransformationPhaseHabitPlane.z = 1.0f;
+  m_TransformationPhaseHabitPlane[0] = 1.0f;
+  m_TransformationPhaseHabitPlane[1] = 1.0f;
+  m_TransformationPhaseHabitPlane[2] = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -449,7 +449,13 @@ void InsertTransformationPhases::execute()
   notifyWarningMessage(getHumanLabel(), msg, 1);
 
   m_NormalizedTransformationPhaseHabitPlane = m_TransformationPhaseHabitPlane;
-  m_NormalizedTransformationPhaseHabitPlane.normalize();
+
+  float denom = std::sqrt(m_NormalizedTransformationPhaseHabitPlane[0] * m_NormalizedTransformationPhaseHabitPlane[0] +
+                          m_NormalizedTransformationPhaseHabitPlane[1] * m_NormalizedTransformationPhaseHabitPlane[1] +
+                          m_NormalizedTransformationPhaseHabitPlane[2] * m_NormalizedTransformationPhaseHabitPlane[2]);
+  m_NormalizedTransformationPhaseHabitPlane[0] = m_NormalizedTransformationPhaseHabitPlane[0] / denom;
+  m_NormalizedTransformationPhaseHabitPlane[1] = m_NormalizedTransformationPhaseHabitPlane[1] / denom;
+  m_NormalizedTransformationPhaseHabitPlane[2] = m_NormalizedTransformationPhaseHabitPlane[2] / denom;
 
   //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
   DataContainerArray::Pointer dca = getDataContainerArray();
@@ -515,7 +521,7 @@ void InsertTransformationPhases::insertTransformationPhases()
   float xRes = 0.0f;
   float yRes = 0.0f;
   float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
   float minRes = xRes;
   if (minRes > yRes) { minRes = yRes; }
   if (minRes > zRes) { minRes = zRes; }
@@ -550,9 +556,9 @@ void InsertTransformationPhases::insertTransformationPhases()
 
       if(m_DefineHabitPlane)
       {
-        crystalHabitPlane[0] = m_NormalizedTransformationPhaseHabitPlane.x;
-        crystalHabitPlane[1] = m_NormalizedTransformationPhaseHabitPlane.y;
-        crystalHabitPlane[2] = m_NormalizedTransformationPhaseHabitPlane.z;
+        crystalHabitPlane[0] = m_NormalizedTransformationPhaseHabitPlane[0];
+        crystalHabitPlane[1] = m_NormalizedTransformationPhaseHabitPlane[1];
+        crystalHabitPlane[2] = m_NormalizedTransformationPhaseHabitPlane[2];
       }
       // pick a habit plane variant if user desires
       if(m_UseAllVariants)
@@ -757,7 +763,7 @@ bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature,
   float xRes = 0.0f;
   float yRes = 0.0f;
   float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
   bool flag = false;
   float x, y, z, D;
   bool firstVoxel = true;
@@ -967,9 +973,9 @@ size_t InsertTransformationPhases::transferAttributes(size_t totalFeatures, Quat
 {
   //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFeatureIdsArrayPath().getDataContainerName());
 
-  m_AvgQuats[4 * totalFeatures + 0] = q.x;
-  m_AvgQuats[4 * totalFeatures + 1] = q.y;
-  m_AvgQuats[4 * totalFeatures + 2] = q.z;
+  m_AvgQuats[4 * totalFeatures + 0] = q[0];
+  m_AvgQuats[4 * totalFeatures + 1] = q[1];
+  m_AvgQuats[4 * totalFeatures + 2] = q[2];
   m_AvgQuats[4 * totalFeatures + 3] = q.w;
   m_Centroids[3 * totalFeatures + 0] = 1.0f;
   m_Centroids[3 * totalFeatures + 1] = 2.0f;

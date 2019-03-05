@@ -101,9 +101,9 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
 , m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids)
 , m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
 {
-  m_StressAxis.x = 0.0f;
-  m_StressAxis.y = 0.0f;
-  m_StressAxis.z = 1.0f;
+  m_StressAxis[0] = 0.0f;
+  m_StressAxis[1] = 0.0f;
+  m_StressAxis[2] = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -398,7 +398,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   float random = 0.0f;
 
   // Normalize input stress axis
-  MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
+  MatrixMath::Normalize3x1(m_StressAxis[0], m_StressAxis[1], m_StressAxis[2]);
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
@@ -590,7 +590,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xOrigin = 0.0f;
   float yOrigin = 0.0f;
   float zOrigin = 0.0f;
-  m->getGeometryAs<ImageGeom>()->getOrigin(xOrigin, yOrigin, zOrigin);
+  std::tie(xOrigin, yOrigin, zOrigin) = m->getGeometryAs<ImageGeom>()->getOrigin();
 
   bool subsurfaceFlag = false;
 
@@ -600,7 +600,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xRes = 0.0f;
   float yRes = 0.0f;
   float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
   float xyzScaledDimension[3] = {xOrigin + xPoints * xRes, yOrigin + yPoints * yRes, zOrigin + zPoints * zRes};
 
   // check if current feature centroid is within the subsurface defined centroid
@@ -809,7 +809,7 @@ float TiDwellFatigueCrystallographicAnalysis::find_angle(float g[3][3], float pl
 {
   float gt[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}};
   float v[3] = {0};
-  float sampleLoading[3] = {m_StressAxis.x, m_StressAxis.y, m_StressAxis.z};
+  float sampleLoading[3] = {m_StressAxis[0], m_StressAxis[1], m_StressAxis[2]};
   float w = 0.0f;
 
   MatrixMath::Normalize3x1(planeNormalU, planeNormalV, planeNormalW);
