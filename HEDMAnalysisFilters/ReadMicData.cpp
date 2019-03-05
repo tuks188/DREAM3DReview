@@ -375,7 +375,7 @@ void ReadMicData::dataCheck()
     } /* Now assign the raw pointer to data from the DataArray<T> object */
 
     StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumberOfTuples(), SIMPL::EnsembleData::PhaseName);
-    cellEnsembleAttrMat->insert_or_assign(materialNames);
+    cellEnsembleAttrMat->insertOrAssign(materialNames);
   }
 }
 
@@ -499,7 +499,7 @@ void ReadMicData::readMicFile()
     }
     iArray = Int32ArrayType::CreateArray(totalPoints, SIMPL::CellData::Phases);
     ::memcpy(iArray->getPointer(0), phasePtr, sizeof(int32_t) * totalPoints);
-    cellAttrMat->insert_or_assign(iArray);
+    cellAttrMat->insertOrAssign(iArray);
   }
 
   QVector<size_t> compDims(1, 3); // Initially set this up for the Euler Angle 1x3
@@ -516,7 +516,7 @@ void ReadMicData::readMicFile()
       cellEulerAngles[3 * i + 1] = f2[i];
       cellEulerAngles[3 * i + 2] = f3[i];
     }
-    cellAttrMat->insert_or_assign(fArray);
+    cellAttrMat->insertOrAssign(fArray);
   }
 
   compDims[0] = 1; // Now reset the size of the first dimension to 1
@@ -524,14 +524,14 @@ void ReadMicData::readMicFile()
     phasePtr = reinterpret_cast<int*>(reader->getPointerByName(Mic::Phase));
     iArray = Int32ArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::Phases);
     ::memcpy(iArray->getPointer(0), phasePtr, sizeof(int32_t) * totalPoints);
-    cellAttrMat->insert_or_assign(iArray);
+    cellAttrMat->insertOrAssign(iArray);
   }
 
   {
     f1 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Confidence));
     fArray = FloatArrayType::CreateArray(totalPoints, compDims, Mic::Confidence);
     ::memcpy(fArray->getPointer(0), f1, sizeof(float) * totalPoints);
-    cellAttrMat->insert_or_assign(fArray);
+    cellAttrMat->insertOrAssign(fArray);
   }
 }
 
@@ -647,9 +647,9 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   QVector<size_t> tDims(1, crystalStructures->getNumberOfTuples());
   attrMatrix->resizeAttributeArrays(tDims);
   // Now add the attributeArray to the AttributeMatrix
-  attrMatrix->insert_or_assign(crystalStructures);
-  attrMatrix->insert_or_assign(materialNames);
-  attrMatrix->insert_or_assign(latticeConstants);
+  attrMatrix->insertOrAssign(crystalStructures);
+  attrMatrix->insertOrAssign(materialNames);
+  attrMatrix->insertOrAssign(latticeConstants);
 
   // Now reset the internal ensemble array references to these new arrays
   m_CrystalStructuresPtr = crystalStructures;
