@@ -101,7 +101,7 @@ class H5MicImporter : public EbsdImporter
      * @param x The x resolution (out)
      * @param y The y resolution (out)
      */
-    void getResolution(float& x, float& y) override;
+    void getSpacing(float& x, float& y) override;
 
     /**
      * @brief Return the number of slices imported

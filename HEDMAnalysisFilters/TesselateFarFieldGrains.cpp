@@ -86,7 +86,6 @@ class AssignVoxelsImpl
   int64_t dims[3];
   float Invradcur[3];
   float res[3];
-  int32_t* m_FeatureIds;
   float xc;
   float yc;
   float zc;
@@ -97,10 +96,9 @@ class AssignVoxelsImpl
   FloatArrayType::Pointer ellipfuncsPtr;
 
 public:
-  AssignVoxelsImpl(int64_t* dimensions, float* resolution, int32_t* featureIds, float* radCur, float* xx, ShapeOps::Pointer ellipsoidOps, float gA[3][3], float* size, int cur_feature,
-                   Int32ArrayType::Pointer newowners, FloatArrayType::Pointer ellipfuncs)
-  : m_FeatureIds(featureIds)
-  , m_EllipsoidOps(ellipsoidOps)
+  AssignVoxelsImpl(int64_t* dimensions, float* resolution, float* radCur, float* xx, ShapeOps::Pointer ellipsoidOps, float gA[3][3], float* size, int cur_feature, Int32ArrayType::Pointer newowners,
+                   FloatArrayType::Pointer ellipfuncs)
+  : m_EllipsoidOps(ellipsoidOps)
   , curFeature(cur_feature)
   {
     dims[0] = dimensions[0];
@@ -712,7 +710,7 @@ void TesselateFarFieldGrains::load_features()
   size_t xDim, yDim, zDim;
   float xRes, yRes, zRes;
   std::tie(xDim, yDim, zDim) = m->getGeometryAs<ImageGeom>()->getDimensions();
-  m->getGeometryAs<ImageGeom>()->getResolution(xRes, yRes, zRes);
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
   float xShift = xRes * float(xDim / 2.0);
   float yShift = yRes * float(yDim / 2.0);
   for(QVector<QString>::iterator filepath = fileList.begin(); filepath != fileList.end(); ++filepath)
@@ -910,8 +908,8 @@ void TesselateFarFieldGrains::assign_voxels()
   float xRes = 0.0f;
   float yRes = 0.0f;
   float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
-  float res[3] = {xRes, yRes, zRes};
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
+  FloatVec3Type res = {xRes, yRes, zRes};
 
   Int32ArrayType::Pointer newownersPtr = Int32ArrayType::CreateArray(totalPoints, "newowners");
   newownersPtr->initializeWithValue(-1);
@@ -1010,12 +1008,12 @@ void TesselateFarFieldGrains::assign_voxels()
     if(doParallel)
     {
       tbb::parallel_for(tbb::blocked_range3d<int, int, int>(zmin, zmax + 1, ymin, ymax + 1, xmin, xmax + 1),
-                        AssignVoxelsImpl(dims, res, m_FeatureIds, radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr), tbb::auto_partitioner());
+                        AssignVoxelsImpl(dims, res.data(), radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr), tbb::auto_partitioner());
     }
     else
 #endif
     {
-      AssignVoxelsImpl serial(dims, res, m_FeatureIds, radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr);
+      AssignVoxelsImpl serial(dims, res.data(), radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr);
       serial.convert(zmin, zmax + 1, ymin, ymax + 1, xmin, xmax + 1);
     }
   }

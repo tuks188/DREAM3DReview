@@ -54,10 +54,10 @@ class MicReader;
 
 struct Mic_Private_Data
 {
-    QVector<size_t> dims;
-    QVector<float> resolution;
-    QVector<float> origin;
-    QVector<MicPhase::Pointer> phases;
+  SizeVec3Type dims;
+  FloatVec3Type resolution;
+  FloatVec3Type origin;
+  QVector<MicPhase::Pointer> phases;
 };
 
 enum MIC_READ_FLAG
