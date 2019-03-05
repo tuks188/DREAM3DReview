@@ -200,7 +200,7 @@ void ImportMASSIFData::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
-    am->insert_or_assign(dPtr);
+    am->insertOrAssign(dPtr);
   }
 }
 
