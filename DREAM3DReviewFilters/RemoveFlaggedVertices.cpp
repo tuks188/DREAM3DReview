@@ -168,7 +168,7 @@ void RemoveFlaggedVertices::dataCheck()
       if(tempAttrMatType != AttributeMatrix::Type::Vertex)
       {
         AttributeMatrix::Pointer attrMat = tmpAttrMat->deepCopy(getInPreflight());
-        dc->addAttributeMatrix(attr_mat, attrMat);
+        dc->addAttributeMatrix(attrMat);
       }
       else
       {

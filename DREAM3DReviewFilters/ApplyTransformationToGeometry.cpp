@@ -63,18 +63,17 @@ ApplyTransformationToGeometry::ApplyTransformationToGeometry()
 , m_TransformationMatrixType(1)
 {
   m_RotationAngle = 0.0f;
-  m_RotationAxis.x = 0.0f;
-  m_RotationAxis.y = 0.0f;
-  m_RotationAxis.z = 1.0f;
+  m_RotationAxis[0] = 0.0f;
+  m_RotationAxis[1] = 0.0f;
+  m_RotationAxis[2] = 1.0f;
 
-  m_Translation.x = 0.0f;
-  m_Translation.y = 0.0f;
-  m_Translation.z = 0.0f;
+  m_Translation[0] = 0.0f;
+  m_Translation[1] = 0.0f;
+  m_Translation[2] = 0.0f;
 
-  m_Scale.x = 0.0f;
-  m_Scale.y = 0.0f;
-  m_Scale.z = 0.0f;
-
+  m_Scale[0] = 0.0f;
+  m_Scale[1] = 0.0f;
+  m_Scale[2] = 0.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -234,7 +233,7 @@ void ApplyTransformationToGeometry::dataCheck()
   {
     float rotAngle = m_RotationAngle * SIMPLib::Constants::k_Pi / 180.0;
     FOrientArrayType om(9);
-    FOrientTransformsType::ax2om(FOrientArrayType(m_RotationAxis.x, m_RotationAxis.y, m_RotationAxis.z, rotAngle), om);
+    FOrientTransformsType::ax2om(FOrientArrayType(m_RotationAxis[0], m_RotationAxis[1], m_RotationAxis[2], rotAngle), om);
 
     m_TransformationReference = FloatArrayType::CreateArray(1, cDims, "_INTERNAL_USE_ONLY_ManualTransformationMatrix");
     m_TransformationReference->initializeWithZeros();
@@ -264,9 +263,9 @@ void ApplyTransformationToGeometry::dataCheck()
       m_TransformationMatrix[4 * 0 + 0] = 1.0f;
       m_TransformationMatrix[4 * 1 + 1] = 1.0f;
       m_TransformationMatrix[4 * 2 + 2] = 1.0f;
-      m_TransformationMatrix[4 * 0 + 3] = m_Translation.x;
-      m_TransformationMatrix[4 * 1 + 3] = m_Translation.y;
-      m_TransformationMatrix[4 * 2 + 3] = m_Translation.z;
+      m_TransformationMatrix[4 * 0 + 3] = m_Translation[0];
+      m_TransformationMatrix[4 * 1 + 3] = m_Translation[1];
+      m_TransformationMatrix[4 * 2 + 3] = m_Translation[2];
       m_TransformationMatrix[4 * 3 + 3] = 1.0f;
     }
     break;
@@ -279,9 +278,9 @@ void ApplyTransformationToGeometry::dataCheck()
     if(m_TransformationMatrixPtr.lock())
     {
       m_TransformationMatrix = m_TransformationMatrixPtr.lock()->getPointer(0);
-      m_TransformationMatrix[4 * 0 + 0] = m_Scale.x;
-      m_TransformationMatrix[4 * 1 + 1] = m_Scale.y;
-      m_TransformationMatrix[4 * 2 + 2] = m_Scale.z;
+      m_TransformationMatrix[4 * 0 + 0] = m_Scale[0];
+      m_TransformationMatrix[4 * 1 + 1] = m_Scale[1];
+      m_TransformationMatrix[4 * 2 + 2] = m_Scale[2];
       m_TransformationMatrix[4 * 3 + 3] = 1.0f;
     }
     break;
