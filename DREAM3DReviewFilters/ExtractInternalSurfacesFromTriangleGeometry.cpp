@@ -182,7 +182,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::dataCheck()
       else
       {
         AttributeMatrix::Pointer attrMat = tmpAttrMat->deepCopy(getInPreflight());
-        dc->addAttributeMatrix(attrMat);
+        dc->addOrReplaceAttributeMatrix(attrMat);
       }
     }
   }
