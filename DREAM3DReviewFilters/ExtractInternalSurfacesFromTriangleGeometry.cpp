@@ -51,6 +51,11 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -140,7 +145,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::dataCheck()
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, arrays);
 
-  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getInternalTrianglesName());
+  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getInternalTrianglesName(), DataContainerID);
 
   if(getErrorCondition() < 0)
   {

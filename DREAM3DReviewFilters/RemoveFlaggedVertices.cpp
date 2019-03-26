@@ -47,6 +47,11 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -135,7 +140,7 @@ void RemoveFlaggedVertices::dataCheck()
     dataArrays.push_back(m_MaskPtr.lock());
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getReducedVertexGeometry());
+  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getReducedVertexGeometry(), DataContainerID);
 
   if(getErrorCondition() < 0)
   {
