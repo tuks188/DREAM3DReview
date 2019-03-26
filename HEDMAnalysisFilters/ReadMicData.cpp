@@ -176,9 +176,8 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
       int err = reader->readHeaderOnly();
       if(err < 0)
       {
-        setErrorCondition(err);
-        notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), err);
-        notifyErrorMessage(getHumanLabel(), "MicReader could not read the .mic file header.", getErrorCondition());
+        notifyErrorMessage("", reader->getErrorMessage(), err);
+        notifyErrorMessage("", "MicReader could not read the .mic file header.", err);
         m_FileWasRead = false;
         return;
       }
@@ -190,9 +189,8 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
       int err = reader->readFile();
       if(err < 0)
       {
-        setErrorCondition(err);
-        notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), err);
-        notifyErrorMessage(getHumanLabel(), "MicReader could not read the .mic file.", getErrorCondition());
+        notifyErrorMessage("", reader->getErrorMessage(), err);
+        notifyErrorMessage("", "MicReader could not read the .mic file.", err);
         return;
       }
     }
@@ -289,15 +287,13 @@ void ReadMicData::dataCheck()
   if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist: '%1'").arg(getInputFile());
-    setErrorCondition(-388);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -388);
   }
 
   if(m_InputFile.isEmpty() && m_Manufacturer == Ebsd::OEM::Unknown)
   {
     QString ss = QObject::tr("The input file must be set for property %1").arg("InputFile");
-    setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), ss, -1);
+    notifyErrorMessage("", ss, -1);
   }
 
   if(!m_InputFile.isEmpty()) // User set a filename, so lets check it
@@ -333,9 +329,8 @@ void ReadMicData::dataCheck()
     }
     else
     {
-      setErrorCondition(-997);
       QString ss = QObject::tr("The File extension '%1' was not recognized. The reader only recognizes the .mic file extension").arg(ext);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -997);
       return;
     }
 
@@ -435,8 +430,7 @@ void ReadMicData::readMicFile()
   err = reader->readFile();
   if(err < 0)
   {
-    setErrorCondition(err);
-    notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), getErrorCondition());
+    notifyErrorMessage("", reader->getErrorMessage(), err);
     return;
   }
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
@@ -596,8 +590,7 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   QVector<MicPhase::Pointer> phases = getData().phases;
   if(phases.empty())
   {
-    setErrorCondition(reader->getErrorCode());
-    notifyErrorMessage(getHumanLabel(), reader->getErrorMessage(), getErrorCondition());
+    notifyErrorMessage("", reader->getErrorMessage(), reader->getErrorCode());
     return getErrorCondition();
   }
 

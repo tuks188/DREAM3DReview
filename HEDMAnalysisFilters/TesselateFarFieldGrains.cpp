@@ -605,8 +605,7 @@ void TesselateFarFieldGrains::preflight()
   if(fileList.empty())
   {
     QString ss = QObject::tr("No files have been selected for import. Have you set the input directory?");
-    setErrorCondition(-11);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11);
   }
 
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName());
@@ -645,21 +644,21 @@ void TesselateFarFieldGrains::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Loading Features");
+  notifyStatusMessage("", "Loading Features");
   load_features();
   if(getCancel())
   {
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Assigning Voxels");
+  notifyStatusMessage("", "Assigning Voxels");
   assign_voxels();
   if(getCancel())
   {
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Assigning Gaps");
+  notifyStatusMessage("", "Assigning Gaps");
   assign_gaps_only();
   if(getCancel())
   {
@@ -676,7 +675,7 @@ void TesselateFarFieldGrains::execute()
   cellFeatureAttrMat->removeAttributeArray(m_CentroidsArrayName);
 
   // If there is an error set this to something negative and also set a message
-  notifyStatusMessage(getHumanLabel(), "Tesselating Features Complete");
+  notifyStatusMessage("", "Tesselating Features Complete");
 }
 
 // -----------------------------------------------------------------------------
@@ -726,8 +725,7 @@ void TesselateFarFieldGrains::load_features()
     if(!inFile)
     {
       QString ss = QObject::tr("Failed to open: %1").arg(fName);
-      setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, -1);
+      notifyErrorMessage("", ss, -1);
     }
 
     // variable for holding meta data
@@ -741,7 +739,7 @@ void TesselateFarFieldGrains::load_features()
     inFile >> keywordStr >> numFeatures;
     if(0 == numFeatures)
     {
-      notifyErrorMessage(getHumanLabel(), "The number of features is Zero and should be greater than Zero", -600);
+      notifyErrorMessage("", "The number of features is Zero and should be greater than Zero", -600);
     }
     QVector<size_t> tDims(1, currentFeature + numFeatures);
     cellFeatureAttrMat->setTupleDimensions(tDims);
@@ -883,7 +881,7 @@ void TesselateFarFieldGrains::merge_twins()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::assign_voxels()
 {
-  notifyStatusMessage(getHumanLabel(), "Assigning Voxels");
+  notifyStatusMessage("", "Assigning Voxels");
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName().getDataContainerName());
 
@@ -1050,8 +1048,7 @@ void TesselateFarFieldGrains::assign_voxels()
   if(getCancel())
   {
     QString ss = QObject::tr("Filter Cancelled.");
-    setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -1);
 
     return;
   }
@@ -1071,7 +1068,7 @@ void TesselateFarFieldGrains::assign_voxels()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::assign_gaps_only()
 {
-  notifyStatusMessage(getHumanLabel(), "Assigning Gaps");
+  notifyStatusMessage("", "Assigning Gaps");
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName().getDataContainerName());
 
