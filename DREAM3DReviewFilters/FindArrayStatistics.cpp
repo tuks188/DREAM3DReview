@@ -64,6 +64,14 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataArrayID30 = 30,
+  DataArrayID31 = 31,
+  DataArrayID32 = 32,
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -254,7 +262,7 @@ void FindArrayStatistics::dataCheck()
   if(m_FindLength)
   {
     DataArrayPath path(getDestinationAttributeMatrix().getDataContainerName(), getDestinationAttributeMatrix().getAttributeMatrixName(), getLengthArrayName());
-    m_LengthPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, path, 0, cDims);
+    m_LengthPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, path, 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
     if(m_LengthPtr.lock())
     {
       m_Length = m_LengthPtr.lock()->getPointer(0);
@@ -283,7 +291,7 @@ void FindArrayStatistics::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     DataArrayPath path(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getStandardizedArrayName());
-    m_StandardizedPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+    m_StandardizedPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims, "", DataArrayID32); /* @ADD_DATAARRAY_ID@ */
     if(m_StandardizedPtr.lock())
     {
       m_Standardized = m_StandardizedPtr.lock()->getPointer(0);

@@ -53,6 +53,15 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataArrayID30 = 30,
+  DataArrayID31 = 31,
+  DataArrayID32 = 32,
+  DataArrayID33 = 33,
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -187,7 +196,7 @@ void PrincipalComponentAnalysis::dataCheck()
   QVector<size_t> cDims(1, 1);
 
   tempPath.update(getSelectedDataArrayPaths()[0].getDataContainerName(), getPCAttributeMatrixName(), getPCEigenvaluesName());
-  m_PCEigenvaluesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims);
+  m_PCEigenvaluesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
   if(m_PCEigenvaluesPtr.lock())
   {
     m_PCEigenvalues = m_PCEigenvaluesPtr.lock()->getPointer(0);
@@ -196,7 +205,7 @@ void PrincipalComponentAnalysis::dataCheck()
   cDims[0] = paths.size();
 
   tempPath.update(getSelectedDataArrayPaths()[0].getDataContainerName(), getPCAttributeMatrixName(), getPCEigenvectorsName());
-  m_PCEigenvectorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims);
+  m_PCEigenvectorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims, "", DataArrayID32); /* @ADD_DATAARRAY_ID@ */
   if(m_PCEigenvectorsPtr.lock())
   {
     m_PCEigenvectors = m_PCEigenvectorsPtr.lock()->getPointer(0);
@@ -222,7 +231,8 @@ void PrincipalComponentAnalysis::dataCheck()
 
     cDims[0] = getNumberOfDimensionsForProjection();
 
-    m_ProjectedDataSpacePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getProjectedDataSpaceArrayPath(), 0, cDims);
+    m_ProjectedDataSpacePtr =
+        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getProjectedDataSpaceArrayPath(), 0, cDims, "", DataArrayID33); /* @ADD_DATAARRAY_ID@ */
     if(m_ProjectedDataSpacePtr.lock())
     {
       m_ProjectedDataSpace = m_ProjectedDataSpacePtr.lock()->getPointer(0);

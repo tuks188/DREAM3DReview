@@ -45,6 +45,13 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataArrayID30 = 30,
+  DataArrayID31 = 31,
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -138,7 +145,8 @@ void RobustAutomaticThreshold::dataCheck()
     dataArrayPaths.push_back(getGradientMagnitudeArrayPath());
   }
 
-  m_FeatureIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, getFeatureIdsArrayPath(), false, cDims);
+  m_FeatureIdsPtr =
+      getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, getFeatureIdsArrayPath(), false, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
   if(m_FeatureIdsPtr.lock())
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);

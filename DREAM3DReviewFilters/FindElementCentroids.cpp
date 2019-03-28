@@ -51,6 +51,8 @@
 
 enum createdPathID : RenameDataPath::DataID_t
 {
+  DataArrayID31 = 31,
+
   DataContainerID = 1
 };
 
@@ -186,7 +188,8 @@ void FindElementCentroids::dataCheck()
 
   QVector<size_t> cDims(1, 3);
 
-  m_CellCentroidsArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getCellCentroidsArrayPath(), 0, cDims);
+  m_CellCentroidsArrayPtr =
+      getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getCellCentroidsArrayPath(), 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
   if(m_CellCentroidsArrayPtr.lock())
   {
     m_CellCentroidsArray = m_CellCentroidsArrayPtr.lock()->getPointer(0);

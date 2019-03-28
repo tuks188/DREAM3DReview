@@ -240,37 +240,37 @@ protected:
     if(m_FindMin)
     {
       path.setDataArrayName(getMinimumArrayName());
-      m_MinimumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims);
+      m_MinimumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims); /* @ADD_DATAARRAY_ID@ */
     }
 
     if(m_FindMax)
     {
       path.setDataArrayName(getMaximumArrayName());
-      m_MaximumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims);
+      m_MaximumPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<T>, AbstractFilter, T>(this, path, 0, cDims); /* @ADD_DATAARRAY_ID@ */
     }
 
     if(m_FindMean)
     {
       path.setDataArrayName(getMeanArrayName());
-      m_MeanPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+      m_MeanPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* @ADD_DATAARRAY_ID@ */
     }
 
     if(m_FindMedian)
     {
       path.setDataArrayName(getMedianArrayName());
-      m_MedianPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+      m_MedianPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* @ADD_DATAARRAY_ID@ */
     }
 
     if(m_FindStdDeviation)
     {
       path.setDataArrayName(getStdDeviationArrayName());
-      m_StandardDeviationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+      m_StandardDeviationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* @ADD_DATAARRAY_ID@ */
     }
 
     if(m_FindSummation)
     {
       path.setDataArrayName(getSummationArrayName());
-      m_SummationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims);
+      m_SummationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims); /* @ADD_DATAARRAY_ID@ */
     }
   }
 

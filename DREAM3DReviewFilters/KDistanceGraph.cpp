@@ -48,6 +48,13 @@
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataArrayID30 = 30,
+  DataArrayID31 = 31,
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -142,7 +149,8 @@ void KDistanceGraph::dataCheck()
     dataArrayPaths.push_back(getSelectedArrayPath());
   }
 
-  m_KDistanceArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getKDistanceArrayPath(), 0, cDims);
+  m_KDistanceArrayPtr =
+      getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getKDistanceArrayPath(), 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
   if(m_KDistanceArrayPtr.lock())
   {
     m_KDistanceArray = m_KDistanceArrayPtr.lock()->getPointer(0);
