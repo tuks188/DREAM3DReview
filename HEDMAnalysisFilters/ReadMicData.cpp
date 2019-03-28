@@ -56,6 +56,9 @@
 
 enum createdPathID : RenameDataPath::DataID_t
 {
+  AttributeMatrixID21 = 21,
+  AttributeMatrixID22 = 22,
+
   DataArrayID31 = 31,
   DataArrayID32 = 32,
   DataArrayID33 = 33,
@@ -281,14 +284,14 @@ void ReadMicData::dataCheck()
   m->setGeometry(image);
 
   QVector<size_t> tDims(3, 0);
-  AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix(this, getCellAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
+  AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix(this, getCellAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell, AttributeMatrixID21);
   if(getErrorCondition() < 0)
   {
     return;
   }
   tDims.resize(1);
   tDims[0] = 0;
-  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
+  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble, AttributeMatrixID22);
   if(getErrorCondition() < 0)
   {
     return;
@@ -330,11 +333,11 @@ void ReadMicData::dataCheck()
       {
         if(reader->getPointerType(names[i]) == Ebsd::Int32)
         {
-          cellAttrMat->createAndAddAttributeArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, names[i], 0, dims); /* @ADD_DATAARRAY_ID@ */
+          cellAttrMat->createAndAddAttributeArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, names[i], 0, dims);
         }
         else if(reader->getPointerType(names[i]) == Ebsd::Float)
         {
-          cellAttrMat->createAndAddAttributeArray<DataArray<float>, AbstractFilter, float>(this, names[i], 0, dims); /* @ADD_DATAARRAY_ID@ */
+          cellAttrMat->createAndAddAttributeArray<DataArray<float>, AbstractFilter, float>(this, names[i], 0, dims);
         }
       }
 
@@ -367,8 +370,8 @@ void ReadMicData::dataCheck()
 
     // typedef DataArray<unsigned int> XTalStructArrayType;
     tempPath.update(getDataContainerName().getDataContainerName(), getCellEnsembleAttributeMatrixName(), getCrystalStructuresArrayName());
-    m_CrystalStructuresPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(this, tempPath, Ebsd::CrystalStructure::UnknownCrystalStructure, dim,
-                                                                                                                                  "", DataArrayID33); /* @ADD_DATAARRAY_ID@ */
+    m_CrystalStructuresPtr =
+        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(this, tempPath, Ebsd::CrystalStructure::UnknownCrystalStructure, dim, "", DataArrayID33);
     if(nullptr != m_CrystalStructuresPtr.lock())                               /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
