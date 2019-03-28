@@ -53,6 +53,8 @@
 
 enum createdPathID : RenameDataPath::DataID_t
 {
+  AttributeMatrixID21 = 21,
+
   DataContainerID = 1
 };
 
@@ -171,7 +173,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::dataCheck()
       tempAttrMatType = tmpAttrMat->getType();
       if(tempAttrMatType == AttributeMatrix::Type::Vertex || tempAttrMatType == AttributeMatrix::Type::Face)
       {
-        dc->createNonPrereqAttributeMatrix(this, tmpAttrMat->getName(), tDims, tempAttrMatType);
+        dc->createNonPrereqAttributeMatrix(this, tmpAttrMat->getName(), tDims, tempAttrMatType, AttributeMatrixID21);
         tempDataArrayList = tmpAttrMat->getAttributeArrayNames();
         for(auto&& data_array : tempDataArrayList)
         {

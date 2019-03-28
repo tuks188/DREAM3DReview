@@ -56,6 +56,8 @@
 /* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
 enum createdPathID : RenameDataPath::DataID_t
 {
+  AttributeMatrixID21 = 21,
+
   DataArrayID30 = 30,
   DataArrayID31 = 31,
   DataArrayID32 = 32,
@@ -190,13 +192,13 @@ void PrincipalComponentAnalysis::dataCheck()
   QVector<size_t> tDims(1, paths.size());
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getSelectedDataArrayPaths()[0].getDataContainerName());
-  m->createNonPrereqAttributeMatrix(this, getPCAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
+  m->createNonPrereqAttributeMatrix(this, getPCAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic, AttributeMatrixID21);
 
   DataArrayPath tempPath;
   QVector<size_t> cDims(1, 1);
 
   tempPath.update(getSelectedDataArrayPaths()[0].getDataContainerName(), getPCAttributeMatrixName(), getPCEigenvaluesName());
-  m_PCEigenvaluesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+  m_PCEigenvaluesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims, "", DataArrayID31);
   if(m_PCEigenvaluesPtr.lock())
   {
     m_PCEigenvalues = m_PCEigenvaluesPtr.lock()->getPointer(0);
@@ -205,7 +207,7 @@ void PrincipalComponentAnalysis::dataCheck()
   cDims[0] = paths.size();
 
   tempPath.update(getSelectedDataArrayPaths()[0].getDataContainerName(), getPCAttributeMatrixName(), getPCEigenvectorsName());
-  m_PCEigenvectorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims, "", DataArrayID32); /* @ADD_DATAARRAY_ID@ */
+  m_PCEigenvectorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, tempPath, 0, cDims, "", DataArrayID32);
   if(m_PCEigenvectorsPtr.lock())
   {
     m_PCEigenvectors = m_PCEigenvectorsPtr.lock()->getPointer(0);
@@ -231,8 +233,7 @@ void PrincipalComponentAnalysis::dataCheck()
 
     cDims[0] = getNumberOfDimensionsForProjection();
 
-    m_ProjectedDataSpacePtr =
-        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getProjectedDataSpaceArrayPath(), 0, cDims, "", DataArrayID33); /* @ADD_DATAARRAY_ID@ */
+    m_ProjectedDataSpacePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getProjectedDataSpaceArrayPath(), 0, cDims, "", DataArrayID33);
     if(m_ProjectedDataSpacePtr.lock())
     {
       m_ProjectedDataSpace = m_ProjectedDataSpacePtr.lock()->getPointer(0);

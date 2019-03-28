@@ -149,8 +149,7 @@ void KDistanceGraph::dataCheck()
     dataArrayPaths.push_back(getSelectedArrayPath());
   }
 
-  m_KDistanceArrayPtr =
-      getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getKDistanceArrayPath(), 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+  m_KDistanceArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getKDistanceArrayPath(), 0, cDims, "", DataArrayID31);
   if(m_KDistanceArrayPtr.lock())
   {
     m_KDistanceArray = m_KDistanceArrayPtr.lock()->getPointer(0);

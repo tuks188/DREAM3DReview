@@ -129,7 +129,7 @@ void FindNorm::dataCheck()
 
   QVector<size_t> cDims(1, 1);
 
-  m_NormPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getNormArrayPath(), 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+  m_NormPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getNormArrayPath(), 0, cDims, "", DataArrayID31);
   if(m_NormPtr.lock())
   {
     m_Norm = m_NormPtr.lock()->getPointer(0);

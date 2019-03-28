@@ -55,6 +55,8 @@
 /* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
 enum createdPathID : RenameDataPath::DataID_t
 {
+  AttributeMatrixID21 = 21,
+
   DataArrayID30 = 30,
   DataArrayID31 = 31,
 };
@@ -201,12 +203,12 @@ void ComputeUmeyamaTransform::dataCheck()
   }
 
   QVector<size_t> tDims(1, 1);
-  m->createNonPrereqAttributeMatrix(this, getTransformationAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic);
+  m->createNonPrereqAttributeMatrix(this, getTransformationAttributeMatrixName(), tDims, AttributeMatrix::Type::Generic, AttributeMatrixID21);
 
   QVector<size_t> cDims(2, 4);
   DataArrayPath path(getSourcePointSet().getDataContainerName(), getTransformationAttributeMatrixName(), getTransformationMatrixName());
 
-  m_TransformationMatrixPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+  m_TransformationMatrixPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims, "", DataArrayID31);
   if(nullptr != m_TransformationMatrixPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_TransformationMatrix = m_TransformationMatrixPtr.lock()->getPointer(0);

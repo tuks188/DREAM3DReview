@@ -148,7 +148,7 @@ void Silhouette::dataCheck()
   QVector<DataArrayPath> dataArrayPaths;
   QVector<size_t> cDims(1, 1);
 
-  m_SilhouetteArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, getSilhouetteArrayPath(), 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+  m_SilhouetteArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, getSilhouetteArrayPath(), 0, cDims, "", DataArrayID31);
   if(m_SilhouetteArrayPtr.lock())
   {
     m_SilhouetteArray = m_SilhouetteArrayPtr.lock()->getPointer(0);

@@ -216,8 +216,7 @@ void NormalizeArrays::dataCheck()
         QString arrayName = path.getDataArrayName() + getPostfix();
         DataArrayPath tempPath(dcName, amName, arrayName);
         double defaultValue = m_UseMask ? getDefaultValue() : 0.0;
-        DoubleArrayType::WeakPointer ptr =
-            getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, tempPath, defaultValue, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+        DoubleArrayType::WeakPointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter>(this, tempPath, defaultValue, cDims, "", DataArrayID31);
         if(getErrorCondition() >= 0)
         {
           m_NormalizedArraysPtrVector.push_back(ptr.lock());

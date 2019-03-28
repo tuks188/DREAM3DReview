@@ -51,6 +51,8 @@
 
 enum createdPathID : RenameDataPath::DataID_t
 {
+  AttributeMatrixID21 = 21,
+
   DataArrayID31 = 31,
 
   DataContainerID = 1
@@ -183,13 +185,12 @@ void FindElementCentroids::dataCheck()
     vm->setGeometry(vertices);
 
     QVector<size_t> tDims(1, numElements);
-    vm->createNonPrereqAttributeMatrix(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex);
+    vm->createNonPrereqAttributeMatrix(this, getVertexAttributeMatrixName(), tDims, AttributeMatrix::Type::Vertex, AttributeMatrixID21);
   }
 
   QVector<size_t> cDims(1, 3);
 
-  m_CellCentroidsArrayPtr =
-      getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getCellCentroidsArrayPath(), 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+  m_CellCentroidsArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getCellCentroidsArrayPath(), 0, cDims, "", DataArrayID31);
   if(m_CellCentroidsArrayPtr.lock())
   {
     m_CellCentroidsArray = m_CellCentroidsArrayPtr.lock()->getPointer(0);

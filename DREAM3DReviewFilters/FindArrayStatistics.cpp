@@ -262,7 +262,7 @@ void FindArrayStatistics::dataCheck()
   if(m_FindLength)
   {
     DataArrayPath path(getDestinationAttributeMatrix().getDataContainerName(), getDestinationAttributeMatrix().getAttributeMatrixName(), getLengthArrayName());
-    m_LengthPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, path, 0, cDims, "", DataArrayID31); /* @ADD_DATAARRAY_ID@ */
+    m_LengthPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, path, 0, cDims, "", DataArrayID31);
     if(m_LengthPtr.lock())
     {
       m_Length = m_LengthPtr.lock()->getPointer(0);
@@ -291,7 +291,7 @@ void FindArrayStatistics::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     DataArrayPath path(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getStandardizedArrayName());
-    m_StandardizedPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims, "", DataArrayID32); /* @ADD_DATAARRAY_ID@ */
+    m_StandardizedPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, path, 0, cDims, "", DataArrayID32);
     if(m_StandardizedPtr.lock())
     {
       m_Standardized = m_StandardizedPtr.lock()->getPointer(0);
