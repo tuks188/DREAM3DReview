@@ -21,6 +21,13 @@
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
 #include "MASSIFUtilities/MASSIFUtilitiesVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  AttributeMatrixID20 = 20,
+  AttributeMatrixID21 = 21,
+};
+
 namespace Detail
 {
 // -----------------------------------------------------------------------------
@@ -169,7 +176,7 @@ void ImportMASSIFData::dataCheck()
   if (getErrorCondition() < 0) { return; }
 
   int err = 0;
-  AttributeMatrix::Pointer am = dc->createNonPrereqAttributeMatrix(this, MASSIFUtilitiesConstants::ImportMassifData::MassifAM, geoDims, AttributeMatrix::Type::Cell);
+  AttributeMatrix::Pointer am = dc->createNonPrereqAttributeMatrix(this, MASSIFUtilitiesConstants::ImportMassifData::MassifAM, geoDims, AttributeMatrix::Type::Cell, AttributeMatrixID21);
   if (getErrorCondition() < 0 || err < 0) { return; }
 
   hid_t fileId = H5Utilities::openFile(m_MassifInputFilePath.toStdString(), true);
