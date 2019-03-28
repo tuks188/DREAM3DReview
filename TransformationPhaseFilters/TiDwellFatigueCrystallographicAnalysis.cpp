@@ -465,8 +465,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     AbstractFilter::Pointer find_Neighbor = findNeighborFactory->create();
 
     // Connect up the Error/Warning/Progress object so the filter can report those things
-    connect(find_Neighbor.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)),
-            this, SIGNAL(messageGenerated(AbstractMessage::Pointer)));
+    connect(find_Neighbor.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)));
     find_Neighbor->setDataContainerArray(getDataContainerArray()); // AbstractFilter implements this so no problem
     // Now set the filter parameters for the filter using QProperty System since we can not directly
     // instantiate the filter since it resides in a plugin. These calls are SLOW. DO NOT EVER do this in a
