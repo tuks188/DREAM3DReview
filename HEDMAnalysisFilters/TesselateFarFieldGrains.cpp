@@ -605,7 +605,8 @@ void TesselateFarFieldGrains::preflight()
   if(fileList.empty())
   {
     QString ss = QObject::tr("No files have been selected for import. Have you set the input directory?");
-    notifyErrorMessage("", ss, -11);
+    setErrorCondition(-11);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName());
@@ -644,21 +645,21 @@ void TesselateFarFieldGrains::execute()
     return;
   }
 
-  notifyStatusMessage("", "Loading Features");
+  notifyStatusMessage(getHumanLabel(), "Loading Features");
   load_features();
   if(getCancel())
   {
     return;
   }
 
-  notifyStatusMessage("", "Assigning Voxels");
+  notifyStatusMessage(getHumanLabel(), "Assigning Voxels");
   assign_voxels();
   if(getCancel())
   {
     return;
   }
 
-  notifyStatusMessage("", "Assigning Gaps");
+  notifyStatusMessage(getHumanLabel(), "Assigning Gaps");
   assign_gaps_only();
   if(getCancel())
   {
@@ -675,7 +676,7 @@ void TesselateFarFieldGrains::execute()
   cellFeatureAttrMat->removeAttributeArray(m_CentroidsArrayName);
 
   // If there is an error set this to something negative and also set a message
-  notifyStatusMessage("", "Tesselating Features Complete");
+  notifyStatusMessage(getHumanLabel(), "Tesselating Features Complete");
 }
 
 // -----------------------------------------------------------------------------
@@ -719,13 +720,14 @@ void TesselateFarFieldGrains::load_features()
     slabCount++;
     QString fName = *filepath;
     QString ss = QObject::tr("Importing file %1").arg(fName);
-    notifyStatusMessage(getMessagePrefix(), ss);
+    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
     inFile.open(fName.toLatin1().data(), std::ios_base::binary);
     if(!inFile)
     {
       QString ss = QObject::tr("Failed to open: %1").arg(fName);
-      notifyErrorMessage("", ss, -1);
+      setErrorCondition(-1);
+      notifyErrorMessage(getHumanLabel(), ss, -1);
     }
 
     // variable for holding meta data
@@ -739,7 +741,7 @@ void TesselateFarFieldGrains::load_features()
     inFile >> keywordStr >> numFeatures;
     if(0 == numFeatures)
     {
-      notifyErrorMessage("", "The number of features is Zero and should be greater than Zero", -600);
+      notifyErrorMessage(getHumanLabel(), "The number of features is Zero and should be greater than Zero", -600);
     }
     QVector<size_t> tDims(1, currentFeature + numFeatures);
     cellFeatureAttrMat->setTupleDimensions(tDims);
@@ -881,7 +883,7 @@ void TesselateFarFieldGrains::merge_twins()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::assign_voxels()
 {
-  notifyStatusMessage("", "Assigning Voxels");
+  notifyStatusMessage(getHumanLabel(), "Assigning Voxels");
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName().getDataContainerName());
 
@@ -934,7 +936,7 @@ void TesselateFarFieldGrains::assign_voxels()
       float rate = featuresPerTime / ((float)(currentMillis - millis)) * 1000.0f;
 
       QString ss = QObject::tr("Assign Voxels & Gaps|| Features Checked: %1 || Features/Second: %2").arg(i).arg((int)rate);
-      notifyStatusMessage(getMessagePrefix(), ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       featuresPerTime = 0;
       millis = QDateTime::currentMSecsSinceEpoch();
     }
@@ -1048,7 +1050,8 @@ void TesselateFarFieldGrains::assign_voxels()
   if(getCancel())
   {
     QString ss = QObject::tr("Filter Cancelled.");
-    notifyErrorMessage("", ss, -1);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
 
     return;
   }
@@ -1068,7 +1071,7 @@ void TesselateFarFieldGrains::assign_voxels()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::assign_gaps_only()
 {
-  notifyStatusMessage("", "Assigning Gaps");
+  notifyStatusMessage(getHumanLabel(), "Assigning Gaps");
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName().getDataContainerName());
 
@@ -1222,7 +1225,7 @@ void TesselateFarFieldGrains::assign_gaps_only()
     if(counter >= 1)
     {
       QString ss = QObject::tr("Assign Gaps|| Cycle#: %1 || Remaining Unassigned Voxel Count: %2").arg(counter).arg(count);
-      notifyStatusMessage(getMessagePrefix(), ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
     }
   }
 }
