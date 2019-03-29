@@ -606,7 +606,7 @@ void TesselateFarFieldGrains::preflight()
   {
     QString ss = QObject::tr("No files have been selected for import. Have you set the input directory?");
     setErrorCondition(-11);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
   }
 
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName());
@@ -727,7 +727,7 @@ void TesselateFarFieldGrains::load_features()
     {
       QString ss = QObject::tr("Failed to open: %1").arg(fName);
       setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, -1);
+      notifyErrorMessage(ss, -1);
     }
 
     // variable for holding meta data
@@ -741,7 +741,7 @@ void TesselateFarFieldGrains::load_features()
     inFile >> keywordStr >> numFeatures;
     if(0 == numFeatures)
     {
-      notifyErrorMessage(getHumanLabel(), "The number of features is Zero and should be greater than Zero", -600);
+      notifyErrorMessage("The number of features is Zero and should be greater than Zero", -600);
     }
     QVector<size_t> tDims(1, currentFeature + numFeatures);
     cellFeatureAttrMat->setTupleDimensions(tDims);
@@ -1051,7 +1051,7 @@ void TesselateFarFieldGrains::assign_voxels()
   {
     QString ss = QObject::tr("Filter Cancelled.");
     setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
 
     return;
   }
