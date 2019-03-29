@@ -202,7 +202,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
 {
   herr_t err = -1;
   setCancel(false);
-  setErrorCondition(0);
+  clearErrorCondition();
   setPipelineMessage("");
 
   //  std::cout << "H5MicImporter: Importing " << MicFile << std::endl;
