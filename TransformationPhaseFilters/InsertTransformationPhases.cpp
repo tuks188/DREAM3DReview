@@ -474,7 +474,7 @@ void InsertTransformationPhases::execute()
   // start insert transformation phases routine
   insertTransformationPhases();
 
-  notifyStatusMessage(getHumanLabel(), "Placement Complete");
+  notifyStatusMessage("Placement Complete");
 
   // updating number of ensembles and features
   totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
@@ -496,7 +496,7 @@ void InsertTransformationPhases::execute()
 
   //filter_calls();
 
-  notifyStatusMessage(getHumanLabel(), "Execute Complete");
+  notifyStatusMessage("Execute Complete");
 }
 
 // -----------------------------------------------------------------------------
