@@ -446,7 +446,7 @@ void InsertTransformationPhases::execute()
   QString msg;
   QTextStream ss(&msg);
   ss << getHumanLabel() << " is an experimental filter that may or may *not* give the correct results. Use at your own risk";
-  notifyWarningMessage(getHumanLabel(), msg, 1);
+  notifyWarningMessage(msg, 1);
 
   m_NormalizedTransformationPhaseHabitPlane = m_TransformationPhaseHabitPlane;
   m_NormalizedTransformationPhaseHabitPlane.normalize();
