@@ -386,7 +386,7 @@ void FindCSLBoundaries::execute()
     serial.generate(0, numTriangles);
   }
 
-  notifyStatusMessage("", "FindCSLBoundaries Completed");
+  notifyStatusMessage(getHumanLabel(), "FindCSLBoundaries Completed");
 }
 
 // -----------------------------------------------------------------------------

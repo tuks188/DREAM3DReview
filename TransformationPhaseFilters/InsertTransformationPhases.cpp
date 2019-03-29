@@ -446,7 +446,7 @@ void InsertTransformationPhases::execute()
   QString msg;
   QTextStream ss(&msg);
   ss << getHumanLabel() << " is an experimental filter that may or may *not* give the correct results. Use at your own risk";
-  notifyWarningMessage("", msg, 1);
+  notifyWarningMessage(getHumanLabel(), msg, 1);
 
   m_NormalizedTransformationPhaseHabitPlane = m_TransformationPhaseHabitPlane;
   m_NormalizedTransformationPhaseHabitPlane.normalize();
@@ -474,7 +474,7 @@ void InsertTransformationPhases::execute()
   // start insert transformation phases routine
   insertTransformationPhases();
 
-  notifyStatusMessage("", "Placement Complete");
+  notifyStatusMessage(getHumanLabel(), "Placement Complete");
 
   // updating number of ensembles and features
   totalFeatures = m_FeaturePhasesPtr.lock()->getNumberOfTuples();
@@ -496,7 +496,7 @@ void InsertTransformationPhases::execute()
 
   //filter_calls();
 
-  notifyStatusMessage("", "Execute Complete");
+  notifyStatusMessage(getHumanLabel(), "Execute Complete");
 }
 
 // -----------------------------------------------------------------------------
