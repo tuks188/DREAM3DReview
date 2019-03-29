@@ -102,7 +102,8 @@ void ImportMASSIFData::dataCheck()
   if (m_MassifInputFilePath.isEmpty())
   {
     QString ss = "No HDF5 file has been selected";
-    notifyErrorMessage("", ss, -3001);
+    setErrorCondition(-3001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -111,21 +112,24 @@ void ImportMASSIFData::dataCheck()
   if (hdf5FileInfo.exists() && hdf5FileInfo.isFile() && ext != "h5" && ext != "hdf5" && ext != "dream3d")
   {
     QString ss = tr("The selected file '%1' is not an HDF5 file.").arg(hdf5FileInfo.fileName());
-    notifyErrorMessage("", ss, -3002);
+    setErrorCondition(-3002);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if (m_StepNumber < 0 || m_StepNumber > MASSIFUtilitiesConstants::ImportMassifData::MaxStepNumber)
   {
     QString ss = tr("The selected step number is greater than %1, the maximum allowable step number.").arg(MASSIFUtilitiesConstants::ImportMassifData::MaxStepNumber);
-    notifyErrorMessage("", ss, -3003);
+    setErrorCondition(-3003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if (m_FilePrefix.isEmpty())
   {
     QString ss = tr("The file prefix is empty.  Are you sure you meant to do this?");
-    notifyWarningMessage("", ss, -3004);
+    setWarningCondition(-3004);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
 
   // Get the geometry info of the arrays
@@ -137,19 +141,22 @@ void ImportMASSIFData::dataCheck()
   if (geoDims.size() != 3)
   {
     QString ss = tr("The dimensions are not of size 3");
-    notifyErrorMessage("", ss, -3003);
+    setErrorCondition(-3003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   if (origin.size() != 3)
   {
     QString ss = tr("The origin is not of size 3");
-    notifyErrorMessage("", ss, -3003);
+    setErrorCondition(-3003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   if (res.size() != 3)
   {
     QString ss = tr("The resolution does not have a size of 3");
-    notifyErrorMessage("", ss, -3003);
+    setErrorCondition(-3003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -169,7 +176,8 @@ void ImportMASSIFData::dataCheck()
   if (fileId < 0)
   {
     QString ss = tr("Error Reading HDF5 file: %1\n").arg(m_MassifInputFilePath);
-    notifyErrorMessage("", ss, -3003);
+    setErrorCondition(-3003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -188,7 +196,8 @@ void ImportMASSIFData::dataCheck()
     if (dPtr == IDataArray::NullPointer())
     {
       QString ss = tr("Could not read dataset '%1' at path '%2'").arg(objectName).arg(parentPath);
-      notifyErrorMessage("", ss, -3003);
+      setErrorCondition(-3003);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
     am->addAttributeArray(dPtr->getName(), dPtr);
@@ -276,7 +285,8 @@ void ImportMASSIFData::execute()
   if (getErrorCondition() < 0)
   {
     QString ss = QObject::tr("Some error message");
-    notifyErrorMessage("", ss, -99999999);
+    setErrorCondition(-99999999);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -291,7 +301,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   if (fileId < 0)
   {
     QString ss = tr("Error Reading HDF5 file: %1\n").arg(m_MassifInputFilePath);
-    notifyErrorMessage("", ss, -3005);
+    setErrorCondition(-3005);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -303,7 +314,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   {
     QString ss = tr("Could not open path: %1\n")
         .arg(totalPath);
-    notifyErrorMessage("", ss, -3006);
+    setErrorCondition(-3006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   sentinel.addGroupId(&gid);
@@ -317,7 +329,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   if (stepGid < 0)
   {
     QString ss = tr("Could not open path: %1\n").arg(totalPath);
-    notifyErrorMessage("", ss, -3007);
+    setErrorCondition(-3007);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   sentinel.addGroupId(&stepGid);
@@ -327,7 +340,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   if (geoGid < 0)
   {
     QString ss = tr("Could not open path: %1\n").arg(totalPath);
-    notifyErrorMessage("", ss, -3007);
+    setErrorCondition(-3007);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   sentinel.addGroupId(&geoGid);
@@ -339,7 +353,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
         .arg(MASSIFUtilitiesConstants::ImportMassifData::DimGrpName)
         .arg(totalPath);
-    notifyErrorMessage("", ss, -3008);
+    setErrorCondition(-3008);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -352,7 +367,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
         .arg(MASSIFUtilitiesConstants::ImportMassifData::OriginGrpName)
         .arg(totalPath);
-    notifyErrorMessage("", ss, -3009);
+    setErrorCondition(-3009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -365,7 +381,8 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
         .arg(MASSIFUtilitiesConstants::ImportMassifData::SpacingGrpName)
         .arg(totalPath);
-    notifyErrorMessage("", ss, -3010);
+    setErrorCondition(-3010);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 

@@ -219,7 +219,8 @@ void FFTHDFWriterFilter::execute()
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    notifyErrorMessage("", ss, -11110);
+    setErrorCondition(-11110);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -227,7 +228,8 @@ void FFTHDFWriterFilter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("The HDF5 file could not be opened or created.\n The given filename was:\n\t[%1]").arg(m_OutputFile);
-    notifyErrorMessage("", ss, -11112);
+    setErrorCondition(-11112);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -240,7 +242,8 @@ void FFTHDFWriterFilter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    notifyErrorMessage("", ss, -60);
+    setErrorCondition(-60);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -265,7 +268,7 @@ void FFTHDFWriterFilter::execute()
   //      err = dc->writeAttributeMatricesToHDF5(dcaGid);
   //    	if (err < 0)
   //        {
-  //        notifyErrorMessage("", "Error writing DataContainer AttributeMatrices", -803);
+  //        notifyErrorMessage(getHumanLabel(), "Error writing DataContainer AttributeMatrices", -803);
   //     	return;
   //        }
 
