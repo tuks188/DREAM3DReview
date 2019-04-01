@@ -438,13 +438,13 @@ void TesselateFarFieldGrains::dataCheck()
 
   // Make sure we have our input DataContainer with the proper Ensemble data
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getOutputCellAttributeMatrixName().getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m.get())
+  if(getErrorCode() < 0 || nullptr == m.get())
   {
     return;
   }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
-  if(getErrorCondition() < 0 || nullptr == image.get())
+  if(getErrorCode() < 0 || nullptr == image.get())
   {
     return;
   }
@@ -477,12 +477,12 @@ void TesselateFarFieldGrains::dataCheck()
 
   QVector<size_t> tDims(1, 0);
   AttributeMatrix::Pointer cellFeatureAttrMat = m->createNonPrereqAttributeMatrix(this, getOutputCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
   AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getOutputCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -605,8 +605,7 @@ void TesselateFarFieldGrains::preflight()
   if(fileList.empty())
   {
     QString ss = QObject::tr("No files have been selected for import. Have you set the input directory?");
-    setErrorCondition(-11);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-11, ss);
   }
 
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(getOutputCellAttributeMatrixName());
@@ -636,11 +635,11 @@ void TesselateFarFieldGrains::preflight()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
   SIMPL_RANDOMNG_NEW()
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -726,8 +725,7 @@ void TesselateFarFieldGrains::load_features()
     if(!inFile)
     {
       QString ss = QObject::tr("Failed to open: %1").arg(fName);
-      setErrorCondition(-1);
-      notifyErrorMessage(ss, -1);
+      setErrorCondition(-1, ss);
     }
 
     // variable for holding meta data
@@ -741,7 +739,7 @@ void TesselateFarFieldGrains::load_features()
     inFile >> keywordStr >> numFeatures;
     if(0 == numFeatures)
     {
-      notifyErrorMessage("The number of features is Zero and should be greater than Zero", -600);
+      setErrorCondition(-600, "The number of features is Zero and should be greater than Zero");
     }
     QVector<size_t> tDims(1, currentFeature + numFeatures);
     cellFeatureAttrMat->setTupleDimensions(tDims);
@@ -1050,8 +1048,7 @@ void TesselateFarFieldGrains::assign_voxels()
   if(getCancel())
   {
     QString ss = QObject::tr("Filter Cancelled.");
-    setErrorCondition(-1);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-1, ss);
 
     return;
   }

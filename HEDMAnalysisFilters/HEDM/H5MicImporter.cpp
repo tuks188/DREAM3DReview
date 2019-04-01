@@ -202,7 +202,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
 {
   herr_t err = -1;
   setCancel(false);
-  clearErrorCondition();
+  setErrorCode(0);
   setPipelineMessage("");
 
   //  std::cout << "H5MicImporter: Importing " << MicFile << std::endl;
@@ -216,7 +216,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
   if(err < 0)
   {
     setPipelineMessage(reader.getErrorMessage());
-    setErrorCondition(reader.getErrorCode());
+    setErrorCode(reader.getErrorCode());
     progressMessage(reader.getErrorMessage(), reader.getErrorCode());
     return -1;
   }
@@ -247,7 +247,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
                              " Please check other error messages from the HDF5 library for possible reasons.")
                      .arg(z);
     setPipelineMessage(ss);
-    setErrorCondition(-500);
+    setErrorCode(-500);
     return -1;
   }
 
@@ -260,7 +260,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
     progressMessage(ss, 100);
     err = H5Gclose(MicGroup);
     setPipelineMessage(ss);
-    setErrorCondition(-600);
+    setErrorCode(-600);
     return -1;
   }
 
@@ -350,7 +350,7 @@ int H5MicImporter::importFile(hid_t fileId, int64_t z, const QString& MicFile)
     progressMessage(ss, 100);
     err = H5Gclose(MicGroup);
     setPipelineMessage(ss);
-    setErrorCondition(-700);
+    setErrorCode(-700);
     return -1;
   }
 

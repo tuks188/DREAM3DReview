@@ -176,9 +176,8 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
       int err = reader->readHeaderOnly();
       if(err < 0)
       {
-        setErrorCondition(err);
-        notifyErrorMessage(reader->getErrorMessage(), err);
-        notifyErrorMessage("MicReader could not read the .mic file header.", getErrorCondition());
+        setErrorCondition(err, reader->getErrorMessage());
+        setErrorCondition(getErrorCode(), "MicReader could not read the .mic file header.");
         m_FileWasRead = false;
         return;
       }
@@ -190,9 +189,8 @@ void ReadMicData::populateMicData(MicReader* reader, DataContainer::Pointer m, Q
       int err = reader->readFile();
       if(err < 0)
       {
-        setErrorCondition(err);
-        notifyErrorMessage(reader->getErrorMessage(), err);
-        notifyErrorMessage("MicReader could not read the .mic file.", getErrorCondition());
+        setErrorCondition(err, reader->getErrorMessage());
+        setErrorCondition(getErrorCode(), "MicReader could not read the .mic file.");
         return;
       }
     }
@@ -262,7 +260,7 @@ void ReadMicData::dataCheck()
   clearWarningCondition();
 
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -273,14 +271,14 @@ void ReadMicData::dataCheck()
 
   QVector<size_t> tDims(3, 0);
   AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix(this, getCellAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
   tDims.resize(1);
   tDims[0] = 0;
   AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -289,15 +287,13 @@ void ReadMicData::dataCheck()
   if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist: '%1'").arg(getInputFile());
-    setErrorCondition(-388);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-388, ss);
   }
 
   if(m_InputFile.isEmpty() && m_Manufacturer == Ebsd::OEM::Unknown)
   {
     QString ss = QObject::tr("The input file must be set for property %1").arg("InputFile");
-    setErrorCondition(-1);
-    notifyErrorMessage(ss, -1);
+    setErrorCondition(-1, ss);
   }
 
   if(!m_InputFile.isEmpty()) // User set a filename, so lets check it
@@ -333,9 +329,8 @@ void ReadMicData::dataCheck()
     }
     else
     {
-      setErrorCondition(-997);
       QString ss = QObject::tr("The File extension '%1' was not recognized. The reader only recognizes the .mic file extension").arg(ext);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-997, ss);
       return;
     }
 
@@ -396,12 +391,11 @@ void ReadMicData::preflight()
 // -----------------------------------------------------------------------------
 void ReadMicData::execute()
 {
-  int err = 0;
-  QString ss;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
 
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -435,8 +429,7 @@ void ReadMicData::readMicFile()
   err = reader->readFile();
   if(err < 0)
   {
-    setErrorCondition(err);
-    notifyErrorMessage(reader->getErrorMessage(), getErrorCondition());
+    setErrorCondition(err, reader->getErrorMessage());
     return;
   }
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
@@ -596,9 +589,8 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
   QVector<MicPhase::Pointer> phases = getData().phases;
   if(phases.empty())
   {
-    setErrorCondition(reader->getErrorCode());
-    notifyErrorMessage(reader->getErrorMessage(), getErrorCondition());
-    return getErrorCondition();
+    setErrorCondition(reader->getErrorCode(), reader->getErrorMessage());
+    return getErrorCode();
   }
 
   DataArray<unsigned int>::Pointer crystalStructures = DataArray<unsigned int>::CreateArray(phases.size() + 1, getCrystalStructuresArrayName());
