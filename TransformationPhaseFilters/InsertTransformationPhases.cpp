@@ -332,15 +332,27 @@ void InsertTransformationPhases::dataCheck()
   clearWarningCondition();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
-  if(getErrorCondition() < 0 || m == nullptr) { return; }
+  if(getErrorCode() < 0 || m == nullptr)
+  {
+    return;
+  }
 
   AttributeMatrix::Pointer statsGenAttrMat = m->getPrereqAttributeMatrix(this, getStatsGenCellEnsembleAttributeMatrixPath().getAttributeMatrixName(), -301);
-  if(getErrorCondition() < 0 || statsGenAttrMat == nullptr) { return; }
+  if(getErrorCode() < 0 || statsGenAttrMat == nullptr)
+  {
+    return;
+  }
   AttributeMatrix::Pointer volAttrMat = m->getPrereqAttributeMatrix(this, getNumFeaturesPerParentArrayPath().getAttributeMatrixName(), -301);
-  if(getErrorCondition() < 0 || volAttrMat == nullptr) { return; }
+  if(getErrorCode() < 0 || volAttrMat == nullptr)
+  {
+    return;
+  }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
-  if(getErrorCondition() < 0 || nullptr == image.get()) { return; }
+  if(getErrorCode() < 0 || nullptr == image.get())
+  {
+    return;
+  }
 
   QVector<size_t> dims(1, 1);
   // Cell Data
@@ -438,7 +450,7 @@ void InsertTransformationPhases::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -446,7 +458,7 @@ void InsertTransformationPhases::execute()
   QString msg;
   QTextStream ss(&msg);
   ss << getHumanLabel() << " is an experimental filter that may or may *not* give the correct results. Use at your own risk";
-  notifyWarningMessage(msg, 1);
+  setWarningCondition(1, msg);
 
   m_NormalizedTransformationPhaseHabitPlane = m_TransformationPhaseHabitPlane;
   m_NormalizedTransformationPhaseHabitPlane.normalize();

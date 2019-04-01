@@ -349,9 +349,15 @@ void FindCSLBoundaries::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheckVoxel();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
   dataCheckSurfaceMesh();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;

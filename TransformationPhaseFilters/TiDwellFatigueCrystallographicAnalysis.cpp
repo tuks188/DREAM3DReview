@@ -285,13 +285,22 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   clearWarningCondition();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m.get()) { return; }
+  if(getErrorCode() < 0 || nullptr == m.get())
+  {
+    return;
+  }
   QVector<size_t> tDims(1, 0);
   AttributeMatrix::Pointer newCellFeatureAttrMat = m->createNonPrereqAttributeMatrix(this, getNewCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature);
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
-  if(getErrorCondition() < 0 || nullptr == image.get()) { return; }
+  if(getErrorCode() < 0 || nullptr == image.get())
+  {
+    return;
+  }
 
   // Feature Data
   QVector<size_t> dims(1, 1);
@@ -379,11 +388,14 @@ void TiDwellFatigueCrystallographicAnalysis::preflight()
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
 
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
 
   SIMPL_RANDOMNG_NEW()
 
@@ -477,8 +489,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("CellFeatureAttributeMatrixPath").arg(filtName);
-      setErrorCondition(-109872);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109872, ss);
     }
 
     tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCellParentIdsArrayName() );
@@ -487,8 +498,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("FeatureIdsArrayPath").arg(filtName);
-      setErrorCondition(-109873);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109873, ss);
     }
 
     QString tempString("BoundaryCells");
@@ -497,8 +507,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("BoundaryCellsArrayName").arg(filtName);
-      setErrorCondition(-109874);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109874, ss);
     }
 
     tempString = "SurfaceFeatures";
@@ -507,8 +516,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("SurfaceFeaturesArrayName").arg(filtName);
-      setErrorCondition(-109875);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109875, ss);
     }
 
     v.setValue(false);
@@ -516,8 +524,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("StoreBoundaryCellsArrayName").arg(filtName);
-      setErrorCondition(-109876);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109876, ss);
     }
 
     v.setValue(false);
@@ -525,8 +532,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("StoreSurfaceFeaturesArrayName").arg(filtName);
-      setErrorCondition(-109877);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109877, ss);
     }
 
     tempString = "ParentNumNeighbors";
@@ -535,8 +541,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentNumNeighbors").arg(filtName);
-      setErrorCondition(-109878);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109878, ss);
     }
 
     tempString = "ParentNeighborList";
@@ -545,8 +550,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentNeighborList").arg(filtName);
-      setErrorCondition(-109879);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109879, ss);
     }
 
     tempString = "ParentSharedSurfaceAreaList";
@@ -555,8 +559,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     if(!propWasSet)
     {
       QString ss = QObject::tr("Ti Dwell Fatigue Error Setting Property '%1' into filter '%2' which is a subfilter called by Ti Dwell Fatigue Error. The property was not set which could mean the property was not exposed with a Q_PROPERTY macro. Please notify the developers.").arg("ParentSharedSurfaceAreaList").arg(filtName);
-      setErrorCondition(-109880);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-109880, ss);
     }
     find_Neighbor->execute();
   }
