@@ -150,7 +150,7 @@ void FFTHDFWriterFilter::dataCheck()
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getFeatureIdsArrayPath());
   }
@@ -161,7 +161,7 @@ void FFTHDFWriterFilter::dataCheck()
   {
     m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getCellPhasesArrayPath());
   }
@@ -173,7 +173,7 @@ void FFTHDFWriterFilter::dataCheck()
   {
     m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getCellEulerAnglesArrayPath());
   }
@@ -204,7 +204,7 @@ void FFTHDFWriterFilter::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -219,8 +219,7 @@ void FFTHDFWriterFilter::execute()
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    setErrorCondition(-11110);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-11110, ss);
     return;
   }
 
@@ -228,8 +227,7 @@ void FFTHDFWriterFilter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("The HDF5 file could not be opened or created.\n The given filename was:\n\t[%1]").arg(m_OutputFile);
-    setErrorCondition(-11112);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-11112, ss);
     return;
   }
 
@@ -242,8 +240,7 @@ void FFTHDFWriterFilter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    setErrorCondition(-60);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-60, ss);
     return;
   }
 
@@ -268,7 +265,7 @@ void FFTHDFWriterFilter::execute()
   //      err = dc->writeAttributeMatricesToHDF5(dcaGid);
   //    	if (err < 0)
   //        {
-  //        notifyErrorMessage("Error writing DataContainer AttributeMatrices", -803);
+  //        setErrorCondition(-803, "Error writing DataContainer AttributeMatrices");
   //     	return;
   //        }
 
