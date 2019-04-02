@@ -66,6 +66,21 @@
 #include "TransformationPhase/TransformationPhaseConstants.h"
 #include "TransformationPhase/TransformationPhaseVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  AttributeMatrixID21 = 21,
+
+  DataArrayID30 = 30,
+  DataArrayID31 = 31,
+  DataArrayID32 = 32,
+  DataArrayID33 = 33,
+  DataArrayID34 = 34,
+  DataArrayID35 = 35,
+  DataArrayID36 = 36,
+  DataArrayID37 = 37,
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -101,9 +116,9 @@ TiDwellFatigueCrystallographicAnalysis::TiDwellFatigueCrystallographicAnalysis()
 , m_CentroidsArrayPath(SIMPL::Defaults::SyntheticVolumeDataContainerName, SIMPL::Defaults::CellFeatureAttributeMatrixName, SIMPL::FeatureData::Centroids)
 , m_CrystalStructuresArrayPath(SIMPL::Defaults::StatsGenerator, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
 {
-  m_StressAxis.x = 0.0f;
-  m_StressAxis.y = 0.0f;
-  m_StressAxis.z = 1.0f;
+  m_StressAxis[0] = 0.0f;
+  m_StressAxis[1] = 0.0f;
+  m_StressAxis[2] = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -116,7 +131,7 @@ TiDwellFatigueCrystallographicAnalysis::~TiDwellFatigueCrystallographicAnalysis(
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   QStringList linkedProps1("AlphaGlobPhase");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Alpha Glob Phase Present", AlphaGlobPhasePresent, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis, linkedProps1));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Alpha Glob Phase Number", AlphaGlobPhase, FilterParameter::Parameter, TiDwellFatigueCrystallographicAnalysis));
@@ -198,7 +213,7 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
 void TiDwellFatigueCrystallographicAnalysis::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName() ) );
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName() ) );
   setAlphaGlobPhasePresent(reader->readValue("AlphaGlobPhasePresent", getAlphaGlobPhasePresent()) );
   setAlphaGlobPhase(reader->readValue("AlphaGlobPhase", getAlphaGlobPhase()) );
   setMTRPhase(reader->readValue("MTRPhase", getMTRPhase()) );
@@ -290,11 +305,8 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
     return;
   }
   QVector<size_t> tDims(1, 0);
-  AttributeMatrix::Pointer newCellFeatureAttrMat = m->createNonPrereqAttributeMatrix(this, getNewCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature);
-  if(getErrorCode() < 0)
-  {
-    return;
-  }
+  AttributeMatrix::Pointer newCellFeatureAttrMat = m->createNonPrereqAttributeMatrix(this, getNewCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature, AttributeMatrixID21);
+  if(getErrorCode() < 0) { return; }
 
   ImageGeom::Pointer image = m->getPrereqGeometry<ImageGeom, AbstractFilter>(this);
   if(getErrorCode() < 0 || nullptr == image.get())
@@ -309,37 +321,37 @@ void TiDwellFatigueCrystallographicAnalysis::dataCheck()
   { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getSelectedFeaturesArrayName() );
-  m_SelectedFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_SelectedFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims, "", DataArrayID31);
   if(nullptr != m_SelectedFeaturesPtr.lock())                           /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_SelectedFeatures = m_SelectedFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getInitiatorsArrayName() );
-  m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_InitiatorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims, "", DataArrayID32);
   if(nullptr != m_InitiatorsPtr.lock())                     /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_Initiators = m_InitiatorsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getHardFeaturesArrayName() );
-  m_HardFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_HardFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims, "", DataArrayID33);
   if(nullptr != m_HardFeaturesPtr.lock())                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_HardFeatures = m_HardFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getSoftFeaturesArrayName() );
-  m_SoftFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_SoftFeaturesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims, "", DataArrayID34);
   if(nullptr != m_SoftFeaturesPtr.lock())                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_SoftFeatures = m_SoftFeaturesPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getHardSoftGroupsArrayName() );
-  m_HardSoftGroupsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_HardSoftGroupsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, false, dims, "", DataArrayID35);
   if(nullptr != m_HardSoftGroupsPtr.lock())                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_HardSoftGroups = m_HardSoftGroupsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCellParentIdsArrayName() );
-  m_CellParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_CellParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims, "", DataArrayID36);
   if(nullptr != m_CellParentIdsPtr.lock())                        /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_CellParentIds = m_CellParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   tempPath.update(getCellFeatureAttributeMatrixPath().getDataContainerName(), getCellFeatureAttributeMatrixPath().getAttributeMatrixName(), getFeatureParentIdsArrayName() );
-  m_FeatureParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_FeatureParentIdsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, -1, dims, "", DataArrayID37);
   if(nullptr != m_FeatureParentIdsPtr.lock())                           /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_FeatureParentIds = m_FeatureParentIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
@@ -410,7 +422,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
   float random = 0.0f;
 
   // Normalize input stress axis
-  MatrixMath::Normalize3x1(m_StressAxis.x, m_StressAxis.y, m_StressAxis.z);
+  MatrixMath::Normalize3x1(m_StressAxis[0], m_StressAxis[1], m_StressAxis[2]);
 
   for (size_t i = 1; i < totalFeatures; ++i)
   {
@@ -482,7 +494,7 @@ void TiDwellFatigueCrystallographicAnalysis::execute()
     // Now set the filter parameters for the filter using QProperty System since we can not directly
     // instantiate the filter since it resides in a plugin. These calls are SLOW. DO NOT EVER do this in a
     // tight loop. Your filter will slow down by 10X.
-    tempPath.update(getDataContainerName(), getCellFeatureAttributeMatrixName(), "");
+    tempPath.update(getDataContainerName().getDataContainerName(), getCellFeatureAttributeMatrixName(), "");
     QVariant v;
     v.setValue(tempPath);
     bool propWasSet = find_Neighbor->setProperty("CellFeatureAttributeMatrixPath", v);
@@ -592,7 +604,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xOrigin = 0.0f;
   float yOrigin = 0.0f;
   float zOrigin = 0.0f;
-  m->getGeometryAs<ImageGeom>()->getOrigin(xOrigin, yOrigin, zOrigin);
+  std::tie(xOrigin, yOrigin, zOrigin) = m->getGeometryAs<ImageGeom>()->getOrigin();
 
   bool subsurfaceFlag = false;
 
@@ -602,7 +614,7 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
   float xRes = 0.0f;
   float yRes = 0.0f;
   float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getResolution();
+  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
   float xyzScaledDimension[3] = {xOrigin + xPoints * xRes, yOrigin + yPoints * yRes, zOrigin + zPoints * zRes};
 
   // check if current feature centroid is within the subsurface defined centroid
@@ -811,7 +823,7 @@ float TiDwellFatigueCrystallographicAnalysis::find_angle(float g[3][3], float pl
 {
   float gt[3][3] = { {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}};
   float v[3] = {0};
-  float sampleLoading[3] = {m_StressAxis.x, m_StressAxis.y, m_StressAxis.z};
+  float sampleLoading[3] = {m_StressAxis[0], m_StressAxis[1], m_StressAxis[2]};
   float w = 0.0f;
 
   MatrixMath::Normalize3x1(planeNormalU, planeNormalV, planeNormalW);

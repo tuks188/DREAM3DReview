@@ -129,7 +129,7 @@
             "Data Array Name": "Statistics",
             "Data Container Name": "StatsGeneratorDataContainer"
         },
-        "InputStatsFile": "/Users/mjackson",
+        "InputStatsFile": "",
         "Origin": {
             "x": 0,
             "y": 0,
@@ -160,7 +160,7 @@
     "03": {
         "CellPhasesArrayName": "Phases",
         "FeatureIdsArrayName": "FeatureIds",
-        "FeatureInputFile": "/Users/mjackson",
+        "FeatureInputFile": "",
         "FeaturePhasesArrayName": "Phases",
         "FilterVersion": "6.4.252",
         "Filter_Enabled": true,

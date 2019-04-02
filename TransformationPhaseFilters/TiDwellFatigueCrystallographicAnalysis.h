@@ -67,8 +67,8 @@ class TransformationPhase_EXPORT TiDwellFatigueCrystallographicAnalysis : public
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TiDwellFatigueCrystallographicAnalysis, AbstractFilter)
 
     ~TiDwellFatigueCrystallographicAnalysis() override;
-    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
-    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
     /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
     SIMPL_FILTER_PARAMETER(bool, AlphaGlobPhasePresent)
@@ -81,8 +81,8 @@ class TransformationPhase_EXPORT TiDwellFatigueCrystallographicAnalysis : public
     Q_PROPERTY(float LatticeParameterA READ getLatticeParameterA WRITE setLatticeParameterA)
     SIMPL_FILTER_PARAMETER(float, LatticeParameterC)
     Q_PROPERTY(float LatticeParameterC READ getLatticeParameterC WRITE setLatticeParameterC)
-    SIMPL_FILTER_PARAMETER(FloatVec3_t, StressAxis)
-    Q_PROPERTY(FloatVec3_t StressAxis READ getStressAxis WRITE setStressAxis)
+    SIMPL_FILTER_PARAMETER(FloatVec3Type, StressAxis)
+    Q_PROPERTY(FloatVec3Type StressAxis READ getStressAxis WRITE setStressAxis)
     SIMPL_FILTER_PARAMETER(int, SubsurfaceDistance)
     Q_PROPERTY(int SubsurfaceDistance READ getSubsurfaceDistance WRITE setSubsurfaceDistance)
     Q_PROPERTY(float ConsiderationFraction READ getConsiderationFraction WRITE setConsiderationFraction)

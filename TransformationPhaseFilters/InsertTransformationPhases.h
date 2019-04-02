@@ -72,7 +72,7 @@ class TransformationPhase_EXPORT InsertTransformationPhases : public AbstractFil
     PYB11_PROPERTY(int ParentPhase READ getParentPhase WRITE setParentPhase)
     PYB11_PROPERTY(int TransCrystalStruct READ getTransCrystalStruct WRITE setTransCrystalStruct)
     PYB11_PROPERTY(float TransformationPhaseMisorientation READ getTransformationPhaseMisorientation WRITE setTransformationPhaseMisorientation)
-    PYB11_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
+    PYB11_PROPERTY(FloatVec3Type TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
     PYB11_PROPERTY(bool DefineHabitPlane READ getDefineHabitPlane WRITE setDefineHabitPlane)
     PYB11_PROPERTY(bool UseAllVariants READ getUseAllVariants WRITE setUseAllVariants)
     PYB11_PROPERTY(float CoherentFrac READ getCoherentFrac WRITE setCoherentFrac)
@@ -111,8 +111,8 @@ class TransformationPhase_EXPORT InsertTransformationPhases : public AbstractFil
     SIMPL_FILTER_PARAMETER(float, TransformationPhaseMisorientation)
     Q_PROPERTY(float TransformationPhaseMisorientation READ getTransformationPhaseMisorientation WRITE setTransformationPhaseMisorientation)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3_t, TransformationPhaseHabitPlane)
-    Q_PROPERTY(FloatVec3_t TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
+    SIMPL_FILTER_PARAMETER(FloatVec3Type, TransformationPhaseHabitPlane)
+    Q_PROPERTY(FloatVec3Type TransformationPhaseHabitPlane READ getTransformationPhaseHabitPlane WRITE setTransformationPhaseHabitPlane)
 
     SIMPL_FILTER_PARAMETER(bool, DefineHabitPlane)
     Q_PROPERTY(bool DefineHabitPlane READ getDefineHabitPlane WRITE setDefineHabitPlane)
@@ -323,7 +323,7 @@ class TransformationPhase_EXPORT InsertTransformationPhases : public AbstractFil
     DEFINE_DATAARRAY_VARIABLE(ShapeType::EnumType, ShapeTypes)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
 
-    FloatVec3_t m_NormalizedTransformationPhaseHabitPlane;
+    FloatVec3Type m_NormalizedTransformationPhaseHabitPlane;
 
     /**
      * @brief updateFeatureInstancePointers
