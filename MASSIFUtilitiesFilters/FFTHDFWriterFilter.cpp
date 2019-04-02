@@ -128,8 +128,8 @@ void FFTHDFWriterFilter::readFilterParameters(AbstractFilterParametersReader* re
 // -----------------------------------------------------------------------------
 void FFTHDFWriterFilter::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   QString ss;
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getFeatureIdsArrayPath().getDataContainerName());
@@ -201,8 +201,8 @@ void FFTHDFWriterFilter::preflight()
 // -----------------------------------------------------------------------------
 void FFTHDFWriterFilter::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {
