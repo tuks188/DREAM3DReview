@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -158,7 +159,7 @@ private:
    * @param origin
    * @param res
    */
-  void getDataContainerGeometry(QVector<size_t>& tDims, QVector<float>& origin, QVector<float>& res);
+  void getDataContainerGeometry(QVector<size_t>& tDims, FloatVec3Type& origin, FloatVec3Type& spacing);
 
   /**
    * @brief readIDataArray

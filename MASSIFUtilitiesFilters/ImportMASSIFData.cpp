@@ -21,6 +21,13 @@
 #include "MASSIFUtilities/MASSIFUtilitiesConstants.h"
 #include "MASSIFUtilities/MASSIFUtilitiesVersion.h"
 
+/* Create Enumerations to allow the created Attribute Arrays to take part in renaming */
+enum createdPathID : RenameDataPath::DataID_t
+{
+  AttributeMatrixID20 = 20,
+  AttributeMatrixID21 = 21,
+};
+
 namespace Detail
 {
 // -----------------------------------------------------------------------------
@@ -74,7 +81,7 @@ void ImportMASSIFData::initialize()
 // -----------------------------------------------------------------------------
 void ImportMASSIFData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", MassifInputFilePath, FilterParameter::Parameter, ImportMASSIFData, "*.h5;*.hdf5;*.dream3d"));
@@ -130,8 +137,8 @@ void ImportMASSIFData::dataCheck()
 
   // Get the geometry info of the arrays
   QVector<size_t> geoDims;
-  QVector<float> origin;
-  QVector<float> res;
+  FloatVec3Type origin;
+  FloatVec3Type res;
   getDataContainerGeometry(geoDims, origin, res);
   if(getErrorCode() < 0)
   {
@@ -158,9 +165,9 @@ void ImportMASSIFData::dataCheck()
 
   DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, MASSIFUtilitiesConstants::ImportMassifData::MassifDC);
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
-  image->setResolution(res[0], res[1], res[2]);
-  image->setOrigin(origin[0], origin[1], origin[2]);
-  image->setDimensions(geoDims[0], geoDims[1], geoDims[2]);
+  image->setSpacing(FloatVec3Type(res[0], res[1], res[2]));
+  image->setOrigin(FloatVec3Type(origin[0], origin[1], origin[2]));
+  image->setDimensions(SizeVec3Type(geoDims[0], geoDims[1], geoDims[2]));
   dc->setGeometry(image);
   if(getErrorCode() < 0)
   {
@@ -168,11 +175,8 @@ void ImportMASSIFData::dataCheck()
   }
 
   int err = 0;
-  AttributeMatrix::Pointer am = dc->createNonPrereqAttributeMatrix(this, MASSIFUtilitiesConstants::ImportMassifData::MassifAM, geoDims, AttributeMatrix::Type::Cell);
-  if(getErrorCode() < 0 || err < 0)
-  {
-    return;
-  }
+  AttributeMatrix::Pointer am = dc->createNonPrereqAttributeMatrix(this, MASSIFUtilitiesConstants::ImportMassifData::MassifAM, geoDims, AttributeMatrix::Type::Cell, AttributeMatrixID21);
+  if (getErrorCode() < 0 || err < 0) { return; }
 
   hid_t fileId = H5Utilities::openFile(m_MassifInputFilePath.toStdString(), true);
   if (fileId < 0)
@@ -184,23 +188,23 @@ void ImportMASSIFData::dataCheck()
 
   QVector<QString> hdf5ArrayPaths = createHDF5DatasetPaths();
 
-  for (int i=0; i<hdf5ArrayPaths.size(); i++)
+  for(const auto& hdf5ArrayPath : hdf5ArrayPaths)
   {
-    QString parentPath = QH5Utilities::getParentPath(hdf5ArrayPaths[i]);
+    QString parentPath = QH5Utilities::getParentPath(hdf5ArrayPath);
 
     hid_t parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
     H5ScopedGroupSentinel sentinel(&parentId, false);
     // Read dataset into DREAM.3D structure
-    QString objectName = QH5Utilities::getObjectNameFromPath(hdf5ArrayPaths[i]);
-
-    IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, geoDims, getInPreflight());
+    QString objectName = QH5Utilities::getObjectNameFromPath(hdf5ArrayPath);
+    QVector<size_t> geometryDims = {geoDims[0], geoDims[1], geoDims[2]};
+    IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, geometryDims, getInPreflight());
     if (dPtr == IDataArray::NullPointer())
     {
       QString ss = tr("Could not read dataset '%1' at path '%2'").arg(objectName).arg(parentPath);
       setErrorCondition(-3003, ss);
       return;
     }
-    am->addAttributeArray(dPtr->getName(), dPtr);
+    am->insertOrAssign(dPtr);
   }
 }
 
@@ -297,7 +301,7 @@ void ImportMASSIFData::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<float> &origin, QVector<float> &res)
+void ImportMASSIFData::getDataContainerGeometry(QVector<size_t>& tDims, FloatVec3Type& origin, FloatVec3Type& spacing)
 {
   hid_t fileId = QH5Utilities::openFile(m_MassifInputFilePath, true);
   if (fileId < 0)
@@ -344,8 +348,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
   }
   sentinel.addGroupId(&geoGid);
 
-  std::vector<size_t> dims;
-  herr_t err = QH5Lite::readVectorDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::DimGrpName, dims);
+  herr_t err = QH5Lite::readPointerDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::DimGrpName, tDims.data());
   if (err < 0)
   {
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
@@ -355,10 +358,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     return;
   }
 
-  tDims = QVector<size_t>::fromStdVector(dims);
-
-  std::vector<float> stdOrigin;
-  err = QH5Lite::readVectorDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::OriginGrpName, stdOrigin);
+  err = QH5Lite::readPointerDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::OriginGrpName, origin.data());
   if (err < 0)
   {
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
@@ -368,10 +368,7 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     return;
   }
 
-  origin = QVector<float>::fromStdVector(stdOrigin);
-
-  std::vector<float> stdRes;
-  err = QH5Lite::readVectorDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::SpacingGrpName, stdRes);
+  err = QH5Lite::readPointerDataset(geoGid, MASSIFUtilitiesConstants::ImportMassifData::SpacingGrpName, spacing.data());
   if (err < 0)
   {
     QString ss = tr("Could not read dataset %1 at path '%2'\n")
@@ -381,7 +378,6 @@ void ImportMASSIFData::getDataContainerGeometry(QVector<size_t> &tDims, QVector<
     return;
   }
 
-  res = QVector<float>::fromStdVector(stdRes);
 }
 
 // -----------------------------------------------------------------------------
@@ -487,7 +483,7 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
   {
     QString classType;
     //int version = 0;
-    QVector<size_t> tDims = geoDims;
+    QVector<size_t>& tDims = geoDims;
     QVector<size_t> cDims;
 
     if (geoDims.size() == dims.size())
