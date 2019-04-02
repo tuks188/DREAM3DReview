@@ -286,8 +286,8 @@ void FindCSLBoundaries::readFilterParameters(AbstractFilterParametersReader* rea
 // -----------------------------------------------------------------------------
 void FindCSLBoundaries::dataCheckVoxel()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getAvgQuatsArrayPath().getDataContainerName());
 
@@ -311,8 +311,8 @@ void FindCSLBoundaries::dataCheckVoxel()
 void FindCSLBoundaries::dataCheckSurfaceMesh()
 {
   DataArrayPath tempPath;
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<TriangleGeom, AbstractFilter>(this, getSurfaceMeshFaceLabelsArrayPath().getDataContainerName());
 
@@ -354,8 +354,8 @@ void FindCSLBoundaries::preflight()
 // -----------------------------------------------------------------------------
 void FindCSLBoundaries::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheckVoxel();
   if(getErrorCode() < 0)
   {

@@ -276,8 +276,8 @@ void TiDwellFatigueCrystallographicAnalysis::writeFilterParameters(QJsonObject &
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::updateFeatureInstancePointers()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(nullptr != m_ActivePtr.lock())                 /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_Active = m_ActivePtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -296,8 +296,8 @@ void TiDwellFatigueCrystallographicAnalysis::initialize()
 void TiDwellFatigueCrystallographicAnalysis::dataCheck()
 {
   DataArrayPath tempPath;
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_FeatureIdsArrayPath.getDataContainerName(), false);
   if(getErrorCode() < 0 || nullptr == m.get())
@@ -400,8 +400,8 @@ void TiDwellFatigueCrystallographicAnalysis::preflight()
 // -----------------------------------------------------------------------------
 void TiDwellFatigueCrystallographicAnalysis::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   dataCheck();
   if(getErrorCode() < 0)
