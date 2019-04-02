@@ -181,7 +181,7 @@ void H5MicImporter::getDims(int64_t& x, int64_t& y)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void H5MicImporter::getResolution(float& x, float& y)
+void H5MicImporter::getSpacing(float& x, float& y)
 {
   x = xRes;
   y = yRes;
