@@ -719,7 +719,7 @@ void TesselateFarFieldGrains::load_features()
     slabCount++;
     QString fName = *filepath;
     QString ss = QObject::tr("Importing file %1").arg(fName);
-    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+    notifyStatusMessage(ss);
 
     inFile.open(fName.toLatin1().data(), std::ios_base::binary);
     if(!inFile)
@@ -934,7 +934,7 @@ void TesselateFarFieldGrains::assign_voxels()
       float rate = featuresPerTime / ((float)(currentMillis - millis)) * 1000.0f;
 
       QString ss = QObject::tr("Assign Voxels & Gaps|| Features Checked: %1 || Features/Second: %2").arg(i).arg((int)rate);
-      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+      notifyStatusMessage(ss);
       featuresPerTime = 0;
       millis = QDateTime::currentMSecsSinceEpoch();
     }
@@ -1222,7 +1222,7 @@ void TesselateFarFieldGrains::assign_gaps_only()
     if(counter >= 1)
     {
       QString ss = QObject::tr("Assign Gaps|| Cycle#: %1 || Remaining Unassigned Voxel Count: %2").arg(counter).arg(count);
-      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+      notifyStatusMessage(ss);
     }
   }
 }
