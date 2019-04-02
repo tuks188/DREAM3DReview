@@ -363,8 +363,8 @@ void TesselateFarFieldGrains::readFilterParameters(AbstractFilterParametersReade
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::updateFeatureInstancePointers()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(nullptr != m_FeaturePhasesPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -413,8 +413,8 @@ void TesselateFarFieldGrains::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::updateEnsembleInstancePointers()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(nullptr != m_CrystalStructuresPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -445,8 +445,8 @@ void TesselateFarFieldGrains::initialize()
 void TesselateFarFieldGrains::dataCheck()
 {
   DataArrayPath tempPath;
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   // This is for convenience
 
   // Make sure we have our input DataContainer with the proper Ensemble data
@@ -643,8 +643,8 @@ void TesselateFarFieldGrains::preflight()
 // -----------------------------------------------------------------------------
 void TesselateFarFieldGrains::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   SIMPL_RANDOMNG_NEW()
   dataCheck();
   if(getErrorCode() < 0)

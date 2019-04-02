@@ -268,8 +268,8 @@ void ReadMicData::dataCheck()
   m_FileWasRead = false;
 
   DataArrayPath tempPath;
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
   if(getErrorCode() < 0)
@@ -403,8 +403,8 @@ void ReadMicData::preflight()
 // -----------------------------------------------------------------------------
 void ReadMicData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   dataCheck();
   if(getErrorCode() < 0)
