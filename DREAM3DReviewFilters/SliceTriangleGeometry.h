@@ -198,7 +198,7 @@ private:
     rotBackward
   };
 
-  int32_t m_NumberOfSlices;
+  int32_t m_NumberOfSlices = 0;
 
   DEFINE_DATAARRAY_VARIABLE(int32_t, SliceId)
   DEFINE_DATAARRAY_VARIABLE(float, Area)

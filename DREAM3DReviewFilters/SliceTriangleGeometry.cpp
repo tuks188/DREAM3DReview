@@ -44,15 +44,10 @@ SliceTriangleGeometry::SliceTriangleGeometry()
 , m_PerimetersArrayName("SlicePerimeters")
 , m_HaveRegionIds(false)
 , m_RegionIdArrayPath("", "", "")
-, m_SliceRange(0)
+, m_SliceResolution(1.0f)
 , m_Zstart(0.0)
 , m_Zend(0.0)
-, m_NumberOfSlices(0)
-, m_SliceResolution(1)
-, m_SliceId(nullptr)
-, m_Area(nullptr)
-, m_Perimeter(nullptr)
-, m_RegionId(nullptr)
+, m_SliceRange(0)
 {
   m_SliceDirection[0] = 0.0;
   m_SliceDirection[1] = 0.0;
@@ -405,8 +400,6 @@ void SliceTriangleGeometry::execute()
   float minDim = std::numeric_limits<float>::max();
   float maxDim = -minDim;
   determineBoundsAndNumSlices(minDim, maxDim, numTris, tris, triVerts);
-  int64_t minSlice = static_cast<int64_t>(minDim / m_SliceResolution);
-  int64_t maxSlice = static_cast<int64_t>(maxDim / m_SliceResolution);
 
   float q[3] = {0.0f, 0.0f, 0.0f};
   float r[3] = {0.0f, 0.0f, 0.0f};
