@@ -616,7 +616,7 @@ void SliceTriangleGeometry::execute()
 AbstractFilter::Pointer SliceTriangleGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   SliceTriangleGeometry::Pointer filter = SliceTriangleGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

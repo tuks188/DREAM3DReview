@@ -268,7 +268,7 @@ void CombineStlFiles::execute()
 AbstractFilter::Pointer CombineStlFiles::newFilterInstance(bool copyFilterParameters) const
 {
   CombineStlFiles::Pointer filter = CombineStlFiles::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
