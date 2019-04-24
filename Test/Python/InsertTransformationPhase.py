@@ -8,7 +8,7 @@ from dream3d import simplpy
 from dream3d import orientationanalysispy
 from dream3d import genericpy
 from dream3d import statisticspy
-from dream3d import syntheticbuildingpy
+from dream3d import syntheticbuildingpy as syntheticbuilding
 from dream3d import transformationphasepy
 
 
@@ -16,42 +16,43 @@ def insert_transformation_phase():
     # Create Data Container Array
     dca = simpl.DataContainerArray.New()
 
-    # Generate Primary StatsData
-    err = sc.GenerateStatsData(dca, "Primary", "Primary", 0, 1, 0,
-                               1, 2.3, 0.4, 4, 3, 10,
+     # Using the GenerateStatsData and CreateDynamicTableData functions
+    euler_dynamic_table_data = sc.CreateDynamicTableData([[0, 0, 0, 0, 0]],
+                                                      ["Euler 1", "Euler 2", "Euler 3", "Weight", "Sigma"], ["0"])
+    axis_dynamic_table_data = sc.CreateDynamicTableData([[0, 0, 0, 0, 0]],
+                                                     ["Angle(w)", "Axis (h)", "Axis (k)", "Axis (l)", "Weight (MRD)"],
+                                                     ["0"])
+    err = syntheticbuilding.generate_primary_stats_data(dca, "Primary", 0, 1, 0,
+                               1, 2.3, 0.4, 4, 3, 10.5,
                                True, "StatsGeneratorDataContainer",
                                "CellEnsembleData", False,
                                simpl.DataArrayPath("", "", ""),
-                               simpl.DynamicTableData([simpl.VectorDouble([0, 0, 0, 0, 0])], ["Euler 1", "Euler 2",
-                                                                                              "Euler 3", "Weight",
-                                                                                              "Sigma"], ["0"]),
-                               simpl.DynamicTableData([simpl.VectorDouble([0, 0, 0, 0, 0])], ["Angle(w)", "Axis (h)",
-                                                                                              "Axis (k)", "Axis (l)",
-                                                                                              "Weight (MRD)"], ["0"]),
-                               simpl.DynamicTableData([simpl.VectorDouble([0, 0, 0, 0, 0])], ["Euler 1", "Euler 2",
-                                                                                              "Euler 3", "Weight",
-                                                                                              "Sigma"], ["0"]))
+                               euler_dynamic_table_data,
+                               axis_dynamic_table_data,
+                               euler_dynamic_table_data)
 
     if err < 0:
         print("Primary StatsData ErrorCondition: %d" % err)
 
-    # Initialize Synthetic Volume
-    err = syntheticbuildingpy.initialize_synthetic_volume(dca, "SyntheticVolumeDataContainer", "CellData",
-                                                          "CellEnsembleData", simpl.IntVec3Type(128, 128, 128),
-                                                          simpl.FloatVec3Type(0.5, 0.5, 0.5),
-                                                          simpl.FloatVec3Type(0, 0, 0),
-                                                          simpl.DataArrayPath("StatsGeneratorDataContainer",
-                                                                              "CellEnsembleData", "Statistics"),
-                                                          simpl.DataArrayPath("StatsGeneratorDataContainer",
-                                                                              "CellEnsembleData", "PhaseTypes"),
-                                                          simpl.DataArrayPath("StatsGeneratorDataContainer",
-                                                                              "CellEnsembleData", "PhaseName"),
-                                                          False)
+     # Initialize Synthetic Volume
+    err = syntheticbuilding.initialize_synthetic_volume(dca, "SyntheticVolumeDataContainer", "CellData",
+                                                        "CellEnsembleMatrixName",
+                                                        6,
+                                                        simpl.IntVec3Type([128, 128, 128]),
+                                                        simpl.FloatVec3Type([0.5, 0.5, 0.5]),
+                                                        simpl.FloatVec3Type([0, 0, 0]),
+                                                        simpl.DataArrayPath("StatsGeneratorDataContainer",
+                                                                            "CellEnsembleData", "Statistics"),
+                                                        simpl.DataArrayPath("StatsGeneratorDataContainer",
+                                                                            "CellEnsembleData", "PhaseTypes"),
+                                                        simpl.DataArrayPath("StatsGeneratorDataContainer",
+                                                                            "CellEnsembleData", "PhaseName"),
+                                                        False)
     if err < 0:
         print("InitializeSyntheticVolume ErrorCondition: %d" % err)
 
     # Establish Shape Types
-    err = syntheticbuildingpy.establish_shape_types(dca,
+    err = syntheticbuilding.establish_shape_types(dca,
                                                     simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                         "CellEnsembleData", "PhaseTypes"),
                                                     "ShapeTypes", [simpl.ShapeType.Ellipsoid])
@@ -59,7 +60,7 @@ def insert_transformation_phase():
         print("EstablishShapeTypes ErrorCondition: %d" % err)
 
     # Pack Primary Phases
-    err = syntheticbuildingpy.pack_primary_phases(dca,
+    err = syntheticbuilding.pack_primary_phases(dca,
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer", "CellData",
                                                                       ""),
                                                   "CellFeatureData", "CellEnsembleData", "FeatureIds", "Phases",
@@ -89,7 +90,7 @@ def insert_transformation_phase():
         print("FindNeighbors ErrorCondition: %d" % err)
 
     # Match Crystallography
-    err = syntheticbuildingpy.match_crystallography(dca, simpl.DataArrayPath("StatsGeneratorDataContainer",
+    err = syntheticbuilding.match_crystallography(dca, simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                              "CellEnsembleData", "Statistics"),
                                                     simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                         "CellEnsembleData", "CrystalStructures"),
@@ -133,7 +134,7 @@ def insert_transformation_phase():
     # Possible enums: trans_crystal_struct
     # May want to use a "dictionary" for the numerical portion in helper function
     err = transformationphasepy.insert_transformation_phases(dca,
-                                                             1, 1, 60, simpl.FloatVec3Type(1, 1, 1), True, True, 1, 0.2, 1,
+                                                             1, 1, 60, simpl.FloatVec3Type([1, 1, 1]), True, True, 1, 0.2, 1,
                                                              0,
                                                              simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                                  "CellEnsembleData", ""),
@@ -187,7 +188,7 @@ def insert_transformation_phase():
                           ("SyntheticVolumeDataContainer", "CellFeatureData", "Volumes2")])
 
     # Generate IPF Colors
-    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
+    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3Type([0, 0, 1]),
                                                     simpl.DataArrayPath("SyntheticVolumeDataContainer",
                                                                         "CellData", "Phases"),
                                                     simpl.DataArrayPath("SyntheticVolumeDataContainer",
