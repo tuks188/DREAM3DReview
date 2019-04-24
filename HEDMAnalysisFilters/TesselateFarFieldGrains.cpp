@@ -57,6 +57,7 @@
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -322,18 +323,18 @@ void TesselateFarFieldGrains::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Feature Ids", FeatureIdsArrayName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Phases", CellPhasesArrayName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Feature Ids", FeatureIdsArrayName, OutputCellAttributeMatrixName, OutputCellAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Phases", CellPhasesArrayName, OutputCellAttributeMatrixName, OutputCellAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Feature Attribute Matrix", OutputCellFeatureAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Phases", FeaturePhasesArrayName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Average Euler Angles", FeatureEulerAnglesArrayName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Elastic Strains", ElasticStrainsArrayName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Feature Attribute Matrix", OutputCellFeatureAttributeMatrixName, OutputCellAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Phases", FeaturePhasesArrayName, OutputCellAttributeMatrixName, OutputCellFeatureAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Average Euler Angles", FeatureEulerAnglesArrayName, OutputCellAttributeMatrixName, OutputCellFeatureAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Elastic Strains", ElasticStrainsArrayName, OutputCellAttributeMatrixName, OutputCellFeatureAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Ensemble Attribute Matrix", OutputCellEnsembleAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Crystal Structures", CrystalStructuresArrayName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Ensemble Attribute Matrix", OutputCellEnsembleAttributeMatrixName, OutputCellAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Crystal Structures", CrystalStructuresArrayName, OutputCellAttributeMatrixName, OutputCellEnsembleAttributeMatrixName, FilterParameter::CreatedArray, TesselateFarFieldGrains));
 
   setFilterParameters(parameters);
 }
