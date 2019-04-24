@@ -51,6 +51,7 @@
 #include "SIMPLib/Math/GeometryMath.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
@@ -260,8 +261,8 @@ void FindCSLBoundaries::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Face Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("CSL Boundary", SurfaceMeshCSLBoundaryArrayName, FilterParameter::CreatedArray, FindCSLBoundaries));
-  parameters.push_back(SIMPL_NEW_STRING_FP("CSL Boundary Incoherence", SurfaceMeshCSLBoundaryIncoherenceArrayName, FilterParameter::CreatedArray, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("CSL Boundary", SurfaceMeshCSLBoundaryArrayName, SurfaceMeshFaceLabelsArrayPath, SurfaceMeshFaceLabelsArrayPath, FilterParameter::CreatedArray, FindCSLBoundaries));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("CSL Boundary Incoherence", SurfaceMeshCSLBoundaryIncoherenceArrayName, SurfaceMeshFaceLabelsArrayPath, SurfaceMeshFaceLabelsArrayPath, FilterParameter::CreatedArray, FindCSLBoundaries));
   setFilterParameters(parameters);
 }
 // -----------------------------------------------------------------------------

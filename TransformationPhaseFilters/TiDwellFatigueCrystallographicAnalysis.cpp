@@ -45,6 +45,7 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -192,16 +193,16 @@ void TiDwellFatigueCrystallographicAnalysis::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Parent Ids", CellParentIdsArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Parent Ids", CellParentIdsArrayName, FeatureIdsArrayPath, FeatureIdsArrayPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Feature Attribute Matrix", NewCellFeatureAttributeMatrixName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Selected Features", SelectedFeaturesArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Initiators", InitiatorsArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Hard Features", HardFeaturesArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Soft Features", SoftFeaturesArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Hard-Soft Groups", HardSoftGroupsArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Parent Ids", FeatureParentIdsArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Feature Attribute Matrix", NewCellFeatureAttributeMatrixName, FeatureIdsArrayPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Selected Features", SelectedFeaturesArrayName, CellFeatureAttributeMatrixPath, CellFeatureAttributeMatrixPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Initiators", InitiatorsArrayName, CellFeatureAttributeMatrixPath, CellFeatureAttributeMatrixPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Hard Features", HardFeaturesArrayName, CellFeatureAttributeMatrixPath, CellFeatureAttributeMatrixPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Soft Features", SoftFeaturesArrayName, CellFeatureAttributeMatrixPath, CellFeatureAttributeMatrixPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Hard-Soft Groups", HardSoftGroupsArrayName, CellFeatureAttributeMatrixPath, CellFeatureAttributeMatrixPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Parent Ids", FeatureParentIdsArrayName, CellFeatureAttributeMatrixPath, CellFeatureAttributeMatrixPath, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
 
   //parameters.push_back(SIMPL_NEW_STRING_FP("Active", ActiveArrayName, FilterParameter::CreatedArray, TiDwellFatigueCrystallographicAnalysis));
   setFilterParameters(parameters);
