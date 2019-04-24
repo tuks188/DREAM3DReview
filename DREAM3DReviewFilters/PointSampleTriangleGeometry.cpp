@@ -47,6 +47,7 @@
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -134,7 +135,7 @@ void PointSampleTriangleGeometry::setupFilterParameters()
   mdaReq.dcGeometryTypes = geomTypes;
   parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Transfer", SelectedDataArrayPaths, FilterParameter::RequiredArray, PointSampleTriangleGeometry, mdaReq));
   parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Geometry", VertexGeometry, FilterParameter::CreatedArray, PointSampleTriangleGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName, FilterParameter::CreatedArray, PointSampleTriangleGeometry));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName, VertexGeometry, FilterParameter::CreatedArray, PointSampleTriangleGeometry));
   setFilterParameters(parameters);
 }
 

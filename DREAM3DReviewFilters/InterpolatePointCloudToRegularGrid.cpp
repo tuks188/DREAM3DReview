@@ -22,6 +22,7 @@
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -127,8 +128,8 @@ void InterpolatePointCloudToRegularGrid::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Copy", ArraysToCopy, FilterParameter::RequiredArray, InterpolatePointCloudToRegularGrid, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Interpolated Attribute Matrix", InterpolatedAttributeMatrixName, FilterParameter::CreatedArray, InterpolatePointCloudToRegularGrid));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Kernel Distances", KernelDistancesArrayName, FilterParameter::CreatedArray, InterpolatePointCloudToRegularGrid));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Interpolated Attribute Matrix", InterpolatedAttributeMatrixName, InterpolatedDataContainerName, FilterParameter::CreatedArray, InterpolatePointCloudToRegularGrid));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Kernel Distances", KernelDistancesArrayName, InterpolatedDataContainerName, InterpolatedAttributeMatrixName, FilterParameter::CreatedArray, InterpolatePointCloudToRegularGrid));
   setFilterParameters(parameters);
 }
 

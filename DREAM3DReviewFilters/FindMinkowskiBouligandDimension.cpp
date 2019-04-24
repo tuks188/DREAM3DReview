@@ -18,6 +18,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
@@ -60,8 +61,8 @@ void FindMinkowskiBouligandDimension::setupFilterParameters()
   FilterParameterVectorType parameters;
   DataArraySelectionFilterParameter::RequirementType dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, FindMinkowskiBouligandDimension, dasReq));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Fractal Attribute Matrix", AttributeMatrixName, FilterParameter::CreatedArray, FindMinkowskiBouligandDimension));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Minkowski-Bouligand Dimension", MinkowskiBouligandDimensionArrayName, FilterParameter::CreatedArray, FindMinkowskiBouligandDimension));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Fractal Attribute Matrix", AttributeMatrixName, MaskArrayPath, FilterParameter::CreatedArray, FindMinkowskiBouligandDimension));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Minkowski-Bouligand Dimension", MinkowskiBouligandDimensionArrayName, MaskArrayPath, AttributeMatrixName, FilterParameter::CreatedArray, FindMinkowskiBouligandDimension));
   setFilterParameters(parameters);
 }
 

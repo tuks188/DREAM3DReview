@@ -21,6 +21,7 @@
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
@@ -103,11 +104,11 @@ void SliceTriangleGeometry::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Region Ids", RegionIdArrayPath, FilterParameter::RequiredArray, SliceTriangleGeometry, req));
   }
   parameters.push_back(SIMPL_NEW_STRING_FP("Slice Geometry", SliceDataContainerName, FilterParameter::CreatedArray, SliceTriangleGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Edge Attribute Matrix", EdgeAttributeMatrixName, FilterParameter::CreatedArray, SliceTriangleGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Slice Ids", SliceIdArrayName, FilterParameter::CreatedArray, SliceTriangleGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Slice Attribute Matrix", SliceAttributeMatrixName, FilterParameter::CreatedArray, SliceTriangleGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Areas", AreasArrayName, FilterParameter::CreatedArray, SliceTriangleGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Perimeters", PerimetersArrayName, FilterParameter::CreatedArray, SliceTriangleGeometry));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Edge Attribute Matrix", EdgeAttributeMatrixName, SliceDataContainerName, FilterParameter::CreatedArray, SliceTriangleGeometry));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Slice Ids", SliceIdArrayName, SliceDataContainerName, EdgeAttributeMatrixName, FilterParameter::CreatedArray, SliceTriangleGeometry));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Slice Attribute Matrix", SliceAttributeMatrixName, SliceDataContainerName, FilterParameter::CreatedArray, SliceTriangleGeometry));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Areas", AreasArrayName, SliceDataContainerName, SliceAttributeMatrixName, FilterParameter::CreatedArray, SliceTriangleGeometry));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Perimeters", PerimetersArrayName, SliceDataContainerName, SliceAttributeMatrixName, FilterParameter::CreatedArray, SliceTriangleGeometry));
   setFilterParameters(parameters);
 }
 

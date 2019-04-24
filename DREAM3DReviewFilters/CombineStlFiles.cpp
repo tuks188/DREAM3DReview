@@ -17,6 +17,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -64,8 +65,8 @@ void CombineStlFiles::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Path to STL Files", StlFilesPath, FilterParameter::Parameter, CombineStlFiles, "", ""));
   parameters.push_back(SIMPL_NEW_STRING_FP("Data Container", TriangleDataContainerName, FilterParameter::CreatedArray, CombineStlFiles));
   parameters.push_back(SeparatorFilterParameter::New("Face Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Face Attribute Matrix", FaceAttributeMatrixName, FilterParameter::CreatedArray, CombineStlFiles));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Face Normals", FaceNormalsArrayName, FilterParameter::CreatedArray, CombineStlFiles));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Face Attribute Matrix", FaceAttributeMatrixName, TriangleDataContainerName, FilterParameter::CreatedArray, CombineStlFiles));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Face Normals", FaceNormalsArrayName, TriangleDataContainerName, FaceAttributeMatrixName, FilterParameter::CreatedArray, CombineStlFiles));
   setFilterParameters(parameters);
 }
 

@@ -18,6 +18,7 @@
 #include "SIMPLib/Common/Constants.h"
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
@@ -63,11 +64,11 @@ void ImportCLIFile::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("CLI File", CLIFile, FilterParameter::Parameter, ImportCLIFile, "*.cli"));
   parameters.push_back(SIMPL_NEW_STRING_FP("Edge Data Container", EdgeDataContainerName, FilterParameter::CreatedArray, ImportCLIFile));
   parameters.push_back(SeparatorFilterParameter::New("Vertex Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName, FilterParameter::CreatedArray, ImportCLIFile));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName, EdgeDataContainerName, FilterParameter::CreatedArray, ImportCLIFile));
   parameters.push_back(SeparatorFilterParameter::New("Edge Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Edge Attribute Matrix", EdgeAttributeMatrixName, FilterParameter::CreatedArray, ImportCLIFile));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Layer Ids", LayerIdsArrayName, FilterParameter::CreatedArray, ImportCLIFile));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Feature Ids", FeatureIdsArrayName, FilterParameter::CreatedArray, ImportCLIFile));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Edge Attribute Matrix", EdgeAttributeMatrixName, EdgeDataContainerName, FilterParameter::CreatedArray, ImportCLIFile));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Layer Ids", LayerIdsArrayName, EdgeDataContainerName, EdgeAttributeMatrixName, FilterParameter::CreatedArray, ImportCLIFile));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Feature Ids", FeatureIdsArrayName, EdgeDataContainerName, EdgeAttributeMatrixName, FilterParameter::CreatedArray, ImportCLIFile));
   setFilterParameters(parameters);
 }
 

@@ -42,6 +42,7 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 #include "util/ClusteringAlgorithms/KMeansTemplate.hpp"
@@ -105,9 +106,9 @@ void KMeans::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Cluster", SelectedArrayPath, FilterParameter::RequiredArray, KMeans, dasReq));
   dasReq = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, KMeans, dasReq));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cluster Ids", FeatureIdsArrayName, FilterParameter::CreatedArray, KMeans));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cluster Attribute Matrix", FeatureAttributeMatrixName, FilterParameter::CreatedArray, KMeans));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cluster Means", MeansArrayName, FilterParameter::CreatedArray, KMeans));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Cluster Ids", FeatureIdsArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::CreatedArray, KMeans));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cluster Attribute Matrix", FeatureAttributeMatrixName, SelectedArrayPath, FilterParameter::CreatedArray, KMeans));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Cluster Means", MeansArrayName, SelectedArrayPath, FeatureAttributeMatrixName, FilterParameter::CreatedArray, KMeans));
   setFilterParameters(parameters);
 }
 

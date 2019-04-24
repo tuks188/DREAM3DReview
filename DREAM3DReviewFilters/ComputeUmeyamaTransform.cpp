@@ -39,6 +39,7 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
@@ -91,8 +92,8 @@ void ComputeUmeyamaTransform::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Moving Geometry", SourcePointSet, FilterParameter::RequiredArray, ComputeUmeyamaTransform, dcReq));
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Fixed Geometry", DestPointSet, FilterParameter::RequiredArray, ComputeUmeyamaTransform, dcReq));
   parameters.push_back(SeparatorFilterParameter::New("Transformation Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Transformation Attribute Matrix", TransformationAttributeMatrixName, FilterParameter::CreatedArray, ComputeUmeyamaTransform));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Transformation Matrix", TransformationMatrixName, FilterParameter::CreatedArray, ComputeUmeyamaTransform));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Transformation Attribute Matrix", TransformationAttributeMatrixName, SourcePointSet, FilterParameter::CreatedArray, ComputeUmeyamaTransform));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Transformation Matrix", TransformationMatrixName, SourcePointSet, TransformationAttributeMatrixName, FilterParameter::CreatedArray, ComputeUmeyamaTransform));
   setFilterParameters(parameters);
 }
 
