@@ -717,12 +717,11 @@ void TesselateFarFieldGrains::load_features()
 
   int slabCount = 0;
   size_t currentFeature = 1;
-  size_t xDim, yDim, zDim;
-  float xRes, yRes, zRes;
-  std::tie(xDim, yDim, zDim) = m->getGeometryAs<ImageGeom>()->getDimensions();
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
-  float xShift = xRes * float(xDim / 2.0);
-  float yShift = yRes * float(yDim / 2.0);
+
+  SizeVec3Type dims = m->getGeometryAs<ImageGeom>()->getDimensions();
+  FloatVec3Type spacing = m->getGeometryAs<ImageGeom>()->getSpacing();
+  float xShift = spacing[0] * float(dims[0] / 2.0f);
+  float yShift = spacing[1] * float(dims[1] / 2.0f);
   for(QVector<QString>::iterator filepath = fileList.begin(); filepath != fileList.end(); ++filepath)
   {
     slabCount++;
@@ -896,8 +895,7 @@ void TesselateFarFieldGrains::assign_voxels()
 
   int64_t totalPoints = m->getAttributeMatrix(m_OutputCellAttributeMatrixName.getAttributeMatrixName())->getNumberOfTuples();
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   int64_t dims[3] = {
       static_cast<int64_t>(udims[0]), static_cast<int64_t>(udims[1]), static_cast<int64_t>(udims[2]),
@@ -914,11 +912,7 @@ void TesselateFarFieldGrains::assign_voxels()
 
   int64_t xmin, xmax, ymin, ymax, zmin, zmax;
 
-  float xRes = 0.0f;
-  float yRes = 0.0f;
-  float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
-  FloatVec3Type res = {xRes, yRes, zRes};
+  FloatVec3Type spacing = m->getGeometryAs<ImageGeom>()->getSpacing();
 
   Int32ArrayType::Pointer newownersPtr = Int32ArrayType::CreateArray(totalPoints, "newowners");
   newownersPtr->initializeWithValue(-1);
@@ -974,15 +968,15 @@ void TesselateFarFieldGrains::assign_voxels()
     FOrientArrayType om(9, 0.0);
     FOrientTransformsType::eu2om(FOrientArrayType(&(m_AxisEulerAngles[3 * i]), 3), om);
     om.toGMatrix(ga);
-    column = static_cast<int64_t>(xc / xRes);
-    row = static_cast<int64_t>(yc / yRes);
-    plane = static_cast<int64_t>(zc / zRes);
-    xmin = int(column - ((radcur1 / xRes) + 1));
-    xmax = int(column + ((radcur1 / xRes) + 1));
-    ymin = int(row - ((radcur1 / yRes) + 1));   // <======================
-    ymax = int(row + ((radcur1 / yRes) + 1));   // <======================
-    zmin = int(plane - ((radcur1 / zRes) + 1)); // <======================
-    zmax = int(plane + ((radcur1 / zRes) + 1)); // <======================
+    column = static_cast<int64_t>(xc / spacing[0]);
+    row = static_cast<int64_t>(yc / spacing[1]);
+    plane = static_cast<int64_t>(zc / spacing[2]);
+    xmin = int(column - ((radcur1 / spacing[0]) + 1));
+    xmax = int(column + ((radcur1 / spacing[0]) + 1));
+    ymin = int(row - ((radcur1 / spacing[1]) + 1));   // <======================
+    ymax = int(row + ((radcur1 / spacing[1]) + 1));   // <======================
+    zmin = int(plane - ((radcur1 / spacing[2]) + 1)); // <======================
+    zmax = int(plane + ((radcur1 / spacing[2]) + 1)); // <======================
 
     if(xmin < 0)
     {
@@ -1017,12 +1011,12 @@ void TesselateFarFieldGrains::assign_voxels()
     if(doParallel)
     {
       tbb::parallel_for(tbb::blocked_range3d<int, int, int>(zmin, zmax + 1, ymin, ymax + 1, xmin, xmax + 1),
-                        AssignVoxelsImpl(dims, res.data(), radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr), tbb::auto_partitioner());
+                        AssignVoxelsImpl(dims, spacing.data(), radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr), tbb::auto_partitioner());
     }
     else
 #endif
     {
-      AssignVoxelsImpl serial(dims, res.data(), radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr);
+      AssignVoxelsImpl serial(dims, spacing.data(), radCur, xx, m_EllipsoidOps, ga, size, i, newownersPtr, ellipfuncsPtr);
       serial.convert(zmin, zmax + 1, ymin, ymax + 1, xmin, xmax + 1);
     }
   }
