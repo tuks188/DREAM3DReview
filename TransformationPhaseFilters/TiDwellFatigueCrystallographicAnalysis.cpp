@@ -602,21 +602,13 @@ bool TiDwellFatigueCrystallographicAnalysis::determine_subsurfacefeatures(int in
 {
   // using feature euler angles simply because it's available
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_FeatureEulerAnglesArrayPath.getDataContainerName());
-  float xOrigin = 0.0f;
-  float yOrigin = 0.0f;
-  float zOrigin = 0.0f;
-  std::tie(xOrigin, yOrigin, zOrigin) = m->getGeometryAs<ImageGeom>()->getOrigin();
+  FloatVec3Type origin = m->getGeometryAs<ImageGeom>()->getOrigin();
 
   bool subsurfaceFlag = false;
 
-  int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
-  int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
-  int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
-  float xRes = 0.0f;
-  float yRes = 0.0f;
-  float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
-  float xyzScaledDimension[3] = {xOrigin + xPoints * xRes, yOrigin + yPoints * yRes, zOrigin + zPoints * zRes};
+  SizeVec3Type dims = m->getGeometryAs<ImageGeom>()->getDimensions();
+  FloatVec3Type spacing = m->getGeometryAs<ImageGeom>()->getSpacing();
+  FloatVec3Type xyzScaledDimension(origin[0] + dims[0] * spacing[0], origin[1] + dims[1] * spacing[1], origin[2] + dims[2] * spacing[2]);
 
   // check if current feature centroid is within the subsurface defined centroid
   if ( m_Centroids[3 * index + 0] >= m_SubsurfaceDistance && m_Centroids[3 * index + 0] <= (xyzScaledDimension[0] - m_SubsurfaceDistance)

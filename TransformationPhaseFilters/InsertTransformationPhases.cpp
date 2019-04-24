@@ -539,13 +539,16 @@ void InsertTransformationPhases::insertTransformationPhases()
   QVector<size_t> tDims(1, 1);
 
   // find the minimum resolution
-  float xRes = 0.0f;
-  float yRes = 0.0f;
-  float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
-  float minRes = xRes;
-  if (minRes > yRes) { minRes = yRes; }
-  if (minRes > zRes) { minRes = zRes; }
+  FloatVec3Type spacing = m->getGeometryAs<ImageGeom>()->getSpacing();
+  float minRes = spacing[0];
+  if(minRes > spacing[1])
+  {
+    minRes = spacing[1];
+  }
+  if(minRes > spacing[2])
+  {
+    minRes = spacing[2];
+  }
 
   float sampleHabitPlane[3] = {0.0f};
   // NOTE: incoherent habit planes e[-20,20] & are ints
@@ -564,7 +567,7 @@ void InsertTransformationPhases::insertTransformationPhases()
   size_t numTransformationPhases = 0;
   bool createdTransformationPhase = false;
 
-  float voxelDiagonal = sqrtf(xRes * xRes + yRes * yRes + zRes * zRes);
+  float voxelDiagonal = sqrtf(spacing[0] * spacing[0] + spacing[1] * spacing[1] + spacing[2] * spacing[2]);
 
   for (size_t curFeature = 1; curFeature < numFeatures; ++curFeature)
   {
@@ -781,10 +784,7 @@ bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature,
   int xPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getXPoints());
   int yPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getYPoints());
   int zPoints = static_cast<int>(m->getGeometryAs<ImageGeom>()->getZPoints());
-  float xRes = 0.0f;
-  float yRes = 0.0f;
-  float zRes = 0.0f;
-  std::tie(xRes, yRes, zRes) = m->getGeometryAs<ImageGeom>()->getSpacing();
+  FloatVec3Type spacing = m->getGeometryAs<ImageGeom>()->getSpacing();
   bool flag = false;
   float x, y, z, D;
   bool firstVoxel = true;
@@ -800,9 +800,9 @@ bool InsertTransformationPhases::placeTransformationPhase(int32_t curFeature,
       for(int k = 0; k < xPoints; k++)
       {
         int32_t gnum = m_FeatureIds[zStride + yStride + k];
-        x = float(k) * xRes;
-        y = float(j) * yRes;
-        z = float(i) * zRes;
+        x = float(k) * spacing[0];
+        y = float(j) * spacing[1];
+        z = float(i) * spacing[2];
 
         // if the grain IDs match...
         if (gnum == curFeature)
