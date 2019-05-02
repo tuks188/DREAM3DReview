@@ -146,8 +146,7 @@ void LabelTriangleGeometry::execute()
 
   int64_t* tris = triangle->getTriPointer(0);
   float* triVerts = triangle->getVertexPointer(0);
-  int64_t numTris = triangle->getNumberOfTris();
-  // int64_t numTriVerts = triangle->getNumberOfVertices();
+  size_t numTris = triangle->getNumberOfTris();
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCADDataContainerName());
 
