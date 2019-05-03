@@ -248,7 +248,7 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
 {
   TriangleGeom::Pointer triangle = getDataContainerArray()->getDataContainer(m_NodeTypesArrayPath.getDataContainerName())->getGeometryAs<TriangleGeom>();
   float* triVerts = triangle->getVertexPointer(0);
-  int64_t numVerts = triangle->getNumberOfVertices();
+  MeshIndexType numVerts = triangle->getNumberOfVertices();
 
   if(!triangle->getEdges())
   {
@@ -256,10 +256,10 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
   }
 
   SharedEdgeList::Pointer edges = triangle->getEdges();
-  int64_t numEdges = triangle->getNumberOfEdges();
-  int64_t* edgePtr = edges->getPointer(0);
+  MeshIndexType numEdges = triangle->getNumberOfEdges();
+  MeshIndexType* edgePtr = edges->getPointer(0);
   ElementDynamicList::Pointer edgesContainingVert = ElementDynamicList::New();
-  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(edges, edgesContainingVert, numVerts);
+  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, MeshIndexType>(edges, edgesContainingVert, numVerts);
 
   VertexMap vertexMap;
   EdgeMap edgeMap;
@@ -269,8 +269,8 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
   tmpVerts.reserve(numVerts);
   tmpEdges.reserve(numEdges);
   tmpNodeTypes.reserve(numVerts);
-  int64_t vertCounter = 0;
-  int64_t edgeCounter = 0;
+  MeshIndexType vertCounter = 0;
+  MeshIndexType edgeCounter = 0;
   float minExtents[3] = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
   float maxExtents[3] = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()};
 
@@ -333,14 +333,14 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
   int64_t prog = 1;
   int64_t progressInt = 0;
 
-  for(int64_t i = 0; i < numVerts; i++)
+  for(MeshIndexType i = 0; i < numVerts; i++)
   {
     if(m_NodeTypes[i] == 12)
     {
       if(checkBoxEdge(minExtents, maxExtents, triVerts + (3 * i)))
       {
         uint16_t numEdgesToVert = edgesContainingVert->getNumberOfElements(i);
-        int64_t* edgesAtVert = edgesContainingVert->getElementListPointer(i);
+        MeshIndexType* edgesAtVert = edgesContainingVert->getElementListPointer(i);
 
         Vertex tmpCoords0 = {triVerts[3 * i + 0], triVerts[3 * i + 1], triVerts[3 * i + 2]};
         auto iter = vertexMap.find(tmpCoords0);
@@ -405,7 +405,7 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
     if(m_NodeTypes[i] == 3 || m_NodeTypes[i] == 4 || m_NodeTypes[i] == 13 || m_NodeTypes[i] == 14)
     {
       uint16_t numEdgesToVert = edgesContainingVert->getNumberOfElements(i);
-      int64_t* edgesAtVert = edgesContainingVert->getElementListPointer(i);
+      MeshIndexType* edgesAtVert = edgesContainingVert->getElementListPointer(i);
 
       Vertex tmpCoords0 = {triVerts[3 * i + 0], triVerts[3 * i + 1], triVerts[3 * i + 2]};
       auto iter = vertexMap.find(tmpCoords0);
@@ -477,21 +477,21 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
   tripleLineEdge->resizeEdgeList(tmpEdges.size());
   tripleLineEdge->resizeVertexList(tmpVerts.size());
   float* tripleLineVerts = tripleLineEdge->getVertexPointer(0);
-  int64_t* tripleLineEdges = tripleLineEdge->getEdgePointer(0);
-  int64_t numTripleLineVerts = tripleLineEdge->getNumberOfVertices();
-  int64_t numTripleLineEdges = tripleLineEdge->getNumberOfEdges();
+  MeshIndexType* tripleLineEdges = tripleLineEdge->getEdgePointer(0);
+  MeshIndexType numTripleLineVerts = tripleLineEdge->getNumberOfVertices();
+  MeshIndexType numTripleLineEdges = tripleLineEdge->getNumberOfEdges();
 
   QString ss = QObject::tr("Building Edge Geoemetry...");
   notifyStatusMessage(ss);
 
-  for(int64_t i = 0; i < numTripleLineVerts; i++)
+  for(MeshIndexType i = 0; i < numTripleLineVerts; i++)
   {
     tripleLineVerts[3 * i + 0] = tmpVerts[i][0];
     tripleLineVerts[3 * i + 1] = tmpVerts[i][1];
     tripleLineVerts[3 * i + 2] = tmpVerts[i][2];
   }
 
-  for(int64_t i = 0; i < numTripleLineEdges; i++)
+  for(MeshIndexType i = 0; i < numTripleLineEdges; i++)
   {
     tripleLineEdges[2 * i + 0] = tmpEdges[i][0];
     tripleLineEdges[2 * i + 1] = tmpEdges[i][1];
@@ -511,18 +511,18 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void burnVertices(std::vector<int64_t> vertsToBurn, int64_t seedVert, std::unordered_set<int64_t>& burnedVerts, int64_t& vertCounter, int64_t& edgeCounter, float* vertPtr, int64_t* edgePtr,
-                  int8_t* nodeTypes, ElementDynamicList::Pointer edgesContainingVert, VertexMap& vertexMap, EdgeMap& edgeMap, std::vector<Vertex>& tmpVerts, std::vector<Edge>& tmpEdges,
-                  std::vector<int8_t>& tmpNodeTypes, AbstractFilter* filter)
+void burnVertices(std::vector<MeshIndexType> vertsToBurn, MeshIndexType seedVert, std::unordered_set<MeshIndexType>& burnedVerts, MeshIndexType& vertCounter, MeshIndexType& edgeCounter,
+                  float* vertPtr, MeshIndexType* edgePtr, int8_t* nodeTypes, ElementDynamicList::Pointer edgesContainingVert, VertexMap& vertexMap, EdgeMap& edgeMap, std::vector<Vertex>& tmpVerts,
+                  std::vector<Edge>& tmpEdges, std::vector<int8_t>& tmpNodeTypes, AbstractFilter* filter)
 {
   if(vertsToBurn.empty())
   {
     return;
   }
 
-  std::vector<int64_t> chain;
-  int64_t startVert = 0;
-  int64_t endVert = 0;
+  std::vector<MeshIndexType> chain;
+  MeshIndexType startVert = 0;
+  MeshIndexType endVert = 0;
   for(auto vert : vertsToBurn)
   {
     burnedVerts.insert(vert);
@@ -538,7 +538,7 @@ void burnVertices(std::vector<int64_t> vertsToBurn, int64_t seedVert, std::unord
     }
 
     uint16_t numEdgesToVert = edgesContainingVert->getNumberOfElements(vert);
-    int64_t* edgesAtVert = edgesContainingVert->getElementListPointer(vert);
+    MeshIndexType* edgesAtVert = edgesContainingVert->getElementListPointer(vert);
     for(uint16_t i = 0; i < numEdgesToVert; i++)
     {
       startVert = vert;
@@ -584,38 +584,36 @@ void burnVertices(std::vector<int64_t> vertsToBurn, int64_t seedVert, std::unord
         {
           continue;
         }
-        else
+
+        Vertex tailVert = {vertPtr[3 * endVert + 0], vertPtr[3 * endVert + 1], vertPtr[3 * endVert + 2]};
+        auto titer = vertexMap.find(tailVert);
+        if(titer == vertexMap.end())
         {
-          Vertex tailVert = {vertPtr[3 * endVert + 0], vertPtr[3 * endVert + 1], vertPtr[3 * endVert + 2]};
-          auto titer = vertexMap.find(tailVert);
-          if(titer == vertexMap.end())
-          {
-            tmpVerts.push_back(tailVert);
-            tmpNodeTypes.push_back(nodeTypes[endVert]);
-            vertexMap[tailVert] = vertCounter;
-            vertCounter++;
-          }
+          tmpVerts.push_back(tailVert);
+          tmpNodeTypes.push_back(nodeTypes[endVert]);
+          vertexMap[tailVert] = vertCounter;
+          vertCounter++;
+        }
 
-          int64_t head = vertexMap[headVert];
-          int64_t tail = vertexMap[tailVert];
-          if(head > tail)
-          {
-            std::swap(head, tail);
-          }
+        int64_t head = vertexMap[headVert];
+        int64_t tail = vertexMap[tailVert];
+        if(head > tail)
+        {
+          std::swap(head, tail);
+        }
 
-          Edge tmpEdge = {head, tail};
-          auto eiter = edgeMap.find(tmpEdge);
-          if(eiter == edgeMap.end())
-          {
-            tmpEdges.push_back(tmpEdge);
-            edgeMap[tmpEdge] = edgeCounter;
-            edgeCounter++;
-          }
+        Edge tmpEdge = {head, tail};
+        auto eiter = edgeMap.find(tmpEdge);
+        if(eiter == edgeMap.end())
+        {
+          tmpEdges.push_back(tmpEdge);
+          edgeMap[tmpEdge] = edgeCounter;
+          edgeCounter++;
+        }
 
-          if(!(nodeTypes[endVert] == 4 || nodeTypes[endVert] == 14))
-          {
-            chain.push_back(endVert);
-          }
+        if(!(nodeTypes[endVert] == 4 || nodeTypes[endVert] == 14))
+        {
+          chain.push_back(endVert);
         }
       }
     }
@@ -635,7 +633,7 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   EdgeGeom::Pointer tripleLineEdge = getDataContainerArray()->getDataContainer(m_EdgeGeometry)->getGeometryAs<EdgeGeom>();
   tripleLineEdge->findElementsContainingVert();
   float* vertPtr = tripleLineEdge->getVertexPointer(0);
-  int64_t* edgePtr = tripleLineEdge->getEdgePointer(0);
+  MeshIndexType* edgePtr = tripleLineEdge->getEdgePointer(0);
   ElementDynamicList::Pointer edgesContainingVert = tripleLineEdge->getElementsContainingVert();
   int64_t numVerts = tripleLineEdge->getNumberOfVertices();
 
@@ -645,10 +643,10 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   std::vector<Edge> tmpEdges;
   std::vector<int8_t> tmpNodeTypes;
   std::vector<int32_t> tmpTripleLineIds;
-  int64_t vertCounter = 0;
-  int64_t edgeCounter = 0;
+  MeshIndexType vertCounter = 0;
+  MeshIndexType edgeCounter = 0;
   // int32_t tripleLineCounter = 1;
-  int64_t seedVert = -1;
+  MeshIndexType seedVert = -1;
 
   // for(int64_t i = 0; i < numVerts; i++)
   //{
@@ -682,7 +680,7 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
 
   float minExtents[3] = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
   float maxExtents[3] = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()};
-  for(int64_t i = 0; i < numVerts; i++)
+  for(MeshIndexType i = 0; i < numVerts; i++)
   {
     if(vertPtr[3 * i + 0] < minExtents[0])
     {
@@ -717,8 +715,8 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   vertCounter++;
 
   uint16_t numEdgesToVert = edgesContainingVert->getNumberOfElements(seedVert);
-  int64_t* edgesAtVert = edgesContainingVert->getElementListPointer(seedVert);
-  std::unordered_set<int64_t> burnedVerts;
+  MeshIndexType* edgesAtVert = edgesContainingVert->getElementListPointer(seedVert);
+  std::unordered_set<MeshIndexType> burnedVerts;
 
   for(uint16_t i = 0; i < numEdgesToVert; i++)
   {
@@ -730,14 +728,14 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   std::mt19937 gen(rd());
   std::uniform_int_distribution<> dis(0, numEdgesToVert - 1);
   uint16_t idx = dis(gen);
-  int64_t begin = (edgePtr[2 * edgesAtVert[idx] + 0] != seedVert) ? edgePtr[2 * edgesAtVert[idx] + 0] : edgePtr[2 * edgesAtVert[idx] + 1];
+  MeshIndexType begin = (edgePtr[2 * edgesAtVert[idx] + 0] != seedVert) ? edgePtr[2 * edgesAtVert[idx] + 0] : edgePtr[2 * edgesAtVert[idx] + 1];
 
   Edge tmpEdge = {0, 1};
   tmpEdges.push_back(tmpEdge);
   edgeMap[tmpEdge] = edgeCounter;
   edgeCounter++;
 
-  std::vector<int64_t> vertsToBurn = {begin};
+  std::vector<MeshIndexType> vertsToBurn = {begin};
 
   burnVertices(vertsToBurn, seedVert, burnedVerts, vertCounter, edgeCounter, vertPtr, edgePtr, m_TripleLineNodeTypes, edgesContainingVert, vertexMap, edgeMap, tmpVerts, tmpEdges, tmpNodeTypes, this);
 
@@ -751,7 +749,7 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
 
   std::vector<float> smoothPoints = computeBsplineInterpolation(controlPoints, 0, 1);
   VertexGeom::Pointer vertex = VertexGeom::CreateGeometry(smoothPoints.size() / 3, SIMPL::Geometry::VertexGeometry);
-  int64_t smoothNumVerts = vertex->getNumberOfVertices();
+  MeshIndexType smoothNumVerts = vertex->getNumberOfVertices();
   float* smoothPtr = vertex->getVertexPointer(0);
   std::memcpy(smoothPtr, smoothPoints.data(), sizeof(float) * smoothNumVerts * 3);
   DataContainer::Pointer dc = DataContainer::New("TEST_SMOOTHING");

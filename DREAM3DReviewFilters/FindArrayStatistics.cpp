@@ -259,7 +259,7 @@ void FindArrayStatistics::dataCheck()
   if(m_FindLength)
   {
     DataArrayPath path(getDestinationAttributeMatrix().getDataContainerName(), getDestinationAttributeMatrix().getAttributeMatrixName(), getLengthArrayName());
-    m_LengthPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, path, 0, cDims, "", DataArrayID31);
+    m_LengthPtr = getDataContainerArray()->createNonPrereqArrayFromPath<MeshIndexArrayType, AbstractFilter, MeshIndexType>(this, path, 0, cDims, "", DataArrayID31);
     if(m_LengthPtr.lock())
     {
       m_Length = m_LengthPtr.lock()->getPointer(0);

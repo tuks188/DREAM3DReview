@@ -104,7 +104,8 @@ void AverageEdgeFaceCellArrayToVertexArray::readFilterParameters(AbstractFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void findCellAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, const DataContainer::Pointer& m)
+template <typename T>
+void findCellAverage(AbstractFilter* filter, IDataArray::Pointer inDataPtr, DataArray<float>::Pointer outDataPtr, const DataContainer::Pointer& m)
 {
   IGeometry::Pointer igeom = m->getGeometry();
 
@@ -127,17 +128,17 @@ template <typename T> void findCellAverage(AbstractFilter* filter, IDataArray::P
   if(IGeometry2D::Pointer igeom2D = std::dynamic_pointer_cast<IGeometry2D>(igeom))
   {
     SharedVertexList::Pointer verts = igeom2D->getVertices();
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, T, uint16_t, float>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<MeshIndexType, T, uint16_t, float>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
   }
   else if(IGeometry3D::Pointer igeom3D = std::dynamic_pointer_cast<IGeometry3D>(igeom))
   {
     SharedVertexList::Pointer verts = igeom3D->getVertices();
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, T, uint16_t, float>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<MeshIndexType, T, uint16_t, float>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
   }
   else if(EdgeGeom::Pointer edge = std::dynamic_pointer_cast<EdgeGeom>(igeom))
   {
     SharedVertexList::Pointer verts = edge->getVertices();
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, T, uint16_t, float>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<MeshIndexType, T, uint16_t, float>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
   }
   else
   {

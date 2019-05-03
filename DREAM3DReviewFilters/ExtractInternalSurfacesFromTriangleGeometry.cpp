@@ -258,9 +258,9 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
 
   TriangleGeom::Pointer tris = getDataContainerArray()->getDataContainer(m_TriangleDataContainerName)->getGeometryAs<TriangleGeom>();
   float* vertices = tris->getVertexPointer(0);
-  int64_t* triangles = tris->getTriPointer(0);
-  int64_t numVerts = tris->getNumberOfVertices();
-  int64_t numTris = tris->getNumberOfTris();
+  MeshIndexType* triangles = tris->getTriPointer(0);
+  MeshIndexType numVerts = tris->getNumberOfVertices();
+  MeshIndexType numTris = tris->getNumberOfTris();
 
   typedef std::array<float, 3> Vertex;
 
@@ -434,18 +434,18 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
   internalTris->resizeVertexList(tmpVerts.size());
   internalTris->resizeTriList(tmpTris.size());
   float* internalVertices = internalTris->getVertexPointer(0);
-  int64_t* internalTriangles = internalTris->getTriPointer(0);
-  int64_t numInternalTris = internalTris->getNumberOfTris();
-  int64_t numInternalVerts = internalTris->getNumberOfVertices();
+  MeshIndexType* internalTriangles = internalTris->getTriPointer(0);
+  MeshIndexType numInternalTris = internalTris->getNumberOfTris();
+  MeshIndexType numInternalVerts = internalTris->getNumberOfVertices();
 
-  for(int64_t i = 0; i < numInternalVerts; i++)
+  for(MeshIndexType i = 0; i < numInternalVerts; i++)
   {
     internalVertices[3 * i + 0] = tmpVerts[i][0];
     internalVertices[3 * i + 1] = tmpVerts[i][1];
     internalVertices[3 * i + 2] = tmpVerts[i][2];
   }
 
-  for(int64_t i = 0; i < numInternalTris; i++)
+  for(MeshIndexType i = 0; i < numInternalTris; i++)
   {
     internalTriangles[3 * i + 0] = tmpTris[i][0];
     internalTriangles[3 * i + 1] = tmpTris[i][1];

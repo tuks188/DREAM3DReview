@@ -144,7 +144,7 @@ void LabelTriangleGeometry::execute()
 
   TriangleGeom::Pointer triangle = getDataContainerArray()->getDataContainer(getCADDataContainerName())->getGeometryAs<TriangleGeom>();
 
-  int64_t* tris = triangle->getTriPointer(0);
+  MeshIndexType* tris = triangle->getTriPointer(0);
   float* triVerts = triangle->getVertexPointer(0);
   size_t numTris = triangle->getNumberOfTris();
 
@@ -177,13 +177,13 @@ void LabelTriangleGeometry::execute()
       size++;
       while(size > 0)
       {
-        int64_t tri = triList[size - 1];
+        MeshIndexType tri = triList[size - 1];
         size -= 1;
         uint16_t tCount = m_TriangleNeighbors->getNumberOfElements(tri);
-        int64_t* data = m_TriangleNeighbors->getElementListPointer(tri);
+        MeshIndexType* data = m_TriangleNeighbors->getElementListPointer(tri);
         for(int j = 0; j < tCount; j++)
         {
-          int64_t neighTri = data[j];
+          MeshIndexType neighTri = data[j];
           if(m_RegionId[neighTri] == 0)
           {
             m_RegionId[neighTri] = regionCount;
@@ -212,12 +212,12 @@ void LabelTriangleGeometry::execute()
   std::vector<float> xMaxList(regionCount, -std::numeric_limits<float>::max());
   std::vector<float> yMaxList(regionCount, -std::numeric_limits<float>::max());
   std::vector<float> zMaxList(regionCount, -std::numeric_limits<float>::max());
-  for(size_t i = 0; i < numTris; i++)
+  for(MeshIndexType i = 0; i < numTris; i++)
   {
     int32_t regionId = m_RegionId[i];
     for(int j = 0; j < 3; j++)
     {
-      int64_t vert = tris[3 * i + j];
+      MeshIndexType vert = tris[3 * i + j];
       if(xMinList[regionId] > triVerts[3 * vert + 0])
       {
         xMinList[regionId] = triVerts[3 * vert + 0];

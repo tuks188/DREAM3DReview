@@ -286,7 +286,7 @@ protected:
   void initialize();
 
 private:
-  DEFINE_DATAARRAY_VARIABLE(int64_t, Length)
+  DEFINE_DATAARRAY_VARIABLE(size_t, Length)
   DEFINE_IDATAARRAY_VARIABLE(Minimum)
   DEFINE_IDATAARRAY_VARIABLE(Maximum)
   DEFINE_DATAARRAY_VARIABLE(float, Mean)

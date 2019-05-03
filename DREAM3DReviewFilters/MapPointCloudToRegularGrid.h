@@ -165,7 +165,7 @@ protected:
   void initialize();
 
 private:
-  DEFINE_DATAARRAY_VARIABLE(int64_t, VoxelIndices)
+  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, VoxelIndices)
   DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
   std::vector<float> m_MeshMinExtents;

@@ -227,16 +227,16 @@ void CombineStlFiles::execute()
   combined->resizeTriList(totalTriangles);
   combined->resizeVertexList(totalVertices);
   faceAttrmat->resizeAttributeArrays(tDims);
-  int64_t triOffset = 0;
-  int64_t vertOffset = 0;
-  int64_t triCounter = 0;
-  int64_t* tris = combined->getTriPointer(0);
+  MeshIndexType triOffset = 0;
+  MeshIndexType vertOffset = 0;
+  MeshIndexType triCounter = 0;
+  MeshIndexType* tris = combined->getTriPointer(0);
   float* verts = combined->getVertexPointer(0);
 
   for(auto&& geom : stlGeoms)
   {
-    int64_t* curTris = geom->getTriPointer(0);
-    for(int64_t t = 0; t < geom->getNumberOfTris(); t++)
+    MeshIndexType* curTris = geom->getTriPointer(0);
+    for(MeshIndexType t = 0; t < geom->getNumberOfTris(); t++)
     {
       curTris[3 * t + 0] += triCounter;
       curTris[3 * t + 1] += triCounter;
@@ -244,7 +244,7 @@ void CombineStlFiles::execute()
     }
     triCounter += geom->getNumberOfVertices();
     float* curVerts = geom->getVertexPointer(0);
-    std::memcpy(tris + triOffset, curTris, geom->getNumberOfTris() * 3 * sizeof(int64_t));
+    std::memcpy(tris + triOffset, curTris, geom->getNumberOfTris() * 3 * sizeof(MeshIndexType));
     std::memcpy(verts + vertOffset, curVerts, geom->getNumberOfVertices() * 3 * sizeof(float));
     triOffset += geom->getNumberOfTris() * 3;
     vertOffset += geom->getNumberOfVertices() * 3;

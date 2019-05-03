@@ -137,7 +137,7 @@ template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray:
       SharedVertexList::Pointer vertices = edgeGeom->getVertices();
       SharedEdgeList::Pointer edges = edgeGeom->getEdges();
       FloatArrayType::Pointer centroids = edgeGeom->getElementCentroids();
-      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(edges, vertices, centroids, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<MeshIndexType, T>(edges, vertices, centroids, inputDataPtr, outDataPtr);
       break;
     }
     case IGeometry::Type::Triangle:
@@ -146,7 +146,7 @@ template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray:
       SharedVertexList::Pointer vertices = triGeom->getVertices();
       SharedTriList::Pointer triangles = triGeom->getTriangles();
       FloatArrayType::Pointer centroids = triGeom->getElementCentroids();
-      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(triangles, vertices, centroids, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<MeshIndexType, T>(triangles, vertices, centroids, inputDataPtr, outDataPtr);
       break;
     }
     case IGeometry::Type::Quad:
@@ -155,7 +155,7 @@ template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray:
       SharedVertexList::Pointer vertices = quadGeom->getVertices();
       SharedQuadList::Pointer quads = quadGeom->getQuads();
       FloatArrayType::Pointer centroids = quadGeom->getElementCentroids();
-      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(quads, vertices, centroids, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<MeshIndexType, T>(quads, vertices, centroids, inputDataPtr, outDataPtr);
       break;
     }
     case IGeometry::Type::Tetrahedral:
@@ -164,7 +164,7 @@ template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray:
       SharedVertexList::Pointer vertices = tets->getVertices();
       SharedTetList::Pointer tet = tets->getTetrahedra();
       FloatArrayType::Pointer centroids = tets->getElementCentroids();
-      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<int64_t, T>(tet, vertices, centroids, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::WeightedAverageVertexArrayValues<MeshIndexType, T>(tet, vertices, centroids, inputDataPtr, outDataPtr);
       break;
     }
     default:
@@ -181,28 +181,28 @@ template <typename T> void findVertexAverage(AbstractFilter* filter, IDataArray:
     {
       EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
       SharedEdgeList::Pointer edges = edgeGeom->getEdges();
-      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(edges, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::AverageVertexArrayValues<MeshIndexType, T>(edges, inputDataPtr, outDataPtr);
       break;
     }
     case IGeometry::Type::Triangle:
     {
       TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
       SharedTriList::Pointer triangles = triGeom->getTriangles();
-      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(triangles, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::AverageVertexArrayValues<MeshIndexType, T>(triangles, inputDataPtr, outDataPtr);
       break;
     }
     case IGeometry::Type::Quad:
     {
       QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
       SharedQuadList::Pointer quads = quadGeom->getQuads();
-      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(quads, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::AverageVertexArrayValues<MeshIndexType, T>(quads, inputDataPtr, outDataPtr);
       break;
     }
     case IGeometry::Type::Tetrahedral:
     {
       TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
       SharedTetList::Pointer tet = tets->getTetrahedra();
-      GeometryHelpers::Generic::AverageVertexArrayValues<int64_t, T>(tet, inputDataPtr, outDataPtr);
+      GeometryHelpers::Generic::AverageVertexArrayValues<MeshIndexType, T>(tet, inputDataPtr, outDataPtr);
       break;
     }
     default:

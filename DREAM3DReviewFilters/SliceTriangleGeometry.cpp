@@ -334,7 +334,7 @@ void SliceTriangleGeometry::rotateVertices(unsigned int direction, float* n, int
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SliceTriangleGeometry::determineBoundsAndNumSlices(float& minDim, float& maxDim, int64_t numTris, int64_t* tris, float* triVerts)
+void SliceTriangleGeometry::determineBoundsAndNumSlices(float& minDim, float& maxDim, MeshIndexType numTris, MeshIndexType* tris, float* triVerts)
 {
   for(int64_t i = 0; i < numTris; i++)
   {
@@ -389,10 +389,10 @@ void SliceTriangleGeometry::execute()
 
   TriangleGeom::Pointer triangle = getDataContainerArray()->getDataContainer(getCADDataContainerName())->getGeometryAs<TriangleGeom>();
 
-  int64_t* tris = triangle->getTriPointer(0);
+  MeshIndexType* tris = triangle->getTriPointer(0);
   float* triVerts = triangle->getVertexPointer(0);
-  int64_t numTris = triangle->getNumberOfTris();
-  int64_t numTriVerts = triangle->getNumberOfVertices();
+  MeshIndexType numTris = triangle->getNumberOfTris();
+  MeshIndexType numTriVerts = triangle->getNumberOfVertices();
 
   //rotate CAD tiangles to get into sectioning orientation
   rotateVertices(rotForward, n, numTriVerts, triVerts);
@@ -413,7 +413,7 @@ void SliceTriangleGeometry::execute()
   std::vector<int32_t> regionIds;
   float min_shift = m_SliceResolution / 1000.0f;
 
-  for(int64_t i = 0; i < numTris; i++)
+  for(MeshIndexType i = 0; i < numTris; i++)
   {
     // get region Id of this triangle (if they are available)
     if(m_HaveRegionIds)
@@ -551,7 +551,7 @@ void SliceTriangleGeometry::execute()
   SharedVertexList::Pointer vertices = EdgeGeom::CreateSharedVertexList(numVerts);
   EdgeGeom::Pointer edge = EdgeGeom::CreateGeometry(numEdges, vertices, SIMPL::Geometry::EdgeGeometry, !getInPreflight());
   float* verts = edge->getVertexPointer(0);
-  int64_t* edges = edge->getEdgePointer(0);
+  MeshIndexType* edges = edge->getEdgePointer(0);
 
   QVector<size_t> tDims(1, numEdges);
   m->getAttributeMatrix(getEdgeAttributeMatrixName())->resizeAttributeArrays(tDims);

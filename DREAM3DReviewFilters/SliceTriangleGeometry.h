@@ -179,7 +179,7 @@ protected:
   /**
    * @brief updateEdgeInstancePointers
    */
-  void determineBoundsAndNumSlices(float& minDim, float& maxDim, int64_t numTris, int64_t* tris, float* triVerts);
+  void determineBoundsAndNumSlices(float& minDim, float& maxDim, MeshIndexType numTris, MeshIndexType* tris, float* triVerts);
 
   /**
   * @brief updateEdgeInstancePointers

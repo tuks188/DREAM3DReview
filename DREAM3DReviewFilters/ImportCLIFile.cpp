@@ -336,7 +336,7 @@ void ImportCLIFile::execute()
   edge->resizeVertexList(tmpVertices.size() / 3);
   edge->resizeEdgeList(tmpEdges.size() / 2);
   float* verts = edge->getVertexPointer(0);
-  int64_t* edges = edge->getEdgePointer(0);
+  MeshIndexType* edges = edge->getEdgePointer(0);
   std::memcpy(verts, tmpVertices.data(), 3 * edge->getNumberOfVertices() * sizeof(float));
   std::memcpy(edges, tmpEdges.data(), 2 * edge->getNumberOfEdges() * sizeof(int64_t));
 

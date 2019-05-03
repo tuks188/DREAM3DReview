@@ -235,7 +235,7 @@ void InterpolatePointCloudToRegularGrid::dataCheck()
   QVector<size_t> tDims = {dims[0], dims[1], dims[2]};
   QList<QString> tempDataArrayList;
   DataArrayPath tempPath;
-  QString tempAttrMatName = 0;
+  QString tempAttrMatName;
 
   // All vertex data in the original point cloud will be interpolated to the regular grid's cells
   // Feature/Ensemble attribute matrices will remain unchanged and are deep copied to the new data container below
@@ -245,7 +245,7 @@ void InterpolatePointCloudToRegularGrid::dataCheck()
   QVector<DataArrayPath> interpolatePaths = getArraysToInterpolate();
   QVector<DataArrayPath> copyPaths = getArraysToCopy();
 
-  if(DataArrayPath::ValidateVector(interpolatePaths) == false || DataArrayPath::ValidateVector(copyPaths) == false)
+  if(!DataArrayPath::ValidateVector(interpolatePaths) || !DataArrayPath::ValidateVector(copyPaths))
   {
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
     setErrorCondition(-11002, ss);
@@ -360,8 +360,8 @@ void InterpolatePointCloudToRegularGrid::dataCheck()
     }
   }
 
-  m_VoxelIndicesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getVoxelIndicesArrayPath(),
-                                                                                                          cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_VoxelIndicesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<size_t>, AbstractFilter>(this, getVoxelIndicesArrayPath(),
+                                                                                                         cDims);  /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_VoxelIndicesPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_VoxelIndices = m_VoxelIndicesPtr.lock()->getPointer(0);
@@ -371,7 +371,7 @@ void InterpolatePointCloudToRegularGrid::dataCheck()
     dataArrays.push_back(m_VoxelIndicesPtr.lock());
   }
 
-  if(getUseMask() == true)
+  if(getUseMask())
   {
     m_MaskPtr =
         getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -387,7 +387,7 @@ void InterpolatePointCloudToRegularGrid::dataCheck()
 
   path.update(getInterpolatedDataContainerName().getDataContainerName(), getInterpolatedAttributeMatrixName(), getKernelDistancesArrayName());
 
-  if(getStoreKernelDistances() == true)
+  if(getStoreKernelDistances())
   {
     m_KernelDistances = getDataContainerArray()->createNonPrereqArrayFromPath<NeighborList<float>, AbstractFilter, float>(this, path, 0, cDims);
   }
@@ -557,7 +557,7 @@ void InterpolatePointCloudToRegularGrid::execute()
   FloatVec3Type res = image->getSpacing();
   int64_t kernelNumVoxels[3] = {0, 0, 0};
 
-  int64_t numVerts = vertices->getNumberOfVertices();
+  MeshIndexType numVerts = vertices->getNumberOfVertices();
   size_t index = 0;
   size_t x = 0;
   size_t y = 0;

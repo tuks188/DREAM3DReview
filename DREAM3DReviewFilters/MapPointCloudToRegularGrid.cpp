@@ -193,7 +193,7 @@ void MapPointCloudToRegularGrid::dataCheck()
 
   QVector<size_t> cDims(1, 1);
 
-  m_VoxelIndicesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(
+  m_VoxelIndicesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<size_t>, AbstractFilter, size_t>(
       this, getVoxelIndicesArrayPath(), 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_VoxelIndicesPtr.lock().get())    /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {

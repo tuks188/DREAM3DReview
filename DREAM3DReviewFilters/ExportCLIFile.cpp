@@ -203,14 +203,14 @@ void ExportCLIFile::execute()
   }
 
   EdgeGeom::Pointer edge = getDataContainerArray()->getDataContainer(m_EdgeGeometry)->getGeometryAs<EdgeGeom>();
-  int64_t* edges = edge->getEdgePointer(0);
+  MeshIndexType* edges = edge->getEdgePointer(0);
   float* vertices = edge->getVertexPointer(0);
-  int64_t numEdges = edge->getNumberOfEdges();
+  MeshIndexType numEdges = edge->getNumberOfEdges();
   // int64_t numVerts = edge->getNumberOfVertices();
   int32_t numGroups = m_SplitByGroup ? 0 : 1;
   int32_t numLayers = 0;
 
-  for(int64_t i = 0; i < numEdges; i++)
+  for(MeshIndexType i = 0; i < numEdges; i++)
   {
     if(m_SplitByGroup)
     {
