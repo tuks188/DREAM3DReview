@@ -27,8 +27,8 @@ file(APPEND ${RegisterKnownFilterParameterWidgetsFile} "\nvoid ${PLUGIN_NAME}Gui
 # --------------------------------------------------------------------
 # Loop through all the FilterParameterWidgets that this plugin is going to compile and make available.
 foreach(FPW ${${PLUGIN_NAME}_PARAMETER_WIDGETS})
-  set(${PLUGIN_NAME}_ParameterWidgets_MOC_HDRS
-    ${${PLUGIN_NAME}_ParameterWidgets_MOC_HDRS}
+  set(${PLUGIN_NAME}_ParameterWidgets_HDRS
+    ${${PLUGIN_NAME}_ParameterWidgets_HDRS}
     ${${PLUGIN_NAME}_SOURCE_DIR}/Gui/FilterParameterWidgets/${FPW}.h
     )
   set(${PLUGIN_NAME}_ParameterWidgets_SRCS
@@ -68,7 +68,7 @@ cmp_IDE_GENERATED_PROPERTIES("FilterParameterWidgets/UI_Files" "${${PLUGIN_NAME}
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
-# QT5_WRAP_CPP( ${PLUGIN_NAME}_ParameterWidgets_Generated_MOC_SRCS ${${PLUGIN_NAME}_ParameterWidgets_MOC_HDRS} )
+#QT4_WRAP_CPP( ${PLUGIN_NAME}_ParameterWidgets_Generated_MOC_SRCS ${${PLUGIN_NAME}_ParameterWidgets_HDRS} )
 
 # These generated moc files will be #include in the FilterWidget source file that
 # are generated so we need to tell the build system to NOT compile these files
@@ -84,15 +84,9 @@ foreach(h ${${PLUGIN_NAME}_ParameterWidgets_Generated_UI_HDRS})
   set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
 endforeach()
 
-
-
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs
 cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Moc" "" "${${PLUGIN_NAME}_ParameterWidgets_Generated_MOC_SRCS}" "0")
 cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Uic" "${${PLUGIN_NAME}_ParameterWidgets_Generated_UI_HDRS}" "" "0")
 #cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Qrc" "${${PLUGIN_NAME}_Generated_RC_SRCS}" "" "0")
-
-
-
-
 

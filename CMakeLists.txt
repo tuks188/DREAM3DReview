@@ -245,7 +245,6 @@ if(SIMPL_ENABLE_PYTHON)
   )
 endif()
 
-
 #-------------------------------------------------------------------------------
 #- This installs all the prebuilt pipeline files.
 if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/ExamplePipelines/${PLUGIN_NAME})
@@ -292,5 +291,4 @@ if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
 endif()
 # -- Include the GUI Plugin codes
 include(${${PLUGIN_NAME}_SOURCE_DIR}/Gui/CMakeLists.txt)
-
 

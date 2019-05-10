@@ -1,10 +1,5 @@
-#--////////////////////////////////////////////////////////////////////////////
-#--
-#--  PLEASE PROVIDE COPYRIGHT INFORMATION HERE.
-#--
-#--////////////////////////////////////////////////////////////////////////////
-
 set(PLUGIN_NAME "DREAM3DReview")
+
 set(${PLUGIN_NAME}Test_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 set(${PLUGIN_NAME}Test_BINARY_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Test)
 
