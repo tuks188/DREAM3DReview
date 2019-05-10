@@ -1,7 +1,0 @@
- <!DOCTYPE RCC>
- <RCC version="1.0">
- <qresource>
- <file>DDDAnalysisToolbox/DDDAnalysisToolboxLicense.txt</file>
- <file>DDDAnalysisToolbox/DDDAnalysisToolboxDescription.txt</file>
- </qresource>
- </RCC>

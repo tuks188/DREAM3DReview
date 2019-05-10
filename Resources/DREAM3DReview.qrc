@@ -3,5 +3,9 @@
  <qresource>
  <file>DREAM3DReview/DREAM3DReviewLicense.txt</file>
  <file>DREAM3DReview/DREAM3DReviewDescription.txt</file>
+
+  <file>Anisotropy/AnisotropyLicense.txt</file>
+ <file>Anisotropy/AnisotropyDescription.txt</file>
+
  </qresource>
  </RCC>

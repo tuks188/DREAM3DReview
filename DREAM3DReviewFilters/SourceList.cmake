@@ -53,6 +53,27 @@ set(_PublicFilters
   MapPointCloudToRegularGrid
   ReadBinaryCTNorthStar
   SliceTriangleGeometry
+
+  #HEDM
+  ReadMicData
+  TesselateFarFieldGrains
+
+  #Anisotropy
+  AdaptiveAlignmentFeature
+  AdaptiveAlignmentMisorientation
+  AdaptiveAlignmentMutualInformation
+  SteinerCompact
+
+  #MASSIF
+  FFTHDFWriterFilter
+  ImportMASSIFData
+
+  #DDDAnalysis
+  LocalDislocationDensityCalculator
+  IdentifyDislocationSegments
+  DiscretizeDDDomain
+  ParaDisReader
+  
 )
 
 list(LENGTH _PublicFilters PluginNumFilters)
@@ -74,7 +95,7 @@ endforeach()
 # This is the list of Private Filters. These filters are available from other filters but the user will not
 # be able to use them from the DREAM3D user interface.
 set(_PrivateFilters
-
+  AdaptiveAlignment
 )
 
 #-----------------
@@ -93,6 +114,23 @@ ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName}
 ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} SilhouetteTemplate.hpp util/EvaluationAlgorithms)
 ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} KDistanceTemplate.hpp util/EvaluationAlgorithms)
 ADD_SIMPL_SUPPORT_HEADER_SUBDIR(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} DistanceTemplate.hpp util)
+
+
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/H5MicImporter.h)
+ADD_SIMPL_SUPPORT_SOURCE(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/H5MicImporter.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/H5MicReader.h)
+ADD_SIMPL_SUPPORT_SOURCE(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/H5MicReader.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/H5MicVolumeReader.h)
+ADD_SIMPL_SUPPORT_SOURCE(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/H5MicVolumeReader.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicFields.h)
+ADD_SIMPL_SUPPORT_SOURCE(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicFields.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicPhase.h)
+ADD_SIMPL_SUPPORT_SOURCE(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicPhase.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicReader.h)
+ADD_SIMPL_SUPPORT_SOURCE(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicReader.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicHeaderEntry.h)
+ADD_SIMPL_SUPPORT_HEADER(${${PLUGIN_NAME}_SOURCE_DIR} ${_filterGroupName} HEDM/MicConstants.h)
+
 
 #---------------------
 # This macro must come last after we are done adding all the filters and support files.

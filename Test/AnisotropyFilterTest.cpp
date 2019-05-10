@@ -53,7 +53,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "UnitTestSupport.hpp"
 
-#include "AnisotropyTestFileLocations.h"
+#include "DREAM3DReviewTestFileLocations.h"
 
 // -----------------------------------------------------------------------------
 //
