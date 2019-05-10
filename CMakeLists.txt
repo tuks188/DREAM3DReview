@@ -27,9 +27,26 @@ cmpRevisionString( GENERATED_HEADER_FILE_PATH "${VERSION_HEADER_FILE_NAME}"
                     PROJECT_NAME "${PLUGIN_NAME}"
                     EXPORT_MACRO "")
 
+
 set(${PLUGIN_NAME}_Project_SRCS "")
 
 include(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/SIMPLibMacros.cmake)
+
+
+## YOU MUST INCLUDE THIS FILE TO USE ITK !!!
+## Then do not forget to add "${ITK_LIBRARIES}" to the target_link_libraries below
+include( ${CMP_SOURCE_DIR}/ITKSupport/IncludeITK.cmake)
+
+# --------------------------------------------------------------------
+# What image bit depth should be used
+# --------------------------------------------------------------------
+set(${PLUGIN_NAME}_BitDepth "8" CACHE STRING "Bitdepth for ${PLUGIN_NAME} filters (8, 16, or 32)")
+
+CONFIGURE_FILE(${${PLUGIN_NAME}_SOURCE_DIR}/${PLUGIN_NAME}Config.h.in
+        ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Config.h
+        )
+
+
 #-------
 # Start writing this header file
 set(AllFiltersHeaderFile ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/${PLUGIN_NAME}Filters.h_tmp)
@@ -80,7 +97,6 @@ file(APPEND ${RegisterKnownFiltersFile} "\n}\n\n")
 
 cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/${PLUGIN_NAME}Filters.h
                           NEW_FILE_PATH  ${AllFiltersHeaderFile} )
-
 cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/RegisterKnownFilters.cpp
                           NEW_FILE_PATH  ${RegisterKnownFiltersFile} )
 
@@ -141,7 +157,6 @@ set_source_files_properties( ${${PLUGIN_NAME}_Generated_MOC_SRCS} PROPERTIES GEN
 set_source_files_properties( ${${PLUGIN_NAME}_MODULE_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties( ${RegisterKnownFiltersFile} PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties( ${RegisterKnownFilterParameterWidgetsFile} PROPERTIES HEADER_FILE_ONLY TRUE)
-
 # --------------------------------------------------------------------
 # Group all the generated source files in IDE's that support it. Makes it clear
 # to the user of the IDE what is generated and what is not.
@@ -218,6 +233,7 @@ target_link_libraries(${plug_target_name}
                     SIMPLib
                     EbsdLib
                     OrientationLib
+                    ${ITK_LIBRARIES}
 )
 
 # -------------------------------------------------------------------- 

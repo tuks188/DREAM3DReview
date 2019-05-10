@@ -1,0 +1,130 @@
+{
+    "0": {
+        "AngleRepresentation": 0,
+        "CellAttributeMatrixName": "EBSD & SEM Scan Data",
+        "CellEnsembleAttributeMatrixName": "Phase Data",
+        "DataContainerName": "AlMgSc Data",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Import H5EBSD File",
+        "Filter_Name": "ReadH5Ebsd",
+        "Filter_Uuid": "{4ef7f56b-616e-5a80-9e68-1da8f35ad235}",
+        "InputFile": "Data/Anisotropy/AlMgSc.h5ebsd",
+        "RefFrameZDir": 2,
+        "SelectedArrayNames": [
+            "Image Quality",
+            "Y Position",
+            "Phases",
+            "X Position",
+            "Confidence Index",
+            "Fit",
+            "EulerAngles",
+            "SEM Signal"
+        ],
+        "UseTransformations": 1,
+        "ZEndIndex": 9,
+        "ZStartIndex": 0
+    },
+    "1": {
+        "CellAttributeMatrixName": "EBSD SEM Scan Data",
+        "DataContainerName": "SEMAlMgSc Data",
+        "FilterVersion": "1.0.477",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "ITK::Import Images (3D Stack)",
+        "Filter_Name": "ITKImportImageStack",
+        "Filter_Uuid": "{cf7d7497-9573-5102-bedd-38f86a6cdfd4}",
+        "ImageDataArrayName": "ImageData",
+        "InputFileListInfo": {
+            "EndIndex": 9,
+            "FileExtension": "tif",
+            "FilePrefix": "AlMgSc-TD_",
+            "FileSuffix": "",
+            "IncrementIndex": 1,
+            "InputPath": "Data/Anisotropy/tif",
+            "Ordering": 0,
+            "PaddingDigits": 3,
+            "StartIndex": 0
+        },
+        "Origin": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "Resolution": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+        }
+    },
+    "2": {
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Convert Orientation Representation",
+        "Filter_Name": "ConvertOrientations",
+        "Filter_Uuid": "{e5629880-98c4-5656-82b8-c9fe2b9744de}",
+        "InputOrientationArrayPath": {
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
+            "Data Array Name": "EulerAngles",
+            "Data Container Name": "AlMgSc Data"
+        },
+        "InputType": 0,
+        "OutputOrientationArrayName": "Quats",
+        "OutputType": 2
+    },
+    "3": {
+        "AlignmentShiftFileName": "Data/Output/Anisotropy/TestDataAdaptiveAlignment-MutualInformation-SEMImages.txt",
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
+            "Data Array Name": "Phases",
+            "Data Container Name": "AlMgSc Data"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "Phase Data",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "AlMgSc Data"
+        },
+        "FilterVersion": "1.2.724",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Adaptive Alignment (Mutual Information)",
+        "Filter_Name": "AdaptiveAlignmentMutualInformation",
+        "Filter_Uuid": "{738c8da9-45d0-53dd-aa54-3f3a337b70d7}",
+        "GlobalCorrection": 1,
+        "GoodVoxelsArrayPath": {
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
+            "Data Array Name": "",
+            "Data Container Name": "AlMgSc Data"
+        },
+        "IgnoredDataArrayPaths": [
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "X Position",
+                "Data Container Name": "AlMgSc Data"
+            },
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "Y Position",
+                "Data Container Name": "AlMgSc Data"
+            }
+        ],
+        "ImageDataArrayPath": {
+            "Attribute Matrix Name": "EBSD SEM Scan Data",
+            "Data Array Name": "ImageData",
+            "Data Container Name": "SEMAlMgSc Data"
+        },
+        "MisorientationTolerance": 5,
+        "QuatsArrayPath": {
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
+            "Data Array Name": "Quats",
+            "Data Container Name": "AlMgSc Data"
+        },
+        "ShiftX": 0,
+        "ShiftY": 0,
+        "UseGoodVoxels": 0,
+        "WriteAlignmentShifts": 1
+    },
+    "PipelineBuilder": {
+        "Name": "03_Adaptive Alignment - Mutual Information - SEM Images",
+        "Number_Filters": 4,
+        "Version": 6
+    }
+}
