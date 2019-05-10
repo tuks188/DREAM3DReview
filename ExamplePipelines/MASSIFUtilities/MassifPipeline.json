@@ -1,0 +1,288 @@
+{
+    "0": {
+        "FilePrefix": "Step-",
+        "FilterVersion": "1.0.12",
+        "Filter_Human_Label": "Import MASSIF Data",
+        "Filter_Name": "ImportMASSIFData",
+        "MassifInputFilePath": "Data/MASSIF/ExampleData.h5",
+        "StepNumber": 2
+    },
+    "1": {
+        "FilterVersion": "1.0.109",
+        "Filter_Human_Label": "Rename Attribute Array",
+        "Filter_Name": "RenameAttributeArray",
+        "NewArrayName": "FeatureIds",
+        "SelectedArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "Grainid",
+            "Data Container Name": "MassifDataContainer"
+        }
+    },
+    "2": {
+        "FilterVersion": "1.0.109",
+        "Filter_Human_Label": "Combine Attribute Arrays",
+        "Filter_Name": "CombineAttributeArrays",
+        "NormalizeData": 0,
+        "SelectedDataArrayPaths": [
+            {
+                "Attribute Matrix Name": "MassifAttributeMatrix",
+                "Data Array Name": "Phi1",
+                "Data Container Name": "MassifDataContainer"
+            },
+            {
+                "Attribute Matrix Name": "MassifAttributeMatrix",
+                "Data Array Name": "Phi",
+                "Data Container Name": "MassifDataContainer"
+            },
+            {
+                "Attribute Matrix Name": "MassifAttributeMatrix",
+                "Data Array Name": "phi2",
+                "Data Container Name": "MassifDataContainer"
+            }
+        ],
+        "StackedDataArrayName": "EulerAngles"
+    },
+    "3": {
+        "DataArraysToRemove": {
+            "Data Containers": [
+                {
+                    "Attribute Matricies": [
+                        {
+                            "Data Arrays": [
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "D11",
+                                    "Object Type": "double",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "EVM",
+                                    "Object Type": "double",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "El11",
+                                    "Object Type": "double",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "EulerAngles",
+                                    "Object Type": "float",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "FeatureIds",
+                                    "Object Type": "int32_t",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "Phase",
+                                    "Object Type": "int32_t",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 2,
+                                    "Name": "Phi",
+                                    "Object Type": "float",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 2,
+                                    "Name": "Phi1",
+                                    "Object Type": "float",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "S11",
+                                    "Object Type": "double",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "SVM",
+                                    "Object Type": "double",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 2,
+                                    "Name": "phi2",
+                                    "Object Type": "float",
+                                    "Path": "MassifDataContainer/MassifAttributeMatrix/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                }
+                            ],
+                            "Flag": 0,
+                            "Name": "MassifAttributeMatrix",
+                            "Type": 3
+                        }
+                    ],
+                    "Flag": 0,
+                    "Name": "MassifDataContainer",
+                    "Type": 0
+                }
+            ]
+        },
+        "FilterVersion": "1.0.109",
+        "Filter_Human_Label": "Delete Data",
+        "Filter_Name": "RemoveArrays"
+    },
+    "4": {
+        "FilterVersion": "6.4.79",
+        "Filter_Human_Label": "Convert Orientation Representation",
+        "Filter_Name": "ConvertOrientations",
+        "InputOrientationArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "EulerAngles",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "InputType": 0,
+        "OutputOrientationArrayName": "Quats",
+        "OutputType": 2
+    },
+    "5": {
+        "CellEnsembleAttributeMatrixName": "EnsembleAttributeMatrix",
+        "CrystalStructuresArrayName": "CrystalStructures",
+        "DataContainerName": "MassifDataContainer",
+        "FilterVersion": "6.4.79",
+        "Filter_Human_Label": "Import Ensemble Info File",
+        "Filter_Name": "EnsembleInfoReader",
+        "InputFile": "Data/MASSIF/Ensemble.ini",
+        "PhaseTypesArrayName": "PhaseTypes"
+    },
+    "6": {
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "Phase",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "EnsembleAttributeMatrix",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "FeatureIdsArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "FeatureIds",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "FilterVersion": "6.4.79",
+        "Filter_Human_Label": "Find Kernel Average Misorientations",
+        "Filter_Name": "FindKernelAvgMisorientations",
+        "KernelAverageMisorientationsArrayName": "KernelAverageMisorientations",
+        "KernelSize": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+        },
+        "QuatsArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "Quats",
+            "Data Container Name": "MassifDataContainer"
+        }
+    },
+    "7": {
+        "CellEulerAnglesArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "EulerAngles",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "CellIPFColorsArrayName": "IPFColor",
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "MassifAttributeMatrix",
+            "Data Array Name": "Phase",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "EnsembleAttributeMatrix",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "MassifDataContainer"
+        },
+        "FilterVersion": "6.4.79",
+        "Filter_Human_Label": "Generate IPF Colors",
+        "Filter_Name": "GenerateIPFColors",
+        "GoodVoxelsArrayPath": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "ReferenceDir": {
+            "x": 0,
+            "y": 0,
+            "z": 1
+        },
+        "UseGoodVoxels": 0
+    },
+    "8": {
+        "FilterVersion": "1.0.109",
+        "Filter_Human_Label": "Write DREAM.3D Data File",
+        "Filter_Name": "DataContainerWriter",
+        "OutputFile": "Data/Output/MASSIF/ExampleImport.dream3d",
+        "WriteTimeSeries": 0,
+        "WriteXdmfFile": 1
+    },
+    "PipelineBuilder": {
+        "Name": "MassifPipeline",
+        "Number_Filters": 9,
+        "Version": 6
+    }
+}

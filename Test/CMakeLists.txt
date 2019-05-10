@@ -8,6 +8,8 @@ set(${PLUGIN_NAME}Test_BINARY_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Test)
 # be directly included in the main test source file. We list them here so that
 # they will show up in IDEs
 set(TEST_NAMES
+  ImportMASSIFDataTest
+  FFTHDFWriterFilterTest
 )
 
 #------------------------------------------------------------------------------
@@ -84,4 +86,6 @@ if(SIMPL_ENABLE_PYTHON)
     configure_file(${SIMPL_PYTHON_TEST_SCRIPT}  "${SIMPL_PYTHON_TEST_DRIVER}" @ONLY)
     add_test(NAME PY_${PLUGIN_NAME}_UnitTest COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
 endif()
+
+
 

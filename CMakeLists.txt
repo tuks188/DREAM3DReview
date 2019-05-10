@@ -1,7 +1,3 @@
-#--////////////////////////////////////////////////////////////////////////////
-#-- Your License or Copyright can go here
-#--////////////////////////////////////////////////////////////////////////////
-
 set(PLUGIN_NAME DREAM3DReview)
 set(${PLUGIN_NAME}_VERSION "1.0")
 set(${PLUGIN_NAME}_VERSION_MAJOR "1")
@@ -65,7 +61,6 @@ include(${${PLUGIN_NAME}_SOURCE_DIR}/${PLUGIN_NAME}Filters/SourceList.cmake)
 # Add in our Plugin Specific FilterParameter
 include(${${PLUGIN_NAME}_SOURCE_DIR}/FilterParameters/SourceList.cmake)
 
-
 # -- Include all the resources
 include(${${PLUGIN_NAME}_SOURCE_DIR}/Resources/SourceList.cmake)
 
@@ -92,7 +87,7 @@ cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_N
 set(AllFiltersHeaderFile ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/${PLUGIN_NAME}Filters.h)
 set(RegisterKnownFiltersFile ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/RegisterKnownFilters.cpp)
 
-#--------------------------
+#-- Compute some directories
 get_filename_component(PLUGINS_SOURCE_DIR  ${${PLUGIN_NAME}_SOURCE_DIR} DIRECTORY)
 get_filename_component(PLUGINS_BINARY_DIR  ${${PLUGIN_NAME}_BINARY_DIR} DIRECTORY)
 
@@ -225,10 +220,17 @@ target_link_libraries(${plug_target_name}
                     OrientationLib
 )
 
-
-if(SIMPL_BUILD_TESTING)
-  include(${${PLUGIN_NAME}_SOURCE_DIR}/Test/CMakeLists.txt)
+# --------------------------------------------------------------------
+# Put back the output directory
+if(NOT MSVC)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${DREAM3DProj_BINARY_DIR}/Bin  )
 endif()
+
+# -------------------------------------------------------------------- 
+# If Testing is enabled, turn on the Unit Tests 
+if(SIMPL_BUILD_TESTING) 
+  include(${${PLUGIN_NAME}_SOURCE_DIR}/Test/CMakeLists.txt) 
+endif() 
  
 # -------------------------------------------------------------------- 
 # If Python Wrapping is enabled then generate the Python module code 
@@ -282,7 +284,11 @@ if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
   if(APPLE)
     set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources/Data")
   else()
+<<<<<<< HEAD
     set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Data")
+=======
+    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}")
+>>>>>>> fc99bb0d4b266fac02e6541ef17d72464d422ec7
   endif()
 
   install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME}

@@ -1,5 +1,4 @@
-#ifndef _@PROJECT_NAME@FileLocation_h_
-#define _@PROJECT_NAME@FileLocation_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -22,6 +21,10 @@ namespace UnitTest
   const QString DREAM3DProjDir("@DREAM3DProj_SOURCE_DIR@");
 
 @FILTER_NAMESPACE@
-}
 
-#endif
+  namespace FFTHDFWriterFilterTest
+  {
+    const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
+    const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
+  }
+}
