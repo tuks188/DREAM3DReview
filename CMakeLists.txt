@@ -220,18 +220,12 @@ target_link_libraries(${plug_target_name}
                     OrientationLib
 )
 
-# --------------------------------------------------------------------
-# Put back the output directory
-if(NOT MSVC)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${DREAM3DProj_BINARY_DIR}/Bin  )
-endif()
-
 # -------------------------------------------------------------------- 
 # If Testing is enabled, turn on the Unit Tests 
-if(SIMPL_BUILD_TESTING) 
-  include(${${PLUGIN_NAME}_SOURCE_DIR}/Test/CMakeLists.txt) 
-endif() 
- 
+if(SIMPL_BUILD_TESTING)
+  include(${${PLUGIN_NAME}_SOURCE_DIR}/Test/CMakeLists.txt)
+endif()
+
 # -------------------------------------------------------------------- 
 # If Python Wrapping is enabled then generate the Python module code 
 if(SIMPL_ENABLE_PYTHON)
@@ -284,11 +278,7 @@ if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
   if(APPLE)
     set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources/Data")
   else()
-<<<<<<< HEAD
-    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Data")
-=======
     set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}")
->>>>>>> fc99bb0d4b266fac02e6541ef17d72464d422ec7
   endif()
 
   install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME}
@@ -297,4 +287,3 @@ if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
 endif()
 # -- Include the GUI Plugin codes
 include(${${PLUGIN_NAME}_SOURCE_DIR}/Gui/CMakeLists.txt)
-
