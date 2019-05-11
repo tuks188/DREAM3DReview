@@ -18,57 +18,23 @@ set(TEST_NAMES
 include(${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake)
 include(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/SIMPLibMacros.cmake)
 
+
 get_filename_component(${PLUGIN_NAME}_PARENT_SOURCE_DIR "${${PLUGIN_NAME}_SOURCE_DIR}" DIRECTORY)
 get_filename_component(${PLUGIN_NAME}_PARENT_BINARY_DIR "${${PLUGIN_NAME}_BINARY_DIR}" DIRECTORY)
 
-set(TEST_TEMP_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Temp)
-# Make sure the directory is created during CMake time
-file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
+set(Anisotropy_Data_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Data/Anisotropy)
 
-set(TEST_DATA_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
-# Make sure the directory is created during CMake time
-file(MAKE_DIRECTORY ${TEST_DATA_DIR})
-
-file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data" "${${PLUGIN_NAME}_SOURCE_DIR}/Data/*")
-    foreach(templateFile ${templateFiles})
-	    set(srcTemplatePath ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${templateFile})
-        if(NOT IS_DIRECTORY ${srcTemplatePath})
-           configure_file(
-                    ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${templateFile}
-                    ${${PLUGIN_NAME}_BINARY_DIR}/Test/Data/${templateFile}
-                    COPYONLY)
-		endif(NOT IS_DIRECTORY ${srcTemplatePath})
-    endforeach(templateFile)	
-
-file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif" "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif/*")
-    foreach(templateFile ${templateFiles})
-	    set(srcTemplatePath ${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif/${templateFile})
-        if(NOT IS_DIRECTORY ${srcTemplatePath})
-           configure_file(
-                    ${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif/${templateFile}
-                    ${${PLUGIN_NAME}_BINARY_DIR}/Test/Data/${templateFile}
-                    COPYONLY)
-		endif(NOT IS_DIRECTORY ${srcTemplatePath})
-    endforeach(templateFile)	
-
-configure_file(${${PLUGIN_NAME}Test_SOURCE_DIR}/TestFileLocations.h.in
-               ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
-
-configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
-               ${${PLUGIN_NAME}Test_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
-
+SIMPL_GenerateUnitTestFile(PLUGIN_NAME ${PLUGIN_NAME}
+                           TEST_DATA_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test/Data
+                           SOURCES ${TEST_NAMES}
+                           LINK_LIBRARIES ${${PLUGIN_NAME}_LINK_LIBS} ${plug_target_name}
+                           INCLUDE_DIRS ${${PLUGIN_NAME}_PARENT_SOURCE_DIR}
+                                        ${${PLUGIN_NAME}Test_SOURCE_DIR}
+                                        ${${PLUGIN_NAME}Test_BINARY_DIR}
+                                        ${${PLUGIN_NAME}_PARENT_BINARY_DIR}
+)
 
 list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib ${ITK_LIBRARIES})
-
-AddSIMPLUnitTest(TESTNAME ${PLUGIN_NAME}UnitTest
-                  SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
-                  FOLDER "${PLUGIN_NAME}Plugin/Test"
-                  LINK_LIBRARIES ${${PLUGIN_NAME}_LINK_LIBS}
-                  INCLUDE_DIRS
-                          ${PLUGINS_SOURCE_DIR}
-                          ${PLUGINS_BINARY_DIR}
-                          ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/Test
-)
 
 #------------------------------------------------------------------------------
 # If Python is enabled, then enable the Python unit tests for this plugin
