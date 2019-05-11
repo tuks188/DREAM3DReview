@@ -1,5 +1,5 @@
-Steiner Compact 
-======
+# Steiner Compact  #
+
 
 ## Group (Subgroup) ##
 

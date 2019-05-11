@@ -1,5 +1,5 @@
-Calculate Local Dislocation Densities 
-==========
+# Calculate Local Dislocation Densities  #
+
 
 
 ## EXPERIMENTAL FILTER WARNING ##

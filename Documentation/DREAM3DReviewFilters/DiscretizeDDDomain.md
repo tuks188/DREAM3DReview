@@ -1,5 +1,5 @@
-Discretized DDD Domain 
-==========
+# Discretized DDD Domain  #
+
 
 
 ## EXPERIMENTAL FILTER WARNING ##

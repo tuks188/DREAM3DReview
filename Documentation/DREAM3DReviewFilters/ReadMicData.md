@@ -1,5 +1,5 @@
-Read HEDM Data (.mic) 
-=====
+# Read HEDM Data (.mic)  #
+
 
 ## Group (Subgroup) ##
 

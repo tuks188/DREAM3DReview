@@ -1,5 +1,5 @@
-Adaptive Alignment (Misorientation) 
-======
+# Adaptive Alignment (Misorientation)  #
+
 
 ## Group (Subgroup) ##
 

@@ -1,5 +1,5 @@
-Adaptive Alignment (Feature) 
-======
+# Adaptive Alignment (Feature)  #
+
 
 ## Group (Subgroup) ##
 

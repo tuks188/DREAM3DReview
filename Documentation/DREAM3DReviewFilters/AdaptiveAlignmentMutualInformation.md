@@ -1,5 +1,5 @@
-Adaptive Alignment (Mutual Information) 
-======
+# Adaptive Alignment (Mutual Information)  #
+
 
 ## Group (Subgroup) ##
 
