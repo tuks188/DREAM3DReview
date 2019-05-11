@@ -9,7 +9,7 @@ from dream3d import simpl
 from dream3d import simpl_helpers as sc
 from dream3d import simpl_test_dirs as sd
 from dream3d import orientationanalysispy
-from dream3d import anisotropypy
+from dream3d import dream3dreviewpy
 from dream3d import itkimageprocessing
 from dream3d import itkimageprocessingpy
 
@@ -55,7 +55,7 @@ def adaptive_alignment():
         print("Convert Orientations ErrorCondition %d" % err)
 
     # Adaptive Alignment Mutual Information
-    err = anisotropypy.adaptive_alignment_mutual_information(dca, 5, False,
+    err = dream3dreviewpy.adaptive_alignment_mutual_information(dca, 5, False,
                                                              simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "Quats"),
                                                              simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "Phases"),
                                                              simpl.DataArrayPath("", "", ""),

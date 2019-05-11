@@ -9,7 +9,7 @@ from dream3d import simpl
 from dream3d import simpl_helpers as sc
 from dream3d import simpl_test_dirs as sd
 from dream3d import orientationanalysispy
-from dream3d import anisotropypy
+from dream3d import dream3dreviewpy
 from dream3d import reconstructionpy
 from dream3d import processingpy
 
@@ -86,7 +86,7 @@ def adaptive_alignment():
     # The following 'enums' need binded
     # Section Plane options --> [0 : XY] , [1 : XZ], [2 : YZ]
     # Number of Sites options --> [0 : 8] , [1 : 12], [2 : 16], [3 : 24], [4 : 36]
-    err = anisotropypy.steiner_compact(dca, True, sd.GetBuildDirectory() + "/Debug/SteinerCompactXY.vtk",
+    err = dream3dreviewpy.steiner_compact(dca, True, sd.GetBuildDirectory() + "/Debug/SteinerCompactXY.vtk",
                           True, sd.GetBuildDirectory() + "/Debug/SteinerCompactXY.txt",
                           simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "FeatureIds"),
                           simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "Phases"),

@@ -8,7 +8,7 @@ from dream3d import simpl
 from dream3d import simpl_helpers as sc
 from dream3d import simpl_test_dirs as sd
 from dream3d import orientationanalysispy
-from dream3d import anisotropypy
+from dream3d import dream3dreviewpy
 
 
 def import_data():
@@ -34,7 +34,7 @@ def import_data():
         print("Convert Orientations ErrorCondition %d" % err)
 
     # Adaptive Alignment Misorientation
-    err = anisotropypy.adaptive_alignment_misorientation(dca, 5, False,
+    err = dream3dreviewpy.adaptive_alignment_misorientation(dca, 5, False,
                                                          simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data",
                                                                              "Quats"),
                                                          simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data",
