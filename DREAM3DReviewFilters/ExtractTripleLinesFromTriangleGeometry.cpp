@@ -41,7 +41,7 @@ template <class T> inline void hashCombine(size_t& seed, const T& obj)
 }
 
 using Vertex = std::array<float, 3>;
-using Edge = std::array<int64_t, 2>;
+using Edge = std::array<MeshIndexType, 2>;
 
 struct VertexHasher
 {
@@ -58,14 +58,14 @@ struct EdgeHasher
 {
   size_t operator()(const Edge& edge) const
   {
-    size_t hash = std::hash<int64_t>()(edge[0]);
+    size_t hash = std::hash<MeshIndexType>()(edge[0]);
     hashCombine(hash, edge[1]);
     return hash;
   }
 };
 
-using VertexMap = std::unordered_map<Vertex, int64_t, VertexHasher>;
-using EdgeMap = std::unordered_map<Edge, int64_t, EdgeHasher>;
+using VertexMap = std::unordered_map<Vertex, MeshIndexType, VertexHasher>;
+using EdgeMap = std::unordered_map<Edge, MeshIndexType, EdgeHasher>;
 }
 
 // -----------------------------------------------------------------------------
@@ -274,7 +274,7 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
   float minExtents[3] = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
   float maxExtents[3] = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()};
 
-  for(int64_t i = 0; i < numVerts; i++)
+  for(MeshIndexType i = 0; i < numVerts; i++)
   {
     if(triVerts[3 * i + 0] < minExtents[0])
     {
@@ -380,8 +380,8 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
               vertCounter++;
             }
 
-            int64_t startVert = vertexMap[tmpCoords0];
-            int64_t endVert = vertexMap[vert.first];
+            MeshIndexType startVert = vertexMap[tmpCoords0];
+            MeshIndexType endVert = vertexMap[vert.first];
             if(startVert != endVert)
             {
               if(startVert > endVert)
@@ -443,8 +443,8 @@ void ExtractTripleLinesFromTriangleGeometry::extractTripleLines()
             vertCounter++;
           }
 
-          int64_t startVert = vertexMap[tmpCoords0];
-          int64_t endVert = vertexMap[vert.first];
+          MeshIndexType startVert = vertexMap[tmpCoords0];
+          MeshIndexType endVert = vertexMap[vert.first];
           if(startVert != endVert)
           {
             if(startVert > endVert)
@@ -555,8 +555,8 @@ void burnVertices(std::vector<MeshIndexType> vertsToBurn, MeshIndexType seedVert
           vertCounter++;
         }
 
-        int64_t head = vertexMap[headVert];
-        int64_t tail = vertexMap[tailVert];
+        MeshIndexType head = vertexMap[headVert];
+        MeshIndexType tail = vertexMap[tailVert];
         if(head > tail)
         {
           std::swap(head, tail);
@@ -595,8 +595,8 @@ void burnVertices(std::vector<MeshIndexType> vertsToBurn, MeshIndexType seedVert
           vertCounter++;
         }
 
-        int64_t head = vertexMap[headVert];
-        int64_t tail = vertexMap[tailVert];
+        MeshIndexType head = vertexMap[headVert];
+        MeshIndexType tail = vertexMap[tailVert];
         if(head > tail)
         {
           std::swap(head, tail);
@@ -635,7 +635,7 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   float* vertPtr = tripleLineEdge->getVertexPointer(0);
   MeshIndexType* edgePtr = tripleLineEdge->getEdgePointer(0);
   ElementDynamicList::Pointer edgesContainingVert = tripleLineEdge->getElementsContainingVert();
-  int64_t numVerts = tripleLineEdge->getNumberOfVertices();
+  MeshIndexType numVerts = tripleLineEdge->getNumberOfVertices();
 
   VertexMap vertexMap;
   EdgeMap edgeMap;
@@ -740,7 +740,7 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   burnVertices(vertsToBurn, seedVert, burnedVerts, vertCounter, edgeCounter, vertPtr, edgePtr, m_TripleLineNodeTypes, edgesContainingVert, vertexMap, edgeMap, tmpVerts, tmpEdges, tmpNodeTypes, this);
 
   std::vector<std::vector<float>> controlPoints(tmpVerts.size(), std::vector<float>(3, 0.0f));
-  for(auto i = 0; i < controlPoints.size(); i++)
+  for(MeshIndexType i = 0; i < controlPoints.size(); i++)
   {
     controlPoints[i][0] = tmpVerts[i][0];
     controlPoints[i][1] = tmpVerts[i][1];
@@ -760,13 +760,13 @@ void ExtractTripleLinesFromTriangleGeometry::smoothTripleLines()
   tripleLineEdge->resizeEdgeList(tmpEdges.size());
   vertPtr = tripleLineEdge->getVertexPointer(0);
   edgePtr = tripleLineEdge->getEdgePointer(0);
-  for(auto i = 0; i < tmpVerts.size(); i++)
+  for(MeshIndexType i = 0; i < tmpVerts.size(); i++)
   {
     vertPtr[3 * i + 0] = tmpVerts[i][0];
     vertPtr[3 * i + 1] = tmpVerts[i][1];
     vertPtr[3 * i + 2] = tmpVerts[i][2];
   }
-  for(auto i = 0; i < tmpEdges.size(); i++)
+  for(MeshIndexType i = 0; i < tmpEdges.size(); i++)
   {
     edgePtr[2 * i + 0] = tmpEdges[i][0];
     edgePtr[2 * i + 1] = tmpEdges[i][1];
@@ -799,8 +799,8 @@ std::vector<float> ExtractTripleLinesFromTriangleGeometry::computeBsplineInterpo
     std::iota(std::begin(knots), std::end(knots), 0);
     float domainLow = static_cast<float>(degree);
     float domainHigh = static_cast<float>(knots.size() - 1 - degree);
-    float low = knots[domainLow];
-    float high = knots[domainHigh];
+    float low = knots[static_cast<size_t>(domainLow)];
+    float high = knots[static_cast<size_t>(domainHigh)];
     float t = value * (high - low) + low;
     size_t s;
     for(s = domainLow; s < domainHigh; s++)

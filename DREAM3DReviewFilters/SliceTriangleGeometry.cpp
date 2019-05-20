@@ -336,11 +336,11 @@ void SliceTriangleGeometry::rotateVertices(unsigned int direction, float* n, int
 // -----------------------------------------------------------------------------
 void SliceTriangleGeometry::determineBoundsAndNumSlices(float& minDim, float& maxDim, MeshIndexType numTris, MeshIndexType* tris, float* triVerts)
 {
-  for(int64_t i = 0; i < numTris; i++)
+  for(MeshIndexType i = 0; i < numTris; i++)
   {
-    for(size_t j = 0; j < 3; j++)
+    for(MeshIndexType j = 0; j < 3; j++)
     {
-      int64_t vert = tris[3 * i + j];
+      MeshIndexType vert = tris[3 * i + j];
       if(minDim > triVerts[3 * vert + 2])
       {
         minDim = triVerts[3 * vert + 2];
@@ -365,7 +365,7 @@ void SliceTriangleGeometry::determineBoundsAndNumSlices(float& minDim, float& ma
     }
   }
 
-  m_NumberOfSlices = static_cast<size_t>((maxDim - minDim) / m_SliceResolution) + 1;
+  m_NumberOfSlices = static_cast<MeshIndexType>((maxDim - minDim) / m_SliceResolution) + 1;
 }
 
     // -----------------------------------------------------------------------------

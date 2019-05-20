@@ -414,7 +414,7 @@ void InterpolatePointCloudToRegularGrid::preflight()
 // -----------------------------------------------------------------------------
 template <typename T>
 void mapPointCloudDataByKernel(IDataArray::Pointer source, IDataArray::Pointer dynamic, std::vector<float>& kernelVals, int64_t kernel[3], size_t dims[3], size_t curX, size_t curY, size_t curZ,
-                               int64_t vertIdx)
+                               size_t vertIdx)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(source);
   T* inputData = static_cast<T*>(inputDataPtr->getPointer(0));
@@ -605,11 +605,11 @@ void InterpolatePointCloudToRegularGrid::execute()
     determineKernelDistances(kernelNumVoxels, res);
   }
 
-  int64_t progIncrement = numVerts / 100;
-  int64_t prog = 1;
-  int64_t progressInt = 0;
+  size_t progIncrement = numVerts / 100;
+  size_t prog = 1;
+  size_t progressInt = 0;
 
-  for(int64_t i = 0; i < numVerts; i++)
+  for(size_t i = 0; i < numVerts; i++)
   {
     if(getCancel())
     {

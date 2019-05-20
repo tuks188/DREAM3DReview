@@ -42,7 +42,11 @@
   else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(inputData))                                                                                                                               \
   {                                                                                                                                                                                                    \
     templateName<uint64_t>(__VA_ARGS__);                                                                                                                                                               \
-  }                                                                                                                                                                                                    \
+  } \
+  else if(TemplateHelpers::CanDynamicCast<SizeTArrayType>()(inputData))                                                                                                                               \
+  {                                                                                                                                                                                                    \
+    templateName<size_t>(__VA_ARGS__);                                                                                                                                                               \
+  }  \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
     observableObj->setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "The input array was of unsupported type");                                                             \

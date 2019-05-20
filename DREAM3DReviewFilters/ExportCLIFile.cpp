@@ -283,7 +283,7 @@ void ExportCLIFile::execute()
     groups->initializeWithValue(1);
     groupIds = groups->getPointer(0);
   }
-  for(int64_t i = 0; i < numEdges; i++)
+  for(MeshIndexType i = 0; i < numEdges; i++)
   {
     table[groupIds[i]][m_LayerIds[i]].push_back(i);
   }

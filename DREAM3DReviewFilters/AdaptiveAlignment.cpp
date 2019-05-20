@@ -800,10 +800,10 @@ void AdaptiveAlignment::execute()
     voxelArrayNames.removeAll(dataArrayPath.getDataArrayName());
   }
 
-  int64_t progIncrement = dims[2] / 100;
-  int64_t prog = 1;
-  int64_t progressInt = 0;
-  uint64_t slice = 0;
+  size_t progIncrement = dims[2] / 100;
+  size_t prog = 1;
+  size_t progressInt = 0;
+  size_t slice = 0;
 
   // transfer cell data
   for(size_t i = 1; i < dims[2]; i++)
@@ -843,7 +843,7 @@ void AdaptiveAlignment::execute()
         }
         newPosition = (slice * dims[0] * dims[1]) + (yspot * dims[0]) + xspot;
         currentPosition = (slice * dims[0] * dims[1]) + ((yspot + yshifts[i]) * dims[0]) + (xspot + xshifts[i]);
-        if(int64_t((yspot + yshifts[i])) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && int64_t((xspot + xshifts[i])) >= 0 && (xspot + xshifts[i]) <= dims[0] - 1)
+        if(static_cast<int64_t>((yspot + yshifts[i])) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && static_cast<int64_t>((xspot + xshifts[i])) >= 0 && (xspot + xshifts[i]) <= dims[0] - 1)
         {
           for(const auto& arrayName : voxelArrayNames)
           {
@@ -851,7 +851,7 @@ void AdaptiveAlignment::execute()
             p->copyTuple(currentPosition, newPosition);
           }
         }
-        if(int64_t((yspot + yshifts[i])) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || int64_t((xspot + xshifts[i])) < 0 || (xspot + xshifts[i]) > dims[0] - 1)
+        if(static_cast<int64_t>((yspot + yshifts[i])) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || static_cast<int64_t>((xspot + xshifts[i])) < 0 || (xspot + xshifts[i]) > dims[0] - 1)
         {
           for(const auto& arrayName : voxelArrayNames)
           {

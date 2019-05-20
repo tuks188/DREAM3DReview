@@ -154,7 +154,7 @@ FloatVec3Type extractOrigin(const IGeometry::Pointer& geometry)
     float* vertices = vertex->getVertexPointer(0);
     FloatVec3Type origin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 
-    for(int64_t i = 0; i < vertex->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < vertex->getNumberOfVertices(); i++)
     {
       for(size_t j = 0; j < 3; j++)
       {
@@ -171,7 +171,7 @@ FloatVec3Type extractOrigin(const IGeometry::Pointer& geometry)
     float* vertices = edge->getVertexPointer(0);
     FloatVec3Type origin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 
-    for(int64_t i = 0; i < edge->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < edge->getNumberOfVertices(); i++)
     {
       for(size_t j = 0; j < 3; j++)
       {
@@ -188,7 +188,7 @@ FloatVec3Type extractOrigin(const IGeometry::Pointer& geometry)
     float* vertices = geometry2d->getVertexPointer(0);
     FloatVec3Type origin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 
-    for(int64_t i = 0; i < geometry2d->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < geometry2d->getNumberOfVertices(); i++)
     {
       for(size_t j = 0; j < 3; j++)
       {
@@ -205,7 +205,7 @@ FloatVec3Type extractOrigin(const IGeometry::Pointer& geometry)
     float* vertices = geometry3d->getVertexPointer(0);
     FloatVec3Type origin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 
-    for(int64_t i = 0; i < geometry3d->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < geometry3d->getNumberOfVertices(); i++)
     {
       for(size_t j = 0; j < 3; j++)
       {
@@ -289,7 +289,7 @@ FloatVec3Type extractCentroid(const IGeometry::Pointer& geometry)
     centroid[0] = 0.0f;
     centroid[1] = 0.0f;
     centroid[2] = 0.0f;
-    for(int64_t i = 0; i < vertex->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < vertex->getNumberOfVertices(); i++)
     {
       centroid[0] += vertices[3 * i + 0];
       centroid[1] += vertices[3 * i + 1];
@@ -306,7 +306,7 @@ FloatVec3Type extractCentroid(const IGeometry::Pointer& geometry)
     centroid[0] = 0.0f;
     centroid[1] = 0.0f;
     centroid[2] = 0.0f;
-    for(int64_t i = 0; i < edge->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < edge->getNumberOfVertices(); i++)
     {
       centroid[0] += vertices[3 * i + 0];
       centroid[1] += vertices[3 * i + 1];
@@ -323,7 +323,7 @@ FloatVec3Type extractCentroid(const IGeometry::Pointer& geometry)
     centroid[0] = 0.0f;
     centroid[1] = 0.0f;
     centroid[2] = 0.0f;
-    for(int64_t i = 0; i < geometry2d->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < geometry2d->getNumberOfVertices(); i++)
     {
       centroid[0] += vertices[3 * i + 0];
       centroid[1] += vertices[3 * i + 1];
@@ -340,7 +340,7 @@ FloatVec3Type extractCentroid(const IGeometry::Pointer& geometry)
     centroid[0] = 0.0f;
     centroid[1] = 0.0f;
     centroid[2] = 0.0f;
-    for(int64_t i = 0; i < geometry3d->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < geometry3d->getNumberOfVertices(); i++)
     {
       centroid[0] += vertices[3 * i + 0];
       centroid[1] += vertices[3 * i + 1];
@@ -391,7 +391,7 @@ void translateGeometry(const IGeometry::Pointer& geometry, const FloatVec3Type& 
   if(VertexGeom::Pointer vertex = std::dynamic_pointer_cast<VertexGeom>(geometry))
   {
     float* vertices = vertex->getVertexPointer(0);
-    for(int64_t i = 0; i < vertex->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < vertex->getNumberOfVertices(); i++)
     {
       vertices[3 * i + 0] += translation[0];
       vertices[3 * i + 1] += translation[1];
@@ -402,7 +402,7 @@ void translateGeometry(const IGeometry::Pointer& geometry, const FloatVec3Type& 
   if(EdgeGeom::Pointer edge = std::dynamic_pointer_cast<EdgeGeom>(geometry))
   {
     float* vertices = edge->getVertexPointer(0);
-    for(int64_t i = 0; i < edge->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < edge->getNumberOfVertices(); i++)
     {
       vertices[3 * i + 0] += translation[0];
       vertices[3 * i + 1] += translation[1];
@@ -413,7 +413,7 @@ void translateGeometry(const IGeometry::Pointer& geometry, const FloatVec3Type& 
   if(IGeometry2D::Pointer geometry2d = std::dynamic_pointer_cast<IGeometry2D>(geometry))
   {
     float* vertices = geometry2d->getVertexPointer(0);
-    for(int64_t i = 0; i < geometry2d->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < geometry2d->getNumberOfVertices(); i++)
     {
       vertices[3 * i + 0] += translation[0];
       vertices[3 * i + 1] += translation[1];
@@ -424,7 +424,7 @@ void translateGeometry(const IGeometry::Pointer& geometry, const FloatVec3Type& 
   if(IGeometry3D::Pointer geometry3d = std::dynamic_pointer_cast<IGeometry3D>(geometry))
   {
     float* vertices = geometry3d->getVertexPointer(0);
-    for(int64_t i = 0; i < geometry3d->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < geometry3d->getNumberOfVertices(); i++)
     {
       vertices[3 * i + 0] += translation[0];
       vertices[3 * i + 1] += translation[1];

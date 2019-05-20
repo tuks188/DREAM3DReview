@@ -297,7 +297,7 @@ void ExtractInternalSurfacesFromTriangleGeometry::execute()
   int64_t progressInt = 0;
   int64_t counter = 0;
 
-  for(int64_t i = 0; i < numTris; i++)
+  for(MeshIndexType i = 0; i < numTris; i++)
   {
     if(getCancel())
     {
