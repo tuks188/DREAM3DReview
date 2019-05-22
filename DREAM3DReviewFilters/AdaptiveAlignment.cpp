@@ -364,19 +364,29 @@ bool AdaptiveAlignment::find_calibrating_circles()
 
       /// circle variables here
       itCircles = circles.begin();
+
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
       icenter[0] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(0));
       icenter[1] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(1));
-#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
       radius[0] = static_cast<float>((*itCircles)->GetRadius()[0]);
 #else
+      auto circle0 = *itCircles;
+      auto center0 = circle0->GetCenterInObjectSpace();
+      icenter[0] = center0[0];
+      icenter[1] = center0[1];
       radius[0] = static_cast<float>((*itCircles)->GetRadiusInObjectSpace()[0]);
 #endif
       itCircles++;
+
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
       icenter[2] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(0));
       icenter[3] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(1));
-#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
       radius[1] = static_cast<float>((*itCircles)->GetRadius()[0]);
 #else
+      auto circle1 = *itCircles;
+      auto center1 = circle1->GetCenterInObjectSpace();
+      icenter[2] = center1[0];
+      icenter[3] = center1[1];
       radius[1] = static_cast<float>((*itCircles)->GetRadiusInObjectSpace()[0]);
 #endif
       // check that the circles were found correctly:
