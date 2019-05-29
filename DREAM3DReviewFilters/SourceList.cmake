@@ -74,6 +74,10 @@ set(_PublicFilters
   DiscretizeDDDomain
   ParaDisReader
   
+  # TransformationPhase
+  FindCSLBoundaries
+  InsertTransformationPhases
+  TiDwellFatigueCrystallographicAnalysis
 )
 
 list(LENGTH _PublicFilters PluginNumFilters)

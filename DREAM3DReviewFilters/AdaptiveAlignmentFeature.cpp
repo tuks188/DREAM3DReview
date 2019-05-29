@@ -42,7 +42,9 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-#include "SIMPLib/SIMPLibVersion.h"
+
+#include "DREAM3DReview/DREAM3DReviewConstants.h"
+#include "DREAM3DReview/DREAM3DReviewVersion.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -517,7 +519,7 @@ AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 const QString AdaptiveAlignmentFeature::getCompiledLibraryName() const
 {
-  return AnisotropyConstants::AnisotropyBaseName;
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -535,7 +537,7 @@ const QString AdaptiveAlignmentFeature::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
-  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 // -----------------------------------------------------------------------------

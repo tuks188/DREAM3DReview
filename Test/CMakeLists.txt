@@ -23,6 +23,7 @@ get_filename_component(${PLUGIN_NAME}_PARENT_SOURCE_DIR "${${PLUGIN_NAME}_SOURCE
 get_filename_component(${PLUGIN_NAME}_PARENT_BINARY_DIR "${${PLUGIN_NAME}_BINARY_DIR}" DIRECTORY)
 
 set(Anisotropy_Data_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Data/Anisotropy)
+list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib ${ITK_LIBRARIES})
 
 SIMPL_GenerateUnitTestFile(PLUGIN_NAME ${PLUGIN_NAME}
                            TEST_DATA_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test/Data
@@ -34,7 +35,6 @@ SIMPL_GenerateUnitTestFile(PLUGIN_NAME ${PLUGIN_NAME}
                                         ${${PLUGIN_NAME}_PARENT_BINARY_DIR}
 )
 
-list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib ${ITK_LIBRARIES})
 
 #------------------------------------------------------------------------------
 # If Python is enabled, then enable the Python unit tests for this plugin
@@ -72,6 +72,7 @@ if(SIMPL_ENABLE_PYTHON)
         02_Adaptive_Alignment_Misorientation_Zero_Shifts
         03_Adaptive_Alignment_Mutual_Information_SEM_Images
         04_Adaptive_Alignment_Steiner_Compact
+        InsertTransformationPhase
     )
 
     set(TEST_SCRIPT_FILE_EXT "sh")

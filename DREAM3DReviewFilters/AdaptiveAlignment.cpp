@@ -46,11 +46,11 @@
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewFilters/ItkBridge.h"
+#include "DREAM3DReview/DREAM3DReviewVersion.h"
 
 #include "itkHoughTransform2DCirclesImageFilter.h"
 #include "itkHoughTransform2DLinesImageFilter.h"
@@ -882,7 +882,7 @@ AbstractFilter::Pointer AdaptiveAlignment::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 const QString AdaptiveAlignment::getCompiledLibraryName() const
 {
-  return AnisotropyConstants::AnisotropyBaseName;
+  return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -900,7 +900,7 @@ const QString AdaptiveAlignment::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
-  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << DREAM3DReview::Version::Major() << "." << DREAM3DReview::Version::Minor() << "." << DREAM3DReview::Version::Patch();
   return version;
 }
 // -----------------------------------------------------------------------------
