@@ -315,7 +315,7 @@ if(EXISTS ${${PLUGIN_NAME}_SOURCE_DIR}/Data)
     set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}")
   endif()
 
-  install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME}
+  install(DIRECTORY ${${PLUGIN_NAME}_SOURCE_DIR}/Data
           DESTINATION Data
           COMPONENT Applications )
 endif()
