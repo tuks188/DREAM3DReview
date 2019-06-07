@@ -46,9 +46,6 @@
 #include <tbb/task_scheduler_init.h>
 #endif
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"
