@@ -342,7 +342,7 @@ void LocalDislocationDensityCalculator::execute()
   updateCellInstancePointers();
 
   // Create a temporary array to hold the individual slip system lengths in order to determine dominant system
-  FloatArrayType::Pointer m_IndividualSystemLengthsPtr = FloatArrayType::CreateArray(12 * m_OutputArrayPtr.lock()->getNumberOfTuples(), "INDIVIDUAL_SYSTEM_LENGTHS_INTERNAL_USE_ONLY");
+  FloatArrayType::Pointer m_IndividualSystemLengthsPtr = FloatArrayType::CreateArray(12 * m_OutputArrayPtr.lock()->getNumberOfTuples(), "INDIVIDUAL_SYSTEM_LENGTHS_INTERNAL_USE_ONLY", true);
   float* m_IndividualSystemLengths = m_IndividualSystemLengthsPtr->getPointer(0);
 
   float point1[3], point2[3], corner1[3], corner2[3];

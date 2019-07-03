@@ -382,7 +382,7 @@ void ReadMicData::dataCheck()
       m_LatticeConstants = m_LatticeConstantsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-    StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumberOfTuples(), SIMPL::EnsembleData::PhaseName);
+    StringDataArray::Pointer materialNames = StringDataArray::CreateArray(cellEnsembleAttrMat->getNumberOfTuples(), SIMPL::EnsembleData::PhaseName, true);
     cellEnsembleAttrMat->insertOrAssign(materialNames);
   }
 }
@@ -503,7 +503,7 @@ void ReadMicData::readMicFile()
         phasePtr[i] = 1;
       }
     }
-    iArray = Int32ArrayType::CreateArray(totalPoints, SIMPL::CellData::Phases);
+    iArray = Int32ArrayType::CreateArray(totalPoints, SIMPL::CellData::Phases, true);
     ::memcpy(iArray->getPointer(0), phasePtr, sizeof(int32_t) * totalPoints);
     cellAttrMat->insertOrAssign(iArray);
   }
@@ -514,7 +514,7 @@ void ReadMicData::readMicFile()
     f1 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler1));
     f2 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler2));
     f3 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Euler3));
-    fArray = FloatArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::EulerAngles);
+    fArray = FloatArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::EulerAngles, true);
     float* cellEulerAngles = fArray->getPointer(0);
     for(size_t i = 0; i < totalPoints; i++)
     {
@@ -528,14 +528,14 @@ void ReadMicData::readMicFile()
   compDims[0] = 1; // Now reset the size of the first dimension to 1
   {
     phasePtr = reinterpret_cast<int*>(reader->getPointerByName(Mic::Phase));
-    iArray = Int32ArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::Phases);
+    iArray = Int32ArrayType::CreateArray(totalPoints, compDims, SIMPL::CellData::Phases, true);
     ::memcpy(iArray->getPointer(0), phasePtr, sizeof(int32_t) * totalPoints);
     cellAttrMat->insertOrAssign(iArray);
   }
 
   {
     f1 = reinterpret_cast<float*>(reader->getPointerByName(Mic::Confidence));
-    fArray = FloatArrayType::CreateArray(totalPoints, compDims, Mic::Confidence);
+    fArray = FloatArrayType::CreateArray(totalPoints, compDims, Mic::Confidence, true);
     ::memcpy(fArray->getPointer(0), f1, sizeof(float) * totalPoints);
     cellAttrMat->insertOrAssign(fArray);
   }
@@ -607,10 +607,10 @@ int ReadMicData::loadMaterialInfo(MicReader* reader)
     return getErrorCode();
   }
 
-  DataArray<unsigned int>::Pointer crystalStructures = DataArray<unsigned int>::CreateArray(phases.size() + 1, getCrystalStructuresArrayName());
+  DataArray<unsigned int>::Pointer crystalStructures = DataArray<unsigned int>::CreateArray(phases.size() + 1, getCrystalStructuresArrayName(), true);
   StringDataArray::Pointer materialNames = StringDataArray::CreateArray(phases.size() + 1, getMaterialNameArrayName());
   std::vector<size_t> dims(1, 6);
-  FloatArrayType::Pointer latticeConstants = FloatArrayType::CreateArray(phases.size() + 1, dims, getLatticeConstantsArrayName());
+  FloatArrayType::Pointer latticeConstants = FloatArrayType::CreateArray(phases.size() + 1, dims, getLatticeConstantsArrayName(), true);
 
   // Initialize the zero'th element to unknowns. The other elements will
   // be filled in based on values from the data file

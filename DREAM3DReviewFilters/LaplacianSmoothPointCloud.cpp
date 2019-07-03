@@ -190,7 +190,7 @@ void LaplacianSmoothPointCloud::execute()
 
   int64_t progressInt = 0;
 
-  FloatArrayType::Pointer newCoordsPtr = FloatArrayType::CreateArray(3 * numVerts, "newCoords");
+  FloatArrayType::Pointer newCoordsPtr = FloatArrayType::CreateArray(3 * numVerts, "newCoords", true);
   newCoordsPtr->initializeWithValue(0.0f);
   float* newCoords = newCoordsPtr->getPointer(0);
 
