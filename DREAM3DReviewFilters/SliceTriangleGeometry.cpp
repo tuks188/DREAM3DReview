@@ -414,7 +414,7 @@ void SliceTriangleGeometry::execute()
   std::vector<int32_t> sliceIds;
   int32_t regionId = 0;
   std::vector<int32_t> regionIds;
-  float min_shift = m_SliceResolution / 1000.0f;
+  // float min_shift = m_SliceResolution / 1000.0f;
 
   for(MeshIndexType i = 0; i < numTris; i++)
   {
