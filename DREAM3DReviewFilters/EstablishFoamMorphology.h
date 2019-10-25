@@ -24,6 +24,8 @@
 
 #include "OrientationLib/LaueOps/OrthoRhombicOps.h"
 
+#include "DREAM3DReview/DREAM3DReviewDLLExport.h"
+
 /**
  * @brief The EstablishFoamMorphology class. See [Filter documentation](@ref EstablishFoamMorphology) for details.
  */
