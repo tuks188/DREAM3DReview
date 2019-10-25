@@ -27,7 +27,7 @@
 /**
  * @brief The EstablishFoamMorphology class. See [Filter documentation](@ref EstablishFoamMorphology) for details.
  */
-class EstablishFoamMorphology : public AbstractFilter
+class DREAM3DReview_EXPORT EstablishFoamMorphology : public AbstractFilter
 {
   Q_OBJECT
 
