@@ -11,6 +11,8 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "ExportCLIFile.h"
 
 #include <cassert>
@@ -31,6 +33,7 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -41,14 +44,11 @@
 ExportCLIFile::ExportCLIFile()
 : m_EdgeGeometry("")
 , m_LayerIdsArrayPath("", "", "")
-, m_SplitByGroup(false)
 , m_GroupIdsArrayPath("", "", "")
 , m_OutputDirectory("")
 , m_OutputFilePrefix("")
 , m_UnitsScaleFactor(1.0)
 , m_Precision(5)
-, m_LayerIds(nullptr)
-, m_GroupIds(nullptr)
 {
   initialize();
 }
@@ -56,9 +56,7 @@ ExportCLIFile::ExportCLIFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ExportCLIFile::~ExportCLIFile()
-{
-}
+ExportCLIFile::~ExportCLIFile() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -346,7 +344,7 @@ AbstractFilter::Pointer ExportCLIFile::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExportCLIFile::getCompiledLibraryName() const
+QString ExportCLIFile::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -354,7 +352,7 @@ const QString ExportCLIFile::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExportCLIFile::getBrandingString() const
+QString ExportCLIFile::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -362,7 +360,7 @@ const QString ExportCLIFile::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExportCLIFile::getFilterVersion() const
+QString ExportCLIFile::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -373,7 +371,7 @@ const QString ExportCLIFile::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExportCLIFile::getGroupName() const
+QString ExportCLIFile::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -381,7 +379,7 @@ const QString ExportCLIFile::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExportCLIFile::getSubGroupName() const
+QString ExportCLIFile::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -389,7 +387,7 @@ const QString ExportCLIFile::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExportCLIFile::getHumanLabel() const
+QString ExportCLIFile::getHumanLabel() const
 {
   return "Export CLI File(s)";
 }
@@ -397,7 +395,132 @@ const QString ExportCLIFile::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExportCLIFile::getUuid()
+QUuid ExportCLIFile::getUuid() const
 {
   return QUuid("{351c38c9-330d-599c-8632-19d74868be86}");
+}
+
+// -----------------------------------------------------------------------------
+ExportCLIFile::Pointer ExportCLIFile::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExportCLIFile> ExportCLIFile::New()
+{
+  struct make_shared_enabler : public ExportCLIFile
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ExportCLIFile::getNameOfClass() const
+{
+  return QString("_SUPERExportCLIFile");
+}
+
+// -----------------------------------------------------------------------------
+QString ExportCLIFile::ClassName()
+{
+  return QString("_SUPERExportCLIFile");
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setEdgeGeometry(const DataArrayPath& value)
+{
+  m_EdgeGeometry = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExportCLIFile::getEdgeGeometry() const
+{
+  return m_EdgeGeometry;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setLayerIdsArrayPath(const DataArrayPath& value)
+{
+  m_LayerIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExportCLIFile::getLayerIdsArrayPath() const
+{
+  return m_LayerIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setSplitByGroup(bool value)
+{
+  m_SplitByGroup = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ExportCLIFile::getSplitByGroup() const
+{
+  return m_SplitByGroup;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setGroupIdsArrayPath(const DataArrayPath& value)
+{
+  m_GroupIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExportCLIFile::getGroupIdsArrayPath() const
+{
+  return m_GroupIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setOutputDirectory(const QString& value)
+{
+  m_OutputDirectory = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExportCLIFile::getOutputDirectory() const
+{
+  return m_OutputDirectory;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setOutputFilePrefix(const QString& value)
+{
+  m_OutputFilePrefix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExportCLIFile::getOutputFilePrefix() const
+{
+  return m_OutputFilePrefix;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setUnitsScaleFactor(double value)
+{
+  m_UnitsScaleFactor = value;
+}
+
+// -----------------------------------------------------------------------------
+double ExportCLIFile::getUnitsScaleFactor() const
+{
+  return m_UnitsScaleFactor;
+}
+
+// -----------------------------------------------------------------------------
+void ExportCLIFile::setPrecision(int value)
+{
+  m_Precision = value;
+}
+
+// -----------------------------------------------------------------------------
+int ExportCLIFile::getPrecision() const
+{
+  return m_Precision;
 }

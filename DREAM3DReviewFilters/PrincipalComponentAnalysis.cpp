@@ -33,12 +33,17 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "PrincipalComponentAnalysis.h"
 
 #include <Eigen/Core>
 #include <Eigen/Eigen>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
@@ -50,6 +55,9 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -400,7 +408,7 @@ AbstractFilter::Pointer PrincipalComponentAnalysis::newFilterInstance(bool copyF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getCompiledLibraryName() const
+QString PrincipalComponentAnalysis::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -408,7 +416,7 @@ const QString PrincipalComponentAnalysis::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getBrandingString() const
+QString PrincipalComponentAnalysis::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -416,7 +424,7 @@ const QString PrincipalComponentAnalysis::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getFilterVersion() const
+QString PrincipalComponentAnalysis::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -427,7 +435,7 @@ const QString PrincipalComponentAnalysis::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getGroupName() const
+QString PrincipalComponentAnalysis::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -435,7 +443,7 @@ const QString PrincipalComponentAnalysis::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid PrincipalComponentAnalysis::getUuid()
+QUuid PrincipalComponentAnalysis::getUuid() const
 {
   return QUuid("{ec163736-39c8-5c69-9a56-61940a337c07}");
 }
@@ -443,7 +451,7 @@ const QUuid PrincipalComponentAnalysis::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getSubGroupName() const
+QString PrincipalComponentAnalysis::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::DimensionalityReductionFilters;
 }
@@ -451,7 +459,132 @@ const QString PrincipalComponentAnalysis::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PrincipalComponentAnalysis::getHumanLabel() const
+QString PrincipalComponentAnalysis::getHumanLabel() const
 {
   return "Principal Component Analysis";
+}
+
+// -----------------------------------------------------------------------------
+PrincipalComponentAnalysis::Pointer PrincipalComponentAnalysis::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<PrincipalComponentAnalysis> PrincipalComponentAnalysis::New()
+{
+  struct make_shared_enabler : public PrincipalComponentAnalysis
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString PrincipalComponentAnalysis::getNameOfClass() const
+{
+  return QString("PrincipalComponentAnalysis");
+}
+
+// -----------------------------------------------------------------------------
+QString PrincipalComponentAnalysis::ClassName()
+{
+  return QString("PrincipalComponentAnalysis");
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> PrincipalComponentAnalysis::getSelectedDataArrayPaths() const
+{
+  return m_SelectedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setPCAttributeMatrixName(const QString& value)
+{
+  m_PCAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PrincipalComponentAnalysis::getPCAttributeMatrixName() const
+{
+  return m_PCAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setPCEigenvaluesName(const QString& value)
+{
+  m_PCEigenvaluesName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PrincipalComponentAnalysis::getPCEigenvaluesName() const
+{
+  return m_PCEigenvaluesName;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setPCEigenvectorsName(const QString& value)
+{
+  m_PCEigenvectorsName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PrincipalComponentAnalysis::getPCEigenvectorsName() const
+{
+  return m_PCEigenvectorsName;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setMatrixApproach(int value)
+{
+  m_MatrixApproach = value;
+}
+
+// -----------------------------------------------------------------------------
+int PrincipalComponentAnalysis::getMatrixApproach() const
+{
+  return m_MatrixApproach;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setProjectDataSpace(bool value)
+{
+  m_ProjectDataSpace = value;
+}
+
+// -----------------------------------------------------------------------------
+bool PrincipalComponentAnalysis::getProjectDataSpace() const
+{
+  return m_ProjectDataSpace;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setNumberOfDimensionsForProjection(int value)
+{
+  m_NumberOfDimensionsForProjection = value;
+}
+
+// -----------------------------------------------------------------------------
+int PrincipalComponentAnalysis::getNumberOfDimensionsForProjection() const
+{
+  return m_NumberOfDimensionsForProjection;
+}
+
+// -----------------------------------------------------------------------------
+void PrincipalComponentAnalysis::setProjectedDataSpaceArrayPath(const DataArrayPath& value)
+{
+  m_ProjectedDataSpaceArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath PrincipalComponentAnalysis::getProjectedDataSpaceArrayPath() const
+{
+  return m_ProjectedDataSpaceArrayPath;
 }

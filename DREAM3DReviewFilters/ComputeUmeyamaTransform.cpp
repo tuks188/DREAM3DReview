@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ComputeUmeyamaTransform.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
@@ -46,6 +51,8 @@
 #include "SIMPLib/Geometry/IGeometry2D.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
@@ -68,7 +75,6 @@ enum createdPathID : RenameDataPath::DataID_t
 ComputeUmeyamaTransform::ComputeUmeyamaTransform()
 : m_SourcePointSet("")
 , m_DestPointSet("")
-, m_UseScaling(false)
 , m_TransformationAttributeMatrixName("TransformationData")
 , m_TransformationMatrixName("TransformationMatrix")
 {
@@ -331,7 +337,7 @@ AbstractFilter::Pointer ComputeUmeyamaTransform::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getCompiledLibraryName() const
+QString ComputeUmeyamaTransform::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -339,7 +345,7 @@ const QString ComputeUmeyamaTransform::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getBrandingString() const
+QString ComputeUmeyamaTransform::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -347,7 +353,7 @@ const QString ComputeUmeyamaTransform::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getFilterVersion() const
+QString ComputeUmeyamaTransform::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -357,7 +363,7 @@ const QString ComputeUmeyamaTransform::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getGroupName() const
+QString ComputeUmeyamaTransform::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -365,7 +371,7 @@ const QString ComputeUmeyamaTransform::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ComputeUmeyamaTransform::getUuid()
+QUuid ComputeUmeyamaTransform::getUuid() const
 {
   return QUuid("{3192d494-d1ec-5ee7-a345-e9963f02aaab}");
 }
@@ -373,7 +379,7 @@ const QUuid ComputeUmeyamaTransform::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getSubGroupName() const
+QString ComputeUmeyamaTransform::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::RegistrationFilters;
 }
@@ -381,7 +387,96 @@ const QString ComputeUmeyamaTransform::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ComputeUmeyamaTransform::getHumanLabel() const
+QString ComputeUmeyamaTransform::getHumanLabel() const
 {
   return "Compute Umeyama Transform";
+}
+
+// -----------------------------------------------------------------------------
+ComputeUmeyamaTransform::Pointer ComputeUmeyamaTransform::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ComputeUmeyamaTransform> ComputeUmeyamaTransform::New()
+{
+  struct make_shared_enabler : public ComputeUmeyamaTransform
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ComputeUmeyamaTransform::getNameOfClass() const
+{
+  return QString("ComputeUmeyamaTransform");
+}
+
+// -----------------------------------------------------------------------------
+QString ComputeUmeyamaTransform::ClassName()
+{
+  return QString("ComputeUmeyamaTransform");
+}
+
+// -----------------------------------------------------------------------------
+void ComputeUmeyamaTransform::setSourcePointSet(const DataArrayPath& value)
+{
+  m_SourcePointSet = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ComputeUmeyamaTransform::getSourcePointSet() const
+{
+  return m_SourcePointSet;
+}
+
+// -----------------------------------------------------------------------------
+void ComputeUmeyamaTransform::setDestPointSet(const DataArrayPath& value)
+{
+  m_DestPointSet = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ComputeUmeyamaTransform::getDestPointSet() const
+{
+  return m_DestPointSet;
+}
+
+// -----------------------------------------------------------------------------
+void ComputeUmeyamaTransform::setUseScaling(bool value)
+{
+  m_UseScaling = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ComputeUmeyamaTransform::getUseScaling() const
+{
+  return m_UseScaling;
+}
+
+// -----------------------------------------------------------------------------
+void ComputeUmeyamaTransform::setTransformationAttributeMatrixName(const QString& value)
+{
+  m_TransformationAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ComputeUmeyamaTransform::getTransformationAttributeMatrixName() const
+{
+  return m_TransformationAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ComputeUmeyamaTransform::setTransformationMatrixName(const QString& value)
+{
+  m_TransformationMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ComputeUmeyamaTransform::getTransformationMatrixName() const
+{
+  return m_TransformationMatrixName;
 }

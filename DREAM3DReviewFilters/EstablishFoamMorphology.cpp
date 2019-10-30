@@ -23,6 +23,7 @@
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -3448,7 +3449,7 @@ AbstractFilter::Pointer EstablishFoamMorphology::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EstablishFoamMorphology::getCompiledLibraryName() const
+QString EstablishFoamMorphology::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -3456,7 +3457,7 @@ const QString EstablishFoamMorphology::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EstablishFoamMorphology::getBrandingString() const
+QString EstablishFoamMorphology::getBrandingString() const
 {
   return "Univ. of Utah DMREF";
 }
@@ -3464,7 +3465,7 @@ const QString EstablishFoamMorphology::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EstablishFoamMorphology::getFilterVersion() const
+QString EstablishFoamMorphology::getFilterVersion() const
 {
 	QString version;
 	QTextStream vStream(&version);
@@ -3475,7 +3476,7 @@ const QString EstablishFoamMorphology::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EstablishFoamMorphology::getGroupName() const
+QString EstablishFoamMorphology::getGroupName() const
 {
   return SIMPL::FilterGroups::SyntheticBuildingFilters;
 }
@@ -3483,7 +3484,7 @@ const QString EstablishFoamMorphology::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid EstablishFoamMorphology::getUuid()
+QUuid EstablishFoamMorphology::getUuid() const
 {
   return QUuid("{14ad5792-a186-5e96-8e9e-4d623919dabc}");
 }
@@ -3491,7 +3492,7 @@ const QUuid EstablishFoamMorphology::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EstablishFoamMorphology::getSubGroupName() const
+QString EstablishFoamMorphology::getSubGroupName() const
 {
 	return SIMPL::FilterSubGroups::PackingFilters;
 }
@@ -3499,7 +3500,322 @@ const QString EstablishFoamMorphology::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EstablishFoamMorphology::getHumanLabel() const
+QString EstablishFoamMorphology::getHumanLabel() const
 {
 	return "Establish Foam Morphology";
 }
+
+// -----------------------------------------------------------------------------
+EstablishFoamMorphology::Pointer EstablishFoamMorphology::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+EstablishFoamMorphology::Pointer EstablishFoamMorphology::New()
+{
+  Pointer sharedPtr (new (EstablishFoamMorphology));   
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getNameOfClass() const
+{
+  return QString("EstablishFoamMorphology");
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::ClassName()
+{
+  return QString("EstablishFoamMorphology");
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setOutputCellAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_OutputCellAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getOutputCellAttributeMatrixPath() const
+{
+  return m_OutputCellAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setInputCellFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_InputCellFeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getInputCellFeatureIdsArrayPath() const
+{
+  return m_InputCellFeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setOutputCellEnsembleAttributeMatrixName(const QString& value)
+{
+  m_OutputCellEnsembleAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getOutputCellEnsembleAttributeMatrixName() const
+{
+  return m_OutputCellEnsembleAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setOutputCellFeatureAttributeMatrixName(const QString& value)
+{
+  m_OutputCellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getOutputCellFeatureAttributeMatrixName() const
+{
+  return m_OutputCellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setFeatureIdsArrayName(const QString& value)
+{
+  m_FeatureIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getFeatureIdsArrayName() const
+{
+  return m_FeatureIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setMaskArrayName(const QString& value)
+{
+  m_MaskArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getMaskArrayName() const
+{
+  return m_MaskArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setCellPhasesArrayName(const QString& value)
+{
+  m_CellPhasesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getCellPhasesArrayName() const
+{
+  return m_CellPhasesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setNumFeaturesArrayName(const QString& value)
+{
+  m_NumFeaturesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getNumFeaturesArrayName() const
+{
+  return m_NumFeaturesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setQPEuclideanDistancesArrayName(const QString& value)
+{
+  m_QPEuclideanDistancesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getQPEuclideanDistancesArrayName() const
+{
+  return m_QPEuclideanDistancesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setTJEuclideanDistancesArrayName(const QString& value)
+{
+  m_TJEuclideanDistancesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getTJEuclideanDistancesArrayName() const
+{
+  return m_TJEuclideanDistancesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setGBEuclideanDistancesArrayName(const QString& value)
+{
+  m_GBEuclideanDistancesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getGBEuclideanDistancesArrayName() const
+{
+  return m_GBEuclideanDistancesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setInputStatsArrayPath(const DataArrayPath& value)
+{
+  m_InputStatsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getInputStatsArrayPath() const
+{
+  return m_InputStatsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setInputPhaseTypesArrayPath(const DataArrayPath& value)
+{
+  m_InputPhaseTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getInputPhaseTypesArrayPath() const
+{
+  return m_InputPhaseTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setInputPhaseNamesArrayPath(const DataArrayPath& value)
+{
+  m_InputPhaseNamesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getInputPhaseNamesArrayPath() const
+{
+  return m_InputPhaseNamesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setInputShapeTypesArrayPath(const DataArrayPath& value)
+{
+  m_InputShapeTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath EstablishFoamMorphology::getInputShapeTypesArrayPath() const
+{
+  return m_InputShapeTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setCsvOutputFile(const QString& value)
+{
+  m_CsvOutputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EstablishFoamMorphology::getCsvOutputFile() const
+{
+  return m_CsvOutputFile;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setPeriodicBoundaries(const bool& value)
+{
+  m_PeriodicBoundaries = value;
+}
+
+// -----------------------------------------------------------------------------
+bool EstablishFoamMorphology::getPeriodicBoundaries() const
+{
+  return m_PeriodicBoundaries;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setWriteGoalAttributes(const bool& value)
+{
+  m_WriteGoalAttributes = value;
+}
+
+// -----------------------------------------------------------------------------
+bool EstablishFoamMorphology::getWriteGoalAttributes() const
+{
+  return m_WriteGoalAttributes;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setHaveFeatures(const int& value)
+{
+  m_HaveFeatures = value;
+}
+
+// -----------------------------------------------------------------------------
+int EstablishFoamMorphology::getHaveFeatures() const
+{
+  return m_HaveFeatures;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setMinStrutThickness(const double& value)
+{
+  m_MinStrutThickness = value;
+}
+
+// -----------------------------------------------------------------------------
+double EstablishFoamMorphology::getMinStrutThickness() const
+{
+  return m_MinStrutThickness;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setStrutThicknessVariability(const float& value)
+{
+  m_StrutThicknessVariability = value;
+}
+
+// -----------------------------------------------------------------------------
+float EstablishFoamMorphology::getStrutThicknessVariability() const
+{
+  return m_StrutThicknessVariability;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setStrutShapeVariability(const float& value)
+{
+  m_StrutShapeVariability = value;
+}
+
+// -----------------------------------------------------------------------------
+float EstablishFoamMorphology::getStrutShapeVariability() const
+{
+  return m_StrutShapeVariability;
+}
+
+// -----------------------------------------------------------------------------
+void EstablishFoamMorphology::setSmoothStruts(const bool& value)
+{
+  m_SmoothStruts = value;
+}
+
+// -----------------------------------------------------------------------------
+bool EstablishFoamMorphology::getSmoothStruts() const
+{
+  return m_SmoothStruts;
+}
+
+

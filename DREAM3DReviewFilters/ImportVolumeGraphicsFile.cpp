@@ -11,17 +11,24 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "ImportVolumeGraphicsFile.h"
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -428,7 +435,7 @@ AbstractFilter::Pointer ImportVolumeGraphicsFile::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportVolumeGraphicsFile::getCompiledLibraryName() const
+QString ImportVolumeGraphicsFile::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -436,7 +443,7 @@ const QString ImportVolumeGraphicsFile::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportVolumeGraphicsFile::getBrandingString() const
+QString ImportVolumeGraphicsFile::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -444,7 +451,7 @@ const QString ImportVolumeGraphicsFile::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportVolumeGraphicsFile::getFilterVersion() const
+QString ImportVolumeGraphicsFile::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -455,7 +462,7 @@ const QString ImportVolumeGraphicsFile::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportVolumeGraphicsFile::getGroupName() const
+QString ImportVolumeGraphicsFile::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -463,7 +470,7 @@ const QString ImportVolumeGraphicsFile::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportVolumeGraphicsFile::getSubGroupName() const
+QString ImportVolumeGraphicsFile::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -471,7 +478,7 @@ const QString ImportVolumeGraphicsFile::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportVolumeGraphicsFile::getHumanLabel() const
+QString ImportVolumeGraphicsFile::getHumanLabel() const
 {
   return "Import Binary CT File (XRadia)";
 }
@@ -479,7 +486,96 @@ const QString ImportVolumeGraphicsFile::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ImportVolumeGraphicsFile::getUuid()
+QUuid ImportVolumeGraphicsFile::getUuid() const
 {
   return QUuid("{5fa10d81-94b4-582b-833f-8eabe659069e}");
+}
+
+// -----------------------------------------------------------------------------
+ImportVolumeGraphicsFile::Pointer ImportVolumeGraphicsFile::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ImportVolumeGraphicsFile> ImportVolumeGraphicsFile::New()
+{
+  struct make_shared_enabler : public ImportVolumeGraphicsFile
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::getNameOfClass() const
+{
+  return QString("ImportVolumeGraphicsFile");
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::ClassName()
+{
+  return QString("ImportVolumeGraphicsFile");
+}
+
+// -----------------------------------------------------------------------------
+void ImportVolumeGraphicsFile::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void ImportVolumeGraphicsFile::setInputHeaderFile(const QString& value)
+{
+  m_InputHeaderFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::getInputHeaderFile() const
+{
+  return m_InputHeaderFile;
+}
+
+// -----------------------------------------------------------------------------
+void ImportVolumeGraphicsFile::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ImportVolumeGraphicsFile::setCellAttributeMatrixName(const QString& value)
+{
+  m_CellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::getCellAttributeMatrixName() const
+{
+  return m_CellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ImportVolumeGraphicsFile::setDensityArrayName(const QString& value)
+{
+  m_DensityArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportVolumeGraphicsFile::getDensityArrayName() const
+{
+  return m_DensityArrayName;
 }

@@ -33,6 +33,8 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "ParaDisReader.h"
 
 #include <QtCore/QtDebug>
@@ -40,7 +42,10 @@
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
@@ -49,6 +54,8 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Math/MatrixMath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
@@ -622,7 +629,7 @@ AbstractFilter::Pointer ParaDisReader::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ParaDisReader::getCompiledLibraryName() const
+QString ParaDisReader::getCompiledLibraryName() const
 {
   return DDDAnalysisToolboxConstants::DDDAnalysisToolboxBaseName;
 }
@@ -630,7 +637,7 @@ const QString ParaDisReader::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ParaDisReader::getBrandingString() const
+QString ParaDisReader::getBrandingString() const
 {
   return "DDDAnalysisToolbox";
 }
@@ -638,7 +645,7 @@ const QString ParaDisReader::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ParaDisReader::getFilterVersion() const
+QString ParaDisReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -649,7 +656,7 @@ const QString ParaDisReader::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ParaDisReader::getGroupName() const
+QString ParaDisReader::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -657,7 +664,7 @@ const QString ParaDisReader::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ParaDisReader::getUuid()
+QUuid ParaDisReader::getUuid() const
 {
   return QUuid("{39652621-3cc4-5a72-92f3-e56c516d2b18}");
 }
@@ -665,7 +672,7 @@ const QUuid ParaDisReader::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ParaDisReader::getSubGroupName() const
+QString ParaDisReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -673,7 +680,156 @@ const QString ParaDisReader::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ParaDisReader::getHumanLabel() const
+QString ParaDisReader::getHumanLabel() const
 {
   return "Import ParaDis File";
+}
+
+// -----------------------------------------------------------------------------
+ParaDisReader::Pointer ParaDisReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ParaDisReader> ParaDisReader::New()
+{
+  struct make_shared_enabler : public ParaDisReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getNameOfClass() const
+{
+  return QString("ParaDisReader");
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::ClassName()
+{
+  return QString("ParaDisReader");
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setEdgeDataContainerName(const DataArrayPath& value)
+{
+  m_EdgeDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ParaDisReader::getEdgeDataContainerName() const
+{
+  return m_EdgeDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setVertexAttributeMatrixName(const QString& value)
+{
+  m_VertexAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getVertexAttributeMatrixName() const
+{
+  return m_VertexAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setEdgeAttributeMatrixName(const QString& value)
+{
+  m_EdgeAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getEdgeAttributeMatrixName() const
+{
+  return m_EdgeAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setBurgersVector(float value)
+{
+  m_BurgersVector = value;
+}
+
+// -----------------------------------------------------------------------------
+float ParaDisReader::getBurgersVector() const
+{
+  return m_BurgersVector;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setNumberOfArmsArrayName(const QString& value)
+{
+  m_NumberOfArmsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getNumberOfArmsArrayName() const
+{
+  return m_NumberOfArmsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setNodeConstraintsArrayName(const QString& value)
+{
+  m_NodeConstraintsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getNodeConstraintsArrayName() const
+{
+  return m_NodeConstraintsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setBurgersVectorsArrayName(const QString& value)
+{
+  m_BurgersVectorsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getBurgersVectorsArrayName() const
+{
+  return m_BurgersVectorsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setSlipPlaneNormalsArrayName(const QString& value)
+{
+  m_SlipPlaneNormalsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getSlipPlaneNormalsArrayName() const
+{
+  return m_SlipPlaneNormalsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ParaDisReader::setDomainBoundsArrayName(const QString& value)
+{
+  m_DomainBoundsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ParaDisReader::getDomainBoundsArrayName() const
+{
+  return m_DomainBoundsArrayName;
 }

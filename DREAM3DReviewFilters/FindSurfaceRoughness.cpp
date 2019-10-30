@@ -11,15 +11,22 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "FindSurfaceRoughness.h"
 
 #include <cmath>
 #include <cstring>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -31,7 +38,6 @@ FindSurfaceRoughness::FindSurfaceRoughness()
 : m_BoundaryCellsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::BoundaryCells)
 , m_AttributeMatrixName("RoughnessData")
 , m_RoughnessParamsArrayName("RougnessParameters")
-, m_RoughnessParams(nullptr)
 {
   initialize();
 }
@@ -218,7 +224,7 @@ AbstractFilter::Pointer FindSurfaceRoughness::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindSurfaceRoughness::getCompiledLibraryName() const
+QString FindSurfaceRoughness::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -226,7 +232,7 @@ const QString FindSurfaceRoughness::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindSurfaceRoughness::getBrandingString() const
+QString FindSurfaceRoughness::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -234,7 +240,7 @@ const QString FindSurfaceRoughness::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindSurfaceRoughness::getFilterVersion() const
+QString FindSurfaceRoughness::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -245,7 +251,7 @@ const QString FindSurfaceRoughness::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindSurfaceRoughness::getGroupName() const
+QString FindSurfaceRoughness::getGroupName() const
 {
   return SIMPL::FilterGroups::StatisticsFilters;
 }
@@ -253,7 +259,7 @@ const QString FindSurfaceRoughness::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindSurfaceRoughness::getSubGroupName() const
+QString FindSurfaceRoughness::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -261,7 +267,7 @@ const QString FindSurfaceRoughness::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindSurfaceRoughness::getHumanLabel() const
+QString FindSurfaceRoughness::getHumanLabel() const
 {
   return "Find Surface Roughness";
 }
@@ -269,7 +275,72 @@ const QString FindSurfaceRoughness::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FindSurfaceRoughness::getUuid()
+QUuid FindSurfaceRoughness::getUuid() const
 {
   return QUuid("{4178c7f9-5f90-5e95-8cf1-a67ca2a98a60}");
+}
+
+// -----------------------------------------------------------------------------
+FindSurfaceRoughness::Pointer FindSurfaceRoughness::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FindSurfaceRoughness> FindSurfaceRoughness::New()
+{
+  struct make_shared_enabler : public FindSurfaceRoughness
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FindSurfaceRoughness::getNameOfClass() const
+{
+  return QString("FindSurfaceRoughness");
+}
+
+// -----------------------------------------------------------------------------
+QString FindSurfaceRoughness::ClassName()
+{
+  return QString("FindSurfaceRoughness");
+}
+
+// -----------------------------------------------------------------------------
+void FindSurfaceRoughness::setBoundaryCellsArrayPath(const DataArrayPath& value)
+{
+  m_BoundaryCellsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindSurfaceRoughness::getBoundaryCellsArrayPath() const
+{
+  return m_BoundaryCellsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindSurfaceRoughness::setAttributeMatrixName(const QString& value)
+{
+  m_AttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FindSurfaceRoughness::getAttributeMatrixName() const
+{
+  return m_AttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void FindSurfaceRoughness::setRoughnessParamsArrayName(const QString& value)
+{
+  m_RoughnessParamsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FindSurfaceRoughness::getRoughnessParamsArrayName() const
+{
+  return m_RoughnessParamsArrayName;
 }

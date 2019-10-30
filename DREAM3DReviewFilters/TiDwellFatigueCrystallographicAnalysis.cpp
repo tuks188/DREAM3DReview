@@ -34,9 +34,14 @@
  *                   FA8650-07-D-5800 and FA8650-10-D-5226
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "TiDwellFatigueCrystallographicAnalysis.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -57,6 +62,8 @@
 #include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "OrientationLib/Core/Orientation.hpp"
 #include "OrientationLib/Core/OrientationTransformation.hpp"
@@ -917,7 +924,7 @@ AbstractFilter::Pointer TiDwellFatigueCrystallographicAnalysis::newFilterInstanc
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName() const
+QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -925,7 +932,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getCompiledLibraryName() c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString() const
+QString TiDwellFatigueCrystallographicAnalysis::getBrandingString() const
 {
   return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
@@ -933,7 +940,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion() const
+QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -944,7 +951,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getGroupName() const
+QString TiDwellFatigueCrystallographicAnalysis::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -952,7 +959,7 @@ const QString TiDwellFatigueCrystallographicAnalysis::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid TiDwellFatigueCrystallographicAnalysis::getUuid()
+QUuid TiDwellFatigueCrystallographicAnalysis::getUuid() const
 {
   return QUuid("{81e94b15-efb6-5bae-9ab1-c74099136174}");
 }
@@ -960,7 +967,7 @@ const QUuid TiDwellFatigueCrystallographicAnalysis::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName() const
+QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CrystallographyFilters;
 }
@@ -968,7 +975,432 @@ const QString TiDwellFatigueCrystallographicAnalysis::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TiDwellFatigueCrystallographicAnalysis::getHumanLabel() const
+QString TiDwellFatigueCrystallographicAnalysis::getHumanLabel() const
 {
   return "Ti Dwell Fatigue Crystallographic Analysis";
+}
+
+// -----------------------------------------------------------------------------
+TiDwellFatigueCrystallographicAnalysis::Pointer TiDwellFatigueCrystallographicAnalysis::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<TiDwellFatigueCrystallographicAnalysis> TiDwellFatigueCrystallographicAnalysis::New()
+{
+  struct make_shared_enabler : public TiDwellFatigueCrystallographicAnalysis
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getNameOfClass() const
+{
+  return QString("TiDwellFatigueCrystallographicAnalysis");
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::ClassName()
+{
+  return QString("TiDwellFatigueCrystallographicAnalysis");
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setAlphaGlobPhasePresent(bool value)
+{
+  m_AlphaGlobPhasePresent = value;
+}
+
+// -----------------------------------------------------------------------------
+bool TiDwellFatigueCrystallographicAnalysis::getAlphaGlobPhasePresent() const
+{
+  return m_AlphaGlobPhasePresent;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setAlphaGlobPhase(int value)
+{
+  m_AlphaGlobPhase = value;
+}
+
+// -----------------------------------------------------------------------------
+int TiDwellFatigueCrystallographicAnalysis::getAlphaGlobPhase() const
+{
+  return m_AlphaGlobPhase;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setMTRPhase(int value)
+{
+  m_MTRPhase = value;
+}
+
+// -----------------------------------------------------------------------------
+int TiDwellFatigueCrystallographicAnalysis::getMTRPhase() const
+{
+  return m_MTRPhase;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setLatticeParameterA(float value)
+{
+  m_LatticeParameterA = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getLatticeParameterA() const
+{
+  return m_LatticeParameterA;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setLatticeParameterC(float value)
+{
+  m_LatticeParameterC = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getLatticeParameterC() const
+{
+  return m_LatticeParameterC;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setStressAxis(const FloatVec3Type& value)
+{
+  m_StressAxis = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type TiDwellFatigueCrystallographicAnalysis::getStressAxis() const
+{
+  return m_StressAxis;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setSubsurfaceDistance(int value)
+{
+  m_SubsurfaceDistance = value;
+}
+
+// -----------------------------------------------------------------------------
+int TiDwellFatigueCrystallographicAnalysis::getSubsurfaceDistance() const
+{
+  return m_SubsurfaceDistance;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setConsiderationFraction(float value)
+{
+  m_ConsiderationFraction = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getConsiderationFraction() const
+{
+  return m_ConsiderationFraction;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setDoNotAssumeInitiatorPresence(bool value)
+{
+  m_DoNotAssumeInitiatorPresence = value;
+}
+
+// -----------------------------------------------------------------------------
+bool TiDwellFatigueCrystallographicAnalysis::getDoNotAssumeInitiatorPresence() const
+{
+  return m_DoNotAssumeInitiatorPresence;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setInitiatorLowerThreshold(float value)
+{
+  m_InitiatorLowerThreshold = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getInitiatorLowerThreshold() const
+{
+  return m_InitiatorLowerThreshold;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setInitiatorUpperThreshold(float value)
+{
+  m_InitiatorUpperThreshold = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getInitiatorUpperThreshold() const
+{
+  return m_InitiatorUpperThreshold;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setHardFeatureLowerThreshold(float value)
+{
+  m_HardFeatureLowerThreshold = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getHardFeatureLowerThreshold() const
+{
+  return m_HardFeatureLowerThreshold;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setHardFeatureUpperThreshold(float value)
+{
+  m_HardFeatureUpperThreshold = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getHardFeatureUpperThreshold() const
+{
+  return m_HardFeatureUpperThreshold;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setSoftFeatureLowerThreshold(float value)
+{
+  m_SoftFeatureLowerThreshold = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getSoftFeatureLowerThreshold() const
+{
+  return m_SoftFeatureLowerThreshold;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setSoftFeatureUpperThreshold(float value)
+{
+  m_SoftFeatureUpperThreshold = value;
+}
+
+// -----------------------------------------------------------------------------
+float TiDwellFatigueCrystallographicAnalysis::getSoftFeatureUpperThreshold() const
+{
+  return m_SoftFeatureUpperThreshold;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setNewCellFeatureAttributeMatrixName(const QString& value)
+{
+  m_NewCellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getNewCellFeatureAttributeMatrixName() const
+{
+  return m_NewCellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setSelectedFeaturesArrayName(const QString& value)
+{
+  m_SelectedFeaturesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getSelectedFeaturesArrayName() const
+{
+  return m_SelectedFeaturesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setInitiatorsArrayName(const QString& value)
+{
+  m_InitiatorsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getInitiatorsArrayName() const
+{
+  return m_InitiatorsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setHardFeaturesArrayName(const QString& value)
+{
+  m_HardFeaturesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getHardFeaturesArrayName() const
+{
+  return m_HardFeaturesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setSoftFeaturesArrayName(const QString& value)
+{
+  m_SoftFeaturesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getSoftFeaturesArrayName() const
+{
+  return m_SoftFeaturesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setHardSoftGroupsArrayName(const QString& value)
+{
+  m_HardSoftGroupsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getHardSoftGroupsArrayName() const
+{
+  return m_HardSoftGroupsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setCellFeatureAttributeMatrixName(const QString& value)
+{
+  m_CellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getCellFeatureAttributeMatrixName() const
+{
+  return m_CellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setCellFeatureAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_CellFeatureAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getCellFeatureAttributeMatrixPath() const
+{
+  return m_CellFeatureAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setCellParentIdsArrayName(const QString& value)
+{
+  m_CellParentIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getCellParentIdsArrayName() const
+{
+  return m_CellParentIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setFeatureParentIdsArrayName(const QString& value)
+{
+  m_FeatureParentIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getFeatureParentIdsArrayName() const
+{
+  return m_FeatureParentIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setActiveArrayName(const QString& value)
+{
+  m_ActiveArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TiDwellFatigueCrystallographicAnalysis::getActiveArrayName() const
+{
+  return m_ActiveArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setFeatureEulerAnglesArrayPath(const DataArrayPath& value)
+{
+  m_FeatureEulerAnglesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getFeatureEulerAnglesArrayPath() const
+{
+  return m_FeatureEulerAnglesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setFeaturePhasesArrayPath(const DataArrayPath& value)
+{
+  m_FeaturePhasesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getFeaturePhasesArrayPath() const
+{
+  return m_FeaturePhasesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setNeighborListArrayPath(const DataArrayPath& value)
+{
+  m_NeighborListArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getNeighborListArrayPath() const
+{
+  return m_NeighborListArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setCentroidsArrayPath(const DataArrayPath& value)
+{
+  m_CentroidsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getCentroidsArrayPath() const
+{
+  return m_CentroidsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void TiDwellFatigueCrystallographicAnalysis::setCrystalStructuresArrayPath(const DataArrayPath& value)
+{
+  m_CrystalStructuresArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TiDwellFatigueCrystallographicAnalysis::getCrystalStructuresArrayPath() const
+{
+  return m_CrystalStructuresArrayPath;
 }

@@ -11,13 +11,20 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "ApproximatePointCloudHull.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -327,7 +334,7 @@ AbstractFilter::Pointer ApproximatePointCloudHull::newFilterInstance(bool copyFi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApproximatePointCloudHull::getCompiledLibraryName() const
+QString ApproximatePointCloudHull::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -335,7 +342,7 @@ const QString ApproximatePointCloudHull::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApproximatePointCloudHull::getBrandingString() const
+QString ApproximatePointCloudHull::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -343,7 +350,7 @@ const QString ApproximatePointCloudHull::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApproximatePointCloudHull::getFilterVersion() const
+QString ApproximatePointCloudHull::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -354,7 +361,7 @@ const QString ApproximatePointCloudHull::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApproximatePointCloudHull::getGroupName() const
+QString ApproximatePointCloudHull::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::PointCloudFilters;
 }
@@ -362,7 +369,7 @@ const QString ApproximatePointCloudHull::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApproximatePointCloudHull::getSubGroupName() const
+QString ApproximatePointCloudHull::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -370,7 +377,7 @@ const QString ApproximatePointCloudHull::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApproximatePointCloudHull::getHumanLabel() const
+QString ApproximatePointCloudHull::getHumanLabel() const
 {
   return "Approximate Point Cloud Hull";
 }
@@ -378,7 +385,84 @@ const QString ApproximatePointCloudHull::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ApproximatePointCloudHull::getUuid()
+QUuid ApproximatePointCloudHull::getUuid() const
 {
   return QUuid("{fab669ad-66c6-5a39-bdb7-fc47b94311ed}");
+}
+
+// -----------------------------------------------------------------------------
+ApproximatePointCloudHull::Pointer ApproximatePointCloudHull::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ApproximatePointCloudHull> ApproximatePointCloudHull::New()
+{
+  struct make_shared_enabler : public ApproximatePointCloudHull
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ApproximatePointCloudHull::getNameOfClass() const
+{
+  return QString("ApproximatePointCloudHull");
+}
+
+// -----------------------------------------------------------------------------
+QString ApproximatePointCloudHull::ClassName()
+{
+  return QString("ApproximatePointCloudHull");
+}
+
+// -----------------------------------------------------------------------------
+void ApproximatePointCloudHull::setVertexDataContainerName(const DataArrayPath& value)
+{
+  m_VertexDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ApproximatePointCloudHull::getVertexDataContainerName() const
+{
+  return m_VertexDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ApproximatePointCloudHull::setHullDataContainerName(const QString& value)
+{
+  m_HullDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ApproximatePointCloudHull::getHullDataContainerName() const
+{
+  return m_HullDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ApproximatePointCloudHull::setGridResolution(const FloatVec3Type& value)
+{
+  m_GridResolution = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type ApproximatePointCloudHull::getGridResolution() const
+{
+  return m_GridResolution;
+}
+
+// -----------------------------------------------------------------------------
+void ApproximatePointCloudHull::setNumberOfEmptyNeighbors(int value)
+{
+  m_NumberOfEmptyNeighbors = value;
+}
+
+// -----------------------------------------------------------------------------
+int ApproximatePointCloudHull::getNumberOfEmptyNeighbors() const
+{
+  return m_NumberOfEmptyNeighbors;
 }

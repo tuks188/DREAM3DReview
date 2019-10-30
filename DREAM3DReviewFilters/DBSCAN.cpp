@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "DBSCAN.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -45,6 +50,8 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "util/ClusteringAlgorithms/DBSCANTemplate.hpp"
 
@@ -344,7 +351,7 @@ AbstractFilter::Pointer DBSCAN::newFilterInstance(bool copyFilterParameters) con
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getCompiledLibraryName() const
+QString DBSCAN::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -352,7 +359,7 @@ const QString DBSCAN::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getBrandingString() const
+QString DBSCAN::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -360,7 +367,7 @@ const QString DBSCAN::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getFilterVersion() const
+QString DBSCAN::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -371,7 +378,7 @@ const QString DBSCAN::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getGroupName() const
+QString DBSCAN::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -379,7 +386,7 @@ const QString DBSCAN::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid DBSCAN::getUuid()
+QUuid DBSCAN::getUuid() const
 {
   return QUuid("{c2d4f1e8-2b04-5d82-b90f-2191e8f4262e}");
 }
@@ -387,7 +394,7 @@ const QUuid DBSCAN::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getSubGroupName() const
+QString DBSCAN::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -395,7 +402,132 @@ const QString DBSCAN::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DBSCAN::getHumanLabel() const
+QString DBSCAN::getHumanLabel() const
 {
   return "DBSCAN";
+}
+
+// -----------------------------------------------------------------------------
+DBSCAN::Pointer DBSCAN::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<DBSCAN> DBSCAN::New()
+{
+  struct make_shared_enabler : public DBSCAN
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString DBSCAN::getNameOfClass() const
+{
+  return QString("DBSCAN");
+}
+
+// -----------------------------------------------------------------------------
+QString DBSCAN::ClassName()
+{
+  return QString("DBSCAN");
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath DBSCAN::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DBSCAN::getUseMask() const
+{
+  return m_UseMask;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath DBSCAN::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setFeatureIdsArrayName(const QString& value)
+{
+  m_FeatureIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DBSCAN::getFeatureIdsArrayName() const
+{
+  return m_FeatureIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setFeatureAttributeMatrixName(const QString& value)
+{
+  m_FeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DBSCAN::getFeatureAttributeMatrixName() const
+{
+  return m_FeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setEpsilon(float value)
+{
+  m_Epsilon = value;
+}
+
+// -----------------------------------------------------------------------------
+float DBSCAN::getEpsilon() const
+{
+  return m_Epsilon;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setMinPnts(int value)
+{
+  m_MinPnts = value;
+}
+
+// -----------------------------------------------------------------------------
+int DBSCAN::getMinPnts() const
+{
+  return m_MinPnts;
+}
+
+// -----------------------------------------------------------------------------
+void DBSCAN::setDistanceMetric(int value)
+{
+  m_DistanceMetric = value;
+}
+
+// -----------------------------------------------------------------------------
+int DBSCAN::getDistanceMetric() const
+{
+  return m_DistanceMetric;
 }

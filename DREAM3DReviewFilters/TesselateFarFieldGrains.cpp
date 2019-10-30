@@ -34,6 +34,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "TesselateFarFieldGrains.h"
 
 #include <algorithm>
@@ -58,6 +60,8 @@
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
 #include "SIMPLib/Utilities/TimeUtilities.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range3d.h>
@@ -1253,7 +1257,7 @@ AbstractFilter::Pointer TesselateFarFieldGrains::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getCompiledLibraryName() const
+QString TesselateFarFieldGrains::getCompiledLibraryName() const
 {
   return HEDMAnalysisConstants::HEDMAnalysisBaseName;
 }
@@ -1261,7 +1265,7 @@ const QString TesselateFarFieldGrains::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getBrandingString() const
+QString TesselateFarFieldGrains::getBrandingString() const
 {
   return "HEDMAnalysis";
 }
@@ -1269,7 +1273,7 @@ const QString TesselateFarFieldGrains::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getFilterVersion() const
+QString TesselateFarFieldGrains::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1280,7 +1284,7 @@ const QString TesselateFarFieldGrains::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getGroupName() const
+QString TesselateFarFieldGrains::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -1288,7 +1292,7 @@ const QString TesselateFarFieldGrains::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid TesselateFarFieldGrains::getUuid()
+QUuid TesselateFarFieldGrains::getUuid() const
 {
   return QUuid("{6f1abe57-ca7b-57ce-b03a-8c6f06fdc633}");
 }
@@ -1296,7 +1300,7 @@ const QUuid TesselateFarFieldGrains::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getSubGroupName() const
+QString TesselateFarFieldGrains::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::PackingFilters;
 }
@@ -1304,7 +1308,252 @@ const QString TesselateFarFieldGrains::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString TesselateFarFieldGrains::getHumanLabel() const
+QString TesselateFarFieldGrains::getHumanLabel() const
 {
   return "Tesselate Far Field Grains";
+}
+
+// -----------------------------------------------------------------------------
+TesselateFarFieldGrains::Pointer TesselateFarFieldGrains::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<TesselateFarFieldGrains> TesselateFarFieldGrains::New()
+{
+  struct make_shared_enabler : public TesselateFarFieldGrains
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getNameOfClass() const
+{
+  return QString("TesselateFarFieldGrains");
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::ClassName()
+{
+  return QString("TesselateFarFieldGrains");
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setOutputCellAttributeMatrixName(const DataArrayPath& value)
+{
+  m_OutputCellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TesselateFarFieldGrains::getOutputCellAttributeMatrixName() const
+{
+  return m_OutputCellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setOutputCellFeatureAttributeMatrixName(const QString& value)
+{
+  m_OutputCellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getOutputCellFeatureAttributeMatrixName() const
+{
+  return m_OutputCellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setOutputCellEnsembleAttributeMatrixName(const QString& value)
+{
+  m_OutputCellEnsembleAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getOutputCellEnsembleAttributeMatrixName() const
+{
+  return m_OutputCellEnsembleAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setFeatureIdsArrayName(const QString& value)
+{
+  m_FeatureIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getFeatureIdsArrayName() const
+{
+  return m_FeatureIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setCellPhasesArrayName(const QString& value)
+{
+  m_CellPhasesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getCellPhasesArrayName() const
+{
+  return m_CellPhasesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setSlabIdArrayName(const QString& value)
+{
+  m_SlabIdArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getSlabIdArrayName() const
+{
+  return m_SlabIdArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setFeaturePhasesArrayName(const QString& value)
+{
+  m_FeaturePhasesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getFeaturePhasesArrayName() const
+{
+  return m_FeaturePhasesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setFeatureEulerAnglesArrayName(const QString& value)
+{
+  m_FeatureEulerAnglesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getFeatureEulerAnglesArrayName() const
+{
+  return m_FeatureEulerAnglesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setElasticStrainsArrayName(const QString& value)
+{
+  m_ElasticStrainsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getElasticStrainsArrayName() const
+{
+  return m_ElasticStrainsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setCentroidsArrayName(const QString& value)
+{
+  m_CentroidsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getCentroidsArrayName() const
+{
+  return m_CentroidsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setVolumesArrayName(const QString& value)
+{
+  m_VolumesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getVolumesArrayName() const
+{
+  return m_VolumesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setAxisLengthsArrayName(const QString& value)
+{
+  m_AxisLengthsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getAxisLengthsArrayName() const
+{
+  return m_AxisLengthsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setAxisEulerAnglesArrayName(const QString& value)
+{
+  m_AxisEulerAnglesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getAxisEulerAnglesArrayName() const
+{
+  return m_AxisEulerAnglesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setOmega3sArrayName(const QString& value)
+{
+  m_Omega3sArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getOmega3sArrayName() const
+{
+  return m_Omega3sArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setEquivalentDiametersArrayName(const QString& value)
+{
+  m_EquivalentDiametersArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getEquivalentDiametersArrayName() const
+{
+  return m_EquivalentDiametersArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setCrystalStructuresArrayName(const QString& value)
+{
+  m_CrystalStructuresArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString TesselateFarFieldGrains::getCrystalStructuresArrayName() const
+{
+  return m_CrystalStructuresArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath TesselateFarFieldGrains::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void TesselateFarFieldGrains::setFeatureInputFileListInfo(const FileListInfo_t& value)
+{
+  m_FeatureInputFileListInfo = value;
+}
+
+// -----------------------------------------------------------------------------
+FileListInfo_t TesselateFarFieldGrains::getFeatureInputFileListInfo() const
+{
+  return m_FeatureInputFileListInfo;
 }

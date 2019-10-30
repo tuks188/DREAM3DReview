@@ -35,6 +35,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FindCSLBoundaries.h"
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -44,7 +46,10 @@
 #include <tbb/task_scheduler_init.h>
 #endif
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
@@ -57,6 +62,7 @@
 #include "SIMPLib/Math/MatrixMath.h"
 
 #include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 
 
@@ -447,7 +453,7 @@ AbstractFilter::Pointer FindCSLBoundaries::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getCompiledLibraryName() const
+QString FindCSLBoundaries::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -455,7 +461,7 @@ const QString FindCSLBoundaries::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getBrandingString() const
+QString FindCSLBoundaries::getBrandingString() const
 {
   return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
@@ -463,7 +469,7 @@ const QString FindCSLBoundaries::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getFilterVersion() const
+QString FindCSLBoundaries::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -474,7 +480,7 @@ const QString FindCSLBoundaries::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getGroupName() const
+QString FindCSLBoundaries::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -482,7 +488,7 @@ const QString FindCSLBoundaries::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FindCSLBoundaries::getUuid()
+QUuid FindCSLBoundaries::getUuid() const
 {
   return QUuid("{d87ff37c-120d-577d-a955-571c8280fa8e}");
 }
@@ -490,7 +496,7 @@ const QUuid FindCSLBoundaries::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getSubGroupName() const
+QString FindCSLBoundaries::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CrystallographyFilters;
 }
@@ -498,7 +504,156 @@ const QString FindCSLBoundaries::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindCSLBoundaries::getHumanLabel() const
+QString FindCSLBoundaries::getHumanLabel() const
 {
   return "Find CSL Boundaries";
+}
+
+// -----------------------------------------------------------------------------
+FindCSLBoundaries::Pointer FindCSLBoundaries::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FindCSLBoundaries> FindCSLBoundaries::New()
+{
+  struct make_shared_enabler : public FindCSLBoundaries
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FindCSLBoundaries::getNameOfClass() const
+{
+  return QString("FindCSLBoundaries");
+}
+
+// -----------------------------------------------------------------------------
+QString FindCSLBoundaries::ClassName()
+{
+  return QString("FindCSLBoundaries");
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setCSL(float value)
+{
+  m_CSL = value;
+}
+
+// -----------------------------------------------------------------------------
+float FindCSLBoundaries::getCSL() const
+{
+  return m_CSL;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setAxisTolerance(float value)
+{
+  m_AxisTolerance = value;
+}
+
+// -----------------------------------------------------------------------------
+float FindCSLBoundaries::getAxisTolerance() const
+{
+  return m_AxisTolerance;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setAngleTolerance(float value)
+{
+  m_AngleTolerance = value;
+}
+
+// -----------------------------------------------------------------------------
+float FindCSLBoundaries::getAngleTolerance() const
+{
+  return m_AngleTolerance;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setAvgQuatsArrayPath(const DataArrayPath& value)
+{
+  m_AvgQuatsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindCSLBoundaries::getAvgQuatsArrayPath() const
+{
+  return m_AvgQuatsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setFeaturePhasesArrayPath(const DataArrayPath& value)
+{
+  m_FeaturePhasesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindCSLBoundaries::getFeaturePhasesArrayPath() const
+{
+  return m_FeaturePhasesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setCrystalStructuresArrayPath(const DataArrayPath& value)
+{
+  m_CrystalStructuresArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindCSLBoundaries::getCrystalStructuresArrayPath() const
+{
+  return m_CrystalStructuresArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setSurfaceMeshFaceLabelsArrayPath(const DataArrayPath& value)
+{
+  m_SurfaceMeshFaceLabelsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindCSLBoundaries::getSurfaceMeshFaceLabelsArrayPath() const
+{
+  return m_SurfaceMeshFaceLabelsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setSurfaceMeshFaceNormalsArrayPath(const DataArrayPath& value)
+{
+  m_SurfaceMeshFaceNormalsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindCSLBoundaries::getSurfaceMeshFaceNormalsArrayPath() const
+{
+  return m_SurfaceMeshFaceNormalsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setSurfaceMeshCSLBoundaryArrayName(const QString& value)
+{
+  m_SurfaceMeshCSLBoundaryArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FindCSLBoundaries::getSurfaceMeshCSLBoundaryArrayName() const
+{
+  return m_SurfaceMeshCSLBoundaryArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void FindCSLBoundaries::setSurfaceMeshCSLBoundaryIncoherenceArrayName(const QString& value)
+{
+  m_SurfaceMeshCSLBoundaryIncoherenceArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FindCSLBoundaries::getSurfaceMeshCSLBoundaryIncoherenceArrayName() const
+{
+  return m_SurfaceMeshCSLBoundaryIncoherenceArrayName;
 }

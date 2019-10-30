@@ -33,15 +33,22 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "AdaptiveAlignmentFeature.h"
 
 #include <fstream>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -517,7 +524,7 @@ AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getCompiledLibraryName() const
+QString AdaptiveAlignmentFeature::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -525,7 +532,7 @@ const QString AdaptiveAlignmentFeature::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getBrandingString() const
+QString AdaptiveAlignmentFeature::getBrandingString() const
 {
   return "Anisotropy";
 }
@@ -533,7 +540,7 @@ const QString AdaptiveAlignmentFeature::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getFilterVersion() const
+QString AdaptiveAlignmentFeature::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -543,7 +550,7 @@ const QString AdaptiveAlignmentFeature::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getGroupName() const
+QString AdaptiveAlignmentFeature::getGroupName() const
 {
   return SIMPL::FilterGroups::ReconstructionFilters;
 }
@@ -551,7 +558,7 @@ const QString AdaptiveAlignmentFeature::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid AdaptiveAlignmentFeature::getUuid()
+QUuid AdaptiveAlignmentFeature::getUuid() const
 {
   return QUuid("{28977b7a-5b88-5145-abcd-d1c933f7d975}");
 }
@@ -559,7 +566,7 @@ const QUuid AdaptiveAlignmentFeature::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getSubGroupName() const
+QString AdaptiveAlignmentFeature::getSubGroupName() const
 {
   return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;
   ;
@@ -568,7 +575,48 @@ const QString AdaptiveAlignmentFeature::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getHumanLabel() const
+QString AdaptiveAlignmentFeature::getHumanLabel() const
 {
   return "Adaptive Alignment (Feature)";
+}
+
+// -----------------------------------------------------------------------------
+AdaptiveAlignmentFeature::Pointer AdaptiveAlignmentFeature::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<AdaptiveAlignmentFeature> AdaptiveAlignmentFeature::New()
+{
+  struct make_shared_enabler : public AdaptiveAlignmentFeature
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString AdaptiveAlignmentFeature::getNameOfClass() const
+{
+  return QString("AdaptiveAlignmentFeature");
+}
+
+// -----------------------------------------------------------------------------
+QString AdaptiveAlignmentFeature::ClassName()
+{
+  return QString("AdaptiveAlignmentFeature");
+}
+
+// -----------------------------------------------------------------------------
+void AdaptiveAlignmentFeature::setGoodVoxelsArrayPath(const DataArrayPath& value)
+{
+  m_GoodVoxelsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath AdaptiveAlignmentFeature::getGoodVoxelsArrayPath() const
+{
+  return m_GoodVoxelsArrayPath;
 }

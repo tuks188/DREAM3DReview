@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "KMedoids.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -44,6 +49,8 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "util/ClusteringAlgorithms/KMedoidsTemplate.hpp"
 
@@ -333,7 +340,7 @@ AbstractFilter::Pointer KMedoids::newFilterInstance(bool copyFilterParameters) c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getCompiledLibraryName() const
+QString KMedoids::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -341,7 +348,7 @@ const QString KMedoids::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getBrandingString() const
+QString KMedoids::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -349,7 +356,7 @@ const QString KMedoids::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getFilterVersion() const
+QString KMedoids::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -360,7 +367,7 @@ const QString KMedoids::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getGroupName() const
+QString KMedoids::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -368,7 +375,7 @@ const QString KMedoids::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid KMedoids::getUuid()
+QUuid KMedoids::getUuid() const
 {
   return QUuid("{f7486aa6-3049-5be7-8511-ae772b70c90b}");
 }
@@ -376,7 +383,7 @@ const QUuid KMedoids::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getSubGroupName() const
+QString KMedoids::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -384,7 +391,132 @@ const QString KMedoids::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KMedoids::getHumanLabel() const
+QString KMedoids::getHumanLabel() const
 {
   return "K Medoids";
+}
+
+// -----------------------------------------------------------------------------
+KMedoids::Pointer KMedoids::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<KMedoids> KMedoids::New()
+{
+  struct make_shared_enabler : public KMedoids
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString KMedoids::getNameOfClass() const
+{
+  return QString("KMedoids");
+}
+
+// -----------------------------------------------------------------------------
+QString KMedoids::ClassName()
+{
+  return QString("KMedoids");
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath KMedoids::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool KMedoids::getUseMask() const
+{
+  return m_UseMask;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath KMedoids::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setFeatureIdsArrayName(const QString& value)
+{
+  m_FeatureIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString KMedoids::getFeatureIdsArrayName() const
+{
+  return m_FeatureIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setMedoidsArrayName(const QString& value)
+{
+  m_MedoidsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString KMedoids::getMedoidsArrayName() const
+{
+  return m_MedoidsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setFeatureAttributeMatrixName(const QString& value)
+{
+  m_FeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString KMedoids::getFeatureAttributeMatrixName() const
+{
+  return m_FeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setInitClusters(int value)
+{
+  m_InitClusters = value;
+}
+
+// -----------------------------------------------------------------------------
+int KMedoids::getInitClusters() const
+{
+  return m_InitClusters;
+}
+
+// -----------------------------------------------------------------------------
+void KMedoids::setDistanceMetric(int value)
+{
+  m_DistanceMetric = value;
+}
+
+// -----------------------------------------------------------------------------
+int KMedoids::getDistanceMetric() const
+{
+  return m_DistanceMetric;
 }

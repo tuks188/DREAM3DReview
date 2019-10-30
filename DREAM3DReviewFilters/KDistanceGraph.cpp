@@ -33,15 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "KDistanceGraph.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/TemplateHelpers.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "util/EvaluationAlgorithms/KDistanceTemplate.hpp"
 
@@ -230,7 +236,7 @@ AbstractFilter::Pointer KDistanceGraph::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getCompiledLibraryName() const
+QString KDistanceGraph::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -238,7 +244,7 @@ const QString KDistanceGraph::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getBrandingString() const
+QString KDistanceGraph::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -246,7 +252,7 @@ const QString KDistanceGraph::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getFilterVersion() const
+QString KDistanceGraph::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -257,7 +263,7 @@ const QString KDistanceGraph::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getGroupName() const
+QString KDistanceGraph::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -265,7 +271,7 @@ const QString KDistanceGraph::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid KDistanceGraph::getUuid()
+QUuid KDistanceGraph::getUuid() const
 {
   return QUuid("{247ea39f-cb50-5dbb-bb9d-ecde12377fed}");
 }
@@ -273,7 +279,7 @@ const QUuid KDistanceGraph::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getSubGroupName() const
+QString KDistanceGraph::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -281,7 +287,108 @@ const QString KDistanceGraph::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString KDistanceGraph::getHumanLabel() const
+QString KDistanceGraph::getHumanLabel() const
 {
   return "K Distance Graph";
+}
+
+// -----------------------------------------------------------------------------
+KDistanceGraph::Pointer KDistanceGraph::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<KDistanceGraph> KDistanceGraph::New()
+{
+  struct make_shared_enabler : public KDistanceGraph
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString KDistanceGraph::getNameOfClass() const
+{
+  return QString("KDistanceGraph");
+}
+
+// -----------------------------------------------------------------------------
+QString KDistanceGraph::ClassName()
+{
+  return QString("KDistanceGraph");
+}
+
+// -----------------------------------------------------------------------------
+void KDistanceGraph::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath KDistanceGraph::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void KDistanceGraph::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool KDistanceGraph::getUseMask() const
+{
+  return m_UseMask;
+}
+
+// -----------------------------------------------------------------------------
+void KDistanceGraph::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath KDistanceGraph::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void KDistanceGraph::setKDistanceArrayPath(const DataArrayPath& value)
+{
+  m_KDistanceArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath KDistanceGraph::getKDistanceArrayPath() const
+{
+  return m_KDistanceArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void KDistanceGraph::setMinDist(int value)
+{
+  m_MinDist = value;
+}
+
+// -----------------------------------------------------------------------------
+int KDistanceGraph::getMinDist() const
+{
+  return m_MinDist;
+}
+
+// -----------------------------------------------------------------------------
+void KDistanceGraph::setDistanceMetric(int value)
+{
+  m_DistanceMetric = value;
+}
+
+// -----------------------------------------------------------------------------
+int KDistanceGraph::getDistanceMetric() const
+{
+  return m_DistanceMetric;
 }

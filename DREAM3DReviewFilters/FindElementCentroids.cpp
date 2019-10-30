@@ -33,11 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FindElementCentroids.h"
 
 #include <cstring>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
@@ -46,6 +51,8 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -282,7 +289,7 @@ AbstractFilter::Pointer FindElementCentroids::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getCompiledLibraryName() const
+QString FindElementCentroids::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -290,7 +297,7 @@ const QString FindElementCentroids::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getBrandingString() const
+QString FindElementCentroids::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -298,7 +305,7 @@ const QString FindElementCentroids::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getFilterVersion() const
+QString FindElementCentroids::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -309,7 +316,7 @@ const QString FindElementCentroids::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getGroupName() const
+QString FindElementCentroids::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -317,7 +324,7 @@ const QString FindElementCentroids::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FindElementCentroids::getUuid()
+QUuid FindElementCentroids::getUuid() const
 {
   return QUuid("{ef37f78b-bc9a-5884-b372-d882df6abe74}");
 }
@@ -325,7 +332,7 @@ const QUuid FindElementCentroids::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getSubGroupName() const
+QString FindElementCentroids::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -333,7 +340,84 @@ const QString FindElementCentroids::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindElementCentroids::getHumanLabel() const
+QString FindElementCentroids::getHumanLabel() const
 {
   return "Find Element Centroids";
+}
+
+// -----------------------------------------------------------------------------
+FindElementCentroids::Pointer FindElementCentroids::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FindElementCentroids> FindElementCentroids::New()
+{
+  struct make_shared_enabler : public FindElementCentroids
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FindElementCentroids::getNameOfClass() const
+{
+  return QString("FindElementCentroids");
+}
+
+// -----------------------------------------------------------------------------
+QString FindElementCentroids::ClassName()
+{
+  return QString("FindElementCentroids");
+}
+
+// -----------------------------------------------------------------------------
+void FindElementCentroids::setCellCentroidsArrayPath(const DataArrayPath& value)
+{
+  m_CellCentroidsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindElementCentroids::getCellCentroidsArrayPath() const
+{
+  return m_CellCentroidsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindElementCentroids::setCreateVertexDataContainer(bool value)
+{
+  m_CreateVertexDataContainer = value;
+}
+
+// -----------------------------------------------------------------------------
+bool FindElementCentroids::getCreateVertexDataContainer() const
+{
+  return m_CreateVertexDataContainer;
+}
+
+// -----------------------------------------------------------------------------
+void FindElementCentroids::setNewDataContainerName(const DataArrayPath& value)
+{
+  m_NewDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindElementCentroids::getNewDataContainerName() const
+{
+  return m_NewDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void FindElementCentroids::setVertexAttributeMatrixName(const QString& value)
+{
+  m_VertexAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FindElementCentroids::getVertexAttributeMatrixName() const
+{
+  return m_VertexAttributeMatrixName;
 }

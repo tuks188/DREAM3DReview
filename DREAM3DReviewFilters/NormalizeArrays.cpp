@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "NormalizeArrays.h"
 
 #include <cassert>
@@ -45,7 +47,10 @@
 #include <tbb/task_scheduler_init.h>
 #endif
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -54,6 +59,8 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -427,7 +434,7 @@ AbstractFilter::Pointer NormalizeArrays::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getCompiledLibraryName() const
+QString NormalizeArrays::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -435,7 +442,7 @@ const QString NormalizeArrays::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getBrandingString() const
+QString NormalizeArrays::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -443,7 +450,7 @@ const QString NormalizeArrays::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getFilterVersion() const
+QString NormalizeArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -454,7 +461,7 @@ const QString NormalizeArrays::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getGroupName() const
+QString NormalizeArrays::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -462,7 +469,7 @@ const QString NormalizeArrays::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid NormalizeArrays::getUuid()
+QUuid NormalizeArrays::getUuid() const
 {
   return QUuid("{8c584519-15c3-5010-b5ed-a2ac626591a1}");
 }
@@ -470,7 +477,7 @@ const QUuid NormalizeArrays::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getSubGroupName() const
+QString NormalizeArrays::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::StatisticsFilters;
 }
@@ -478,7 +485,132 @@ const QString NormalizeArrays::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString NormalizeArrays::getHumanLabel() const
+QString NormalizeArrays::getHumanLabel() const
 {
   return "Normalize Attribute Arrays";
+}
+
+// -----------------------------------------------------------------------------
+NormalizeArrays::Pointer NormalizeArrays::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<NormalizeArrays> NormalizeArrays::New()
+{
+  struct make_shared_enabler : public NormalizeArrays
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString NormalizeArrays::getNameOfClass() const
+{
+  return QString("NormalizeArrays");
+}
+
+// -----------------------------------------------------------------------------
+QString NormalizeArrays::ClassName()
+{
+  return QString("NormalizeArrays");
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> NormalizeArrays::getSelectedDataArrayPaths() const
+{
+  return m_SelectedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setNormalizeType(int value)
+{
+  m_NormalizeType = value;
+}
+
+// -----------------------------------------------------------------------------
+int NormalizeArrays::getNormalizeType() const
+{
+  return m_NormalizeType;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setRangeMin(double value)
+{
+  m_RangeMin = value;
+}
+
+// -----------------------------------------------------------------------------
+double NormalizeArrays::getRangeMin() const
+{
+  return m_RangeMin;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setRangeMax(double value)
+{
+  m_RangeMax = value;
+}
+
+// -----------------------------------------------------------------------------
+double NormalizeArrays::getRangeMax() const
+{
+  return m_RangeMax;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setPostfix(const QString& value)
+{
+  m_Postfix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString NormalizeArrays::getPostfix() const
+{
+  return m_Postfix;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool NormalizeArrays::getUseMask() const
+{
+  return m_UseMask;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath NormalizeArrays::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void NormalizeArrays::setDefaultValue(double value)
+{
+  m_DefaultValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double NormalizeArrays::getDefaultValue() const
+{
+  return m_DefaultValue;
 }

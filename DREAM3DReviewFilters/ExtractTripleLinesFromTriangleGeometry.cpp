@@ -11,6 +11,8 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "ExtractTripleLinesFromTriangleGeometry.h"
 
 #include <array>
@@ -18,7 +20,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -28,6 +33,8 @@
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -77,9 +84,6 @@ ExtractTripleLinesFromTriangleGeometry::ExtractTripleLinesFromTriangleGeometry()
 , m_VertexAttributeMatrixName(SIMPL::Defaults::VertexAttributeMatrixName)
 , m_EdgeAttributeMatrixName(SIMPL::Defaults::EdgeAttributeMatrixName)
 , m_NodeTypesArrayName(SIMPL::VertexData::SurfaceMeshNodeType)
-, m_SmoothTripleLines(false)
-, m_NodeTypes(nullptr)
-, m_TripleLineNodeTypes(nullptr)
 {
   initialize();
 }
@@ -886,7 +890,7 @@ AbstractFilter::Pointer ExtractTripleLinesFromTriangleGeometry::newFilterInstanc
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractTripleLinesFromTriangleGeometry::getCompiledLibraryName() const
+QString ExtractTripleLinesFromTriangleGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -894,7 +898,7 @@ const QString ExtractTripleLinesFromTriangleGeometry::getCompiledLibraryName() c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractTripleLinesFromTriangleGeometry::getBrandingString() const
+QString ExtractTripleLinesFromTriangleGeometry::getBrandingString() const
 {
   return "MeshUtilities";
 }
@@ -902,7 +906,7 @@ const QString ExtractTripleLinesFromTriangleGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractTripleLinesFromTriangleGeometry::getFilterVersion() const
+QString ExtractTripleLinesFromTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -913,7 +917,7 @@ const QString ExtractTripleLinesFromTriangleGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractTripleLinesFromTriangleGeometry::getGroupName() const
+QString ExtractTripleLinesFromTriangleGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::SamplingFilters;
 }
@@ -921,7 +925,7 @@ const QString ExtractTripleLinesFromTriangleGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractTripleLinesFromTriangleGeometry::getSubGroupName() const
+QString ExtractTripleLinesFromTriangleGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -929,7 +933,7 @@ const QString ExtractTripleLinesFromTriangleGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractTripleLinesFromTriangleGeometry::getHumanLabel() const
+QString ExtractTripleLinesFromTriangleGeometry::getHumanLabel() const
 {
   return "Extract Triple Lines from Triangle Geometry";
 }
@@ -937,7 +941,108 @@ const QString ExtractTripleLinesFromTriangleGeometry::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractTripleLinesFromTriangleGeometry::getUuid()
+QUuid ExtractTripleLinesFromTriangleGeometry::getUuid() const
 {
   return QUuid("{1422a4d7-ecd3-5e84-8883-8d2c8c551675}");
+}
+
+// -----------------------------------------------------------------------------
+ExtractTripleLinesFromTriangleGeometry::Pointer ExtractTripleLinesFromTriangleGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExtractTripleLinesFromTriangleGeometry> ExtractTripleLinesFromTriangleGeometry::New()
+{
+  struct make_shared_enabler : public ExtractTripleLinesFromTriangleGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractTripleLinesFromTriangleGeometry::getNameOfClass() const
+{
+  return QString("ExtractTripleLinesFromTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractTripleLinesFromTriangleGeometry::ClassName()
+{
+  return QString("ExtractTripleLinesFromTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void ExtractTripleLinesFromTriangleGeometry::setNodeTypesArrayPath(const DataArrayPath& value)
+{
+  m_NodeTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractTripleLinesFromTriangleGeometry::getNodeTypesArrayPath() const
+{
+  return m_NodeTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractTripleLinesFromTriangleGeometry::setEdgeGeometry(const QString& value)
+{
+  m_EdgeGeometry = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractTripleLinesFromTriangleGeometry::getEdgeGeometry() const
+{
+  return m_EdgeGeometry;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractTripleLinesFromTriangleGeometry::setVertexAttributeMatrixName(const QString& value)
+{
+  m_VertexAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractTripleLinesFromTriangleGeometry::getVertexAttributeMatrixName() const
+{
+  return m_VertexAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractTripleLinesFromTriangleGeometry::setEdgeAttributeMatrixName(const QString& value)
+{
+  m_EdgeAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractTripleLinesFromTriangleGeometry::getEdgeAttributeMatrixName() const
+{
+  return m_EdgeAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractTripleLinesFromTriangleGeometry::setNodeTypesArrayName(const QString& value)
+{
+  m_NodeTypesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractTripleLinesFromTriangleGeometry::getNodeTypesArrayName() const
+{
+  return m_NodeTypesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractTripleLinesFromTriangleGeometry::setSmoothTripleLines(bool value)
+{
+  m_SmoothTripleLines = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ExtractTripleLinesFromTriangleGeometry::getSmoothTripleLines() const
+{
+  return m_SmoothTripleLines;
 }

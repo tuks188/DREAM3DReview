@@ -34,9 +34,14 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "LocalDislocationDensityCalculator.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
@@ -49,6 +54,8 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Math/GeometryMath.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
@@ -568,7 +575,7 @@ AbstractFilter::Pointer LocalDislocationDensityCalculator::newFilterInstance(boo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LocalDislocationDensityCalculator::getCompiledLibraryName() const
+QString LocalDislocationDensityCalculator::getCompiledLibraryName() const
 {
   return DDDAnalysisToolboxConstants::DDDAnalysisToolboxBaseName;
 }
@@ -576,7 +583,7 @@ const QString LocalDislocationDensityCalculator::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LocalDislocationDensityCalculator::getBrandingString() const
+QString LocalDislocationDensityCalculator::getBrandingString() const
 {
   return "DDDAnalysisToolbox";
 }
@@ -584,7 +591,7 @@ const QString LocalDislocationDensityCalculator::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LocalDislocationDensityCalculator::getFilterVersion() const
+QString LocalDislocationDensityCalculator::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -595,7 +602,7 @@ const QString LocalDislocationDensityCalculator::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LocalDislocationDensityCalculator::getGroupName() const
+QString LocalDislocationDensityCalculator::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -603,7 +610,7 @@ const QString LocalDislocationDensityCalculator::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid LocalDislocationDensityCalculator::getUuid()
+QUuid LocalDislocationDensityCalculator::getUuid() const
 {
   return QUuid("{620a3022-0f92-5d07-b725-b22604874bbf}");
 }
@@ -611,7 +618,7 @@ const QUuid LocalDislocationDensityCalculator::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LocalDislocationDensityCalculator::getSubGroupName() const
+QString LocalDislocationDensityCalculator::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::StatisticsFilters;
 }
@@ -619,7 +626,132 @@ const QString LocalDislocationDensityCalculator::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LocalDislocationDensityCalculator::getHumanLabel() const
+QString LocalDislocationDensityCalculator::getHumanLabel() const
 {
   return "Calculate Local Dislocation Densities";
+}
+
+// -----------------------------------------------------------------------------
+LocalDislocationDensityCalculator::Pointer LocalDislocationDensityCalculator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<LocalDislocationDensityCalculator> LocalDislocationDensityCalculator::New()
+{
+  struct make_shared_enabler : public LocalDislocationDensityCalculator
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString LocalDislocationDensityCalculator::getNameOfClass() const
+{
+  return QString("LocalDislocationDensityCalculator");
+}
+
+// -----------------------------------------------------------------------------
+QString LocalDislocationDensityCalculator::ClassName()
+{
+  return QString("LocalDislocationDensityCalculator");
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setEdgeDataContainerName(const DataArrayPath& value)
+{
+  m_EdgeDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath LocalDislocationDensityCalculator::getEdgeDataContainerName() const
+{
+  return m_EdgeDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setBurgersVectorsArrayPath(const DataArrayPath& value)
+{
+  m_BurgersVectorsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath LocalDislocationDensityCalculator::getBurgersVectorsArrayPath() const
+{
+  return m_BurgersVectorsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setSlipPlaneNormalsArrayPath(const DataArrayPath& value)
+{
+  m_SlipPlaneNormalsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath LocalDislocationDensityCalculator::getSlipPlaneNormalsArrayPath() const
+{
+  return m_SlipPlaneNormalsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setCellSize(const FloatVec3Type& value)
+{
+  m_CellSize = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type LocalDislocationDensityCalculator::getCellSize() const
+{
+  return m_CellSize;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setOutputDataContainerName(const DataArrayPath& value)
+{
+  m_OutputDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath LocalDislocationDensityCalculator::getOutputDataContainerName() const
+{
+  return m_OutputDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setOutputAttributeMatrixName(const QString& value)
+{
+  m_OutputAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LocalDislocationDensityCalculator::getOutputAttributeMatrixName() const
+{
+  return m_OutputAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setOutputArrayName(const QString& value)
+{
+  m_OutputArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LocalDislocationDensityCalculator::getOutputArrayName() const
+{
+  return m_OutputArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void LocalDislocationDensityCalculator::setDominantSystemArrayName(const QString& value)
+{
+  m_DominantSystemArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LocalDislocationDensityCalculator::getDominantSystemArrayName() const
+{
+  return m_DominantSystemArrayName;
 }

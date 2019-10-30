@@ -2,17 +2,26 @@
  * Your License or Copyright can go here
  */
 
+#include <memory>
+
 #include "ImportMASSIFData.h"
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Utilities/StringOperations.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/H5Utilities.h"
@@ -395,7 +404,7 @@ AbstractFilter::Pointer ImportMASSIFData::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getCompiledLibraryName() const
+QString ImportMASSIFData::getCompiledLibraryName() const
 {
   return MASSIFUtilitiesConstants::MASSIFUtilitiesBaseName;
 }
@@ -403,7 +412,7 @@ const QString ImportMASSIFData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getBrandingString() const
+QString ImportMASSIFData::getBrandingString() const
 {
   return "MASSIFUtilities Plugin";
 }
@@ -411,7 +420,7 @@ const QString ImportMASSIFData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getFilterVersion() const
+QString ImportMASSIFData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -422,7 +431,7 @@ const QString ImportMASSIFData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getGroupName() const
+QString ImportMASSIFData::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -430,7 +439,7 @@ const QString ImportMASSIFData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ImportMASSIFData::getUuid()
+QUuid ImportMASSIFData::getUuid() const
 {
   return QUuid("{85654f78-04a8-50ed-9ae1-25dfbd0539b3}");
 }
@@ -438,7 +447,7 @@ const QUuid ImportMASSIFData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getSubGroupName() const
+QString ImportMASSIFData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -446,7 +455,7 @@ const QString ImportMASSIFData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportMASSIFData::getHumanLabel() const
+QString ImportMASSIFData::getHumanLabel() const
 {
   return "Import MASSIF Data (HDF5)";
 }
@@ -658,4 +667,69 @@ IDataArray::Pointer ImportMASSIFData::readIDataArray(hid_t gid, const QString& n
   }
 
   return ptr;
+}
+
+// -----------------------------------------------------------------------------
+ImportMASSIFData::Pointer ImportMASSIFData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ImportMASSIFData> ImportMASSIFData::New()
+{
+  struct make_shared_enabler : public ImportMASSIFData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportMASSIFData::getNameOfClass() const
+{
+  return QString("ImportMASSIFData");
+}
+
+// -----------------------------------------------------------------------------
+QString ImportMASSIFData::ClassName()
+{
+  return QString("ImportMASSIFData");
+}
+
+// -----------------------------------------------------------------------------
+void ImportMASSIFData::setMassifInputFilePath(const QString& value)
+{
+  m_MassifInputFilePath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportMASSIFData::getMassifInputFilePath() const
+{
+  return m_MassifInputFilePath;
+}
+
+// -----------------------------------------------------------------------------
+void ImportMASSIFData::setFilePrefix(const QString& value)
+{
+  m_FilePrefix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportMASSIFData::getFilePrefix() const
+{
+  return m_FilePrefix;
+}
+
+// -----------------------------------------------------------------------------
+void ImportMASSIFData::setStepNumber(int value)
+{
+  m_StepNumber = value;
+}
+
+// -----------------------------------------------------------------------------
+int ImportMASSIFData::getStepNumber() const
+{
+  return m_StepNumber;
 }

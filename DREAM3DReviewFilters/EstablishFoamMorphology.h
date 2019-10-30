@@ -13,13 +13,13 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StatsDataArray.h"
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/ShapeOps/ShapeOps.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include "OrientationLib/LaueOps/OrthoRhombicOps.h"
@@ -32,8 +32,10 @@
 class DREAM3DReview_EXPORT EstablishFoamMorphology : public AbstractFilter
 {
   Q_OBJECT
-
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(EstablishFoamMorphology SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(EstablishFoamMorphology)
+  PYB11_FILTER_NEW_MACRO(EstablishFoamMorphology)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath OutputCellAttributeMatrixPath READ getOutputCellAttributeMatrixPath WRITE setOutputCellAttributeMatrixPath)
   PYB11_PROPERTY(DataArrayPath InputCellFeatureIdsArrayPath READ getInputCellFeatureIdsArrayPath WRITE setInputCellFeatureIdsArrayPath)
@@ -58,11 +60,27 @@ class DREAM3DReview_EXPORT EstablishFoamMorphology : public AbstractFilter
   PYB11_PROPERTY(float StrutThicknessVariability READ getStrutThicknessVariability WRITE setStrutThicknessVariability)
   PYB11_PROPERTY(float StrutShapeVariability READ getStrutShapeVariability WRITE setStrutShapeVariability)
   PYB11_PROPERTY(bool SmoothStruts READ getSmoothStruts WRITE setSmoothStruts)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(EstablishFoamMorphology)
-  SIMPL_STATIC_NEW_MACRO(EstablishFoamMorphology)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EstablishFoamMorphology, AbstractFilter)
+  using Self = EstablishFoamMorphology;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for EstablishFoamMorphology
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for EstablishFoamMorphology
+   */
+  static QString ClassName();
 
   using Feature_t = struct
   {
@@ -77,96 +95,312 @@ public:
 
   ~EstablishFoamMorphology() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, OutputCellAttributeMatrixPath)
+  /**
+   * @brief Setter property for OutputCellAttributeMatrixPath
+   */
+  void setOutputCellAttributeMatrixPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for OutputCellAttributeMatrixPath
+   * @return Value of OutputCellAttributeMatrixPath
+   */
+  DataArrayPath getOutputCellAttributeMatrixPath() const;
+
   Q_PROPERTY(DataArrayPath OutputCellAttributeMatrixPath READ getOutputCellAttributeMatrixPath WRITE setOutputCellAttributeMatrixPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputCellFeatureIdsArrayPath)
+  /**
+   * @brief Setter property for InputCellFeatureIdsArrayPath
+   */
+  void setInputCellFeatureIdsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputCellFeatureIdsArrayPath
+   * @return Value of InputCellFeatureIdsArrayPath
+   */
+  DataArrayPath getInputCellFeatureIdsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputCellFeatureIdsArrayPath READ getInputCellFeatureIdsArrayPath WRITE setInputCellFeatureIdsArrayPath)
 
-  SIMPL_INSTANCE_STRING_PROPERTY(OutputCellEnsembleAttributeMatrixName)
+  /**
+   * @brief Setter property for OutputCellEnsembleAttributeMatrixName
+   */
+  void setOutputCellEnsembleAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for OutputCellEnsembleAttributeMatrixName
+   * @return Value of OutputCellEnsembleAttributeMatrixName
+   */
+  QString getOutputCellEnsembleAttributeMatrixName() const;
+
   Q_PROPERTY(QString OutputCellEnsembleAttributeMatrixName READ getOutputCellEnsembleAttributeMatrixName WRITE setOutputCellEnsembleAttributeMatrixName)
 
-  SIMPL_INSTANCE_STRING_PROPERTY(OutputCellFeatureAttributeMatrixName)
+  /**
+   * @brief Setter property for OutputCellFeatureAttributeMatrixName
+   */
+  void setOutputCellFeatureAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for OutputCellFeatureAttributeMatrixName
+   * @return Value of OutputCellFeatureAttributeMatrixName
+   */
+  QString getOutputCellFeatureAttributeMatrixName() const;
+
   Q_PROPERTY(QString OutputCellFeatureAttributeMatrixName READ getOutputCellFeatureAttributeMatrixName WRITE setOutputCellFeatureAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(QString, FeatureIdsArrayName)
+  /**
+   * @brief Setter property for FeatureIdsArrayName
+   */
+  void setFeatureIdsArrayName(const QString& value);
+  /**
+   * @brief Getter property for FeatureIdsArrayName
+   * @return Value of FeatureIdsArrayName
+   */
+  QString getFeatureIdsArrayName() const;
+
   Q_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, MaskArrayName)
+  /**
+   * @brief Setter property for MaskArrayName
+   */
+  void setMaskArrayName(const QString& value);
+  /**
+   * @brief Getter property for MaskArrayName
+   * @return Value of MaskArrayName
+   */
+  QString getMaskArrayName() const;
+
   Q_PROPERTY(QString MaskArrayName READ getMaskArrayName WRITE setMaskArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, CellPhasesArrayName)
+  /**
+   * @brief Setter property for CellPhasesArrayName
+   */
+  void setCellPhasesArrayName(const QString& value);
+  /**
+   * @brief Getter property for CellPhasesArrayName
+   * @return Value of CellPhasesArrayName
+   */
+  QString getCellPhasesArrayName() const;
+
   Q_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, NumFeaturesArrayName)
+  /**
+   * @brief Setter property for NumFeaturesArrayName
+   */
+  void setNumFeaturesArrayName(const QString& value);
+  /**
+   * @brief Getter property for NumFeaturesArrayName
+   * @return Value of NumFeaturesArrayName
+   */
+  QString getNumFeaturesArrayName() const;
+
   Q_PROPERTY(QString NumFeaturesArrayName READ getNumFeaturesArrayName WRITE setNumFeaturesArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, QPEuclideanDistancesArrayName)
+  /**
+   * @brief Setter property for QPEuclideanDistancesArrayName
+   */
+  void setQPEuclideanDistancesArrayName(const QString& value);
+  /**
+   * @brief Getter property for QPEuclideanDistancesArrayName
+   * @return Value of QPEuclideanDistancesArrayName
+   */
+  QString getQPEuclideanDistancesArrayName() const;
+
   Q_PROPERTY(QString QPEuclideanDistancesArrayName READ getQPEuclideanDistancesArrayName WRITE setQPEuclideanDistancesArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, TJEuclideanDistancesArrayName)
+  /**
+   * @brief Setter property for TJEuclideanDistancesArrayName
+   */
+  void setTJEuclideanDistancesArrayName(const QString& value);
+  /**
+   * @brief Getter property for TJEuclideanDistancesArrayName
+   * @return Value of TJEuclideanDistancesArrayName
+   */
+  QString getTJEuclideanDistancesArrayName() const;
+
   Q_PROPERTY(QString TJEuclideanDistancesArrayName READ getTJEuclideanDistancesArrayName WRITE setTJEuclideanDistancesArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, GBEuclideanDistancesArrayName)
+  /**
+   * @brief Setter property for GBEuclideanDistancesArrayName
+   */
+  void setGBEuclideanDistancesArrayName(const QString& value);
+  /**
+   * @brief Getter property for GBEuclideanDistancesArrayName
+   * @return Value of GBEuclideanDistancesArrayName
+   */
+  QString getGBEuclideanDistancesArrayName() const;
+
   Q_PROPERTY(QString GBEuclideanDistancesArrayName READ getGBEuclideanDistancesArrayName WRITE setGBEuclideanDistancesArrayName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputStatsArrayPath)
+  /**
+   * @brief Setter property for InputStatsArrayPath
+   */
+  void setInputStatsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputStatsArrayPath
+   * @return Value of InputStatsArrayPath
+   */
+  DataArrayPath getInputStatsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputStatsArrayPath READ getInputStatsArrayPath WRITE setInputStatsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputPhaseTypesArrayPath)
+  /**
+   * @brief Setter property for InputPhaseTypesArrayPath
+   */
+  void setInputPhaseTypesArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputPhaseTypesArrayPath
+   * @return Value of InputPhaseTypesArrayPath
+   */
+  DataArrayPath getInputPhaseTypesArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputPhaseTypesArrayPath READ getInputPhaseTypesArrayPath WRITE setInputPhaseTypesArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputPhaseNamesArrayPath)
+  /**
+   * @brief Setter property for InputPhaseNamesArrayPath
+   */
+  void setInputPhaseNamesArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputPhaseNamesArrayPath
+   * @return Value of InputPhaseNamesArrayPath
+   */
+  DataArrayPath getInputPhaseNamesArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputPhaseNamesArrayPath READ getInputPhaseNamesArrayPath WRITE setInputPhaseNamesArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputShapeTypesArrayPath)
+  /**
+   * @brief Setter property for InputShapeTypesArrayPath
+   */
+  void setInputShapeTypesArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputShapeTypesArrayPath
+   * @return Value of InputShapeTypesArrayPath
+   */
+  DataArrayPath getInputShapeTypesArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputShapeTypesArrayPath READ getInputShapeTypesArrayPath WRITE setInputShapeTypesArrayPath)
 
-  SIMPL_FILTER_PARAMETER(QString, CsvOutputFile)
+  /**
+   * @brief Setter property for CsvOutputFile
+   */
+  void setCsvOutputFile(const QString& value);
+  /**
+   * @brief Getter property for CsvOutputFile
+   * @return Value of CsvOutputFile
+   */
+  QString getCsvOutputFile() const;
+
   Q_PROPERTY(QString CsvOutputFile READ getCsvOutputFile WRITE setCsvOutputFile)
 
-  SIMPL_FILTER_PARAMETER(bool, PeriodicBoundaries)
+  /**
+   * @brief Setter property for PeriodicBoundaries
+   */
+  void setPeriodicBoundaries(const bool& value);
+  /**
+   * @brief Getter property for PeriodicBoundaries
+   * @return Value of PeriodicBoundaries
+   */
+  bool getPeriodicBoundaries() const;
+
   Q_PROPERTY(bool PeriodicBoundaries READ getPeriodicBoundaries WRITE setPeriodicBoundaries)
 
-  SIMPL_FILTER_PARAMETER(bool, WriteGoalAttributes)
+  /**
+   * @brief Setter property for WriteGoalAttributes
+   */
+  void setWriteGoalAttributes(const bool& value);
+  /**
+   * @brief Getter property for WriteGoalAttributes
+   * @return Value of WriteGoalAttributes
+   */
+  bool getWriteGoalAttributes() const;
+
   Q_PROPERTY(bool WriteGoalAttributes READ getWriteGoalAttributes WRITE setWriteGoalAttributes)
 
-  SIMPL_FILTER_PARAMETER(int, HaveFeatures)
+  /**
+   * @brief Setter property for HaveFeatures
+   */
+  void setHaveFeatures(const int& value);
+  /**
+   * @brief Getter property for HaveFeatures
+   * @return Value of HaveFeatures
+   */
+  int getHaveFeatures() const;
+
   Q_PROPERTY(int HaveFeatures READ getHaveFeatures WRITE setHaveFeatures)
 
-  SIMPL_FILTER_PARAMETER(double, MinStrutThickness)
+  /**
+   * @brief Setter property for MinStrutThickness
+   */
+  void setMinStrutThickness(const double& value);
+  /**
+   * @brief Getter property for MinStrutThickness
+   * @return Value of MinStrutThickness
+   */
+  double getMinStrutThickness() const;
+
   Q_PROPERTY(double MinStrutThickness READ getMinStrutThickness WRITE setMinStrutThickness)
 
-  SIMPL_FILTER_PARAMETER(float, StrutThicknessVariability)
+  /**
+   * @brief Setter property for StrutThicknessVariability
+   */
+  void setStrutThicknessVariability(const float& value);
+  /**
+   * @brief Getter property for StrutThicknessVariability
+   * @return Value of StrutThicknessVariability
+   */
+  float getStrutThicknessVariability() const;
+
   Q_PROPERTY(float StrutThicknessVariability READ getStrutThicknessVariability WRITE setStrutThicknessVariability)
 
-  SIMPL_FILTER_PARAMETER(float, StrutShapeVariability)
+  /**
+   * @brief Setter property for StrutShapeVariability
+   */
+  void setStrutShapeVariability(const float& value);
+  /**
+   * @brief Getter property for StrutShapeVariability
+   * @return Value of StrutShapeVariability
+   */
+  float getStrutShapeVariability() const;
+
   Q_PROPERTY(float StrutShapeVariability READ getStrutShapeVariability WRITE setStrutShapeVariability)
 
-  SIMPL_FILTER_PARAMETER(bool, SmoothStruts)
+  /**
+   * @brief Setter property for SmoothStruts
+   */
+  void setSmoothStruts(const bool& value);
+  /**
+   * @brief Getter property for SmoothStruts
+   * @return Value of SmoothStruts
+   */
+  bool getSmoothStruts() const;
+
   Q_PROPERTY(bool SmoothStruts READ getSmoothStruts WRITE setSmoothStruts)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
    */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -176,23 +410,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
   /**
    * @brief This method will instantiate all the end user settable options/parameters
    * for this filter
@@ -393,6 +627,67 @@ protected:
   int32_t estimate_numfeatures(size_t xpoints, size_t ypoints, size_t zpoints, float xres, float yres, float zres);
 
 private:
+  DataArrayPath m_DataContainerName = {};
+  DataArrayPath m_OutputCellAttributeMatrixPath = {};
+  DataArrayPath m_InputCellFeatureIdsArrayPath = {};
+  QString m_OutputCellEnsembleAttributeMatrixName = {};
+  QString m_OutputCellFeatureAttributeMatrixName = {};
+  QString m_FeatureIdsArrayName = {};
+  QString m_MaskArrayName = {};
+  QString m_CellPhasesArrayName = {};
+  QString m_NumFeaturesArrayName = {};
+  QString m_QPEuclideanDistancesArrayName = {};
+  QString m_TJEuclideanDistancesArrayName = {};
+  QString m_GBEuclideanDistancesArrayName = {};
+  DataArrayPath m_InputStatsArrayPath = {};
+  DataArrayPath m_InputPhaseTypesArrayPath = {};
+  DataArrayPath m_InputPhaseNamesArrayPath = {};
+  DataArrayPath m_InputShapeTypesArrayPath = {};
+  QString m_CsvOutputFile = {};
+  bool m_PeriodicBoundaries = {};
+  bool m_WriteGoalAttributes = {};
+  int m_HaveFeatures = {};
+  double m_MinStrutThickness = {};
+  float m_StrutThicknessVariability = {};
+  float m_StrutShapeVariability = {};
+  bool m_SmoothStruts = {};
+  std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+  int32_t* m_FeatureIds = nullptr;
+  std::weak_ptr<DataArray<int32_t>> m_CellPhasesPtr;
+  int32_t* m_CellPhases = nullptr;
+  std::weak_ptr<DataArray<bool>> m_MaskPtr;
+  bool* m_Mask = nullptr;
+  std::weak_ptr<DataArray<float>> m_QPEuclideanDistancesPtr;
+  float* m_QPEuclideanDistances = nullptr;
+  std::weak_ptr<DataArray<float>> m_GBEuclideanDistancesPtr;
+  float* m_GBEuclideanDistances = nullptr;
+  std::weak_ptr<DataArray<float>> m_TJEuclideanDistancesPtr;
+  float* m_TJEuclideanDistances = nullptr;
+  std::weak_ptr<DataArray<int32_t>> m_NearestNeighborsPtr;
+  int32_t* m_NearestNeighbors = nullptr;
+  std::weak_ptr<DataArray<int32_t>> m_FeaturePhasesPtr;
+  int32_t* m_FeaturePhases = nullptr;
+  std::weak_ptr<DataArray<int32_t>> m_NeighborhoodsPtr;
+  int32_t* m_Neighborhoods = nullptr;
+  std::weak_ptr<DataArray<float>> m_CentroidsPtr;
+  float* m_Centroids = nullptr;
+  std::weak_ptr<DataArray<float>> m_VolumesPtr;
+  float* m_Volumes = nullptr;
+  std::weak_ptr<DataArray<float>> m_AxisLengthsPtr;
+  float* m_AxisLengths = nullptr;
+  std::weak_ptr<DataArray<float>> m_AxisEulerAnglesPtr;
+  float* m_AxisEulerAngles = nullptr;
+  std::weak_ptr<DataArray<float>> m_Omega3sPtr;
+  float* m_Omega3s = nullptr;
+  std::weak_ptr<DataArray<float>> m_EquivalentDiametersPtr;
+  float* m_EquivalentDiameters = nullptr;
+  std::weak_ptr<DataArray<uint32_t>> m_PhaseTypesPtr;
+  uint32_t* m_PhaseTypes = nullptr;
+  std::weak_ptr<DataArray<uint32_t>> m_ShapeTypesPtr;
+  uint32_t* m_ShapeTypes = nullptr;
+  std::weak_ptr<DataArray<int32_t>> m_NumFeaturesPtr;
+  int32_t* m_NumFeatures = nullptr;
+
   // Names for the arrays used by the packing algorithm
   // These arrays are temporary and are removed from the Feature Attribute Matrix after completion
   QString m_FeaturePhasesArrayName = SIMPL::FeatureData::Phases;
@@ -407,31 +702,13 @@ private:
   int64_t* m_Neighbors = nullptr;
 
   // Cell Data - make sure these are all initialized to nullptr in the constructor
-  DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
-  DEFINE_DATAARRAY_VARIABLE(bool, Mask)
-  DEFINE_DATAARRAY_VARIABLE(float, QPEuclideanDistances)
-  DEFINE_DATAARRAY_VARIABLE(float, GBEuclideanDistances)
-  DEFINE_DATAARRAY_VARIABLE(float, TJEuclideanDistances)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, NearestNeighbors)
-  int8_t* m_BoundaryCells;
+  int8_t* m_BoundaryCells = nullptr;
 
   // Feature Data - make sure these are all initialized to nullptr in the constructor
-  DEFINE_DATAARRAY_VARIABLE(int32_t, FeaturePhases)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, Neighborhoods)
-  DEFINE_DATAARRAY_VARIABLE(float, Centroids)
-  DEFINE_DATAARRAY_VARIABLE(float, Volumes)
-  DEFINE_DATAARRAY_VARIABLE(float, AxisLengths)
-  DEFINE_DATAARRAY_VARIABLE(float, AxisEulerAngles)
-  DEFINE_DATAARRAY_VARIABLE(float, Omega3s)
-  DEFINE_DATAARRAY_VARIABLE(float, EquivalentDiameters)
   NeighborList<int>::WeakPointer m_NeighborList;
 
   // Ensemble Data - make sure these are all initialized to nullptr in the constructor
-  DEFINE_DATAARRAY_VARIABLE(uint32_t, PhaseTypes)
-  DEFINE_STRINGARRAY_VARIABLE(PhaseNames)
-  DEFINE_DATAARRAY_VARIABLE(uint32_t, ShapeTypes)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, NumFeatures)
+  StringDataArray::WeakPointer m_PhaseNamesPtr;
   StatsDataArray::WeakPointer m_StatsDataArray;
 
   // All other private variables

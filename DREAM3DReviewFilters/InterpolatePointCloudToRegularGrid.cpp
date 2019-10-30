@@ -11,10 +11,14 @@
  * Subsequent changes to the codes by others may elect to add a copyright and license
  * for those changes.
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "InterpolatePointCloudToRegularGrid.h"
 
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -27,6 +31,9 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Utilities/TimeUtilities.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -41,23 +48,9 @@ InterpolatePointCloudToRegularGrid::InterpolatePointCloudToRegularGrid()
 , m_VoxelIndicesArrayPath("", "", "VoxelIndices")
 , m_InterpolatedDataContainerName("InterpolatedDataContainer")
 , m_InterpolatedAttributeMatrixName("InterpolatedAttributeMatrix")
-, m_InterpolationTechnique(0)
-, m_UseMask(false)
 , m_MaskArrayPath("", "", "")
-, m_StoreKernelDistances(false)
 , m_KernelDistancesArrayName("KernelDistances")
-, m_VoxelIndices(nullptr)
-, m_Mask(nullptr)
 {
-  m_KernelSize[0] = 1.0f;
-  m_KernelSize[1] = 1.0f;
-  m_KernelSize[2] = 1.0f;
-
-  m_Sigmas[0] = 1.0f;
-  m_Sigmas[1] = 1.0f;
-  m_Sigmas[2] = 1.0f;
-
-  m_KernelDistances = NeighborList<float>::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
@@ -685,7 +678,7 @@ AbstractFilter::Pointer InterpolatePointCloudToRegularGrid::newFilterInstance(bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolatePointCloudToRegularGrid::getCompiledLibraryName() const
+QString InterpolatePointCloudToRegularGrid::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -693,7 +686,7 @@ const QString InterpolatePointCloudToRegularGrid::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolatePointCloudToRegularGrid::getBrandingString() const
+QString InterpolatePointCloudToRegularGrid::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -701,7 +694,7 @@ const QString InterpolatePointCloudToRegularGrid::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolatePointCloudToRegularGrid::getFilterVersion() const
+QString InterpolatePointCloudToRegularGrid::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -712,7 +705,7 @@ const QString InterpolatePointCloudToRegularGrid::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolatePointCloudToRegularGrid::getGroupName() const
+QString InterpolatePointCloudToRegularGrid::getGroupName() const
 {
   return SIMPL::FilterGroups::SamplingFilters;
 }
@@ -720,7 +713,7 @@ const QString InterpolatePointCloudToRegularGrid::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolatePointCloudToRegularGrid::getSubGroupName() const
+QString InterpolatePointCloudToRegularGrid::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::InterpolationFilters;
 }
@@ -728,7 +721,7 @@ const QString InterpolatePointCloudToRegularGrid::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolatePointCloudToRegularGrid::getHumanLabel() const
+QString InterpolatePointCloudToRegularGrid::getHumanLabel() const
 {
   return "Interpolate Point Cloud to Regular Grid";
 }
@@ -736,7 +729,192 @@ const QString InterpolatePointCloudToRegularGrid::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid InterpolatePointCloudToRegularGrid::getUuid()
+QUuid InterpolatePointCloudToRegularGrid::getUuid() const
 {
   return QUuid("{4b551c15-418d-5081-be3f-d3aeb62408e5}");
+}
+
+// -----------------------------------------------------------------------------
+InterpolatePointCloudToRegularGrid::Pointer InterpolatePointCloudToRegularGrid::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<InterpolatePointCloudToRegularGrid> InterpolatePointCloudToRegularGrid::New()
+{
+  struct make_shared_enabler : public InterpolatePointCloudToRegularGrid
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolatePointCloudToRegularGrid::getNameOfClass() const
+{
+  return QString("InterpolatePointCloudToRegularGrid");
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolatePointCloudToRegularGrid::ClassName()
+{
+  return QString("InterpolatePointCloudToRegularGrid");
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InterpolatePointCloudToRegularGrid::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setArraysToInterpolate(const QVector<DataArrayPath>& value)
+{
+  m_ArraysToInterpolate = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> InterpolatePointCloudToRegularGrid::getArraysToInterpolate() const
+{
+  return m_ArraysToInterpolate;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setArraysToCopy(const QVector<DataArrayPath>& value)
+{
+  m_ArraysToCopy = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> InterpolatePointCloudToRegularGrid::getArraysToCopy() const
+{
+  return m_ArraysToCopy;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setVoxelIndicesArrayPath(const DataArrayPath& value)
+{
+  m_VoxelIndicesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InterpolatePointCloudToRegularGrid::getVoxelIndicesArrayPath() const
+{
+  return m_VoxelIndicesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setInterpolatedDataContainerName(const DataArrayPath& value)
+{
+  m_InterpolatedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InterpolatePointCloudToRegularGrid::getInterpolatedDataContainerName() const
+{
+  return m_InterpolatedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setInterpolatedAttributeMatrixName(const QString& value)
+{
+  m_InterpolatedAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolatePointCloudToRegularGrid::getInterpolatedAttributeMatrixName() const
+{
+  return m_InterpolatedAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setInterpolationTechnique(int value)
+{
+  m_InterpolationTechnique = value;
+}
+
+// -----------------------------------------------------------------------------
+int InterpolatePointCloudToRegularGrid::getInterpolationTechnique() const
+{
+  return m_InterpolationTechnique;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setKernelSize(const FloatVec3Type& value)
+{
+  m_KernelSize = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type InterpolatePointCloudToRegularGrid::getKernelSize() const
+{
+  return m_KernelSize;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setSigmas(const FloatVec3Type& value)
+{
+  m_Sigmas = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type InterpolatePointCloudToRegularGrid::getSigmas() const
+{
+  return m_Sigmas;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InterpolatePointCloudToRegularGrid::getUseMask() const
+{
+  return m_UseMask;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InterpolatePointCloudToRegularGrid::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setStoreKernelDistances(bool value)
+{
+  m_StoreKernelDistances = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InterpolatePointCloudToRegularGrid::getStoreKernelDistances() const
+{
+  return m_StoreKernelDistances;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolatePointCloudToRegularGrid::setKernelDistancesArrayName(const QString& value)
+{
+  m_KernelDistancesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolatePointCloudToRegularGrid::getKernelDistancesArrayName() const
+{
+  return m_KernelDistancesArrayName;
 }

@@ -38,10 +38,14 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "InsertTransformationPhases.h"
 
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -58,6 +62,8 @@
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Math/SIMPLibRandom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "OrientationLib/Core/Orientation.hpp"
 #include "OrientationLib/LaueOps/LaueOps.h"
@@ -1093,7 +1099,7 @@ AbstractFilter::Pointer InsertTransformationPhases::newFilterInstance(bool copyF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getCompiledLibraryName() const
+QString InsertTransformationPhases::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -1101,7 +1107,7 @@ const QString InsertTransformationPhases::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getBrandingString() const
+QString InsertTransformationPhases::getBrandingString() const
 {
   return TransformationPhaseConstants::TransformationPhasePluginDisplayName;
 }
@@ -1109,7 +1115,7 @@ const QString InsertTransformationPhases::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getFilterVersion() const
+QString InsertTransformationPhases::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1120,7 +1126,7 @@ const QString InsertTransformationPhases::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getGroupName() const
+QString InsertTransformationPhases::getGroupName() const
 {
   return SIMPL::FilterGroups::Unsupported;
 }
@@ -1128,7 +1134,7 @@ const QString InsertTransformationPhases::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid InsertTransformationPhases::getUuid()
+QUuid InsertTransformationPhases::getUuid() const
 {
   return QUuid("{fd6da27d-0f2c-5c35-802f-7d6ce1ad0ca1}");
 }
@@ -1136,7 +1142,7 @@ const QUuid InsertTransformationPhases::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getSubGroupName() const
+QString InsertTransformationPhases::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::PackingFilters;
 }
@@ -1144,7 +1150,348 @@ const QString InsertTransformationPhases::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InsertTransformationPhases::getHumanLabel() const
+QString InsertTransformationPhases::getHumanLabel() const
 {
   return "Insert Transformation Phases";
+}
+
+// -----------------------------------------------------------------------------
+InsertTransformationPhases::Pointer InsertTransformationPhases::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<InsertTransformationPhases> InsertTransformationPhases::New()
+{
+  struct make_shared_enabler : public InsertTransformationPhases
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString InsertTransformationPhases::getNameOfClass() const
+{
+  return QString("InsertTransformationPhases");
+}
+
+// -----------------------------------------------------------------------------
+QString InsertTransformationPhases::ClassName()
+{
+  return QString("InsertTransformationPhases");
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setParentPhase(int value)
+{
+  m_ParentPhase = value;
+}
+
+// -----------------------------------------------------------------------------
+int InsertTransformationPhases::getParentPhase() const
+{
+  return m_ParentPhase;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setTransCrystalStruct(int value)
+{
+  m_TransCrystalStruct = value;
+}
+
+// -----------------------------------------------------------------------------
+int InsertTransformationPhases::getTransCrystalStruct() const
+{
+  return m_TransCrystalStruct;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setTransformationPhaseMisorientation(float value)
+{
+  m_TransformationPhaseMisorientation = value;
+}
+
+// -----------------------------------------------------------------------------
+float InsertTransformationPhases::getTransformationPhaseMisorientation() const
+{
+  return m_TransformationPhaseMisorientation;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setTransformationPhaseHabitPlane(const FloatVec3Type& value)
+{
+  m_TransformationPhaseHabitPlane = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type InsertTransformationPhases::getTransformationPhaseHabitPlane() const
+{
+  return m_TransformationPhaseHabitPlane;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setDefineHabitPlane(bool value)
+{
+  m_DefineHabitPlane = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InsertTransformationPhases::getDefineHabitPlane() const
+{
+  return m_DefineHabitPlane;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setUseAllVariants(bool value)
+{
+  m_UseAllVariants = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InsertTransformationPhases::getUseAllVariants() const
+{
+  return m_UseAllVariants;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setCoherentFrac(float value)
+{
+  m_CoherentFrac = value;
+}
+
+// -----------------------------------------------------------------------------
+float InsertTransformationPhases::getCoherentFrac() const
+{
+  return m_CoherentFrac;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setTransformationPhaseThickness(float value)
+{
+  m_TransformationPhaseThickness = value;
+}
+
+// -----------------------------------------------------------------------------
+float InsertTransformationPhases::getTransformationPhaseThickness() const
+{
+  return m_TransformationPhaseThickness;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setNumTransformationPhasesPerFeature(int value)
+{
+  m_NumTransformationPhasesPerFeature = value;
+}
+
+// -----------------------------------------------------------------------------
+int InsertTransformationPhases::getNumTransformationPhasesPerFeature() const
+{
+  return m_NumTransformationPhasesPerFeature;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setPeninsulaFrac(float value)
+{
+  m_PeninsulaFrac = value;
+}
+
+// -----------------------------------------------------------------------------
+float InsertTransformationPhases::getPeninsulaFrac() const
+{
+  return m_PeninsulaFrac;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setStatsGenCellEnsembleAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_StatsGenCellEnsembleAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getStatsGenCellEnsembleAttributeMatrixPath() const
+{
+  return m_StatsGenCellEnsembleAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setCellFeatureAttributeMatrixName(const DataArrayPath& value)
+{
+  m_CellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getCellFeatureAttributeMatrixName() const
+{
+  return m_CellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setCellEulerAnglesArrayPath(const DataArrayPath& value)
+{
+  m_CellEulerAnglesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getCellEulerAnglesArrayPath() const
+{
+  return m_CellEulerAnglesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setCellPhasesArrayPath(const DataArrayPath& value)
+{
+  m_CellPhasesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getCellPhasesArrayPath() const
+{
+  return m_CellPhasesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setAvgQuatsArrayPath(const DataArrayPath& value)
+{
+  m_AvgQuatsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getAvgQuatsArrayPath() const
+{
+  return m_AvgQuatsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setCentroidsArrayPath(const DataArrayPath& value)
+{
+  m_CentroidsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getCentroidsArrayPath() const
+{
+  return m_CentroidsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setEquivalentDiametersArrayPath(const DataArrayPath& value)
+{
+  m_EquivalentDiametersArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getEquivalentDiametersArrayPath() const
+{
+  return m_EquivalentDiametersArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setFeatureEulerAnglesArrayPath(const DataArrayPath& value)
+{
+  m_FeatureEulerAnglesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getFeatureEulerAnglesArrayPath() const
+{
+  return m_FeatureEulerAnglesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setFeaturePhasesArrayPath(const DataArrayPath& value)
+{
+  m_FeaturePhasesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getFeaturePhasesArrayPath() const
+{
+  return m_FeaturePhasesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setFeatureParentIdsArrayName(const QString& value)
+{
+  m_FeatureParentIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InsertTransformationPhases::getFeatureParentIdsArrayName() const
+{
+  return m_FeatureParentIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setNumFeaturesPerParentArrayPath(const DataArrayPath& value)
+{
+  m_NumFeaturesPerParentArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getNumFeaturesPerParentArrayPath() const
+{
+  return m_NumFeaturesPerParentArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setCrystalStructuresArrayPath(const DataArrayPath& value)
+{
+  m_CrystalStructuresArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getCrystalStructuresArrayPath() const
+{
+  return m_CrystalStructuresArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setPhaseTypesArrayPath(const DataArrayPath& value)
+{
+  m_PhaseTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getPhaseTypesArrayPath() const
+{
+  return m_PhaseTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setShapeTypesArrayPath(const DataArrayPath& value)
+{
+  m_ShapeTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getShapeTypesArrayPath() const
+{
+  return m_ShapeTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void InsertTransformationPhases::setNumFeaturesArrayPath(const DataArrayPath& value)
+{
+  m_NumFeaturesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath InsertTransformationPhases::getNumFeaturesArrayPath() const
+{
+  return m_NumFeaturesArrayPath;
 }

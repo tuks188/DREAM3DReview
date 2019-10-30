@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RemoveFlaggedVertices.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -43,6 +48,8 @@
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -317,7 +324,7 @@ AbstractFilter::Pointer RemoveFlaggedVertices::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getCompiledLibraryName() const
+QString RemoveFlaggedVertices::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -325,7 +332,7 @@ const QString RemoveFlaggedVertices::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getBrandingString() const
+QString RemoveFlaggedVertices::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -333,7 +340,7 @@ const QString RemoveFlaggedVertices::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getFilterVersion() const
+QString RemoveFlaggedVertices::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -344,7 +351,7 @@ const QString RemoveFlaggedVertices::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getGroupName() const
+QString RemoveFlaggedVertices::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -352,7 +359,7 @@ const QString RemoveFlaggedVertices::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RemoveFlaggedVertices::getUuid()
+QUuid RemoveFlaggedVertices::getUuid() const
 {
   return QUuid("{379ccc67-16dd-530a-984f-177db2314bac}");
 }
@@ -360,7 +367,7 @@ const QUuid RemoveFlaggedVertices::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getSubGroupName() const
+QString RemoveFlaggedVertices::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -368,7 +375,72 @@ const QString RemoveFlaggedVertices::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveFlaggedVertices::getHumanLabel() const
+QString RemoveFlaggedVertices::getHumanLabel() const
 {
   return "Remove Flagged Vertices";
+}
+
+// -----------------------------------------------------------------------------
+RemoveFlaggedVertices::Pointer RemoveFlaggedVertices::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RemoveFlaggedVertices> RemoveFlaggedVertices::New()
+{
+  struct make_shared_enabler : public RemoveFlaggedVertices
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveFlaggedVertices::getNameOfClass() const
+{
+  return QString("RemoveFlaggedVertices");
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveFlaggedVertices::ClassName()
+{
+  return QString("RemoveFlaggedVertices");
+}
+
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::setVertexGeometry(const DataArrayPath& value)
+{
+  m_VertexGeometry = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RemoveFlaggedVertices::getVertexGeometry() const
+{
+  return m_VertexGeometry;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RemoveFlaggedVertices::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveFlaggedVertices::setReducedVertexGeometry(const QString& value)
+{
+  m_ReducedVertexGeometry = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveFlaggedVertices::getReducedVertexGeometry() const
+{
+  return m_ReducedVertexGeometry;
 }

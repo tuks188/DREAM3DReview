@@ -33,13 +33,18 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ExtractInternalSurfacesFromTriangleGeometry.h"
 
 #include <array>
 #include <cassert>
 #include <unordered_map>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -47,6 +52,8 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -470,7 +477,7 @@ AbstractFilter::Pointer ExtractInternalSurfacesFromTriangleGeometry::newFilterIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryName() const
+QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -478,7 +485,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getCompiledLibraryNam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString() const
+QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -486,7 +493,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getBrandingString() c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion() const
+QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -497,7 +504,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getFilterVersion() co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName() const
+QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -505,7 +512,7 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractInternalSurfacesFromTriangleGeometry::getUuid()
+QUuid ExtractInternalSurfacesFromTriangleGeometry::getUuid() const
 {
   return QUuid("{52a069b4-6a46-5810-b0ec-e0693c636034}");
 }
@@ -513,7 +520,7 @@ const QUuid ExtractInternalSurfacesFromTriangleGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName() const
+QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::GeometryFilters;
 }
@@ -521,7 +528,72 @@ const QString ExtractInternalSurfacesFromTriangleGeometry::getSubGroupName() con
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractInternalSurfacesFromTriangleGeometry::getHumanLabel() const
+QString ExtractInternalSurfacesFromTriangleGeometry::getHumanLabel() const
 {
   return "Extract Internal Surfaces from Triangle Geometry";
+}
+
+// -----------------------------------------------------------------------------
+ExtractInternalSurfacesFromTriangleGeometry::Pointer ExtractInternalSurfacesFromTriangleGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExtractInternalSurfacesFromTriangleGeometry> ExtractInternalSurfacesFromTriangleGeometry::New()
+{
+  struct make_shared_enabler : public ExtractInternalSurfacesFromTriangleGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractInternalSurfacesFromTriangleGeometry::getNameOfClass() const
+{
+  return QString("ExtractInternalSurfacesFromTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractInternalSurfacesFromTriangleGeometry::ClassName()
+{
+  return QString("ExtractInternalSurfacesFromTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void ExtractInternalSurfacesFromTriangleGeometry::setTriangleDataContainerName(const DataArrayPath& value)
+{
+  m_TriangleDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractInternalSurfacesFromTriangleGeometry::getTriangleDataContainerName() const
+{
+  return m_TriangleDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractInternalSurfacesFromTriangleGeometry::setNodeTypesArrayPath(const DataArrayPath& value)
+{
+  m_NodeTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractInternalSurfacesFromTriangleGeometry::getNodeTypesArrayPath() const
+{
+  return m_NodeTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractInternalSurfacesFromTriangleGeometry::setInternalTrianglesName(const QString& value)
+{
+  m_InternalTrianglesName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractInternalSurfacesFromTriangleGeometry::getInternalTrianglesName() const
+{
+  return m_InternalTrianglesName;
 }

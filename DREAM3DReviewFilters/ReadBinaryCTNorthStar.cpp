@@ -11,18 +11,25 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "ReadBinaryCTNorthStar.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -507,7 +514,7 @@ AbstractFilter::Pointer ReadBinaryCTNorthStar::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadBinaryCTNorthStar::getCompiledLibraryName() const
+QString ReadBinaryCTNorthStar::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -515,7 +522,7 @@ const QString ReadBinaryCTNorthStar::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadBinaryCTNorthStar::getBrandingString() const
+QString ReadBinaryCTNorthStar::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -523,7 +530,7 @@ const QString ReadBinaryCTNorthStar::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadBinaryCTNorthStar::getFilterVersion() const
+QString ReadBinaryCTNorthStar::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -534,7 +541,7 @@ const QString ReadBinaryCTNorthStar::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadBinaryCTNorthStar::getGroupName() const
+QString ReadBinaryCTNorthStar::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -542,7 +549,7 @@ const QString ReadBinaryCTNorthStar::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadBinaryCTNorthStar::getSubGroupName() const
+QString ReadBinaryCTNorthStar::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -550,7 +557,7 @@ const QString ReadBinaryCTNorthStar::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadBinaryCTNorthStar::getHumanLabel() const
+QString ReadBinaryCTNorthStar::getHumanLabel() const
 {
   return "Import Binary CT File (North Star Imaging)";
 }
@@ -558,7 +565,108 @@ const QString ReadBinaryCTNorthStar::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ReadBinaryCTNorthStar::getUuid()
+QUuid ReadBinaryCTNorthStar::getUuid() const
 {
   return QUuid("{f2259481-5011-5f22-9fcb-c92fb6f8be10}");
+}
+
+// -----------------------------------------------------------------------------
+ReadBinaryCTNorthStar::Pointer ReadBinaryCTNorthStar::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ReadBinaryCTNorthStar> ReadBinaryCTNorthStar::New()
+{
+  struct make_shared_enabler : public ReadBinaryCTNorthStar
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ReadBinaryCTNorthStar::getNameOfClass() const
+{
+  return QString("ReadBinaryCTNorthStar");
+}
+
+// -----------------------------------------------------------------------------
+QString ReadBinaryCTNorthStar::ClassName()
+{
+  return QString("ReadBinaryCTNorthStar");
+}
+
+// -----------------------------------------------------------------------------
+void ReadBinaryCTNorthStar::setInputFiles(const std::vector<QString>& value)
+{
+  m_InputFiles = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<QString> ReadBinaryCTNorthStar::getInputFiles() const
+{
+  return m_InputFiles;
+}
+
+// -----------------------------------------------------------------------------
+void ReadBinaryCTNorthStar::setSlicesPerFile(const std::vector<int64_t>& value)
+{
+  m_SlicesPerFile = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<int64_t> ReadBinaryCTNorthStar::getSlicesPerFile() const
+{
+  return m_SlicesPerFile;
+}
+
+// -----------------------------------------------------------------------------
+void ReadBinaryCTNorthStar::setInputHeaderFile(const QString& value)
+{
+  m_InputHeaderFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ReadBinaryCTNorthStar::getInputHeaderFile() const
+{
+  return m_InputHeaderFile;
+}
+
+// -----------------------------------------------------------------------------
+void ReadBinaryCTNorthStar::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ReadBinaryCTNorthStar::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ReadBinaryCTNorthStar::setCellAttributeMatrixName(const QString& value)
+{
+  m_CellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ReadBinaryCTNorthStar::getCellAttributeMatrixName() const
+{
+  return m_CellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ReadBinaryCTNorthStar::setDensityArrayName(const QString& value)
+{
+  m_DensityArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ReadBinaryCTNorthStar::getDensityArrayName() const
+{
+  return m_DensityArrayName;
 }

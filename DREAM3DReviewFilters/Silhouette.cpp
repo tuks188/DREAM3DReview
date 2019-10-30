@@ -33,11 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "Silhouette.h"
 
 #include <unordered_set>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -45,6 +50,7 @@
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "util/EvaluationAlgorithms/SilhouetteTemplate.hpp"
 
@@ -253,7 +259,7 @@ AbstractFilter::Pointer Silhouette::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getCompiledLibraryName() const
+QString Silhouette::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -261,7 +267,7 @@ const QString Silhouette::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getBrandingString() const
+QString Silhouette::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -269,7 +275,7 @@ const QString Silhouette::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getFilterVersion() const
+QString Silhouette::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -280,7 +286,7 @@ const QString Silhouette::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getGroupName() const
+QString Silhouette::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -288,7 +294,7 @@ const QString Silhouette::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid Silhouette::getUuid()
+QUuid Silhouette::getUuid() const
 {
   return QUuid("{f84d4d69-9ea5-54b6-a71c-df76d76d50cf}");
 }
@@ -296,7 +302,7 @@ const QUuid Silhouette::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getSubGroupName() const
+QString Silhouette::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ClusteringFilters;
 }
@@ -304,7 +310,108 @@ const QString Silhouette::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Silhouette::getHumanLabel() const
+QString Silhouette::getHumanLabel() const
 {
   return "Silhouette";
+}
+
+// -----------------------------------------------------------------------------
+Silhouette::Pointer Silhouette::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<Silhouette> Silhouette::New()
+{
+  struct make_shared_enabler : public Silhouette
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString Silhouette::getNameOfClass() const
+{
+  return QString("Silhouette");
+}
+
+// -----------------------------------------------------------------------------
+QString Silhouette::ClassName()
+{
+  return QString("Silhouette");
+}
+
+// -----------------------------------------------------------------------------
+void Silhouette::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath Silhouette::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void Silhouette::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool Silhouette::getUseMask() const
+{
+  return m_UseMask;
+}
+
+// -----------------------------------------------------------------------------
+void Silhouette::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath Silhouette::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void Silhouette::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath Silhouette::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void Silhouette::setSilhouetteArrayPath(const DataArrayPath& value)
+{
+  m_SilhouetteArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath Silhouette::getSilhouetteArrayPath() const
+{
+  return m_SilhouetteArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void Silhouette::setDistanceMetric(int value)
+{
+  m_DistanceMetric = value;
+}
+
+// -----------------------------------------------------------------------------
+int Silhouette::getDistanceMetric() const
+{
+  return m_DistanceMetric;
 }

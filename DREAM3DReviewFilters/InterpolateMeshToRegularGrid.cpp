@@ -11,11 +11,16 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "InterpolateMeshToRegularGrid.h"
 
 #include <cmath>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/TemplateHelpers.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
@@ -26,6 +31,8 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewFilters/util/DifferentialGeometryOps.hpp"
@@ -744,7 +751,7 @@ AbstractFilter::Pointer InterpolateMeshToRegularGrid::newFilterInstance(bool cop
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolateMeshToRegularGrid::getCompiledLibraryName() const
+QString InterpolateMeshToRegularGrid::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -752,7 +759,7 @@ const QString InterpolateMeshToRegularGrid::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolateMeshToRegularGrid::getBrandingString() const
+QString InterpolateMeshToRegularGrid::getBrandingString() const
 {
   return "DREAM3DReview Plugin";
 }
@@ -760,7 +767,7 @@ const QString InterpolateMeshToRegularGrid::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolateMeshToRegularGrid::getFilterVersion() const
+QString InterpolateMeshToRegularGrid::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -771,7 +778,7 @@ const QString InterpolateMeshToRegularGrid::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolateMeshToRegularGrid::getGroupName() const
+QString InterpolateMeshToRegularGrid::getGroupName() const
 {
   return SIMPL::FilterGroups::SamplingFilters;
 }
@@ -779,7 +786,7 @@ const QString InterpolateMeshToRegularGrid::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolateMeshToRegularGrid::getSubGroupName() const
+QString InterpolateMeshToRegularGrid::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::InterpolationFilters;
 }
@@ -787,7 +794,7 @@ const QString InterpolateMeshToRegularGrid::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InterpolateMeshToRegularGrid::getHumanLabel() const
+QString InterpolateMeshToRegularGrid::getHumanLabel() const
 {
   return "Interpolate Mesh to Regular Grid";
 }
@@ -795,7 +802,131 @@ const QString InterpolateMeshToRegularGrid::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid InterpolateMeshToRegularGrid::getUuid()
+QUuid InterpolateMeshToRegularGrid::getUuid() const
 {
   return QUuid("{2c1961d5-fbc5-5c90-9758-57c8852bd06e}");
+}
+// -----------------------------------------------------------------------------
+InterpolateMeshToRegularGrid::Pointer InterpolateMeshToRegularGrid::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<InterpolateMeshToRegularGrid> InterpolateMeshToRegularGrid::New()
+{
+  struct make_shared_enabler : public InterpolateMeshToRegularGrid
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolateMeshToRegularGrid::getNameOfClass() const
+{
+  return QString("InterpolateMeshToRegularGrid");
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolateMeshToRegularGrid::ClassName()
+{
+  return QString("InterpolateMeshToRegularGrid");
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setSelectedDataContainerName(const QString& value)
+{
+  m_SelectedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolateMeshToRegularGrid::getSelectedDataContainerName() const
+{
+  return m_SelectedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setInterpolatedDataContainerName(const QString& value)
+{
+  m_InterpolatedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolateMeshToRegularGrid::getInterpolatedDataContainerName() const
+{
+  return m_InterpolatedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setInterpolatedAttributeMatrixName(const QString& value)
+{
+  m_InterpolatedAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InterpolateMeshToRegularGrid::getInterpolatedAttributeMatrixName() const
+{
+  return m_InterpolatedAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setScaleOrSpecifyNumCells(int value)
+{
+  m_ScaleOrSpecifyNumCells = value;
+}
+
+// -----------------------------------------------------------------------------
+int InterpolateMeshToRegularGrid::getScaleOrSpecifyNumCells() const
+{
+  return m_ScaleOrSpecifyNumCells;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setSetXDimension(int value)
+{
+  m_SetXDimension = value;
+}
+
+// -----------------------------------------------------------------------------
+int InterpolateMeshToRegularGrid::getSetXDimension() const
+{
+  return m_SetXDimension;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setSetYDimension(int value)
+{
+  m_SetYDimension = value;
+}
+
+// -----------------------------------------------------------------------------
+int InterpolateMeshToRegularGrid::getSetYDimension() const
+{
+  return m_SetYDimension;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setScaleFactorNumCells(int value)
+{
+  m_ScaleFactorNumCells = value;
+}
+
+// -----------------------------------------------------------------------------
+int InterpolateMeshToRegularGrid::getScaleFactorNumCells() const
+{
+  return m_ScaleFactorNumCells;
+}
+
+// -----------------------------------------------------------------------------
+void InterpolateMeshToRegularGrid::setOutsideMeshIdentifier(int value)
+{
+  m_OutsideMeshIdentifier = value;
+}
+
+// -----------------------------------------------------------------------------
+int InterpolateMeshToRegularGrid::getOutsideMeshIdentifier() const
+{
+  return m_OutsideMeshIdentifier;
 }

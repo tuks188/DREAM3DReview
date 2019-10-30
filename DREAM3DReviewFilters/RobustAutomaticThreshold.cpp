@@ -33,14 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RobustAutomaticThreshold.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -240,7 +246,7 @@ AbstractFilter::Pointer RobustAutomaticThreshold::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getCompiledLibraryName() const
+QString RobustAutomaticThreshold::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -248,7 +254,7 @@ const QString RobustAutomaticThreshold::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getBrandingString() const
+QString RobustAutomaticThreshold::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -256,7 +262,7 @@ const QString RobustAutomaticThreshold::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getFilterVersion() const
+QString RobustAutomaticThreshold::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -267,7 +273,7 @@ const QString RobustAutomaticThreshold::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getGroupName() const
+QString RobustAutomaticThreshold::getGroupName() const
 {
   return DREAM3DReviewConstants::FilterGroups::DREAM3DReviewFilters;
 }
@@ -275,7 +281,7 @@ const QString RobustAutomaticThreshold::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RobustAutomaticThreshold::getUuid()
+QUuid RobustAutomaticThreshold::getUuid() const
 {
   return QUuid("{3062fc2c-76b2-5c50-92b7-edbbb424c41d}");
 }
@@ -283,7 +289,7 @@ const QUuid RobustAutomaticThreshold::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getSubGroupName() const
+QString RobustAutomaticThreshold::getSubGroupName() const
 {
   return DREAM3DReviewConstants::FilterSubGroups::ThresholdFilters;
 }
@@ -291,7 +297,72 @@ const QString RobustAutomaticThreshold::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RobustAutomaticThreshold::getHumanLabel() const
+QString RobustAutomaticThreshold::getHumanLabel() const
 {
   return "Robust Automatic Threshold";
+}
+
+// -----------------------------------------------------------------------------
+RobustAutomaticThreshold::Pointer RobustAutomaticThreshold::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RobustAutomaticThreshold> RobustAutomaticThreshold::New()
+{
+  struct make_shared_enabler : public RobustAutomaticThreshold
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RobustAutomaticThreshold::getNameOfClass() const
+{
+  return QString("RobustAutomaticThreshold");
+}
+
+// -----------------------------------------------------------------------------
+QString RobustAutomaticThreshold::ClassName()
+{
+  return QString("RobustAutomaticThreshold");
+}
+
+// -----------------------------------------------------------------------------
+void RobustAutomaticThreshold::setInputArrayPath(const DataArrayPath& value)
+{
+  m_InputArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RobustAutomaticThreshold::getInputArrayPath() const
+{
+  return m_InputArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RobustAutomaticThreshold::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RobustAutomaticThreshold::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RobustAutomaticThreshold::setGradientMagnitudeArrayPath(const DataArrayPath& value)
+{
+  m_GradientMagnitudeArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RobustAutomaticThreshold::getGradientMagnitudeArrayPath() const
+{
+  return m_GradientMagnitudeArrayPath;
 }

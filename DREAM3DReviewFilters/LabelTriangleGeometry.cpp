@@ -11,15 +11,22 @@
 * Subsequent changes to the codes by others may elect to add a copyright and license
 * for those changes.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "LabelTriangleGeometry.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Math/GeometryMath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
@@ -31,7 +38,6 @@ LabelTriangleGeometry::LabelTriangleGeometry()
 : m_CADDataContainerName("")
 , m_TriangleAttributeMatrixName("")
 , m_RegionIdArrayName("")
-, m_RegionId(nullptr)
 {
 }
 
@@ -309,7 +315,7 @@ AbstractFilter::Pointer LabelTriangleGeometry::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LabelTriangleGeometry::getCompiledLibraryName() const
+QString LabelTriangleGeometry::getCompiledLibraryName() const
 {
   return DREAM3DReviewConstants::DREAM3DReviewBaseName;
 }
@@ -317,7 +323,7 @@ const QString LabelTriangleGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LabelTriangleGeometry::getBrandingString() const
+QString LabelTriangleGeometry::getBrandingString() const
 {
   return "DREAM3DReview";
 }
@@ -325,7 +331,7 @@ const QString LabelTriangleGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LabelTriangleGeometry::getFilterVersion() const
+QString LabelTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -336,7 +342,7 @@ const QString LabelTriangleGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LabelTriangleGeometry::getGroupName() const
+QString LabelTriangleGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::ReconstructionFilters;
 }
@@ -344,7 +350,7 @@ const QString LabelTriangleGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LabelTriangleGeometry::getSubGroupName() const
+QString LabelTriangleGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GroupingFilters;
 }
@@ -352,7 +358,7 @@ const QString LabelTriangleGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LabelTriangleGeometry::getHumanLabel() const
+QString LabelTriangleGeometry::getHumanLabel() const
 {
   return "Label CAD Geometry";
 }
@@ -360,7 +366,72 @@ const QString LabelTriangleGeometry::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid LabelTriangleGeometry::getUuid()
+QUuid LabelTriangleGeometry::getUuid() const
 {
   return QUuid("{a250a228-3b6b-5b37-a6e4-8687484f04c4}");
+}
+
+// -----------------------------------------------------------------------------
+LabelTriangleGeometry::Pointer LabelTriangleGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<LabelTriangleGeometry> LabelTriangleGeometry::New()
+{
+  struct make_shared_enabler : public LabelTriangleGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString LabelTriangleGeometry::getNameOfClass() const
+{
+  return QString("LabelTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString LabelTriangleGeometry::ClassName()
+{
+  return QString("LabelTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void LabelTriangleGeometry::setCADDataContainerName(const DataArrayPath& value)
+{
+  m_CADDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath LabelTriangleGeometry::getCADDataContainerName() const
+{
+  return m_CADDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void LabelTriangleGeometry::setTriangleAttributeMatrixName(const QString& value)
+{
+  m_TriangleAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LabelTriangleGeometry::getTriangleAttributeMatrixName() const
+{
+  return m_TriangleAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void LabelTriangleGeometry::setRegionIdArrayName(const QString& value)
+{
+  m_RegionIdArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LabelTriangleGeometry::getRegionIdArrayName() const
+{
+  return m_RegionIdArrayName;
 }
