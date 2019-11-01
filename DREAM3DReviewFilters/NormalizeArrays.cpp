@@ -307,7 +307,7 @@ public:
       {
         double min = *std::min_element(std::begin(m_Arrays[i]), std::end(m_Arrays[i]));
         double max = *std::max_element(std::begin(m_Arrays[i]), std::end(m_Arrays[i]));
-        size_t count = m_Arrays.size();
+        // size_t count = m_Arrays.size();
         for(auto& val : m_Arrays[i])
         {
           val = m_RangeMin + (((val - min) * (m_RangeMax - m_RangeMin)) / (max - min));
