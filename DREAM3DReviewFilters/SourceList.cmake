@@ -19,6 +19,7 @@ set(_PublicFilters
   ComputeUmeyamaTransform
 
   EstablishFoamMorphology
+  GenerateIcosahedronColors
   
   DBSCAN
   ExtractInternalSurfacesFromTriangleGeometry
