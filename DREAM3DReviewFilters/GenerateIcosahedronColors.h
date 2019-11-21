@@ -55,16 +55,14 @@ class DREAM3DReview_EXPORT GenerateIcosahedronColors : public AbstractFilter
   PYB11_CREATE_BINDINGS(GenerateIcosahedronColors SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(GenerateIcosahedronColors)
   PYB11_FILTER_NEW_MACRO(GenerateIcosahedronColors)
-  PYB11_FILTER_PARAMETER(FloatVec3Type, ReferenceDir)
   PYB11_FILTER_PARAMETER(DataArrayPath, CellPhasesArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, CellEulerAnglesArrayPath)
+  PYB11_FILTER_PARAMETER(DataArrayPath, CellCAxisLocationsArrayPath)
   PYB11_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
   PYB11_FILTER_PARAMETER(bool, UseGoodVoxels)
   PYB11_FILTER_PARAMETER(DataArrayPath, GoodVoxelsArrayPath)
   PYB11_FILTER_PARAMETER(QString, CellIcosahedronColorsArrayName)
-  PYB11_PROPERTY(FloatVec3Type ReferenceDir READ getReferenceDir WRITE setReferenceDir)
   PYB11_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
-  PYB11_PROPERTY(DataArrayPath CellEulerAnglesArrayPath READ getCellEulerAnglesArrayPath WRITE setCellEulerAnglesArrayPath)
+  PYB11_PROPERTY(DataArrayPath CellCAxisLocationsArrayPath READ getCellCAxisLocationsArrayPath WRITE setCellCAxisLocationsArrayPath)
   PYB11_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
   PYB11_PROPERTY(bool UseGoodVoxels READ getUseGoodVoxels WRITE setUseGoodVoxels)
   PYB11_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
@@ -102,18 +100,6 @@ public:
   ~GenerateIcosahedronColors() override;
 
   /**
-   * @brief Setter property for ReferenceDir
-   */
-  void setReferenceDir(const FloatVec3Type& value);
-  /**
-   * @brief Getter property for ReferenceDir
-   * @return Value of ReferenceDir
-   */
-  FloatVec3Type getReferenceDir() const;
-
-  Q_PROPERTY(FloatVec3Type ReferenceDir READ getReferenceDir WRITE setReferenceDir)
-
-  /**
    * @brief Setter property for CellPhasesArrayPath
    */
   void setCellPhasesArrayPath(const DataArrayPath& value);
@@ -126,16 +112,16 @@ public:
   Q_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
 
   /**
-   * @brief Setter property for CellEulerAnglesArrayPath
+   * @brief Setter property for CellCAxisLocationsArrayPath
    */
-  void setCellEulerAnglesArrayPath(const DataArrayPath& value);
+  void setCellCAxisLocationsArrayPath(const DataArrayPath& value);
   /**
-   * @brief Getter property for CellEulerAnglesArrayPath
-   * @return Value of CellEulerAnglesArrayPath
+   * @brief Getter property for CellCAxisLocationsArrayPath
+   * @return Value of CellCAxisLocationsArrayPath
    */
-  DataArrayPath getCellEulerAnglesArrayPath() const;
+  DataArrayPath getCellCAxisLocationsArrayPath() const;
 
-  Q_PROPERTY(DataArrayPath CellEulerAnglesArrayPath READ getCellEulerAnglesArrayPath WRITE setCellEulerAnglesArrayPath)
+  Q_PROPERTY(DataArrayPath CellCAxisLocationsArrayPath READ getCellCAxisLocationsArrayPath WRITE setCellCAxisLocationsArrayPath)
 
   /**
    * @brief Setter property for CrystalStructuresArrayPath
@@ -293,8 +279,8 @@ protected:
 private:
   std::weak_ptr<DataArray<int32_t>> m_CellPhasesPtr;
   int32_t* m_CellPhases = nullptr;
-  std::weak_ptr<DataArray<float>> m_CellEulerAnglesPtr;
-  float* m_CellEulerAngles = nullptr;
+  std::weak_ptr<DataArray<float>> m_CellCAxisLocationsPtr;
+  float* m_CellCAxisLocations = nullptr;
   std::weak_ptr<DataArray<uint32_t>> m_CrystalStructuresPtr;
   uint32_t* m_CrystalStructures = nullptr;
   std::weak_ptr<DataArray<bool>> m_GoodVoxelsPtr;
@@ -302,9 +288,8 @@ private:
   std::weak_ptr<DataArray<uint8_t>> m_CellIcosahedronColorsPtr;
   uint8_t* m_CellIcosahedronColors = nullptr;
 
-  FloatVec3Type m_ReferenceDir = {};
   DataArrayPath m_CellPhasesArrayPath = {};
-  DataArrayPath m_CellEulerAnglesArrayPath = {};
+  DataArrayPath m_CellCAxisLocationsArrayPath = {};
   DataArrayPath m_CrystalStructuresArrayPath = {};
   bool m_UseGoodVoxels = {};
   DataArrayPath m_GoodVoxelsArrayPath = {};

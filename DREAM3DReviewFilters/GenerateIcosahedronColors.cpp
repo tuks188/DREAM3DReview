@@ -55,7 +55,6 @@
 
 #include "OrientationLib/LaueOps/LaueOps.h"
 
-//#include "Plugins/OrientationAnalysis/OrientationAnalysisConstants.h"
 #include "DREAM3DReview/DREAM3DReviewConstants.h"
 #include "DREAM3DReview/DREAM3DReviewVersion.h"
 
@@ -73,10 +72,9 @@ enum createdPathID : RenameDataPath::DataID_t
 class GenerateIcosahedronColorsImpl
 {
 public:
-  GenerateIcosahedronColorsImpl(GenerateIcosahedronColors* filter, FloatVec3Type referenceDir, float* eulers, int32_t* phases, uint32_t* crystalStructures, int32_t numPhases, bool* goodVoxels, uint8_t* colors)
+  GenerateIcosahedronColorsImpl(GenerateIcosahedronColors* filter, float* cAxisLocations, int32_t* phases, uint32_t* crystalStructures, int32_t numPhases, bool* goodVoxels, uint8_t* colors)
   : m_Filter(filter)
-  , m_ReferenceDir(referenceDir)
-  , m_CellEulerAngles(eulers)
+  , m_CellCAxisLocations(cAxisLocations)
   , m_CellPhases(phases)
   , m_CrystalStructures(crystalStructures)
   , m_NumPhases(numPhases)
@@ -90,8 +88,8 @@ public:
   void convert(size_t start, size_t end) const
   {
     QVector<LaueOps::Pointer> ops = LaueOps::getOrientationOpsQVector();
-    double refDir[3] = {m_ReferenceDir[0], m_ReferenceDir[1], m_ReferenceDir[2]};
-    double dEuler[3] = {0.0, 0.0, 0.0};
+    double refDir[3] = {0.0f, 0.0f, 1.0f};
+    double dCAxis[3] = {0.0, 0.0, 0.0};
     SIMPL::Rgb argb = 0x00000000;
     int32_t phase = 0;
     bool calcIcosahedron = false;
@@ -103,11 +101,11 @@ public:
       m_CellIcosahedronColors[index] = 0;
       m_CellIcosahedronColors[index + 1] = 0;
       m_CellIcosahedronColors[index + 2] = 0;
-      dEuler[0] = m_CellEulerAngles[index];
-      dEuler[1] = m_CellEulerAngles[index + 1];
-      dEuler[2] = m_CellEulerAngles[index + 2];
+      dCAxis[0] = m_CellCAxisLocations[index];
+      dCAxis[1] = m_CellCAxisLocations[index + 1];
+      dCAxis[2] = m_CellCAxisLocations[index + 2];
 
-      // Make sure we are using a valid Euler Angles with valid crystal symmetry
+      // Make sure we are using a valid C-Axis Locations with valid crystal symmetry
       calcIcosahedron = true;
       if(nullptr != m_GoodVoxels)
       {
@@ -121,7 +119,7 @@ public:
 
       if(phase < m_NumPhases && calcIcosahedron && m_CrystalStructures[phase] < Ebsd::CrystalStructure::LaueGroupEnd)
       {
-        argb = ops[m_CrystalStructures[phase]]->generateIPFColor(dEuler, refDir, false);
+        argb = ops[m_CrystalStructures[phase]]->generateIPFColor(dCAxis, refDir, false);
         m_CellIcosahedronColors[index] = static_cast<uint8_t>(RgbColor::dRed(argb));
         m_CellIcosahedronColors[index + 1] = static_cast<uint8_t>(RgbColor::dGreen(argb));
         m_CellIcosahedronColors[index + 2] = static_cast<uint8_t>(RgbColor::dBlue(argb));
@@ -136,8 +134,7 @@ public:
 
 private:
   GenerateIcosahedronColors* m_Filter = nullptr;
-  FloatVec3Type m_ReferenceDir;
-  float* m_CellEulerAngles;
+  float* m_CellCAxisLocations;
   int32_t* m_CellPhases;
   unsigned int* m_CrystalStructures;
   int32_t m_NumPhases = 0;
@@ -150,15 +147,12 @@ private:
 // -----------------------------------------------------------------------------
 GenerateIcosahedronColors::GenerateIcosahedronColors()
 : m_CellPhasesArrayPath("", "", "")
-, m_CellEulerAnglesArrayPath("", "", "")
+, m_CellCAxisLocationsArrayPath("", "", "")
 , m_CrystalStructuresArrayPath("", "", "")
 , m_UseGoodVoxels(false)
 , m_GoodVoxelsArrayPath("", "", "")
-, m_CellIcosahedronColorsArrayName(SIMPL::CellData::IPFColor)
+, m_CellIcosahedronColorsArrayName(SIMPL::CellData::IcosahedronColor)
 {
-  m_ReferenceDir[0] = 0.0f;
-  m_ReferenceDir[1] = 0.0f;
-  m_ReferenceDir[2] = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -172,13 +166,12 @@ GenerateIcosahedronColors::~GenerateIcosahedronColors() = default;
 void GenerateIcosahedronColors::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Reference Direction", ReferenceDir, FilterParameter::Parameter, GenerateIcosahedronColors));
 
   QStringList linkedProps("GoodVoxelsArrayPath");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Good Elements Only (Bad Elements Will Be Black)", UseGoodVoxels, FilterParameter::Parameter, GenerateIcosahedronColors, linkedProps));
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
   DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Euler Angles", CellEulerAnglesArrayPath, FilterParameter::RequiredArray, GenerateIcosahedronColors, req));
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("C-Axis Locations", CellCAxisLocationsArrayPath, FilterParameter::RequiredArray, GenerateIcosahedronColors, req));
   req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Category::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Phases", CellPhasesArrayPath, FilterParameter::RequiredArray, GenerateIcosahedronColors, req));
   req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Category::Any);
@@ -190,7 +183,7 @@ void GenerateIcosahedronColors::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Crystal Structures", CrystalStructuresArrayPath, FilterParameter::RequiredArray, GenerateIcosahedronColors, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Icosahedron Colors", CellIcosahedronColorsArrayName, CellEulerAnglesArrayPath, CellEulerAnglesArrayPath, FilterParameter::CreatedArray, GenerateIcosahedronColors));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Icosahedron Colors", CellIcosahedronColorsArrayName, CellCAxisLocationsArrayPath, CellCAxisLocationsArrayPath, FilterParameter::CreatedArray, GenerateIcosahedronColors));
   setFilterParameters(parameters);
 }
 
@@ -203,10 +196,9 @@ void GenerateIcosahedronColors::readFilterParameters(AbstractFilterParametersRea
   setUseGoodVoxels(reader->readValue("UseGoodVoxels", getUseGoodVoxels()));
   setGoodVoxelsArrayPath(reader->readDataArrayPath("GoodVoxelsArrayPath", getGoodVoxelsArrayPath()));
   setCrystalStructuresArrayPath(reader->readDataArrayPath("CrystalStructuresArrayPath", getCrystalStructuresArrayPath()));
-  setCellEulerAnglesArrayPath(reader->readDataArrayPath("CellEulerAnglesArrayPath", getCellEulerAnglesArrayPath()));
+  setCellCAxisLocationsArrayPath(reader->readDataArrayPath("CellCAxisLocationsArrayPath", getCellCAxisLocationsArrayPath()));
   setCellPhasesArrayPath(reader->readDataArrayPath("CellPhasesArrayPath", getCellPhasesArrayPath()));
   setCellIcosahedronColorsArrayName(reader->readString("CellIcosahedronColorsArrayName", getCellIcosahedronColorsArrayName()));
-  setReferenceDir(reader->readFloatVec3("ReferenceDir", getReferenceDir()));
   reader->closeFilterGroup();
 }
 
@@ -242,15 +234,15 @@ void GenerateIcosahedronColors::dataCheck()
   }
 
   cDims[0] = 3;
-  m_CellEulerAnglesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getCellEulerAnglesArrayPath(),
+  m_CellCAxisLocationsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getCellCAxisLocationsArrayPath(),
                                                                                                            cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_CellEulerAnglesPtr.lock())                                                                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_CellCAxisLocationsPtr.lock())                                                                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
-    m_CellEulerAngles = m_CellEulerAnglesPtr.lock()->getPointer(0);
+    m_CellCAxisLocations = m_CellCAxisLocationsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
   if(getErrorCode() >= 0)
   {
-    dataArraypaths.push_back(getCellEulerAnglesArrayPath());
+    dataArraypaths.push_back(getCellCAxisLocationsArrayPath());
   }
 
   cDims[0] = 1;
@@ -262,7 +254,7 @@ void GenerateIcosahedronColors::dataCheck()
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   cDims[0] = 3;
-  tempPath.update(m_CellEulerAnglesArrayPath.getDataContainerName(), getCellEulerAnglesArrayPath().getAttributeMatrixName(), getCellIcosahedronColorsArrayName());
+  tempPath.update(m_CellCAxisLocationsArrayPath.getDataContainerName(), getCellCAxisLocationsArrayPath().getAttributeMatrixName(), getCellIcosahedronColorsArrayName());
   m_CellIcosahedronColorsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(
       this, tempPath, 0, cDims, "", DataArrayID31); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_CellIcosahedronColorsPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -321,18 +313,14 @@ void GenerateIcosahedronColors::execute()
   }
 
   m_PhaseWarningCount = 0;
-  size_t totalPoints = m_CellEulerAnglesPtr.lock()->getNumberOfTuples();
+  size_t totalPoints = m_CellCAxisLocationsPtr.lock()->getNumberOfTuples();
 
   int32_t numPhases = static_cast<int32_t>(m_CrystalStructuresPtr.lock()->getNumberOfTuples());
-
-  // Make sure we are dealing with a unit 1 vector.
-  FloatVec3Type normRefDir = m_ReferenceDir; // Make a copy of the reference Direction
-  MatrixMath::Normalize3x1(normRefDir[0], normRefDir[1], normRefDir[2]);
 
   // Allow data-based parallelization
   ParallelDataAlgorithm dataAlg;
   dataAlg.setRange(0, totalPoints);
-  dataAlg.execute(GenerateIcosahedronColorsImpl(this, normRefDir, m_CellEulerAngles, m_CellPhases, m_CrystalStructures, numPhases, m_GoodVoxels, m_CellIcosahedronColors));
+  dataAlg.execute(GenerateIcosahedronColorsImpl(this, m_CellCAxisLocations, m_CellPhases, m_CrystalStructures, numPhases, m_GoodVoxels, m_CellIcosahedronColors));
 
   if(m_PhaseWarningCount > 0)
   {
@@ -455,18 +443,6 @@ QString GenerateIcosahedronColors::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void GenerateIcosahedronColors::setReferenceDir(const FloatVec3Type& value)
-{
-  m_ReferenceDir = value;
-}
-
-// -----------------------------------------------------------------------------
-FloatVec3Type GenerateIcosahedronColors::getReferenceDir() const
-{
-  return m_ReferenceDir;
-}
-
-// -----------------------------------------------------------------------------
 void GenerateIcosahedronColors::setCellPhasesArrayPath(const DataArrayPath& value)
 {
   m_CellPhasesArrayPath = value;
@@ -479,15 +455,15 @@ DataArrayPath GenerateIcosahedronColors::getCellPhasesArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void GenerateIcosahedronColors::setCellEulerAnglesArrayPath(const DataArrayPath& value)
+void GenerateIcosahedronColors::setCellCAxisLocationsArrayPath(const DataArrayPath& value)
 {
-  m_CellEulerAnglesArrayPath = value;
+  m_CellCAxisLocationsArrayPath = value;
 }
 
 // -----------------------------------------------------------------------------
-DataArrayPath GenerateIcosahedronColors::getCellEulerAnglesArrayPath() const
+DataArrayPath GenerateIcosahedronColors::getCellCAxisLocationsArrayPath() const
 {
-  return m_CellEulerAnglesArrayPath;
+  return m_CellCAxisLocationsArrayPath;
 }
 
 // -----------------------------------------------------------------------------
